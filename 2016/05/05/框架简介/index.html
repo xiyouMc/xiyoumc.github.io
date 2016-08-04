@@ -1,0 +1,612 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>插件化框架简介 | Hexo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="John Doe">
+    
+    <meta name="description" content="插件化框架简介
+插件化是将Apk中功能类似的模块封装到独立的Application中，并根据框架约定好的规则完成Apk的动态加载和Service的注入。
+本框架是将每一个Apk作为so并使用定制化打包脚本将so文件打到主Project/libs/jniLibs，这样在apk编译的时候就可以将so文件">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="Hexo" title="Hexo"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Hexo">Hexo</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/05/05/框架简介/" title="插件化框架简介" itemprop="url">插件化框架简介</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://yoursite.com" title="John Doe">John Doe</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2016-05-05T08:01:37.000Z" itemprop="datePublished">2016-05-05</time>
+    更新日期:<time datetime="2016-07-26T11:31:08.000Z" itemprop="dateModified">2016-07-26</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#插件化框架简介"><span class="toc-number">1.</span> <span class="toc-text">插件化框架简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、Framework"><span class="toc-number">1.1.</span> <span class="toc-text">一、Framework</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#简介"><span class="toc-number">1.1.1.</span> <span class="toc-text">简介</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、Activity层"><span class="toc-number">1.2.</span> <span class="toc-text">二、Activity层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#独立模块架构"><span class="toc-number">1.2.1.</span> <span class="toc-text">独立模块架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#模块之间依赖"><span class="toc-number">1.2.2.</span> <span class="toc-text">模块之间依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#模块内部资源的访问"><span class="toc-number">1.2.3.</span> <span class="toc-text">模块内部资源的访问</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Gradle打包命令详解"><span class="toc-number">1.2.4.</span> <span class="toc-text">Gradle打包命令详解</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、依赖关系介绍"><span class="toc-number">1.3.</span> <span class="toc-text">三、依赖关系介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#模块化主要的依赖关系："><span class="toc-number">1.3.1.</span> <span class="toc-text">模块化主要的依赖关系：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#插件apk的开发规范"><span class="toc-number">1.3.2.</span> <span class="toc-text">插件apk的开发规范</span></a></li></ol></li></ol></li></ol>
+		</div>
+		
+		<h1 id="插件化框架简介"><a href="#插件化框架简介" class="headerlink" title="插件化框架简介"></a>插件化框架简介</h1><ul>
+<li>插件化是将Apk中功能类似的模块封装到独立的Application中，并根据框架约定好的规则完成Apk的动态加载和Service的注入。</li>
+<li>本框架是将每一个Apk作为so并使用定制化打包脚本将so文件打到主Project/libs/jniLibs，这样在apk编译的时候就可以将so文件直接装载进data/data/xxxxx/lib目录，支持后续的DexClassLoader加载该文件。</li>
+<li>每一个模块分为Api和Core，Api作为模块对外提供的接口，Core作为封装好的独立模块，每一个模块做好自己的混淆。注入操作需在Core中定义，下文将介绍这块。</li>
+</ul>
+<h2 id="一、Framework"><a href="#一、Framework" class="headerlink" title="一、Framework"></a>一、Framework</h2><ul>
+<li>Framework提供了一个动态加载apk的框架，并提供一个加载独立模块的BaseMateinfo。</li>
+</ul>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><ol>
+<li>开发模块时需要在  module(core)/package name/下定义Metainfo继承自BaseMateinfo。 这样该模块在主Apk安装的时候就会动态将模块的接口注入到框架，后续提供给其它组件调用。</li>
+<li><p>模块提供的主要方法类有:BasePluginActivity,BasePluginFragmentActivity,BasePluginService,BaseMateinfo,VivoApplication.</p>
+<pre><code>BasePluginActivity: 基础的Activity，每一个模块中的Activity都需要继承该类，完成模块中的Activity的代理化。
+BasePluginFragmentActivity： 基础的FragmentActivity，同上。需要继承该类
+BasePluginService: 基础的Service，同上。
+BaseMateinfo: 模块Service注入的基类，其它模块的Core层都需要定义一个Metainfo来继承该类，并完成Service的注入。（后面会介绍如何注入）
+VivoApplication:模块的Application，可以拿到模块的Context，并提供查找Service，启动Activity等方法。
+</code></pre></li>
+</ol>
+<h2 id="二、Activity层"><a href="#二、Activity层" class="headerlink" title="二、Activity层"></a>二、Activity层</h2><ul>
+<li>为了让proxy全面接管apk中所有activity的执行，需要为activity定义一个基类BaseActivity，在基类中处理代理相关的事情，同时BaseActivity还对是否使用代理进行了判断，如果不使用代理，那么activity的逻辑仍然按照正常的方式执行，也就是说，这个apk既可以按照执行，也可以由宿主程序来执行。</li>
+</ul>
+<h3 id="独立模块架构"><a href="#独立模块架构" class="headerlink" title="独立模块架构"></a>独立模块架构</h3><ul>
+<li>模块分类：Api和Core,针对不同业务可追加前缀。</li>
+<li>每一个模块对外提供一个Service供其他模块引用。Service的Interface类放在Api模块，实现类放在Core。实现独立模块的封装。</li>
+<li><p>Service注册：在Core的根包目录创建MetaInfo类，继承Framework模块的BaseMetaInfo.如下：</p>
+<pre><code>public class MetaInfo extends BaseMetaInfo {
+private static final String TAG = &quot;MetaInfo.Init&quot;;
+public MetaInfo() {
+    H5Log.d(TAG,&quot;H5Service init&quot;);
+    ServiceDescription serviceDescription = new ServiceDescription();
+    serviceDescription.setInterfaceName(H5Service.class.getName());
+    serviceDescription.setClassName(H5ServiceImpl.class.getName());
+    services.add(serviceDescription);
+}
+}
+注解:
+ServiceDescription类是针对Service的描述类，将接口和实现封装在该对象，并将其添加到services列表中。
+</code></pre><p>  以上工作就完成了模块的注入。</p>
+</li>
+</ul>
+<h3 id="模块之间依赖"><a href="#模块之间依赖" class="headerlink" title="模块之间依赖"></a>模块之间依赖</h3><ul>
+<li>模块只要是通过Api包的依赖进行访问。由于Api是作为一个Jar存在的，因此可以直接被其它模块依赖，并切记使用 provided来依赖，防止Api的jar包被编译进模块。</li>
+<li><p>模块之间访问：主要的类有VivoApplication、MicroApplicationContext。</p>
+<pre><code>比如其他模块访问H5Core:
+H5Service h5service = VivoApplication.getInstance().getMicroApplicationContext().findServiceByInterface(H5Service.class.getName());
+这样就可以拿到容器的Service，从而调用其提供的方法。
+</code></pre></li>
+</ul>
+<h3 id="模块内部资源的访问"><a href="#模块内部资源的访问" class="headerlink" title="模块内部资源的访问"></a>模块内部资源的访问</h3><ul>
+<li><p>由于每一个模块作为独立的apk打入主apk,因此访问该apk的上下文不再是该apk的，而是框架层的代理上下文。</p>
+<pre><code>示例：
+1、Resourse获取
+    VivoApplication.getInstance().getMicroApplicationContext().getResourcesByBundle(&quot;android-vivovideo-h5core&quot;);  
+2、Assets获取
+    VivoApplication.getInstance().getMicroApplicationContext().getAssetsByBundle(&quot;android-vivovideo-h5core&quot;);
+</code></pre></li>
+</ul>
+<h3 id="Gradle打包命令详解"><a href="#Gradle打包命令详解" class="headerlink" title="Gradle打包命令详解"></a>Gradle打包命令详解</h3><ul>
+<li>gradle build ：编译当前模块。</li>
+<li>gradle buidleJar:针对本模块生成jar包，保存目录在  xxx/build/libs/xxxx.jar</li>
+<li>gradle uploadArchives:上传本项目包到Nexus服务器，提供给其他模块依赖</li>
+</ul>
+<p>例子：</p>
+<p>1、Api包的build.gradle模版</p>
+<pre><code> 
+apply plugin: 'com.android.library'
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+//定义GroupID和Version，ArtefactID会自动使用Project名
+group = 'com.vivovideo.mobile'
+version = '1.0.1'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "22"
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+artifacts {
+    archives file('build/libs/' + project.name + '.jar')
+}
+
+signing {
+    required { has("release") && gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
+}
+
+uploadArchives {
+    configuration = configurations.archives
+    repositories.mavenDeployer {
+        beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+        repository(url: 'http://192.168.1.3:8081/nexus/content/repositories/VivoVideo/') {//仓库地址
+            authentication(userName: "admin",//用户名
+                    password: "admin123")//密码
+        }
+
+        pom.project {
+            name project.name
+            packaging 'jar'
+            description 'none'
+            url 'http://192.168.1.3:8081/nexus/content/repositories/VivoVideo/'//仓库地址
+
+            developers {
+                developer {
+                    id 'mc'
+                    name 'ma machao'
+                    email 'code.mylover@yeah.net'
+                }
+            }
+        }
+    }
+}
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.1.0'
+    }
+}
+
+//dependsOn 可根据实际需要增加或更改 dependsOn: ['compileReleaseJava'],
+task buildJar(type: Jar) {
+
+    appendix = project.name
+    baseName = project.name
+    version = "1.0.0"
+    classifier = "release"
+
+    //后缀名
+    extension = "jar"
+    //最终的 Jar 包名，如果没设置，默认为 [baseName]-[appendix]-[version]-[classifier].[extension]
+    archiveName = project.name + ".jar"
+
+    //需打包的资源所在的路径集
+    def srcClassDir = [project.buildDir.absolutePath + "/intermediates/classes/release"];
+    //初始化资源路径集
+    from srcClassDir
+
+    //去除路径集下部分的资源
+    exclude "com/vivovideo/mobile/" + project.name + "/BuildConfig.class"
+    exclude "com/vivovideo/mobile/" + project.name + "/BuildConfig\$*.class"
+    exclude "**/R.class"
+    exclude "**/R\$*.class"
+    //只导入资源路径集下的部分资源
+    include "com/vivovideo/mobile/" + project.name + "/**/*.class"
+}
+
+//仓库地址
+allprojects {
+    repositories {
+        mavenCentral()
+        //这里加入自己的maven地址
+        maven {
+            url "http://192.168.1.3:8081/nexus/content/repositories/VivoVideo/"
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:22.0.0'
+    provided 'com.vivovideo.mobile:framework:1.0' ／／依赖其他模块的jar包
+}
+</code></pre>
+
+<p>2、core模块的例子</p>
+<pre><code>
+apply plugin: 'com.android.application'
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+//定义GroupID和Version，ArtefactID会自动使用Project名
+group = 'com.vivovideo.mobile'
+version = '1.0.1'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion '22'
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+artifacts {
+    archives file('build/libs/' + project.name + '.jar')
+}
+
+signing {
+    required { has("release") && gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
+}
+
+uploadArchives {
+    configuration = configurations.archives
+    repositories.mavenDeployer {
+        beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+        repository(url: 'http://192.168.1.3:8081/nexus/content/repositories/VivoVideo/') {//仓库地址
+            authentication(userName: "admin",//用户名
+                    password: "admin123")//密码
+        }
+
+        pom.project {
+            name project.name
+            packaging 'jar'
+            description '容器内核'
+            url 'http://192.168.1.3:8081/nexus/content/repositories/VivoVideo/'//仓库地址
+
+            developers {
+                developer {
+                    id 'mc'
+                    name 'ma machao'
+                    email 'code.mylover@yeah.net'
+                }
+            }
+        }
+    }
+}
+//dependsOn 可根据实际需要增加或更改 dependsOn: ['compileReleaseJava'],
+task buildJar(type: Jar) {
+
+    appendix = project.name
+    baseName = project.name
+    version = "1.0.0"
+    classifier = "release"
+
+    //后缀名
+    extension = "jar"
+    //最终的 Jar 包名，如果没设置，默认为 [baseName]-[appendix]-[version]-[classifier].[extension]
+    archiveName = project.name＋".jar"
+
+    //需打包的资源所在的路径集
+    def srcClassDir = [project.buildDir.absolutePath + "/intermediates/classes/release"];
+    //初始化资源路径集
+    from srcClassDir
+
+    //去除路径集下部分的资源
+    exclude "com/vivovideo/mobile/" + project.name + "/BuildConfig.class"
+    exclude "com/vivovideo/mobile/" + project.name + "/BuildConfig\$*.class"
+    exclude "**/R.class"
+    exclude "**/R\$*.class"
+    //只导入资源路径集下的部分资源
+    include "com/vivovideo/mobile/" + project.name + "/**/*.class"
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.1.0'
+    }
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+        //这里加入自己的maven地址
+        maven {
+            url "http://192.168.1.3:8081/nexus/content/repositories/VivoVideo/"
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:support-v4:22.0.0'
+    provided 'com.vivovideo.mobile:framework:1.0'
+    provided 'com.vivovideo.mobile:h5api:1.0.1'
+}
+
+</code></pre>
+
+<h2 id="三、依赖关系介绍"><a href="#三、依赖关系介绍" class="headerlink" title="三、依赖关系介绍"></a>三、依赖关系介绍</h2><ul>
+<li>如今模块化之后，依赖关系的复杂度也相比之前复杂了不少，因此梳理好依赖关系是必须考虑的问题。</li>
+</ul>
+<h3 id="模块化主要的依赖关系："><a href="#模块化主要的依赖关系：" class="headerlink" title="模块化主要的依赖关系："></a>模块化主要的依赖关系：</h3><pre><code>框架主要有Portal、Framework、Module三个模块：
+1、Portal是项目的Launcher目录。
+2、Framework是框架的架构模块。
+3、Module是每一个模块，并分为Api和Core，并且Api作为Android.library、Core作为Android.application.
+4、每一个模块通过依赖其它模块的Api进行组件的调用。并且每一个Core都需要依赖Framework。
+</code></pre><h3 id="插件apk的开发规范"><a href="#插件apk的开发规范" class="headerlink" title="插件apk的开发规范"></a>插件apk的开发规范</h3><p>开发插件apk所需要遵循的规范：</p>
+<p><del>1. 不能用this：因为this指向的是当前对象，即apk中的activity，但是由于activity已经不是常规意义上的activity，所以this是没有意义的</del></p>
+<p><del>2. 使用that：既然this不能用，那就用that，that是apk中activity的基类BaseActivity中的一个成员，它在apk安装运行的时候指向this，而在未安装的时候指向宿主程序中的代理activity，anyway，that is better than this.</del></p>
+<p><del>3. 不能直接调用activity的成员方法：而必须通过that去调用，由于that的动态分配特性，通过that去调用activity的成员方法，在apk安装以后仍然可以正常运行。</del></p>
+<ol>
+<li>启动新activity的约束：启动外部activity不受限制，启动apk内部的activity有限制，首先由于apk中的activity没注册，所以不支持隐式调用，其次必须通过BaseActivity中定义的新方法startActivityByProxy和startActivityForResultByProxy，还有就是不支持LaunchMode。</li>
+<li>目前暂不支持Service、BroadcastReceiver等需要注册才能使用的组件。</li>
+</ol>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://yoursite.com/2016/05/05/框架简介/" data-title="插件化框架简介 | Hexo" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2016/07/05/插件化框架/" title="插件化框架">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  插件化框架</span>
+</a>
+</div>
+
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#插件化框架简介"><span class="toc-number">1.</span> <span class="toc-text">插件化框架简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、Framework"><span class="toc-number">1.1.</span> <span class="toc-text">一、Framework</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#简介"><span class="toc-number">1.1.1.</span> <span class="toc-text">简介</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、Activity层"><span class="toc-number">1.2.</span> <span class="toc-text">二、Activity层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#独立模块架构"><span class="toc-number">1.2.1.</span> <span class="toc-text">独立模块架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#模块之间依赖"><span class="toc-number">1.2.2.</span> <span class="toc-text">模块之间依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#模块内部资源的访问"><span class="toc-number">1.2.3.</span> <span class="toc-text">模块内部资源的访问</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Gradle打包命令详解"><span class="toc-number">1.2.4.</span> <span class="toc-text">Gradle打包命令详解</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、依赖关系介绍"><span class="toc-number">1.3.</span> <span class="toc-text">三、依赖关系介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#模块化主要的依赖关系："><span class="toc-number">1.3.1.</span> <span class="toc-text">模块化主要的依赖关系：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#插件apk的开发规范"><span class="toc-number">1.3.2.</span> <span class="toc-text">插件apk的开发规范</span></a></li></ol></li></ol></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+
+  
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font clearfix">
+		
+		<a href="http://weibo.com/xiyouMc" target="_blank" title="weibo"></a>
+		
+		
+		
+		<a href="https://github.com/xiyouMc" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2016 
+		
+		<a href="http://yoursite.com" target="_blank" title="John Doe">John Doe</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"null"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+  </body>
+</html>
