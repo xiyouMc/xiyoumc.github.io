@@ -84,22 +84,37 @@
 
 
 
-<meta name="description" content="插件化框架简介
-插件化是将Apk中功能类似的模块封装到独立的Application中，并根据框架约定好的规则完成Apk的动态加载和Service的注入。
-本框架是将每一个Apk作为so并使用定制化打包脚本将so文件打到主Project/libs/jniLibs，这样在apk编译的时候就可以将so文件直接装载进data/data/xxxxx/lib目录，支持后续的DexClassLoader加载该文">
+<meta name="description" content="本框架是建立在 Dynamic-load-apk进行的上层封装。增加插件动态加载到libs目录和针对模块Service的注入。
+本文将以H5Core为插件进行讲解。
+更新日志：&amp;gt;
+
+2016/7/6  commit -m “增加懒加载功能”   hash: 2a335dc49654c80fb6779cacefdf3ed712c23a8
+
+插件化框架简介
+插件化是将Apk中功能类似的模块封装到">
 <meta property="og:type" content="article">
 <meta property="og:title" content="插件化框架简介">
 <meta property="og:url" content="http://yoursite.com/2016/05/05/框架简介/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="插件化框架简介
-插件化是将Apk中功能类似的模块封装到独立的Application中，并根据框架约定好的规则完成Apk的动态加载和Service的注入。
-本框架是将每一个Apk作为so并使用定制化打包脚本将so文件打到主Project/libs/jniLibs，这样在apk编译的时候就可以将so文件直接装载进data/data/xxxxx/lib目录，支持后续的DexClassLoader加载该文">
-<meta property="og:updated_time" content="2016-07-26T11:31:08.000Z">
+<meta property="og:description" content="本框架是建立在 Dynamic-load-apk进行的上层封装。增加插件动态加载到libs目录和针对模块Service的注入。
+本文将以H5Core为插件进行讲解。
+更新日志：&amp;gt;
+
+2016/7/6  commit -m “增加懒加载功能”   hash: 2a335dc49654c80fb6779cacefdf3ed712c23a8
+
+插件化框架简介
+插件化是将Apk中功能类似的模块封装到">
+<meta property="og:updated_time" content="2016-08-04T12:09:14.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="插件化框架简介">
-<meta name="twitter:description" content="插件化框架简介
-插件化是将Apk中功能类似的模块封装到独立的Application中，并根据框架约定好的规则完成Apk的动态加载和Service的注入。
-本框架是将每一个Apk作为so并使用定制化打包脚本将so文件打到主Project/libs/jniLibs，这样在apk编译的时候就可以将so文件直接装载进data/data/xxxxx/lib目录，支持后续的DexClassLoader加载该文">
+<meta name="twitter:description" content="本框架是建立在 Dynamic-load-apk进行的上层封装。增加插件动态加载到libs目录和针对模块Service的注入。
+本文将以H5Core为插件进行讲解。
+更新日志：&amp;gt;
+
+2016/7/6  commit -m “增加懒加载功能”   hash: 2a335dc49654c80fb6779cacefdf3ed712c23a8
+
+插件化框架简介
+插件化是将Apk中功能类似的模块封装到">
 
 
 
@@ -180,7 +195,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Home
+            Accueil
           </a>
         </li>
       
@@ -253,7 +268,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">Posted on</span>
+            <span class="post-meta-item-text">Posté le</span>
             <time itemprop="dateCreated" datetime="2016-05-05T16:01:37+08:00" content="2016-05-05">
               2016-05-05
             </time>
@@ -282,22 +297,32 @@
       
 
       
-        <h1 id="插件化框架简介"><a href="#插件化框架简介" class="headerlink" title="插件化框架简介"></a>插件化框架简介</h1><ul>
+        <p>本框架是建立在 <a href="https://github.com/singwhatiwanna/dynamic-load-apk" target="_blank" rel="external">Dynamic-load-apk</a>进行的上层封装。增加插件动态加载到libs目录和针对模块Service的注入。</p>
+<p>本文将以H5Core为插件进行讲解。</p>
+<h5 id="更新日志："><a href="#更新日志：" class="headerlink" title="更新日志："></a>更新日志：</h5><p>&gt;</p>
+<ul>
+<li>2016/7/6  commit -m “增加懒加载功能”   hash: 2a335dc49654c80fb6779cacefdf3ed712c23a8</li>
+</ul>
+<h1 id="插件化框架简介"><a href="#插件化框架简介" class="headerlink" title="插件化框架简介"></a>插件化框架简介</h1><ul>
 <li>插件化是将Apk中功能类似的模块封装到独立的Application中，并根据框架约定好的规则完成Apk的动态加载和Service的注入。</li>
 <li>本框架是将每一个Apk作为so并使用定制化打包脚本将so文件打到主Project/libs/jniLibs，这样在apk编译的时候就可以将so文件直接装载进data/data/xxxxx/lib目录，支持后续的DexClassLoader加载该文件。</li>
 <li>每一个模块分为Api和Core，Api作为模块对外提供的接口，Core作为封装好的独立模块，每一个模块做好自己的混淆。注入操作需在Core中定义，下文将介绍这块。</li>
+<li><p>主Client增加bundleList.config文件，文件配置：</p>
+<pre><code>bundleName=h5core    //直接加载的插件
+lazyBundle=h5core.H5Service&amp;H5Api //懒加载插件
+</code></pre></li>
 </ul>
 <h2 id="一、Framework"><a href="#一、Framework" class="headerlink" title="一、Framework"></a>一、Framework</h2><ul>
 <li>Framework提供了一个动态加载apk的框架，并提供一个加载独立模块的BaseMateinfo。</li>
 </ul>
 <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><ol>
 <li>开发模块时需要在  module(core)/package name/下定义Metainfo继承自BaseMateinfo。 这样该模块在主Apk安装的时候就会动态将模块的接口注入到框架，后续提供给其它组件调用。</li>
-<li><p>模块提供的主要方法类有:BasePluginActivity,BasePluginFragmentActivity,BasePluginService,BaseMateinfo,VivoApplication.</p>
+<li><p>模块提供的主要方法类有:BasePluginActivity,BasePluginFragmentActivity,BasePluginService,BaseMateinfo,MarkApplication.</p>
 <pre><code>BasePluginActivity: 基础的Activity，每一个模块中的Activity都需要继承该类，完成模块中的Activity的代理化。
 BasePluginFragmentActivity： 基础的FragmentActivity，同上。需要继承该类
 BasePluginService: 基础的Service，同上。
 BaseMateinfo: 模块Service注入的基类，其它模块的Core层都需要定义一个Metainfo来继承该类，并完成Service的注入。（后面会介绍如何注入）
-VivoApplication:模块的Application，可以拿到模块的Context，并提供查找Service，启动Activity等方法。
+MarkApplication:模块的Application，可以拿到模块的Context，并提供查找Service，启动Activity等方法。
 </code></pre></li>
 </ol>
 <h2 id="二、Activity层"><a href="#二、Activity层" class="headerlink" title="二、Activity层"></a>二、Activity层</h2><ul>
@@ -310,10 +335,10 @@ VivoApplication:模块的Application，可以拿到模块的Context，并提供�
 <pre><code>public class MetaInfo extends BaseMetaInfo {
 private static final String TAG = &quot;MetaInfo.Init&quot;;
 public MetaInfo() {
-    H5Log.d(TAG,&quot;H5Service init&quot;);
+    Log.d(TAG,&quot;Service init&quot;);
     ServiceDescription serviceDescription = new ServiceDescription();
-    serviceDescription.setInterfaceName(H5Service.class.getName());
-    serviceDescription.setClassName(H5ServiceImpl.class.getName());
+    serviceDescription.setInterfaceName(XXService.class.getName());
+    serviceDescription.setClassName(XXServiceImpl.class.getName());
     services.add(serviceDescription);
 }
 }
@@ -324,9 +349,9 @@ ServiceDescription类是针对Service的描述类，将接口和实现封装在�
 </ul>
 <h3 id="模块之间依赖"><a href="#模块之间依赖" class="headerlink" title="模块之间依赖"></a>模块之间依赖</h3><ul>
 <li>模块只要是通过Api包的依赖进行访问。由于Api是作为一个Jar存在的，因此可以直接被其它模块依赖，并切记使用 provided来依赖，防止Api的jar包被编译进模块。</li>
-<li><p>模块之间访问：主要的类有VivoApplication、MicroApplicationContext。</p>
-<pre><code>比如其他模块访问H5Core:
-H5Service h5service = VivoApplication.getInstance().getMicroApplicationContext().findServiceByInterface(H5Service.class.getName());
+<li><p>模块之间访问：主要的类有MarkApplication、MicroApplicationContext。</p>
+<pre><code>比如其他模块访问Core:
+XXService xxservice = MarkApplication.getInstance().getMicroApplicationContext().findServiceByInterface(XXService.class.getName());
 这样就可以拿到容器的Service，从而调用其提供的方法。
 </code></pre></li>
 </ul>
@@ -334,9 +359,9 @@ H5Service h5service = VivoApplication.getInstance().getMicroApplicationContext()
 <li><p>由于每一个模块作为独立的apk打入主apk,因此访问该apk的上下文不再是该apk的，而是框架层的代理上下文。</p>
 <pre><code>示例：
 1、Resourse获取
-    VivoApplication.getInstance().getMicroApplicationContext().getResourcesByBundle(&quot;android-vivovideo-h5core&quot;);  
+    MarkApplication.getInstance().getMicroApplicationContext().getResourcesByBundle(&quot;xxcore&quot;);
 2、Assets获取
-    VivoApplication.getInstance().getMicroApplicationContext().getAssetsByBundle(&quot;android-vivovideo-h5core&quot;);
+    MarkApplication.getInstance().getMicroApplicationContext().getAssetsByBundle(&quot;xxcore&quot;);
 </code></pre></li>
 </ul>
 <h3 id="Gradle打包命令详解"><a href="#Gradle打包命令详解" class="headerlink" title="Gradle打包命令详解"></a>Gradle打包命令详解</h3><ul>
@@ -345,239 +370,7 @@ H5Service h5service = VivoApplication.getInstance().getMicroApplicationContext()
 <li>gradle uploadArchives:上传本项目包到Nexus服务器，提供给其他模块依赖</li>
 </ul>
 <p>例子：</p>
-<p>1、Api包的build.gradle模版</p>
-<pre><code> 
-apply plugin: 'com.android.library'
-apply plugin: 'maven'
-apply plugin: 'signing'
-
-//定义GroupID和Version，ArtefactID会自动使用Project名
-group = 'com.vivovideo.mobile'
-version = '1.0.1'
-
-android {
-    compileSdkVersion 22
-    buildToolsVersion "22"
-
-    defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-}
-
-artifacts {
-    archives file('build/libs/' + project.name + '.jar')
-}
-
-signing {
-    required { has("release") && gradle.taskGraph.hasTask("uploadArchives") }
-    sign configurations.archives
-}
-
-uploadArchives {
-    configuration = configurations.archives
-    repositories.mavenDeployer {
-        beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-        repository(url: 'http://192.168.1.3:8081/nexus/content/repositories/VivoVideo/') {//仓库地址
-            authentication(userName: "admin",//用户名
-                    password: "admin123")//密码
-        }
-
-        pom.project {
-            name project.name
-            packaging 'jar'
-            description 'none'
-            url 'http://192.168.1.3:8081/nexus/content/repositories/VivoVideo/'//仓库地址
-
-            developers {
-                developer {
-                    id 'mc'
-                    name 'ma machao'
-                    email 'code.mylover@yeah.net'
-                }
-            }
-        }
-    }
-}
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0'
-    }
-}
-
-//dependsOn 可根据实际需要增加或更改 dependsOn: ['compileReleaseJava'],
-task buildJar(type: Jar) {
-
-    appendix = project.name
-    baseName = project.name
-    version = "1.0.0"
-    classifier = "release"
-
-    //后缀名
-    extension = "jar"
-    //最终的 Jar 包名，如果没设置，默认为 [baseName]-[appendix]-[version]-[classifier].[extension]
-    archiveName = project.name + ".jar"
-
-    //需打包的资源所在的路径集
-    def srcClassDir = [project.buildDir.absolutePath + "/intermediates/classes/release"];
-    //初始化资源路径集
-    from srcClassDir
-
-    //去除路径集下部分的资源
-    exclude "com/vivovideo/mobile/" + project.name + "/BuildConfig.class"
-    exclude "com/vivovideo/mobile/" + project.name + "/BuildConfig\$*.class"
-    exclude "**/R.class"
-    exclude "**/R\$*.class"
-    //只导入资源路径集下的部分资源
-    include "com/vivovideo/mobile/" + project.name + "/**/*.class"
-}
-
-//仓库地址
-allprojects {
-    repositories {
-        mavenCentral()
-        //这里加入自己的maven地址
-        maven {
-            url "http://192.168.1.3:8081/nexus/content/repositories/VivoVideo/"
-        }
-    }
-}
-
-dependencies {
-    compile 'com.android.support:support-v4:22.0.0'
-    provided 'com.vivovideo.mobile:framework:1.0' ／／依赖其他模块的jar包
-}
-</code></pre>
-
-<p>2、core模块的例子</p>
-<pre><code>
-apply plugin: 'com.android.application'
-apply plugin: 'maven'
-apply plugin: 'signing'
-
-//定义GroupID和Version，ArtefactID会自动使用Project名
-group = 'com.vivovideo.mobile'
-version = '1.0.1'
-
-android {
-    compileSdkVersion 22
-    buildToolsVersion '22'
-
-    defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-
-}
-
-artifacts {
-    archives file('build/libs/' + project.name + '.jar')
-}
-
-signing {
-    required { has("release") && gradle.taskGraph.hasTask("uploadArchives") }
-    sign configurations.archives
-}
-
-uploadArchives {
-    configuration = configurations.archives
-    repositories.mavenDeployer {
-        beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-        repository(url: 'http://192.168.1.3:8081/nexus/content/repositories/VivoVideo/') {//仓库地址
-            authentication(userName: "admin",//用户名
-                    password: "admin123")//密码
-        }
-
-        pom.project {
-            name project.name
-            packaging 'jar'
-            description '容器内核'
-            url 'http://192.168.1.3:8081/nexus/content/repositories/VivoVideo/'//仓库地址
-
-            developers {
-                developer {
-                    id 'mc'
-                    name 'ma machao'
-                    email 'code.mylover@yeah.net'
-                }
-            }
-        }
-    }
-}
-//dependsOn 可根据实际需要增加或更改 dependsOn: ['compileReleaseJava'],
-task buildJar(type: Jar) {
-
-    appendix = project.name
-    baseName = project.name
-    version = "1.0.0"
-    classifier = "release"
-
-    //后缀名
-    extension = "jar"
-    //最终的 Jar 包名，如果没设置，默认为 [baseName]-[appendix]-[version]-[classifier].[extension]
-    archiveName = project.name＋".jar"
-
-    //需打包的资源所在的路径集
-    def srcClassDir = [project.buildDir.absolutePath + "/intermediates/classes/release"];
-    //初始化资源路径集
-    from srcClassDir
-
-    //去除路径集下部分的资源
-    exclude "com/vivovideo/mobile/" + project.name + "/BuildConfig.class"
-    exclude "com/vivovideo/mobile/" + project.name + "/BuildConfig\$*.class"
-    exclude "**/R.class"
-    exclude "**/R\$*.class"
-    //只导入资源路径集下的部分资源
-    include "com/vivovideo/mobile/" + project.name + "/**/*.class"
-}
-
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0'
-    }
-}
-
-allprojects {
-    repositories {
-        mavenCentral()
-        //这里加入自己的maven地址
-        maven {
-            url "http://192.168.1.3:8081/nexus/content/repositories/VivoVideo/"
-        }
-    }
-}
-
-dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:support-v4:22.0.0'
-    provided 'com.vivovideo.mobile:framework:1.0'
-    provided 'com.vivovideo.mobile:h5api:1.0.1'
-}
-
-</code></pre>
-
+<p>1、Api包的<a href="https://github.com/xiyouMc/AppDynamicFramework/blob/master/API.MD" target="_blank" rel="external">build.gradle模版</a><br>2、Core包的 <a href="https://github.com/xiyouMc/AppDynamicFramework/blob/master/CORE.MD" target="_blank" rel="external">build.gradle模版</a></p>
 <h2 id="三、依赖关系介绍"><a href="#三、依赖关系介绍" class="headerlink" title="三、依赖关系介绍"></a>三、依赖关系介绍</h2><ul>
 <li>如今模块化之后，依赖关系的复杂度也相比之前复杂了不少，因此梳理好依赖关系是必须考虑的问题。</li>
 </ul>
@@ -594,7 +387,30 @@ dependencies {
 <li>启动新activity的约束：启动外部activity不受限制，启动apk内部的activity有限制，首先由于apk中的activity没注册，所以不支持隐式调用，其次必须通过BaseActivity中定义的新方法startActivityByProxy和startActivityForResultByProxy，还有就是不支持LaunchMode。</li>
 <li>目前暂不支持Service、BroadcastReceiver等需要注册才能使用的组件。</li>
 </ol>
+<h2 id="四、更新功能"><a href="#四、更新功能" class="headerlink" title="四、更新功能"></a>四、更新功能</h2><ul>
+<li><p>2016/7/6 懒加载功能</p>
+<pre><code>1、bundleList.config 文件增加lazyBundle字段来标示是否进行懒加载。字段值格式：bundleName.bundleService*bundleService。这样在该插件被调用的时候，框架采取load这个dex。    
+2、优化效果：681kb的so，首次启动懒加载优化100ms。
+</code></pre></li>
+</ul>
+<p>Thankd for your reading, by Mc…    Thanks Dynamic-load-apk</p>
+<p>update</p>
+<h2 id="Contact-me"><a href="#Contact-me" class="headerlink" title="Contact me"></a>Contact me</h2><p>Any further question?</p>
+<p><a href="mailto:tmac694449212@gmail.com" target="_blank" rel="external">Email</a> me please!</p>
+<h2 id="License"><a href="#License" class="headerlink" title="License"></a>License</h2><pre><code>Copyright 2016 xiyouMc
 
+Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+</code></pre>
       
     </div>
 
@@ -660,10 +476,10 @@ dependencies {
       
         <ul class="sidebar-nav motion-element">
           <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Table of Contents
+            Table Des Matières
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
-            Overview
+            Ensemble
           </li>
         </ul>
       
@@ -680,7 +496,7 @@ dependencies {
           <div class="site-state-item site-state-posts">
             <a href="/archives">
               <span class="site-state-item-count">1</span>
-              <span class="site-state-item-name">posts</span>
+              <span class="site-state-item-name">articles</span>
             </a>
           </div>
 
@@ -711,7 +527,7 @@ dependencies {
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#插件化框架简介"><span class="nav-number">1.</span> <span class="nav-text">插件化框架简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Framework"><span class="nav-number">1.1.</span> <span class="nav-text">一、Framework</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.1.1.</span> <span class="nav-text">简介</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Activity层"><span class="nav-number">1.2.</span> <span class="nav-text">二、Activity层</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#独立模块架构"><span class="nav-number">1.2.1.</span> <span class="nav-text">独立模块架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模块之间依赖"><span class="nav-number">1.2.2.</span> <span class="nav-text">模块之间依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模块内部资源的访问"><span class="nav-number">1.2.3.</span> <span class="nav-text">模块内部资源的访问</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradle打包命令详解"><span class="nav-number">1.2.4.</span> <span class="nav-text">Gradle打包命令详解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、依赖关系介绍"><span class="nav-number">1.3.</span> <span class="nav-text">三、依赖关系介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#模块化主要的依赖关系："><span class="nav-number">1.3.1.</span> <span class="nav-text">模块化主要的依赖关系：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插件apk的开发规范"><span class="nav-number">1.3.2.</span> <span class="nav-text">插件apk的开发规范</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#更新日志："><span class="nav-number">1.</span> <span class="nav-text">更新日志：</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#插件化框架简介"><span class="nav-number"></span> <span class="nav-text">插件化框架简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Framework"><span class="nav-number"></span> <span class="nav-text">一、Framework</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number"></span> <span class="nav-text">简介</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Activity层"><span class="nav-number"></span> <span class="nav-text">二、Activity层</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#独立模块架构"><span class="nav-number"></span> <span class="nav-text">独立模块架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模块之间依赖"><span class="nav-number"></span> <span class="nav-text">模块之间依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模块内部资源的访问"><span class="nav-number"></span> <span class="nav-text">模块内部资源的访问</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradle打包命令详解"><span class="nav-number"></span> <span class="nav-text">Gradle打包命令详解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、依赖关系介绍"><span class="nav-number"></span> <span class="nav-text">三、依赖关系介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#模块化主要的依赖关系："><span class="nav-number"></span> <span class="nav-text">模块化主要的依赖关系：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插件apk的开发规范"><span class="nav-number"></span> <span class="nav-text">插件apk的开发规范</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、更新功能"><span class="nav-number"></span> <span class="nav-text">四、更新功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contact-me"><span class="nav-number"></span> <span class="nav-text">Contact me</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#License"><span class="nav-number"></span> <span class="nav-text">License</span></a></div>
             
           </div>
         </section>
@@ -742,7 +558,7 @@ dependencies {
 </div>
 
 <div class="theme-info">
-  Theme -
+  Thème -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
     NexT.Muse
   </a>
