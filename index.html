@@ -235,6 +235,140 @@
             
               
                 
+                <a class="post-title-link" href="/2016/08/17/hybrid调试指南/" itemprop="url">
+                  Unbenannt
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2016-08-17T11:04:25+08:00" content="2016-08-17">
+              2016-08-17
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Hybrid调试指南"><a href="#Hybrid调试指南" class="headerlink" title="Hybrid调试指南"></a>Hybrid调试指南</h1><p>&gt;<br>开发接口过程中如何自测接口?</p>
+<h2 id="Dependency"><a href="#Dependency" class="headerlink" title="Dependency"></a>Dependency</h2><p>&gt;</p>
+<ul>
+<li>Chrome</li>
+<li>Android SDK Level &gt;=19</li>
+</ul>
+<h2 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h2><p>&gt;</p>
+<ul>
+<li>Android设备连接电脑，并打开USB调试</li>
+<li>通过Hybrid打开任意页面</li>
+<li>使用Chrome浏览器打开，<a href="chrome://inspect" target="_blank" rel="external">chrome://inspect</a>,  调用JSBridge对应的接口</li>
+</ul>
+<h2 id="Picture"><a href="#Picture" class="headerlink" title="Picture"></a>Picture</h2><blockquote>
+<ul>
+<li>以下是 “隐藏TitleBar”为例，通过JSBridge来隐藏Native的标题栏</li>
+</ul>
+</blockquote>
+<ul>
+<li>打开Console控制台</li>
+</ul>
+<p><img src="images/inspect1.png" alt="inspect1"></p>
+<ul>
+<li>注入JSBridge.call(“hideTitlebar”);</li>
+</ul>
+<p><img src="images/inspect2.png" alt="inspect2"></p>
+<ul>
+<li>App端隐藏掉Titlebar</li>
+<li><p><img src="images/hideTitlebar.png" alt="hideTitle"></p>
+</li>
+<li><p>通过Hybrid打开任意页面，测试页面-Slideplus素材中心页</p>
+</li>
+<li>使用Chrome浏览器打开，<a href="chrome://inspect" target="_blank" rel="external">chrome://inspect</a></li>
+</ul>
+<h2 id="Sample"><a href="#Sample" class="headerlink" title="Sample"></a>Sample</h2><p>&gt;</p>
+<ul>
+<li>JSBridge.call(“hideTitlebar”)  —Hide Title bar</li>
+</ul>
+<iframe height="350" width="550" src="inspect.mov" frameborder="0">
+
+
+
+</iframe>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/05/05/框架简介/" itemprop="url">
                   插件化框架简介
                 </a>
@@ -461,7 +595,7 @@ limitations under the License.
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">1</span>
+              <span class="site-state-item-count">2</span>
               <span class="site-state-item-name">Artikel</span>
             </a>
           </div>
