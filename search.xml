@@ -5,7 +5,7 @@
     
     <entry>
       <title><![CDATA[原来我也开始写感情]]></title>
-      <url>http://yoursite.com/2016/08/17/emotional/</url>
+      <url>https://xiyoumc.github.com/2016/08/17/emotional/</url>
       <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/emo_pic.png?raw=true" alt="pic"></p>
 <blockquote>
 <p>原来我也到了开始写文章的时候</p>
@@ -27,7 +27,7 @@
     
     <entry>
       <title><![CDATA[Hybrid调试指南]]></title>
-      <url>http://yoursite.com/2016/08/17/hybrid%E8%B0%83%E8%AF%95%E6%8C%87%E5%8D%97/</url>
+      <url>https://xiyoumc.github.com/2016/08/17/hybrid%E8%B0%83%E8%AF%95%E6%8C%87%E5%8D%97/</url>
       <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/HybridApp/blob/master/%20hybrid.png?raw=true" alt="inspect1"></p>
 <h1 id="Hybrid调试指南"><a href="#Hybrid调试指南" class="headerlink" title="Hybrid调试指南"></a>Hybrid调试指南</h1><blockquote>
 <p>开发接口过程中如何自测接口?</p>
@@ -76,7 +76,7 @@
     
     <entry>
       <title><![CDATA[插件化框架简介]]></title>
-      <url>http://yoursite.com/2016/05/05/%E6%A1%86%E6%9E%B6%E7%AE%80%E4%BB%8B/</url>
+      <url>https://xiyoumc.github.com/2016/05/05/%E6%A1%86%E6%9E%B6%E7%AE%80%E4%BB%8B/</url>
       <content type="html"><![CDATA[<p>本框架是建立在 <a href="https://github.com/singwhatiwanna/dynamic-load-apk" target="_blank" rel="external">Dynamic-load-apk</a>进行的上层封装。增加插件动态加载到libs目录和针对模块Service的注入。</p>
 <p>本文将以H5Core为插件进行讲解。</p>
 <h5 id="更新日志："><a href="#更新日志：" class="headerlink" title="更新日志："></a>更新日志：</h5><p>&gt;</p>
