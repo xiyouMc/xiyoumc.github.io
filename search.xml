@@ -14,6 +14,7 @@
 <li><p>事业</p>
 <blockquote>
 <p>事业即我的技术，从刚进入职场，就开始做框架上的东西，现在想来这也是一个很不错的开始。因为少了业务的繁杂，多了技术的沉淀和技术的优化—Hybrid。<br>Hybrid是一个混合式开发的技术，通过JSBridge来桥接H5和Native。这个框架着实是影响到了我之后的发展规划。在开发这个系统的过程中，学习到了很多：</p>
+</blockquote>
 <ol>
 <li>JS和H5当然是第一个学习到的东西，这两个技术一直是我在学生时期想要学习的但是一直没有沉下心来学习。</li>
 <li>Module间的依赖关系，一年半左右的Hybrid开发，也确实是让我积累了很多关于模块依赖、接口开发等等的技术，并一步步提升自己的开发效率。</li>
@@ -23,7 +24,6 @@
 <li>16年我也花了很多时间在Github上，每天必看Trending. Java、JS、Html等等的技术。16年也认识了很多业内的大神。</li>
 <li>2017年将转型Growth Hacker，致力于公司的数据增长，将会放下Android的重心，当然Android还依然是我的一个长处。</li>
 </ol>
-</blockquote>
 </li>
 </ul>
 <ul>
@@ -164,15 +164,6 @@
     </entry>
     
     <entry>
-      <title><![CDATA[平淡]]></title>
-      <url>https://xiyoumc.github.com/2016/08/18/822/</url>
-      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/lover.jpg?raw=true" alt="zls"></p>
-<p>少年，我爱上你了<br><a id="more"></a></p>
-<p>&lt;告白气球&gt;</p>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[爱情观]]></title>
       <url>https://xiyoumc.github.com/2016/08/18/Lover/</url>
       <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/shelizi.png?raw=true" alt="zls"></p>
@@ -205,6 +196,15 @@
 <li><p>古人说“相敬如宾”，虽是老生常谈，却是能够维系长久爱情的真正智慧。如果想避免吵架、误解，或者是想消融不断的期待、要求，在遇到诸如此类的问题时，不妨以尊重的心态，心悦诚服、欢欢喜喜、平平静静去面对、解决，心中的纠结，其实在当下都能即得化解。爱情里的关系，并不是在互相执着、纠缠和占有，而是互相的贡献、成长和学习。能够互相关怀、照顾、包容，去彼此计较、相互猜疑，多沟通，并相互信赖，才能成为菩萨伴侣。</p>
 </li>
 </ul>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[平淡]]></title>
+      <url>https://xiyoumc.github.com/2016/08/18/822/</url>
+      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/lover.jpg?raw=true" alt="zls"></p>
+<p>少年，我爱上你了<br><a id="more"></a></p>
+<p>&lt;告白气球&gt;</p>
 ]]></content>
     </entry>
     
