@@ -18,7 +18,7 @@
 <li>整个App的插件化开发，在开发Hybrid的同时我经常会去问框架同学问题，问他们关于App插件化、动态注入、懒加载等等的技术，这也是为自己后面开发插件化框架打下了基础。</li>
 <li>插件化框架，去年中旬花了一段时间去研究ClassLoader，遇到了很多坑，也一一进行了填补,虽然不是一个多么牛逼的框架，但是确实是让我学习到了很多。当然现在也是开源在我的Github，<a href="https://github.com/xiyouMc/AppDynamicFramework" target="_blank" rel="external">Apk插件化开发</a></li>
 <li>接触业务，去年下半年一直在开发业务中，一个从零开始的业务，这也算是将自己沉淀的技术进行一次应用的过程，业务有时候根本不是取决于你的技术，而是取决于各种因素，如果你是程序员你会懂得。</li>
-<li>16年我也花了很多一部分时间在Github上，每天必看Trending. Java、JS、Html等等的技术。16年也认识了很多业内的大神。</li>
+<li>16年我也花了很多时间在Github上，每天必看Trending. Java、JS、Html等等的技术。16年也认识了很多业内的大神。</li>
 <li>2017年将转型Growth Hacker，致力于公司的数据增长，将会放下Android的重心，当然Android还依然是我的一个长处。</li>
 </ol>
 </blockquote>
@@ -162,15 +162,6 @@
     </entry>
     
     <entry>
-      <title><![CDATA[平淡]]></title>
-      <url>https://xiyoumc.github.com/2016/08/18/822/</url>
-      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/lover.jpg?raw=true" alt="zls"></p>
-<p>少年，我爱上你了<br><a id="more"></a></p>
-<p>&lt;告白气球&gt;</p>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[爱情观]]></title>
       <url>https://xiyoumc.github.com/2016/08/18/Lover/</url>
       <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/shelizi.png?raw=true" alt="zls"></p>
@@ -203,6 +194,15 @@
 <li><p>古人说“相敬如宾”，虽是老生常谈，却是能够维系长久爱情的真正智慧。如果想避免吵架、误解，或者是想消融不断的期待、要求，在遇到诸如此类的问题时，不妨以尊重的心态，心悦诚服、欢欢喜喜、平平静静去面对、解决，心中的纠结，其实在当下都能即得化解。爱情里的关系，并不是在互相执着、纠缠和占有，而是互相的贡献、成长和学习。能够互相关怀、照顾、包容，去彼此计较、相互猜疑，多沟通，并相互信赖，才能成为菩萨伴侣。</p>
 </li>
 </ul>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[平淡]]></title>
+      <url>https://xiyoumc.github.com/2016/08/18/822/</url>
+      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/lover.jpg?raw=true" alt="zls"></p>
+<p>少年，我爱上你了<br><a id="more"></a></p>
+<p>&lt;告白气球&gt;</p>
 ]]></content>
     </entry>
     
