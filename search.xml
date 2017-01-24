@@ -4,6 +4,55 @@
   
     
     <entry>
+      <title><![CDATA[2016年度总结]]></title>
+      <url>https://xiyoumc.github.com/2017/01/24/2016%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/</url>
+      <content type="html"><![CDATA[<h1 id="2016年度总结"><a href="#2016年度总结" class="headerlink" title="2016年度总结"></a>2016年度总结</h1><blockquote>
+<p>2016年很快，离上次写总结已经一年了。平时文档倒是写的不少，但是真正要总结起来自己，确实有点说不出口，那么就简单的总结下。从事业、生活等。<br><a id="more"></a></p>
+</blockquote>
+<ul>
+<li><p>事业</p>
+<blockquote>
+<p>事业即我的技术，从刚进入职场，就开始做框架上的东西，现在想来这也是一个很不错的开始。因为少了业务的繁杂，多了技术的沉淀和技术的优化—Hybrid。<br>Hybrid是一个混合式开发的技术，通过JSBridge来桥接H5和Native。这个框架着实是影响到了我之后的发展规划。在开发这个系统的过程中，学习到了很多：</p>
+<ol>
+<li>JS和H5当然是第一个学习到的东西，这两个技术一直是我在学生时期想要学习的但是一直没有沉下心来学习。</li>
+<li>Module间的依赖关系，一年半左右的Hybrid开发，也确实是让我积累了很多关于模块依赖、接口开发等等的技术，并一步步提升自己的开发效率。</li>
+<li>整个App的插件化开发，在开发Hybrid的同时我经常会去问框架同学问题，问他们关于App插件化、动态注入、懒加载等等的技术，这也是为自己后面开发插件化框架打下了基础。</li>
+<li>插件化框架，去年中旬花了一段时间去研究ClassLoader，遇到了很多坑，也一一进行了填补,虽然不是一个多么牛逼的框架，但是确实是让我学习到了很多。当然现在也是开源在我的Github，<a href="https://github.com/xiyouMc/AppDynamicFramework" target="_blank" rel="external">Apk插件化开发</a></li>
+<li>接触业务，去年下半年一直在开发业务中，一个从零开始的业务，这也算是将自己沉淀的技术进行一次应用的过程，业务有时候根本不是取决于你的技术，而是取决于各种因素，如果你是程序员你会懂得。</li>
+<li>16年我也花了很多一部分时间在Github上，每天必看Trending. Java、JS、Html等等的技术。16年也认识了很多业内的大神。</li>
+<li>2017年将转型Growth Hacker，致力于公司的数据增长，将会放下Android的重心，当然Android还依然是我的一个长处。</li>
+</ol>
+</blockquote>
+<ul>
+<li>生活</li>
+</ul>
+<blockquote>
+<p>对我而言，技术的产出永远都是生活质量的提升。有时候我在想:”如果能让我开心、很爽的开发自己喜欢的技术，那么金钱对我来说都是多余的”<br>这个想法是多么幼稚.下半年一直在考虑房子的问题，看了周围一大圈，发现全都是16年9 10月份上涨之后的情况，当然貌似也是G20导致的。<br>据周围人的看法，17年将不会有很大的变动，所以在年后将会去进一步了解并决定。 这也是我去年搬家的时候对17年立的flag。希望会实现。<br> 16年成长了很多，也学会了如何去承担一份感情。褪去了过去的幼稚，重新认识自己，看清自己，并去选择对方。一起走下去。</p>
+</blockquote>
+<ul>
+<li>有意思的东西</li>
+</ul>
+<blockquote>
+<p>上个周末，花了一点时间将之前自己的一个老应用接入了支付模块，这个系统一直以来都是免费提供给母校的学生使用的，但是慢慢的失去了很多开发的动力，因此<br>我决定花点时间将盈利加进去，刚更新那几天，每天100左右的收入是有的，当然我并没有多在乎一天能多钱。只是为了增加自己平时空闲时间去开发的动力。当然后面<br>还是降了下来，也让我意识到运营的重要性。之前自己一直都是扮演产品和开发的角色，后面增加支付，又得扮演运营的角色，最后还是证明的我不是做运营的料。</p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li><p>2017</p>
+<blockquote>
+<p>2017年，也不说是新的开始了，因为有很多事情要一直做下去。</p>
+<ol>
+<li>这一年，我会花更多的时间在开源方面、自身技术的深度沉淀和公司的数据增长上，并继续向周围技术进行扩散。</li>
+<li>买房、买车。。。。</li>
+<li>那么是否考虑结婚呢。。。</li>
+</ol>
+</blockquote>
+</li>
+</ul>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Tar包高优化解析]]></title>
       <url>https://xiyoumc.github.com/2017/01/21/TarParse/</url>
       <content type="html"><![CDATA[<h1 id="本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。"><a href="#本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。" class="headerlink" title="本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。"></a>本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。</h1><h3 id="一、首先讲一个tar包的文件结构。（懂得可以绕开此段）"><a href="#一、首先讲一个tar包的文件结构。（懂得可以绕开此段）" class="headerlink" title="一、首先讲一个tar包的文件结构。（懂得可以绕开此段）"></a>一、首先讲一个tar包的文件结构。（懂得可以绕开此段）</h3><pre><code>tar只是一个归档文件，并不进行压缩。
@@ -114,15 +163,6 @@
     </entry>
     
     <entry>
-      <title><![CDATA[平淡]]></title>
-      <url>https://xiyoumc.github.com/2016/08/18/822/</url>
-      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/lover.jpg?raw=true" alt="zls"></p>
-<p>少年，我爱上你了<br><a id="more"></a></p>
-<p>&lt;告白气球&gt;</p>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[爱情观]]></title>
       <url>https://xiyoumc.github.com/2016/08/18/Lover/</url>
       <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/shelizi.png?raw=true" alt="zls"></p>
@@ -155,6 +195,15 @@
 <li><p>古人说“相敬如宾”，虽是老生常谈，却是能够维系长久爱情的真正智慧。如果想避免吵架、误解，或者是想消融不断的期待、要求，在遇到诸如此类的问题时，不妨以尊重的心态，心悦诚服、欢欢喜喜、平平静静去面对、解决，心中的纠结，其实在当下都能即得化解。爱情里的关系，并不是在互相执着、纠缠和占有，而是互相的贡献、成长和学习。能够互相关怀、照顾、包容，去彼此计较、相互猜疑，多沟通，并相互信赖，才能成为菩萨伴侣。</p>
 </li>
 </ul>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[平淡]]></title>
+      <url>https://xiyoumc.github.com/2016/08/18/822/</url>
+      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/lover.jpg?raw=true" alt="zls"></p>
+<p>少年，我爱上你了<br><a id="more"></a></p>
+<p>&lt;告白气球&gt;</p>
 ]]></content>
     </entry>
     
