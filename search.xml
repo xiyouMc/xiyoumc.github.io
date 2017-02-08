@@ -4,6 +4,18 @@
   
     
     <entry>
+      <title><![CDATA[Charles破解教程，适用于所有版本]]></title>
+      <url>https://xiyoumc.github.com/2017/02/08/charles_break/</url>
+      <content type="html"><![CDATA[<h1 id="Charles-注册码"><a href="#Charles-注册码" class="headerlink" title="Charles 注册码"></a>Charles 注册码</h1><h3 id="1-Windows-用户"><a href="#1-Windows-用户" class="headerlink" title="1. Windows 用户"></a>1. Windows 用户</h3><p>RegName: ANONYMOUS@chinapyg.com<br>Reg_Key: 5fae99ec65736945ba<br>官方下载后可直接激活。神key.</p>
+<h3 id="2-Mac-用户"><a href="#2-Mac-用户" class="headerlink" title="2. Mac 用户"></a>2. Mac 用户</h3><p>方式一如果不行，方式二绝对可以。</p>
+<h4 id="1-方式一"><a href="#1-方式一" class="headerlink" title="1. 方式一"></a>1. 方式一</h4><p>账号：WaitsUn.com<br>密码：vapg-fold-dreg-inky</p>
+<h4 id="2-方式二"><a href="#2-方式二" class="headerlink" title="2. 方式二"></a>2. 方式二</h4><p>先安装Charles，然后在终端中执行下面的命令即可实现破解。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">charles=/Applications/Charles.app/Contents/Java/charles.jar</div><div class="line">dir=charleshack</div><div class="line">mkdir $dir</div><div class="line">cd $dir</div><div class="line">cat &gt;&gt; License.java &lt;&lt;EOF</div><div class="line">package com.xk72.charles;</div><div class="line">public final class License &#123;</div><div class="line">    public static boolean a() &#123; return true; &#125;</div><div class="line">    public static String b() &#123; return &quot;http://www.gfzj.us&quot;; &#125;</div><div class="line">    public static String a(String name, String key) &#123; return null; &#125;</div><div class="line">&#125;</div><div class="line">EOF</div><div class="line">javac -encoding UTF-8 License.java -d .&amp;&amp; jar -uvf $charles com/xk72/charles/License.class</div><div class="line">cd .. &amp;&amp; rm -rf $dir</div></pre></td></tr></table></figure>
+<a id="more"></a>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Shell语言基本教程]]></title>
       <url>https://xiyoumc.github.com/2017/02/07/linux_shell/</url>
       <content type="html"></content>
@@ -185,6 +197,15 @@
     </entry>
     
     <entry>
+      <title><![CDATA[平淡]]></title>
+      <url>https://xiyoumc.github.com/2016/08/18/822/</url>
+      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/lover.jpg?raw=true" alt="zls"></p>
+<p>少年，我爱上你了<br><a id="more"></a></p>
+<p>&lt;告白气球&gt;</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[爱情观]]></title>
       <url>https://xiyoumc.github.com/2016/08/18/Lover/</url>
       <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/shelizi.png?raw=true" alt="zls"></p>
@@ -217,15 +238,6 @@
 <li><p>古人说“相敬如宾”，虽是老生常谈，却是能够维系长久爱情的真正智慧。如果想避免吵架、误解，或者是想消融不断的期待、要求，在遇到诸如此类的问题时，不妨以尊重的心态，心悦诚服、欢欢喜喜、平平静静去面对、解决，心中的纠结，其实在当下都能即得化解。爱情里的关系，并不是在互相执着、纠缠和占有，而是互相的贡献、成长和学习。能够互相关怀、照顾、包容，去彼此计较、相互猜疑，多沟通，并相互信赖，才能成为菩萨伴侣。</p>
 </li>
 </ul>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[平淡]]></title>
-      <url>https://xiyoumc.github.com/2016/08/18/822/</url>
-      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/lover.jpg?raw=true" alt="zls"></p>
-<p>少年，我爱上你了<br><a id="more"></a></p>
-<p>&lt;告白气球&gt;</p>
 ]]></content>
     </entry>
     
