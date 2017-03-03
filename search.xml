@@ -4,6 +4,62 @@
   
     
     <entry>
+      <title><![CDATA[Python新手引导第二篇]]></title>
+      <url>https://xiyoumc.github.com/2017/03/03/Python%E6%96%B0%E6%89%8B%E5%BC%95%E5%AF%BC%E7%AC%AC%E4%BA%8C%E7%AF%87/</url>
+      <content type="html"><![CDATA[<h1 id="Python新手引导-第二篇"><a href="#Python新手引导-第二篇" class="headerlink" title="Python新手引导 第二篇"></a>Python新手引导 第二篇</h1><blockquote>
+<p>###阅读本文需要6.66分钟</p>
+</blockquote>
+<a id="more"></a>
+<p>上一篇进行了简单的Python讲解，包括历史、多版本共存和安装。若有不明白的同学，可尽情在公众号上给我发消息。保证”第一时间”回复.</p>
+<ol>
+<li>Python解释器</li>
+<li>编写、运行第一个Python</li>
+<li>atom-runner</li>
+</ol>
+<h2 id="一、Python解释器"><a href="#一、Python解释器" class="headerlink" title="一、Python解释器"></a>一、Python解释器</h2><blockquote>
+<p>Python代码是以.py为扩展名的文本文件。要执行代码，就需要Python解释器去执行.py文件。</p>
+</blockquote>
+<p>以下将介绍多种Python解释器:</p>
+<h3 id="A、-CPython"><a href="#A、-CPython" class="headerlink" title="A、 CPython"></a>A、 CPython</h3><p>Python官方的解释器是：CPython.这个解释器是用C语言开发的，因此叫CPython。在终端执行 python 启动的就是CPython解释器。<br><img src="http://115.28.132.58:8080/docs/CPython.png" alt=""></p>
+<h3 id="B、-IPython"><a href="#B、-IPython" class="headerlink" title="B、 IPython"></a>B、 IPython</h3><p>Ipython是基于CPython的交互式解释器。执行 Python的能力和CPtython一样。<br>可以变量自动补全、自动缩进。与CPython不一样的是： CPython使用&gt;&gt;&gt;作为提示符，而IPython使用In[序号]:<br><img src="http://115.28.132.58:8080/docs/IPython.png" alt=""></p>
+<h3 id="C、-Pypy"><a href="#C、-Pypy" class="headerlink" title="C、 Pypy"></a>C、 Pypy</h3><p>Pypy是Python开发者为了更好的Hack Python创建的项目。</p>
+<p>用Python实现的Python</p>
+<h3 id="D、-Jython"><a href="#D、-Jython" class="headerlink" title="D、 Jython"></a>D、 Jython</h3><p>Jython是运行在Java平台上的Python解释器，可以直接把Python代码编译成Java字节码执行。<br>这个也是我之前在写一个Java项目的时候用到的解释器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;!-- https://mvnrepository.com/artifact/jython/jython --&gt;</div><div class="line">&lt;dependency&gt;</div><div class="line">    &lt;groupId&gt;jython&lt;/groupId&gt;</div><div class="line">    &lt;artifactId&gt;jython&lt;/artifactId&gt;</div><div class="line">    &lt;version&gt;2.5.2&lt;/version&gt;</div><div class="line">&lt;/dependency&gt;</div></pre></td></tr></table></figure>
+<p>Java项目引入Jython之后，会将本机Python环境应用到本项目中。在Java和Python相互调用中起到了重要的作用。</p>
+<h2 id="二、编写、运行第一个Python程序"><a href="#二、编写、运行第一个Python程序" class="headerlink" title="二、编写、运行第一个Python程序"></a>二、编写、运行第一个Python程序</h2><blockquote>
+<p>当然在终端中，可以直接通过Python来启动CPython并进行编辑并运行，但这样的缺点就是没法保存，再次执行还必须得复制进行。所以在实际的应用场景中，我们使用文本编辑器来编写Python代码。</p>
+</blockquote>
+<p>以下推荐两款文本剪辑器：</p>
+<ul>
+<li>Atom，免费、可安装多种插件来更高效的编写代码。<br><img src="http://115.28.132.58:8080/docs/Atom_HelloWorld.png" alt=""></li>
+<li>NodePad++,免费、在Window上很实用的文本编辑器<br><img src="http://115.28.132.58:8080/docs/nodepad.jpeg" alt=""></li>
+</ul>
+<h4 id="编写并运行第一个Python程序"><a href="#编写并运行第一个Python程序" class="headerlink" title="编写并运行第一个Python程序"></a>编写并运行第一个Python程序</h4><ol>
+<li>安装好编辑器之后，打开编辑，新建文件，输入:<br><img src="http://115.28.132.58:8080/docs/PythonPrint.png" alt=""></li>
+<li>编辑Python文件后，将其保存为Hello.py并放到自己的开发目录如 ~/Dev 或者 C:/dev 都可以 </li>
+<li>通过cd 命令定位到文件的目录,并使用python命令来运行<br><img src="http://115.28.132.58:8080/docs/RunPython.png" alt=""></li>
+<li>如果当前文件夹没有Hello.py，会报错如下：<br><img src="http://115.28.132.58:8080/docs/RunPythonError.png" alt=""> </li>
+</ol>
+<h2 id="三、atom-runner插件"><a href="#三、atom-runner插件" class="headerlink" title="三、atom-runner插件"></a>三、atom-runner插件</h2><blockquote>
+<p>每一门语言的开始，相信大家都会去找到一个适合自己的编辑器，类似SublineText等等的。当然SublineText也可以运行Python，但是我个人比较推荐Atom。</p>
+</blockquote>
+<p><a href="https://github.com/lsegal/atom-runner" target="_blank" rel="external">atom-runner</a>Atom中的开源插件，可用来执行Python脚本。<br>直接在Atom settings-&gt;install 中搜索atom-runner,安装即可</p>
+<p><img src="http://115.28.132.58:8080/docs/atom-runner.png" alt=""></p>
+<blockquote>
+<p>该插件官方文档指明，可支持JavaScript、CoffeeScript、Ruby、Python、Go、Bash 和 PowerShell scripts.</p>
+<h4 id="可执行命令"><a href="#可执行命令" class="headerlink" title="可执行命令"></a>可执行命令</h4><ul>
+<li>Ctrl+R (Alt+R on Win/Linux)运行当前活动窗口</li>
+<li>Ctrl+Shift + R (Alt+Shif+R on Win/Linux)运行在活动窗口的选择文本</li>
+<li>Ctrul+Shift+C 杀掉当前正在运行的进程</li>
+<li>Escap 关闭正在运行的窗口</li>
+</ul>
+</blockquote>
+<p>运行结果如下<br><img src="http://115.28.132.58:8080/docs/HelloWorld.png" alt=""></p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Python新手引导第一篇]]></title>
       <url>https://xiyoumc.github.com/2017/03/03/Python%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87/</url>
       <content type="html"><![CDATA[<h1 id="Python新手引导-第一篇"><a href="#Python新手引导-第一篇" class="headerlink" title="Python新手引导 第一篇"></a>Python新手引导 第一篇</h1><blockquote>
@@ -190,6 +246,24 @@
     </entry>
     
     <entry>
+      <title><![CDATA[憧憬]]></title>
+      <url>https://xiyoumc.github.com/2016/09/07/Home/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>时常在憧憬未来 、未来 家的样子</p>
+</blockquote>
+<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/home.jpg?raw=true" alt="zls"></p>
+<a id="more"></a>
+<blockquote>
+<ul>
+<li>一直都想有个家、有自己的妻儿</li>
+<li>有一个可以依靠、也可以安心的家</li>
+<li>So 让我们一起努力。有一天你会是我的妻子，我会是你的丈夫，你我会是孩子的父母。</li>
+</ul>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Alison]]></title>
       <url>https://xiyoumc.github.com/2016/09/07/Alison/</url>
       <content type="html"><![CDATA[<blockquote>
@@ -207,24 +281,6 @@
 <li>Come get it,girl</li>
 <li>I need you,baby</li>
 <li>I`m on you,girl</li>
-</ul>
-</blockquote>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[憧憬]]></title>
-      <url>https://xiyoumc.github.com/2016/09/07/Home/</url>
-      <content type="html"><![CDATA[<blockquote>
-<p>时常在憧憬未来 、未来 家的样子</p>
-</blockquote>
-<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/home.jpg?raw=true" alt="zls"></p>
-<a id="more"></a>
-<blockquote>
-<ul>
-<li>一直都想有个家、有自己的妻儿</li>
-<li>有一个可以依靠、也可以安心的家</li>
-<li>So 让我们一起努力。有一天你会是我的妻子，我会是你的丈夫，你我会是孩子的父母。</li>
 </ul>
 </blockquote>
 ]]></content>
