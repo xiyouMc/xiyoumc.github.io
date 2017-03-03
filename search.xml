@@ -6,7 +6,9 @@
     <entry>
       <title><![CDATA[Python新手引导第一篇]]></title>
       <url>https://xiyoumc.github.com/2017/03/03/Python%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87/</url>
-      <content type="html"><![CDATA[<h1 id="Python新手引导-第一篇"><a href="#Python新手引导-第一篇" class="headerlink" title="Python新手引导 第一篇"></a>Python新手引导 第一篇</h1><p>&gt;<br>阅读本文需要3.66分钟</p>
+      <content type="html"><![CDATA[<h1 id="Python新手引导-第一篇"><a href="#Python新手引导-第一篇" class="headerlink" title="Python新手引导 第一篇"></a>Python新手引导 第一篇</h1><blockquote>
+<p>阅读本文需要3.66分钟</p>
+</blockquote>
 <a id="more"></a>
 <p>目前比较流行的Python版本有2.x 和3.x,不过本人将介绍兼容所有版本的神器</p>
 <ol>
