@@ -7,7 +7,7 @@
       <title><![CDATA[Python新手引导第二篇]]></title>
       <url>https://xiyoumc.github.com/2017/03/03/Python%E6%96%B0%E6%89%8B%E5%BC%95%E5%AF%BC%E7%AC%AC%E4%BA%8C%E7%AF%87/</url>
       <content type="html"><![CDATA[<h1 id="Python新手引导-第二篇"><a href="#Python新手引导-第二篇" class="headerlink" title="Python新手引导 第二篇"></a>Python新手引导 第二篇</h1><blockquote>
-<p>###阅读本文需要6.66分钟</p>
+<p>###阅读本文需要4.66分钟</p>
 </blockquote>
 <a id="more"></a>
 <p>上一篇进行了简单的Python讲解，包括历史、多版本共存和安装。若有不明白的同学，可尽情在公众号上给我发消息。保证”第一时间”回复.</p>
@@ -56,6 +56,7 @@
 </ul>
 </blockquote>
 <p>运行结果如下<br><img src="http://115.28.132.58:8080/docs/HelloWorld.png" alt=""></p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>本篇阅读完成之后，花上几分钟时间自行编写并运行下Python，熟悉下Python的环境。</p>
 ]]></content>
     </entry>
     
