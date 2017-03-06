@@ -4,6 +4,76 @@
   
     
     <entry>
+      <title><![CDATA[程序员都应该会的抓包工具--Charles]]></title>
+      <url>https://xiyoumc.github.com/2017/03/04/%E7%A8%8B%E5%BA%8F%E5%91%98%E9%83%BD%E5%BA%94%E8%AF%A5%E4%BC%9A%E7%9A%84%E6%8A%93%E5%8C%85%E5%B7%A5%E5%85%B7-Charles/</url>
+      <content type="html"><![CDATA[<h1 id="程序员都应该会的抓包工具-Charles"><a href="#程序员都应该会的抓包工具-Charles" class="headerlink" title="程序员都应该会的抓包工具-Charles"></a>程序员都应该会的抓包工具-Charles</h1><blockquote>
+<h3 id="阅读本文需要7-66分钟"><a href="#阅读本文需要7-66分钟" class="headerlink" title="阅读本文需要7.66分钟"></a>阅读本文需要7.66分钟</h3></blockquote>
+<a id="more"></a>
+<h5 id="”抓包“-其实很多程序员都不陌生了，但是真正抓过包、分析过的又有几个。"><a href="#”抓包“-其实很多程序员都不陌生了，但是真正抓过包、分析过的又有几个。" class="headerlink" title="”抓包“ 其实很多程序员都不陌生了，但是真正抓过包、分析过的又有几个。"></a>”抓包“ 其实很多程序员都不陌生了，但是真正抓过包、分析过的又有几个。</h5><h5 id="本文将介绍几款简单易用的抓包工具，并针对目前互联网主流的Http和Https网络包进行抓取并分析，同时分享手机抓包的技术"><a href="#本文将介绍几款简单易用的抓包工具，并针对目前互联网主流的Http和Https网络包进行抓取并分析，同时分享手机抓包的技术" class="headerlink" title="本文将介绍几款简单易用的抓包工具，并针对目前互联网主流的Http和Https网络包进行抓取并分析，同时分享手机抓包的技术"></a>本文将介绍几款简单易用的抓包工具，并针对目前互联网主流的Http和Https网络包进行抓取并分析，同时分享手机抓包的技术</h5><h5 id="1-Charles、Fiddler和Wireshark"><a href="#1-Charles、Fiddler和Wireshark" class="headerlink" title="1. Charles、Fiddler和Wireshark"></a>1. Charles、Fiddler和Wireshark</h5><h5 id="2-Http、Https及其原理"><a href="#2-Http、Https及其原理" class="headerlink" title="2. Http、Https及其原理"></a>2. Http、Https及其原理</h5><h5 id="3-手机抓包"><a href="#3-手机抓包" class="headerlink" title="3. 手机抓包"></a>3. 手机抓包</h5><h5 id="4-Charles的附加功能"><a href="#4-Charles的附加功能" class="headerlink" title="4. Charles的附加功能"></a>4. Charles的附加功能</h5><h2 id="一、抓包工具"><a href="#一、抓包工具" class="headerlink" title="一、抓包工具"></a>一、抓包工具</h2><ul>
+<li><code>Fiddler</code><ul>
+<li>是之前我用Window电脑的时候，特别喜欢用的工具，而且当时的Fiddler足以满足的我简单的抓包工作，现在也应该更新到Fiddler3了，如果用Windows的朋友可以用Fiddler3进行抓包。</li>
+</ul>
+</li>
+<li><code>Charles</code><ul>
+<li>自从换了Mac之后我就喜欢上了这个工具，不过Charles在Windows上同样也有。</li>
+</ul>
+</li>
+<li><code>Wireshark</code><ul>
+<li>这个我不是怎么经常用，这个抓包工具可以详细的看到网络请求的三次握手，并且可支持spdy、tcp等等的网络协议抓包，当然其他两个是不支持的。</li>
+</ul>
+</li>
+</ul>
+<p>我将以Charles为例分别抓取Http和Https包：</p>
+<h3 id="A、下载"><a href="#A、下载" class="headerlink" title="A、下载"></a>A、下载</h3><h5 id="Mac破解版下载地址：http-download-csdn-net-detail-m694449212-9770583"><a href="#Mac破解版下载地址：http-download-csdn-net-detail-m694449212-9770583" class="headerlink" title="Mac破解版下载地址：http://download.csdn.net/detail/m694449212/9770583"></a>Mac破解版下载地址：<a href="http://download.csdn.net/detail/m694449212/9770583" target="_blank" rel="external">http://download.csdn.net/detail/m694449212/9770583</a></h5><h5 id="Win破解版下载地址：http-download-csdn-net-detail-m694449212-9770589"><a href="#Win破解版下载地址：http-download-csdn-net-detail-m694449212-9770589" class="headerlink" title="Win破解版下载地址：http://download.csdn.net/detail/m694449212/9770589"></a>Win破解版下载地址：<a href="http://download.csdn.net/detail/m694449212/9770589" target="_blank" rel="external">http://download.csdn.net/detail/m694449212/9770589</a></h5><h5 id="官网链接，需要购买LisenseKey：https-www-charlesproxy-com"><a href="#官网链接，需要购买LisenseKey：https-www-charlesproxy-com" class="headerlink" title="官网链接，需要购买LisenseKey：https://www.charlesproxy.com/"></a>官网链接，需要购买LisenseKey：<a href="https://www.charlesproxy.com/" target="_blank" rel="external">https://www.charlesproxy.com/</a></h5><p><img src="http://115.28.132.58:8080/docs/WX20170304-233530@2x.png" alt=""></p>
+<h5 id="打开界面如下："><a href="#打开界面如下：" class="headerlink" title="打开界面如下："></a>打开界面如下：</h5><p><img src="http://115.28.132.58:8080/docs/CharlesOpen.png" alt=""></p>
+<h3 id="B、Http、Https包"><a href="#B、Http、Https包" class="headerlink" title="B、Http、Https包"></a>B、Http、Https包</h3><h4 id="第一、Http包"><a href="#第一、Http包" class="headerlink" title="第一、Http包"></a>第一、Http包</h4><h5 id="1-清理Charles列表，让抓包更加清晰"><a href="#1-清理Charles列表，让抓包更加清晰" class="headerlink" title="1. 清理Charles列表，让抓包更加清晰"></a>1. 清理Charles列表，让抓包更加清晰</h5><p><img src="http://115.28.132.58:8080/docs/CharlesClean.png" alt=""></p>
+<h5 id="2-以我的CSDN为例（m694449212）-通过Chrome点击‘我的博客’，抓到需要的包"><a href="#2-以我的CSDN为例（m694449212）-通过Chrome点击‘我的博客’，抓到需要的包" class="headerlink" title="2. 以我的CSDN为例（m694449212）,通过Chrome点击‘我的博客’，抓到需要的包"></a>2. 以我的CSDN为例（m694449212）,通过Chrome点击‘我的博客’，抓到需要的包</h5><p><img src="http://115.28.132.58:8080/docs/CSDNBlog.png" alt=""></p>
+<h5 id="从中我们过滤出m694449212的博客包，但是这个过滤的过程需要我们去一个个找（当然如果你的经验比较足或者英语比较好的话，可以发现其实就是blog-csdn-net的包）"><a href="#从中我们过滤出m694449212的博客包，但是这个过滤的过程需要我们去一个个找（当然如果你的经验比较足或者英语比较好的话，可以发现其实就是blog-csdn-net的包）" class="headerlink" title="从中我们过滤出m694449212的博客包，但是这个过滤的过程需要我们去一个个找（当然如果你的经验比较足或者英语比较好的话，可以发现其实就是blog.csdn.net的包）"></a>从中我们过滤出m694449212的博客包，但是这个过滤的过程需要我们去一个个找（当然如果你的经验比较足或者英语比较好的话，可以发现其实就是blog.csdn.net的包）</h5><h5 id="3-分析包"><a href="#3-分析包" class="headerlink" title="3. 分析包"></a>3. 分析包</h5><p><img src="http://115.28.132.58:8080/docs/CharlesCSDAnly.png" alt=""></p>
+<h5 id="Reuqest"><a href="#Reuqest" class="headerlink" title="Reuqest"></a>Reuqest</h5><p><img src="http://115.28.132.58:8080/docs/CharlesRequest.png" alt=""></p>
+<h5 id="其中比较重要的是Cookie-网站为了辨别用户身份、进行-session-跟踪而储存在用户本地终端上的数据（通常经过加密）"><a href="#其中比较重要的是Cookie-网站为了辨别用户身份、进行-session-跟踪而储存在用户本地终端上的数据（通常经过加密）" class="headerlink" title="其中比较重要的是Cookie,网站为了辨别用户身份、进行 session 跟踪而储存在用户本地终端上的数据（通常经过加密）."></a>其中比较重要的是<code>Cookie</code>,网站为了辨别用户身份、进行 session 跟踪而储存在用户本地终端上的数据（通常经过加密）.</h5><h5 id="同时Cookie在我们爬虫的时候也是一个必不可少的东西，那么如何自动化获取Cookie呢？后面会讲解到。"><a href="#同时Cookie在我们爬虫的时候也是一个必不可少的东西，那么如何自动化获取Cookie呢？后面会讲解到。" class="headerlink" title="同时Cookie在我们爬虫的时候也是一个必不可少的东西，那么如何自动化获取Cookie呢？后面会讲解到。"></a>同时Cookie在我们爬虫的时候也是一个必不可少的东西，那么如何自动化获取Cookie呢？后面会讲解到。</h5><h5 id="Response"><a href="#Response" class="headerlink" title="Response:"></a>Response:</h5><p><img src="http://115.28.132.58:8080/docs/CharlesResponse.png" alt=""></p>
+<h5 id="获取Cookie-通过我以往的经验"><a href="#获取Cookie-通过我以往的经验" class="headerlink" title="获取Cookie,通过我以往的经验:"></a>获取Cookie,通过我以往的经验:</h5><h5 id="1-获取Cookie的时候首先需要保证我们的浏览器环境是干净的，我说的干净其实就是清楚当前浏览器保存的Cookie，并重启浏览器。"><a href="#1-获取Cookie的时候首先需要保证我们的浏览器环境是干净的，我说的干净其实就是清楚当前浏览器保存的Cookie，并重启浏览器。" class="headerlink" title="1. 获取Cookie的时候首先需要保证我们的浏览器环境是干净的，我说的干净其实就是清楚当前浏览器保存的Cookie，并重启浏览器。"></a>1. 获取Cookie的时候首先需要保证我们的浏览器环境是干净的，我说的干净其实就是<code>清楚当前浏览器保存的Cookie</code>，并重启浏览器。</h5><h5 id="2-重启之后我们访问www-csdn-net，当前Host的Request中就不包含Cookie，那么Cookie在哪呢，其实细心点的会发现Cookie在Response的Headers-gt-set-cookie中，并在下次请求中使用到。"><a href="#2-重启之后我们访问www-csdn-net，当前Host的Request中就不包含Cookie，那么Cookie在哪呢，其实细心点的会发现Cookie在Response的Headers-gt-set-cookie中，并在下次请求中使用到。" class="headerlink" title="2. 重启之后我们访问www.csdn.net，当前Host的Request中就不包含Cookie，那么Cookie在哪呢，其实细心点的会发现Cookie在Response的Headers-&gt;set-cookie中，并在下次请求中使用到。"></a>2. 重启之后我们访问www.csdn.net，当前Host的Request中就不包含Cookie，那么Cookie在哪呢，其实细心点的会发现Cookie在<code>Response的Headers-&gt;set-cookie</code>中，并在下次请求中使用到。</h5><h5 id="3-那么当我们登录操作并携带Cookie在请求Headers中，那么登录成功之后该Cookie就会生效。之后我们的所有请求携带该Cookie就会是一个正常的请求，并能拿到需要的结果。"><a href="#3-那么当我们登录操作并携带Cookie在请求Headers中，那么登录成功之后该Cookie就会生效。之后我们的所有请求携带该Cookie就会是一个正常的请求，并能拿到需要的结果。" class="headerlink" title="3. 那么当我们登录操作并携带Cookie在请求Headers中，那么登录成功之后该Cookie就会生效。之后我们的所有请求携带该Cookie就会是一个正常的请求，并能拿到需要的结果。"></a>3. 那么当我们登录操作并携带Cookie在请求Headers中，那么登录成功之后该Cookie就会生效。之后我们的所有请求携带该Cookie就会是一个正常的请求，并能拿到需要的结果。</h5><h5 id="关于某些请求携带sign参数的，后面的文章我会讲解到破解Sign函数（其实有时候不是直接的破解而是函数的Hook-有兴趣的可以提前了解下Android或者iOS的Hook，通过IDA找到sign函数-并使用cycript调用），之后的文章我会以国外的知名App-Instagram为例，Hook它的签名函数。"><a href="#关于某些请求携带sign参数的，后面的文章我会讲解到破解Sign函数（其实有时候不是直接的破解而是函数的Hook-有兴趣的可以提前了解下Android或者iOS的Hook，通过IDA找到sign函数-并使用cycript调用），之后的文章我会以国外的知名App-Instagram为例，Hook它的签名函数。" class="headerlink" title="关于某些请求携带sign参数的，后面的文章我会讲解到破解Sign函数（其实有时候不是直接的破解而是函数的Hook,有兴趣的可以提前了解下Android或者iOS的Hook，通过IDA找到sign函数,并使用cycript调用），之后的文章我会以国外的知名App Instagram为例，Hook它的签名函数。"></a>关于某些请求携带sign参数的，后面的文章我会讲解到破解Sign函数（其实有时候不是直接的破解而是函数的Hook,有兴趣的可以提前了解下Android或者iOS的Hook，通过IDA找到sign函数,并使用cycript调用），之后的文章我会以国外的知名App Instagram为例，Hook它的签名函数。</h5><p><img src="http://115.28.132.58:8080/docs/InsMeinv.jpg" alt=""><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">来个美女提提神（图片来自Instagram的Https包数据），继续往下看</div></pre></td></tr></table></figure></p>
+<h2 id="第二、Https包"><a href="#第二、Https包" class="headerlink" title="第二、Https包"></a>第二、Https包</h2><h3 id="A、Https简介"><a href="#A、Https简介" class="headerlink" title="A、Https简介"></a>A、Https简介</h3><h5 id="SSL相信大家都不陌生。其实Https就是在Http基础上通过SSL协议进行加密之后的网络传输。"><a href="#SSL相信大家都不陌生。其实Https就是在Http基础上通过SSL协议进行加密之后的网络传输。" class="headerlink" title="SSL相信大家都不陌生。其实Https就是在Http基础上通过SSL协议进行加密之后的网络传输。"></a>SSL相信大家都不陌生。其实Https就是在Http基础上通过SSL协议进行加密之后的网络传输。</h5><h5 id="并通过非对称和对称加密算法来对密码和数据进行加密。具体看下图："><a href="#并通过非对称和对称加密算法来对密码和数据进行加密。具体看下图：" class="headerlink" title="并通过非对称和对称加密算法来对密码和数据进行加密。具体看下图："></a>并通过非对称和对称加密算法来对密码和数据进行加密。具体看下图：</h5><p><img src="http://115.28.132.58:8080/docs/Https.png" alt=""></p>
+<h5 id="1-Client明文将自己支持的一套加密规则、一个随机数-Random-C-发送给服务器"><a href="#1-Client明文将自己支持的一套加密规则、一个随机数-Random-C-发送给服务器" class="headerlink" title="1. Client明文将自己支持的一套加密规则、一个随机数(Random_C)发送给服务器."></a>1. Client明文将自己支持的一套加密规则、一个随机数(Random_C)发送给服务器.</h5><h5 id="2-Server返回自己选择的加密规则、CA证书（服务器地址、加密公钥、以及证书颁发机构）、外加一个通过加密规则和HASH算法生成的随机数-Random-S"><a href="#2-Server返回自己选择的加密规则、CA证书（服务器地址、加密公钥、以及证书颁发机构）、外加一个通过加密规则和HASH算法生成的随机数-Random-S" class="headerlink" title="2. Server返回自己选择的加密规则、CA证书（服务器地址、加密公钥、以及证书颁发机构）、外加一个通过加密规则和HASH算法生成的随机数(Random_S)"></a>2. Server返回自己选择的加密规则、CA证书（服务器地址、加密公钥、以及证书颁发机构）、外加一个通过加密规则和HASH算法生成的随机数(Random_S)</h5><h5 id="3-Client收到Server的消息之后会"><a href="#3-Client收到Server的消息之后会" class="headerlink" title="3. Client收到Server的消息之后会:"></a>3. Client收到Server的消息之后会:</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">a:验证证书（地址是否是正在访问的和机构是否合法）、</div><div class="line">b:自己生成一个随机的密码(Pre_master)并使用CA证书中的加密公钥进行加密(enc_pre_master)、</div><div class="line">c:计算出一个对称加密的enc_key,通过Random_C、Random_S、Pre_master、</div><div class="line">d:生成握手信息：使用约定好的Hash算法计算握手信息，并通过enc_key和约定好的加密算法对消息进行加密</div></pre></td></tr></table></figure>
+<h5 id="4-Client将enc-pre-master、加密之后的握手消息发送给Server"><a href="#4-Client将enc-pre-master、加密之后的握手消息发送给Server" class="headerlink" title="4. Client将enc_pre_master、加密之后的握手消息发送给Server"></a>4. Client将enc_pre_master、加密之后的握手消息发送给Server</h5><h5 id="5-Server收到消息之后"><a href="#5-Server收到消息之后" class="headerlink" title="5. Server收到消息之后"></a>5. Server收到消息之后</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">a: 收到enc_pre_master之后，会通过私钥进行解密（非对称加密算法）得到pre_master</div><div class="line">b: 通过pre_masrer、Random_C、Random_S计算得到协商密码 enc_key</div><div class="line">c: 通过enc_key解密握手信息，验证HASH是否和客户端发来的一致</div><div class="line">d: 生成握手信息同样适用enc_key和约定好的加密算法</div></pre></td></tr></table></figure>
+<h5 id="6-Server发送握手信息给Client-也就是说Server验证通过了Client-并再次发送消息给Client让其验证自己"><a href="#6-Server发送握手信息给Client-也就是说Server验证通过了Client-并再次发送消息给Client让其验证自己" class="headerlink" title="6. Server发送握手信息给Client,也就是说Server验证通过了Client,并再次发送消息给Client让其验证自己"></a>6. Server发送握手信息给Client,也就是说Server验证通过了Client,并再次发送消息给Client让其验证自己</h5><h5 id="7-客户端拿到握手信息解密，握手结束。客户端解密并计算握手消息的HASH，如果与服务端发来的HASH一致，此时握手过程结束。"><a href="#7-客户端拿到握手信息解密，握手结束。客户端解密并计算握手消息的HASH，如果与服务端发来的HASH一致，此时握手过程结束。" class="headerlink" title="7. 客户端拿到握手信息解密，握手结束。客户端解密并计算握手消息的HASH，如果与服务端发来的HASH一致，此时握手过程结束。"></a>7. 客户端拿到握手信息解密，握手结束。客户端解密并计算握手消息的HASH，如果与服务端发来的HASH一致，此时握手过程结束。</h5><h5 id="8-正常加密通信，握手成功之后，所有的通信数据将由之前协商密钥enc-key及约定好的算法进行加密解密。"><a href="#8-正常加密通信，握手成功之后，所有的通信数据将由之前协商密钥enc-key及约定好的算法进行加密解密。" class="headerlink" title="8. 正常加密通信，握手成功之后，所有的通信数据将由之前协商密钥enc_key及约定好的算法进行加密解密。"></a>8. 正常加密通信，握手成功之后，所有的通信数据将由之前协商密钥enc_key及约定好的算法进行加密解密。</h5><h4 id="其中Https使用到的加密算法如下："><a href="#其中Https使用到的加密算法如下：" class="headerlink" title="其中Https使用到的加密算法如下："></a>其中Https使用到的加密算法如下：</h4><ul>
+<li>非对称加密算法：RSA，DSA/DSS</li>
+<li>对称加密算法：AES，RC4，3DES</li>
+<li>HASH算法：MD5，SHA1，SHA256</li>
+</ul>
+<h3 id="B、-Charles抓取Https原理"><a href="#B、-Charles抓取Https原理" class="headerlink" title="B、 Charles抓取Https原理"></a>B、 Charles抓取Https原理</h3><h5 id="Charles本身就是一个协议代理工具，在上篇的Https原理上，客户端和服务器的所有通信都被Charles捕获到。"><a href="#Charles本身就是一个协议代理工具，在上篇的Https原理上，客户端和服务器的所有通信都被Charles捕获到。" class="headerlink" title="Charles本身就是一个协议代理工具，在上篇的Https原理上，客户端和服务器的所有通信都被Charles捕获到。"></a>Charles本身就是一个协议代理工具，在上篇的Https原理上，客户端和服务器的所有通信都被Charles捕获到。</h5><h5 id="如下图："><a href="#如下图：" class="headerlink" title="如下图："></a>如下图：</h5><p><img src="http://115.28.132.58:8080/docs/HttpsCharles.png" alt=""></p>
+<p>主要步骤如下：</p>
+<h5 id="1-Charles捕获Client发送给Server请求，并伪装成客户端向服务器发起握手请求"><a href="#1-Charles捕获Client发送给Server请求，并伪装成客户端向服务器发起握手请求" class="headerlink" title="1. Charles捕获Client发送给Server请求，并伪装成客户端向服务器发起握手请求"></a>1. Charles捕获Client发送给Server请求，并伪装成客户端向服务器发起握手请求</h5><h5 id="2-服务器响应，Charles获取到服务器的CA证书，并用根证书公钥进行解密，获取到服务器的CA证书公钥。然后Charles伪造自己的CA证书，伪装为服务器的CA证书发送给客户端"><a href="#2-服务器响应，Charles获取到服务器的CA证书，并用根证书公钥进行解密，获取到服务器的CA证书公钥。然后Charles伪造自己的CA证书，伪装为服务器的CA证书发送给客户端" class="headerlink" title="2. 服务器响应，Charles获取到服务器的CA证书，并用根证书公钥进行解密，获取到服务器的CA证书公钥。然后Charles伪造自己的CA证书，伪装为服务器的CA证书发送给客户端"></a>2. 服务器响应，Charles获取到服务器的CA证书，并用根证书公钥进行解密，获取到服务器的CA证书公钥。然后Charles伪造自己的CA证书，伪装为服务器的CA证书发送给客户端</h5><h5 id="3-客户端收到返回之后，和上面讲到的过程一样，证书校验、生成密码、并使用Charles伪装的证书公钥进行加密，并生成-Https通信的协商密码enc-key"><a href="#3-客户端收到返回之后，和上面讲到的过程一样，证书校验、生成密码、并使用Charles伪装的证书公钥进行加密，并生成-Https通信的协商密码enc-key" class="headerlink" title="3. 客户端收到返回之后，和上面讲到的过程一样，证书校验、生成密码、并使用Charles伪装的证书公钥进行加密，并生成 Https通信的协商密码enc_key"></a>3. 客户端收到返回之后，和上面讲到的过程一样，证书校验、生成密码、并使用Charles伪装的证书公钥进行加密，并生成 Https通信的协商密码enc_key</h5><h5 id="4-Charles捕获到Client发来的重要信息，并使用自己伪造的证书私钥将密文解密，获取到enc-key-然后Charles使用服务器之前返回的证书公钥对明文进行加密并发送给服务器"><a href="#4-Charles捕获到Client发来的重要信息，并使用自己伪造的证书私钥将密文解密，获取到enc-key-然后Charles使用服务器之前返回的证书公钥对明文进行加密并发送给服务器" class="headerlink" title="4. Charles捕获到Client发来的重要信息，并使用自己伪造的证书私钥将密文解密，获取到enc_key.然后Charles使用服务器之前返回的证书公钥对明文进行加密并发送给服务器"></a>4. Charles捕获到Client发来的重要信息，并使用自己伪造的证书私钥将密文解密，获取到enc_key.然后Charles使用服务器之前返回的证书公钥对明文进行加密并发送给服务器</h5><h5 id="5-去之前一样，服务器收到消息之后，用私钥解开并建立信任，然后发送加密的握手信息。"><a href="#5-去之前一样，服务器收到消息之后，用私钥解开并建立信任，然后发送加密的握手信息。" class="headerlink" title="5. 去之前一样，服务器收到消息之后，用私钥解开并建立信任，然后发送加密的握手信息。"></a>5. 去之前一样，服务器收到消息之后，用私钥解开并建立信任，然后发送加密的握手信息。</h5><h5 id="6-Charles截获服务器发来的握手密文，并用对称密钥解开，再用自己伪造证书的私钥加密传给客户端"><a href="#6-Charles截获服务器发来的握手密文，并用对称密钥解开，再用自己伪造证书的私钥加密传给客户端" class="headerlink" title="6. Charles截获服务器发来的握手密文，并用对称密钥解开，再用自己伪造证书的私钥加密传给客户端"></a>6. Charles截获服务器发来的握手密文，并用对称密钥解开，再用自己伪造证书的私钥加密传给客户端</h5><h5 id="7-客户端拿到加密信息后，用公钥解开，验证HASH。握手过程正式完成，客户端与服务器端就这样建立了”信任“。"><a href="#7-客户端拿到加密信息后，用公钥解开，验证HASH。握手过程正式完成，客户端与服务器端就这样建立了”信任“。" class="headerlink" title="7. 客户端拿到加密信息后，用公钥解开，验证HASH。握手过程正式完成，客户端与服务器端就这样建立了”信任“。"></a>7. 客户端拿到加密信息后，用公钥解开，验证HASH。握手过程正式完成，客户端与服务器端就这样建立了”信任“。</h5><ul>
+<li>其实在整个过程中，最重要的就是enc_key,由于Charles从一开始伪造并获取了enc_key，所以在整个通信过程中Charles充当第三者，所有信息对其来讲都是透明的。</li>
+<li>其次就是根证书，这是https一个信任链的开始。这也是Charles伪造的CA证书能获得双方信任的关键。</li>
+</ul>
+<h3 id="C、演示Charles抓取Https"><a href="#C、演示Charles抓取Https" class="headerlink" title="C、演示Charles抓取Https"></a>C、演示Charles抓取Https</h3><blockquote>
+<p>原理清楚之后，其实操作就很简单了，操作的核心点就是根证书。</p>
+</blockquote>
+<ul>
+<li>安装根证书（Charles Root Certificate）<br><img src="http://115.28.132.58:8080/docs/CharlesRootCA.png" alt=""></li>
+<li>让系统信任该证书<br><img src="http://115.28.132.58:8080/docs/TrustCharlesRootCa.png" alt=""></li>
+<li>接下来将需要抓的Https链接加入到CharlesSSL代理规则中，443是Https的默认端口<br><img src="http://115.28.132.58:8080/docs/SSLProxy.png" alt=""><br>当然你也可以像我最后一条一样，使用 *:443 来抓取所有https的包。</li>
+<li>通过浏览器访问自己要抓的链接，这样所有的Https都可以像Http一样明文展示都我们面前。<br><img src="http://115.28.132.58:8080/docs/HttpsGoogle.png" alt=""></li>
+</ul>
+<h2 id="第三、手机抓包"><a href="#第三、手机抓包" class="headerlink" title="第三、手机抓包"></a>第三、手机抓包</h2><blockquote>
+<p>手机抓包的原理其实也很简单，让手机和抓包工具处于同一局域网，并将手机的WifiProxy手动代理到电脑的Ip和Charles设置的抓包端口上，具体操作可在网上找到,具体见<a href="http://blog.csdn.net/richer1997/article/details/52198024" target="_blank" rel="external">http://blog.csdn.net/richer1997/article/details/52198024</a></p>
+</blockquote>
+<h5 id="我这边主要讲一下手机端Https包的抓取，其实和浏览器的抓取一样："><a href="#我这边主要讲一下手机端Https包的抓取，其实和浏览器的抓取一样：" class="headerlink" title="我这边主要讲一下手机端Https包的抓取，其实和浏览器的抓取一样："></a>我这边主要讲一下手机端Https包的抓取，其实和浏览器的抓取一样：</h5><ul>
+<li>首先需要安装Charles的根证书到手机上。<br><img src="http://115.28.132.58:8080/docs/InstallRoomIOS.png" alt=""></li>
+<li>点击之后，会弹出让你在手机上配置代理到对应Ip和端口，之后通过手机浏览器打开chls.pro/ssl<br><img src="http://115.28.132.58:8080/docs/DownloadCA.png" alt=""><h5 id="使用手机访问该链接之后，会自动被识别为证书，并跳转到：-当然我这里已经是安装过的，未安装的点击右上角安装即可"><a href="#使用手机访问该链接之后，会自动被识别为证书，并跳转到：-当然我这里已经是安装过的，未安装的点击右上角安装即可" class="headerlink" title="使用手机访问该链接之后，会自动被识别为证书，并跳转到：(当然我这里已经是安装过的，未安装的点击右上角安装即可)"></a>使用手机访问该链接之后，会自动被识别为证书，并跳转到：(当然我这里已经是安装过的，未安装的点击右上角安装即可)</h5><img src="http://115.28.132.58:8080/docs/WechatIMG3.jpeg" alt=""></li>
+<li>之后就类似与PC端抓Https包原理一样，手机端的证书被作为根证书使用，并通过Charles拿到enc_key.将所有通信过程透明化。</li>
+</ul>
+<h2 id="第三、Charles的附加功能"><a href="#第三、Charles的附加功能" class="headerlink" title="第三、Charles的附加功能"></a>第三、Charles的附加功能</h2><blockquote>
+<p>在我刚开始使用Charles的时候，我只是用来简单的抓抓接口，直到我看到别人使用BurpSuite自定义请求数据并Repeat的时候，我在考虑Charles是否也有这种功能。当然不出我所料，Charles也是支持的。</p>
+</blockquote>
+<h5 id="在对应接口上点击右键，出现菜单，其中我经常使用到的就是Compose、Repeat和RepeatAdvanced"><a href="#在对应接口上点击右键，出现菜单，其中我经常使用到的就是Compose、Repeat和RepeatAdvanced" class="headerlink" title="在对应接口上点击右键，出现菜单，其中我经常使用到的就是Compose、Repeat和RepeatAdvanced"></a>在对应接口上点击右键，出现菜单，其中我经常使用到的就是Compose、Repeat和RepeatAdvanced</h5><p><img src="http://115.28.132.58:8080/docs/CharlesMenu.png" alt=""></p>
+<h5 id="Compose-可直接自定义对应的请求，并执行该请求。这个对我们抓包用处很大。我们可以从中得到该接口的必填参数等等的。"><a href="#Compose-可直接自定义对应的请求，并执行该请求。这个对我们抓包用处很大。我们可以从中得到该接口的必填参数等等的。" class="headerlink" title="Compose:可直接自定义对应的请求，并执行该请求。这个对我们抓包用处很大。我们可以从中得到该接口的必填参数等等的。"></a>Compose:可直接自定义对应的请求，并执行该请求。这个对我们抓包用处很大。我们可以从中得到该接口的必填参数等等的。</h5><h5 id="Repeat：很简单就是执行一次重复请求操作"><a href="#Repeat：很简单就是执行一次重复请求操作" class="headerlink" title="Repeat：很简单就是执行一次重复请求操作"></a>Repeat：很简单就是执行一次重复请求操作</h5><h5 id="Repeat-Advanved：重复请求的高级操作，可自定义重复的次数、每隔多少秒执行。这个功能对于我们的接口的压测是很有用的。"><a href="#Repeat-Advanved：重复请求的高级操作，可自定义重复的次数、每隔多少秒执行。这个功能对于我们的接口的压测是很有用的。" class="headerlink" title="Repeat Advanved：重复请求的高级操作，可自定义重复的次数、每隔多少秒执行。这个功能对于我们的接口的压测是很有用的。"></a>Repeat Advanved：重复请求的高级操作，可自定义重复的次数、每隔多少秒执行。这个功能对于我们的接口的压测是很有用的。</h5><h5 id="除了这几个我常用的功能，当然Charles还有更多更加实用的功能，如过滤、排序等等。还需要大家去自行使用，发现更多更好、并适用于自己的功能。"><a href="#除了这几个我常用的功能，当然Charles还有更多更加实用的功能，如过滤、排序等等。还需要大家去自行使用，发现更多更好、并适用于自己的功能。" class="headerlink" title="除了这几个我常用的功能，当然Charles还有更多更加实用的功能，如过滤、排序等等。还需要大家去自行使用，发现更多更好、并适用于自己的功能。"></a>除了这几个我常用的功能，当然Charles还有更多更加实用的功能，如过滤、排序等等。还需要大家去自行使用，发现更多更好、并适用于自己的功能。</h5><h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><blockquote>
+<p>抓包的用处其实很大，有时候可以用来调试我们的接口、有时候也可以用来做一些对工作有益的事，当然并”不建议”用来攻击别人的网络。</p>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Python新手引导第二篇]]></title>
       <url>https://xiyoumc.github.com/2017/03/03/Python%E6%96%B0%E6%89%8B%E5%BC%95%E5%AF%BC%E7%AC%AC%E4%BA%8C%E7%AF%87/</url>
       <content type="html"><![CDATA[<h1 id="Python新手引导-第二篇-你不知道的Python"><a href="#Python新手引导-第二篇-你不知道的Python" class="headerlink" title="Python新手引导 第二篇 你不知道的Python"></a>Python新手引导 第二篇 你不知道的Python</h1><blockquote>
@@ -298,15 +368,6 @@
     </entry>
     
     <entry>
-      <title><![CDATA[平淡]]></title>
-      <url>https://xiyoumc.github.com/2016/08/18/822/</url>
-      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/lover.jpg?raw=true" alt="zls"></p>
-<p>少年，我爱上你了<br><a id="more"></a></p>
-<p>&lt;告白气球&gt;</p>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[爱情观]]></title>
       <url>https://xiyoumc.github.com/2016/08/18/Lover/</url>
       <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/shelizi.png?raw=true" alt="zls"></p>
@@ -339,6 +400,15 @@
 <li><p>古人说“相敬如宾”，虽是老生常谈，却是能够维系长久爱情的真正智慧。如果想避免吵架、误解，或者是想消融不断的期待、要求，在遇到诸如此类的问题时，不妨以尊重的心态，心悦诚服、欢欢喜喜、平平静静去面对、解决，心中的纠结，其实在当下都能即得化解。爱情里的关系，并不是在互相执着、纠缠和占有，而是互相的贡献、成长和学习。能够互相关怀、照顾、包容，去彼此计较、相互猜疑，多沟通，并相互信赖，才能成为菩萨伴侣。</p>
 </li>
 </ul>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[平淡]]></title>
+      <url>https://xiyoumc.github.com/2016/08/18/822/</url>
+      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/lover.jpg?raw=true" alt="zls"></p>
+<p>少年，我爱上你了<br><a id="more"></a></p>
+<p>&lt;告白气球&gt;</p>
 ]]></content>
     </entry>
     
