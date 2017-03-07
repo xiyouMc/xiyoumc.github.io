@@ -402,8 +402,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/09/07/Home/" rel="next" title="憧憬">
-                <i class="fa fa-chevron-left"></i> 憧憬
+              <a href="/2016/09/07/Alison/" rel="next" title="Alison">
+                <i class="fa fa-chevron-left"></i> Alison
               </a>
             
           </div>
@@ -933,6 +933,7 @@
   }
   $(function () {
     var Counter = AV.Object.extend("Counter");
+    alert($('.leancloud_visitors').length)
     if ($('.leancloud_visitors').length == 1) {
       addCount(Counter);
     } else if ($('.post-title-link').length > 1) {

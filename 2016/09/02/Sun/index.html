@@ -403,16 +403,16 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/08/18/Lover/" rel="next" title="爱情观">
-                <i class="fa fa-chevron-left"></i> 爱情观
+              <a href="/2016/08/18/822/" rel="next" title="平淡">
+                <i class="fa fa-chevron-left"></i> 平淡
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/09/07/Alison/" rel="prev" title="Alison">
-                Alison <i class="fa fa-chevron-right"></i>
+              <a href="/2016/09/07/Home/" rel="prev" title="憧憬">
+                憧憬 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -934,6 +934,7 @@
   }
   $(function () {
     var Counter = AV.Object.extend("Counter");
+    alert($('.leancloud_visitors').length)
     if ($('.leancloud_visitors').length == 1) {
       addCount(Counter);
     } else if ($('.post-title-link').length > 1) {
