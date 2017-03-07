@@ -4,6 +4,142 @@
   
     
     <entry>
+      <title><![CDATA[Python新手引导第二篇]]></title>
+      <url>https://xiyoumc.github.com/2017/03/06/Python%E6%96%B0%E6%89%8B%E5%BC%95%E5%AF%BC%20%E7%AC%AC%E4%B8%89%E7%AF%87%20Python%E5%9F%BA%E7%A1%80/</url>
+      <content type="html"><![CDATA[<h1 id="Python新手引导-第三篇-Python基础"><a href="#Python新手引导-第三篇-Python基础" class="headerlink" title="Python新手引导 第三篇 Python基础"></a>Python新手引导 第三篇 Python基础</h1><blockquote>
+<p>###阅读本文需要4.66分钟</p>
+</blockquote>
+<a id="more"></a>
+<p>有其他计算机语言基础的同学，阅读本篇基础部分建议1到2分钟。</p>
+<ol>
+<li>基础类型和变量</li>
+<li>list 和 tuple</li>
+</ol>
+<h2 id="第一、基础类型、变量和字符编码"><a href="#第一、基础类型、变量和字符编码" class="headerlink" title="第一、基础类型、变量和字符编码"></a>第一、基础类型、变量和字符编码</h2><blockquote>
+<p>计算机能处理的数据类型有很多，包括文本、图形、音频、视频等等的。上层语言对其不同的数据，定义了各自不同的数据类型。如Java的int、String、boolean，JS的Var等等的。Python也不例外：</p>
+</blockquote>
+<h3 id="1-1-基础类型"><a href="#1-1-基础类型" class="headerlink" title="1.1 基础类型"></a>1.1 基础类型</h3><ol>
+<li><p>整数</p>
+<p>  Python可以处理任意大小的整数，包括负整数。1、100、-9191等等。</p>
+</li>
+<li><p>浮点数</p>
+<p>   浮点数也就是小数。之所以称之为浮点数。是因为其小数点是可变的，比如：1.23x10^5 和12.3x10^4是一样的。也就是类似的科学计数法 1.23e5和12.3e4。因此浮点数在计算机存储的时候可能就会有四舍五入的情况</p>
+</li>
+<li><p>字符串</p>
+<p>   ‘ 或者 “括起来的任意文本</p>
+</li>
+<li><p>布尔值</p>
+<p> True和False, 同时可以使用and or not来运算</p>
+</li>
+<li><p>空值 Python中使用<code>None</code>来表示空值，其不是<code>0</code>的意义</p>
+</li>
+</ol>
+<h3 id="1-2-变量"><a href="#1-2-变量" class="headerlink" title="1.2 变量"></a>1.2 变量</h3><blockquote>
+<p>变量在程序中就是用一个变量名标书，且区分大小写，可用<code>数字</code>和<code>_</code>表示，并不能以数组开始</p>
+</blockquote>
+<h4 id="a-‘aaa’"><a href="#a-‘aaa’" class="headerlink" title="a = ‘aaa’"></a>a = ‘aaa’</h4><ul>
+<li>Python解释器会在内存中创建<code>aaa</code>的字符串</li>
+<li>并在内存中创建一个名为<code>a</code>的变量，并将其指向<code>aaa</code></li>
+</ul>
+<h3 id="1-3-字符编码"><a href="#1-3-字符编码" class="headerlink" title="1.3 字符编码"></a>1.3 字符编码</h3><blockquote>
+<p>最原始的由歪果仁定义的<code>ASCII</code>编码，使用127个字符，从A(65)到z(122). 其次就是各国的编码，如我们所知的<code>GB2312</code>将中文编进去。还有其他国家的类似，日本的<code>Shift_JIS</code>等等。如此一来，你会发现各国都有自己的编码，那么岂不是各种乱码。<br>因此<code>Unicode</code>就因此诞生了。<code>Unicode</code>将所有编码统一到了一套编码中，这样就解决了乱码的问题。</p>
+</blockquote>
+<p>Unicode和ASCII编码的区别：Unicdeo使用两个字节、ASCII使用一个字节</p>
+<ul>
+<li>举个栗子</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th>ASCII</th>
+<th>Unicode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>十进制（65）,二进制(01000001)</td>
+<td>0A (00000000 01000001)</td>
+</tr>
+</tbody>
+</table>
+<p> 因此你会发现如果你的文本全是英文的，如果使用Unicode编码的话，那么需要多一倍的存储空间，导致存储和传输上十分低效率。</p>
+<p><code>UTF_8</code>应景而生，是一种<code>可变长编码</code>.<code>UTF_8</code>编码把一个Unicode字符根据不同的数组大小编码成1-6个字节，常用的英文被编码成1个字节，汉字使用3个字节。如果要传输的文本包含大量的英文字符，用UTF-8编码能节省很多空间：</p>
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th>ASCII</th>
+<th>Unicode</th>
+<th>UTF-8</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>十进制（65）,二进制(01000001)</td>
+<td>0A (00000000 01000001)</td>
+<td>01000001</td>
+</tr>
+<tr>
+<td>中</td>
+<td></td>
+<td>01001110 00101101</td>
+<td>11100100 10111000 10101101</td>
+</tr>
+</tbody>
+</table>
+<p>所以在计算机的内存中，统一使用Unicode编码，但是需要保存到硬盘或者传输的时候，就会使用到UTF-8编码。因此在计算机上打开某个文本的时候，会首先以Unicode将其独到内存中，当修改保存的时候，又会使用UTF-8。</p>
+<p>使用Unicode表示的<code>str</code>可以通过encode()转换为指定的<code>bytes</code>,例如：</p>
+<ul>
+<li><blockquote>
+<blockquote>
+<blockquote>
+<p>‘A’.encode(‘ascii’)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</li>
+<li>b’A’</li>
+<li><blockquote>
+<blockquote>
+<blockquote>
+<p>b’\xe4\xb8\xad\xe6\x96\x87’.decode(‘utf-8’)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</li>
+<li>‘中文’</li>
+</ul>
+<p><code>len()</code>可计算<code>str</code>包含多少个字符,len(‘abc’) = 3</p>
+<p>在操作字符串时，我们经常遇到str和bytes的互相转换。为了避免乱码问题，应当始终坚持使用UTF-8编码对str和bytes进行转换。</p>
+<p>由于Python源代码也是一个文本文件，所以，当你的源代码中包含中文的时候，在保存源代码时，就需要务必指定保存为UTF-8编码。当Python解释器读取源代码时，为了让它按UTF-8编码读取，我们通常在文件开头写上这两行：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python3</span></div><div class="line"><span class="comment"># -*- coding: utf-8 -*-</span></div></pre></td></tr></table></figure>
+<h2 id="第二、List和tuple"><a href="#第二、List和tuple" class="headerlink" title="第二、List和tuple"></a>第二、List和tuple</h2><blockquote>
+<p>集合在每个语言中都有，当然Python也不例外</p>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Python新手引导第二篇]]></title>
+      <url>https://xiyoumc.github.com/2017/03/06/Python%E6%96%B0%E6%89%8B%E5%BC%95%E5%AF%BC%E7%AC%AC%E4%B8%89%E7%AF%87/</url>
+      <content type="html"><![CDATA[<h1 id="Python新手引导-第三篇-Python基础"><a href="#Python新手引导-第三篇-Python基础" class="headerlink" title="Python新手引导 第三篇 Python基础"></a>Python新手引导 第三篇 Python基础</h1><blockquote>
+<p>###阅读本文需要4.66分钟</p>
+</blockquote>
+<a id="more"></a>
+<p>有其他计算机语言基础的同学，阅读本篇基础部分建议1到2分钟。</p>
+<ol>
+<li>基础类型和变量</li>
+<li>list 和 tuple</li>
+</ol>
+<h2 id="第一、基础类型和变量"><a href="#第一、基础类型和变量" class="headerlink" title="第一、基础类型和变量"></a>第一、基础类型和变量</h2><blockquote>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[程序员都应该会的抓包工具--Charles]]></title>
       <url>https://xiyoumc.github.com/2017/03/04/%E7%A8%8B%E5%BA%8F%E5%91%98%E9%83%BD%E5%BA%94%E8%AF%A5%E4%BC%9A%E7%9A%84%E6%8A%93%E5%8C%85%E5%B7%A5%E5%85%B7-Charles/</url>
       <content type="html"><![CDATA[<h1 id="程序员都应该会的抓包工具-Charles"><a href="#程序员都应该会的抓包工具-Charles" class="headerlink" title="程序员都应该会的抓包工具-Charles"></a>程序员都应该会的抓包工具-Charles</h1><blockquote>
@@ -317,6 +453,24 @@
     </entry>
     
     <entry>
+      <title><![CDATA[憧憬]]></title>
+      <url>https://xiyoumc.github.com/2016/09/07/Home/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>时常在憧憬未来 、未来 家的样子</p>
+</blockquote>
+<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/home.jpg?raw=true" alt="zls"></p>
+<a id="more"></a>
+<blockquote>
+<ul>
+<li>一直都想有个家、有自己的妻儿</li>
+<li>有一个可以依靠、也可以安心的家</li>
+<li>So 让我们一起努力。有一天你会是我的妻子，我会是你的丈夫，你我会是孩子的父母。</li>
+</ul>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Alison]]></title>
       <url>https://xiyoumc.github.com/2016/09/07/Alison/</url>
       <content type="html"><![CDATA[<blockquote>
@@ -340,30 +494,21 @@
     </entry>
     
     <entry>
-      <title><![CDATA[憧憬]]></title>
-      <url>https://xiyoumc.github.com/2016/09/07/Home/</url>
-      <content type="html"><![CDATA[<blockquote>
-<p>时常在憧憬未来 、未来 家的样子</p>
-</blockquote>
-<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/home.jpg?raw=true" alt="zls"></p>
-<a id="more"></a>
-<blockquote>
-<ul>
-<li>一直都想有个家、有自己的妻儿</li>
-<li>有一个可以依靠、也可以安心的家</li>
-<li>So 让我们一起努力。有一天你会是我的妻子，我会是你的丈夫，你我会是孩子的父母。</li>
-</ul>
-</blockquote>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[You are My Sunshine.]]></title>
       <url>https://xiyoumc.github.com/2016/09/02/Sun/</url>
       <content type="html"><![CDATA[<p>我喜欢温暖、你恰好是太阳<br><a id="more"></a></p>
 <blockquote>
 <p>时间流逝<br>忙碌的项目开发，无数的接口，无数的调试<br>Github也好久没更新<br>不过。。。<br>不过。。。最开心 幸福的事是拥有了你<br>我喜欢温暖、你恰好是太阳</p>
 </blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[平淡]]></title>
+      <url>https://xiyoumc.github.com/2016/08/18/822/</url>
+      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/lover.jpg?raw=true" alt="zls"></p>
+<p>少年，我爱上你了<br><a id="more"></a></p>
+<p>&lt;告白气球&gt;</p>
 ]]></content>
     </entry>
     
@@ -400,15 +545,6 @@
 <li><p>古人说“相敬如宾”，虽是老生常谈，却是能够维系长久爱情的真正智慧。如果想避免吵架、误解，或者是想消融不断的期待、要求，在遇到诸如此类的问题时，不妨以尊重的心态，心悦诚服、欢欢喜喜、平平静静去面对、解决，心中的纠结，其实在当下都能即得化解。爱情里的关系，并不是在互相执着、纠缠和占有，而是互相的贡献、成长和学习。能够互相关怀、照顾、包容，去彼此计较、相互猜疑，多沟通，并相互信赖，才能成为菩萨伴侣。</p>
 </li>
 </ul>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[平淡]]></title>
-      <url>https://xiyoumc.github.com/2016/08/18/822/</url>
-      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/lover.jpg?raw=true" alt="zls"></p>
-<p>少年，我爱上你了<br><a id="more"></a></p>
-<p>&lt;告白气球&gt;</p>
 ]]></content>
     </entry>
     
