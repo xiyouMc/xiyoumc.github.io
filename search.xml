@@ -6,17 +6,17 @@
     <entry>
       <title><![CDATA[Python新手引导第二篇]]></title>
       <url>https://xiyoumc.github.com/2017/03/06/Python%E6%96%B0%E6%89%8B%E5%BC%95%E5%AF%BC%20%E7%AC%AC%E4%B8%89%E7%AF%87%20Python%E5%9F%BA%E7%A1%80/</url>
-      <content type="html"><![CDATA[<h1 id="Python新手引导-第三篇-Python基础"><a href="#Python新手引导-第三篇-Python基础" class="headerlink" title="Python新手引导 第三篇 Python基础"></a>Python新手引导 第三篇 Python基础</h1><blockquote>
+      <content type="html"><![CDATA[<h1 id="Python新手引导-第三篇-Python基础和字符编码"><a href="#Python新手引导-第三篇-Python基础和字符编码" class="headerlink" title="Python新手引导 第三篇-Python基础和字符编码"></a>Python新手引导 第三篇-Python基础和字符编码</h1><blockquote>
 <p>###阅读本文需要4.66分钟</p>
 </blockquote>
 <a id="more"></a>
 <p>有其他计算机语言基础的同学，阅读本篇基础部分建议1到2分钟。</p>
 <ol>
-<li>基础类型和变量</li>
+<li>基础类型、变量和字符编码</li>
 <li>list 和 tuple</li>
 </ol>
 <h2 id="第一、基础类型、变量和字符编码"><a href="#第一、基础类型、变量和字符编码" class="headerlink" title="第一、基础类型、变量和字符编码"></a>第一、基础类型、变量和字符编码</h2><blockquote>
-<p>计算机能处理的数据类型有很多，包括文本、图形、音频、视频等等的。上层语言对其不同的数据，定义了各自不同的数据类型。如Java的int、String、boolean，JS的Var等等的。Python也不例外：</p>
+<p>计算机能处理的数据类型有很多，包括文本、图形、音频、视频等等的。上层语言对其不同的数据，定义了各自不同的数据类型。如Java的int、String、boolean，JS的var等等的。Python也不例外：</p>
 </blockquote>
 <h3 id="1-1-基础类型"><a href="#1-1-基础类型" class="headerlink" title="1.1 基础类型"></a>1.1 基础类型</h3><ol>
 <li><p>整数</p>
@@ -29,13 +29,13 @@
 <p>   ‘ 或者 “括起来的任意文本</p>
 </li>
 <li><p>布尔值</p>
-<p> True和False, 同时可以使用and or not来运算</p>
+<p> True和False, 同时可以使用<code>and</code> <code>or</code> <code>not</code>来运算</p>
 </li>
 <li><p>空值 Python中使用<code>None</code>来表示空值，其不是<code>0</code>的意义</p>
 </li>
 </ol>
 <h3 id="1-2-变量"><a href="#1-2-变量" class="headerlink" title="1.2 变量"></a>1.2 变量</h3><blockquote>
-<p>变量在程序中就是用一个变量名标书，且区分大小写，可用<code>数字</code>和<code>_</code>表示，并不能以数组开始</p>
+<p>变量在程序中就是用一个变量名标书，且区分大小写，可用<code>数字</code>和<code>_</code>表示，并不能以数字开始</p>
 </blockquote>
 <h4 id="a-‘aaa’"><a href="#a-‘aaa’" class="headerlink" title="a = ‘aaa’"></a>a = ‘aaa’</h4><ul>
 <li>Python解释器会在内存中创建<code>aaa</code>的字符串</li>
@@ -64,7 +64,7 @@
 </tr>
 </tbody>
 </table>
-<p> 因此你会发现如果你的文本全是英文的，如果使用Unicode编码的话，那么需要多一倍的存储空间，导致存储和传输上十分低效率。</p>
+<p> 因此你会发现如果你的文本全是英文的，使用Unicode编码的话，那么需要多一倍的存储空间，导致存储和传输上十分低效率。</p>
 <p><code>UTF_8</code>应景而生，是一种<code>可变长编码</code>.<code>UTF_8</code>编码把一个Unicode字符根据不同的数组大小编码成1-6个字节，常用的英文被编码成1个字节，汉字使用3个字节。如果要传输的文本包含大量的英文字符，用UTF-8编码能节省很多空间：</p>
 <table>
 <thead>
@@ -117,8 +117,24 @@
 <p>由于Python源代码也是一个文本文件，所以，当你的源代码中包含中文的时候，在保存源代码时，就需要务必指定保存为UTF-8编码。当Python解释器读取源代码时，为了让它按UTF-8编码读取，我们通常在文件开头写上这两行：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python3</span></div><div class="line"><span class="comment"># -*- coding: utf-8 -*-</span></div></pre></td></tr></table></figure>
 <h2 id="第二、List和tuple"><a href="#第二、List和tuple" class="headerlink" title="第二、List和tuple"></a>第二、List和tuple</h2><blockquote>
-<p>集合在每个语言中都有，当然Python也不例外</p>
+<p>集合在每个语言中都有，当然Python也不例外。</p>
 </blockquote>
+<h3 id="2-1-List"><a href="#2-1-List" class="headerlink" title="2.1 List"></a>2.1 List</h3><p>Python内置的列表数据类型。一种有序的集合，可随时添加和删除其中元素<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">name = [&apos;Mark&apos;,&apos;xiyouMc&apos;,&apos;Alison&apos;]</div></pre></td></tr></table></figure></p>
+<p>访问方式可直接通过索引: <code>name[0]</code> <code>name[1]</code> 当然索引是从<code>0</code>开始到<code>len(name) - 1</code>  区别去其他语言，Python可以通过 <code>name[-1]</code>访问到最后一个元素，一次类推 <code>-2</code>可以访问到倒数第二个。</p>
+<p>list是一个可变的有序表，所以可以在list的末尾追加元素: <code>name.append(&#39;Ali&#39;)</code></p>
+<p>同样也可以插入元素, <code>name.insert(1,&#39;Baidu&#39;)</code></p>
+<p>删除尾部元素使用<code>pop()</code>,并可以指定删除某个元素 <code>pop(1)</code></p>
+<p>赋值（替换）： <code>name[1] = &#39;Tencent&#39;</code></p>
+<p>多层List：<code>s = [&#39;Mark&#39;,&#39;java&#39;,[&#39;nlp&#39;,&#39;php&#39;]]</code>,这样通过 <code>s[2]</code>拿到的也是一个list. 当然要拿到 <code>nlp</code>的话，直接<code>s[2][1]</code>即可</p>
+<h3 id="2-2-tuple"><a href="#2-2-tuple" class="headerlink" title="2.2 tuple"></a>2.2 tuple</h3><blockquote>
+<p>和List一样，tuple也是一个有序列表。唯一和list有区别的就是 tuple一旦被初始化就<code>不能修改</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">name = (&apos;Mark&apos;,&apos;Alison&apos;,&apos;xiyouMc&apos;)</div></pre></td></tr></table></figure>
+<p>即tuple没有 <code>append</code> <code>insert</code>函数。</p>
+<p><code>a = (1,)</code>表示只有一个元素的tuple.</p>
+<p>当然如果tuple中包含list那么这个list是可变的,因此tuple中保存的只是list的指针，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a = (&apos;A&apos;,[&apos;B&apos;,&apos;C&apos;])</div><div class="line">a[1][1] = &apos;D&apos;</div><div class="line">(&apos;A&apos;,[&apos;D&apos;,&apos;C&apos;])</div></pre></td></tr></table></figure>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>本篇主要讲了计算机的基础知识–编码，看过这篇文章之后，以后遇到乱码的问题，相信你不用再百度了。 其次就是Python中常用到的基础类型和集合，玩一玩吧…少年</p>
 ]]></content>
     </entry>
     
@@ -453,6 +469,24 @@
     </entry>
     
     <entry>
+      <title><![CDATA[憧憬]]></title>
+      <url>https://xiyoumc.github.com/2016/09/07/Home/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>时常在憧憬未来 、未来 家的样子</p>
+</blockquote>
+<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/home.jpg?raw=true" alt="zls"></p>
+<a id="more"></a>
+<blockquote>
+<ul>
+<li>一直都想有个家、有自己的妻儿</li>
+<li>有一个可以依靠、也可以安心的家</li>
+<li>So 让我们一起努力。有一天你会是我的妻子，我会是你的丈夫，你我会是孩子的父母。</li>
+</ul>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Alison]]></title>
       <url>https://xiyoumc.github.com/2016/09/07/Alison/</url>
       <content type="html"><![CDATA[<blockquote>
@@ -476,39 +510,12 @@
     </entry>
     
     <entry>
-      <title><![CDATA[憧憬]]></title>
-      <url>https://xiyoumc.github.com/2016/09/07/Home/</url>
-      <content type="html"><![CDATA[<blockquote>
-<p>时常在憧憬未来 、未来 家的样子</p>
-</blockquote>
-<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/home.jpg?raw=true" alt="zls"></p>
-<a id="more"></a>
-<blockquote>
-<ul>
-<li>一直都想有个家、有自己的妻儿</li>
-<li>有一个可以依靠、也可以安心的家</li>
-<li>So 让我们一起努力。有一天你会是我的妻子，我会是你的丈夫，你我会是孩子的父母。</li>
-</ul>
-</blockquote>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[You are My Sunshine.]]></title>
       <url>https://xiyoumc.github.com/2016/09/02/Sun/</url>
       <content type="html"><![CDATA[<p>我喜欢温暖、你恰好是太阳<br><a id="more"></a></p>
 <blockquote>
 <p>时间流逝<br>忙碌的项目开发，无数的接口，无数的调试<br>Github也好久没更新<br>不过。。。<br>不过。。。最开心 幸福的事是拥有了你<br>我喜欢温暖、你恰好是太阳</p>
 </blockquote>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[平淡]]></title>
-      <url>https://xiyoumc.github.com/2016/08/18/822/</url>
-      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/lover.jpg?raw=true" alt="zls"></p>
-<p>少年，我爱上你了<br><a id="more"></a></p>
-<p>&lt;告白气球&gt;</p>
 ]]></content>
     </entry>
     
@@ -545,6 +552,15 @@
 <li><p>古人说“相敬如宾”，虽是老生常谈，却是能够维系长久爱情的真正智慧。如果想避免吵架、误解，或者是想消融不断的期待、要求，在遇到诸如此类的问题时，不妨以尊重的心态，心悦诚服、欢欢喜喜、平平静静去面对、解决，心中的纠结，其实在当下都能即得化解。爱情里的关系，并不是在互相执着、纠缠和占有，而是互相的贡献、成长和学习。能够互相关怀、照顾、包容，去彼此计较、相互猜疑，多沟通，并相互信赖，才能成为菩萨伴侣。</p>
 </li>
 </ul>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[平淡]]></title>
+      <url>https://xiyoumc.github.com/2016/08/18/822/</url>
+      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/lover.jpg?raw=true" alt="zls"></p>
+<p>少年，我爱上你了<br><a id="more"></a></p>
+<p>&lt;告白气球&gt;</p>
 ]]></content>
     </entry>
     

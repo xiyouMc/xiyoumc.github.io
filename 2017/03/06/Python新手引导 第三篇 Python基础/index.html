@@ -84,18 +84,18 @@
 
 
 
-<meta name="description" content="Python新手引导 第三篇 Python基础
+<meta name="description" content="Python新手引导 第三篇-Python基础和字符编码
 ###阅读本文需要4.66分钟">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python新手引导第二篇">
 <meta property="og:url" content="https://xiyoumc.github.com/2017/03/06/Python新手引导 第三篇 Python基础/index.html">
 <meta property="og:site_name" content="XiyouMc">
-<meta property="og:description" content="Python新手引导 第三篇 Python基础
+<meta property="og:description" content="Python新手引导 第三篇-Python基础和字符编码
 ###阅读本文需要4.66分钟">
-<meta property="og:updated_time" content="2017-03-06T13:32:11.000Z">
+<meta property="og:updated_time" content="2017-03-07T13:03:40.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python新手引导第二篇">
-<meta name="twitter:description" content="Python新手引导 第三篇 Python基础
+<meta name="twitter:description" content="Python新手引导 第三篇-Python基础和字符编码
 ###阅读本文需要4.66分钟">
 
 
@@ -356,17 +356,17 @@
       
 
       
-        <h1 id="Python新手引导-第三篇-Python基础"><a href="#Python新手引导-第三篇-Python基础" class="headerlink" title="Python新手引导 第三篇 Python基础"></a>Python新手引导 第三篇 Python基础</h1><blockquote>
+        <h1 id="Python新手引导-第三篇-Python基础和字符编码"><a href="#Python新手引导-第三篇-Python基础和字符编码" class="headerlink" title="Python新手引导 第三篇-Python基础和字符编码"></a>Python新手引导 第三篇-Python基础和字符编码</h1><blockquote>
 <p>###阅读本文需要4.66分钟</p>
 </blockquote>
 <a id="more"></a>
 <p>有其他计算机语言基础的同学，阅读本篇基础部分建议1到2分钟。</p>
 <ol>
-<li>基础类型和变量</li>
+<li>基础类型、变量和字符编码</li>
 <li>list 和 tuple</li>
 </ol>
 <h2 id="第一、基础类型、变量和字符编码"><a href="#第一、基础类型、变量和字符编码" class="headerlink" title="第一、基础类型、变量和字符编码"></a>第一、基础类型、变量和字符编码</h2><blockquote>
-<p>计算机能处理的数据类型有很多，包括文本、图形、音频、视频等等的。上层语言对其不同的数据，定义了各自不同的数据类型。如Java的int、String、boolean，JS的Var等等的。Python也不例外：</p>
+<p>计算机能处理的数据类型有很多，包括文本、图形、音频、视频等等的。上层语言对其不同的数据，定义了各自不同的数据类型。如Java的int、String、boolean，JS的var等等的。Python也不例外：</p>
 </blockquote>
 <h3 id="1-1-基础类型"><a href="#1-1-基础类型" class="headerlink" title="1.1 基础类型"></a>1.1 基础类型</h3><ol>
 <li><p>整数</p>
@@ -379,13 +379,13 @@
 <p>   ‘ 或者 “括起来的任意文本</p>
 </li>
 <li><p>布尔值</p>
-<p> True和False, 同时可以使用and or not来运算</p>
+<p> True和False, 同时可以使用<code>and</code> <code>or</code> <code>not</code>来运算</p>
 </li>
 <li><p>空值 Python中使用<code>None</code>来表示空值，其不是<code>0</code>的意义</p>
 </li>
 </ol>
 <h3 id="1-2-变量"><a href="#1-2-变量" class="headerlink" title="1.2 变量"></a>1.2 变量</h3><blockquote>
-<p>变量在程序中就是用一个变量名标书，且区分大小写，可用<code>数字</code>和<code>_</code>表示，并不能以数组开始</p>
+<p>变量在程序中就是用一个变量名标书，且区分大小写，可用<code>数字</code>和<code>_</code>表示，并不能以数字开始</p>
 </blockquote>
 <h4 id="a-‘aaa’"><a href="#a-‘aaa’" class="headerlink" title="a = ‘aaa’"></a>a = ‘aaa’</h4><ul>
 <li>Python解释器会在内存中创建<code>aaa</code>的字符串</li>
@@ -414,7 +414,7 @@
 </tr>
 </tbody>
 </table>
-<p> 因此你会发现如果你的文本全是英文的，如果使用Unicode编码的话，那么需要多一倍的存储空间，导致存储和传输上十分低效率。</p>
+<p> 因此你会发现如果你的文本全是英文的，使用Unicode编码的话，那么需要多一倍的存储空间，导致存储和传输上十分低效率。</p>
 <p><code>UTF_8</code>应景而生，是一种<code>可变长编码</code>.<code>UTF_8</code>编码把一个Unicode字符根据不同的数组大小编码成1-6个字节，常用的英文被编码成1个字节，汉字使用3个字节。如果要传输的文本包含大量的英文字符，用UTF-8编码能节省很多空间：</p>
 <table>
 <thead>
@@ -467,8 +467,24 @@
 <p>由于Python源代码也是一个文本文件，所以，当你的源代码中包含中文的时候，在保存源代码时，就需要务必指定保存为UTF-8编码。当Python解释器读取源代码时，为了让它按UTF-8编码读取，我们通常在文件开头写上这两行：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python3</span></div><div class="line"><span class="comment"># -*- coding: utf-8 -*-</span></div></pre></td></tr></table></figure>
 <h2 id="第二、List和tuple"><a href="#第二、List和tuple" class="headerlink" title="第二、List和tuple"></a>第二、List和tuple</h2><blockquote>
-<p>集合在每个语言中都有，当然Python也不例外</p>
+<p>集合在每个语言中都有，当然Python也不例外。</p>
 </blockquote>
+<h3 id="2-1-List"><a href="#2-1-List" class="headerlink" title="2.1 List"></a>2.1 List</h3><p>Python内置的列表数据类型。一种有序的集合，可随时添加和删除其中元素<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">name = [&apos;Mark&apos;,&apos;xiyouMc&apos;,&apos;Alison&apos;]</div></pre></td></tr></table></figure></p>
+<p>访问方式可直接通过索引: <code>name[0]</code> <code>name[1]</code> 当然索引是从<code>0</code>开始到<code>len(name) - 1</code>  区别去其他语言，Python可以通过 <code>name[-1]</code>访问到最后一个元素，一次类推 <code>-2</code>可以访问到倒数第二个。</p>
+<p>list是一个可变的有序表，所以可以在list的末尾追加元素: <code>name.append(&#39;Ali&#39;)</code></p>
+<p>同样也可以插入元素, <code>name.insert(1,&#39;Baidu&#39;)</code></p>
+<p>删除尾部元素使用<code>pop()</code>,并可以指定删除某个元素 <code>pop(1)</code></p>
+<p>赋值（替换）： <code>name[1] = &#39;Tencent&#39;</code></p>
+<p>多层List：<code>s = [&#39;Mark&#39;,&#39;java&#39;,[&#39;nlp&#39;,&#39;php&#39;]]</code>,这样通过 <code>s[2]</code>拿到的也是一个list. 当然要拿到 <code>nlp</code>的话，直接<code>s[2][1]</code>即可</p>
+<h3 id="2-2-tuple"><a href="#2-2-tuple" class="headerlink" title="2.2 tuple"></a>2.2 tuple</h3><blockquote>
+<p>和List一样，tuple也是一个有序列表。唯一和list有区别的就是 tuple一旦被初始化就<code>不能修改</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">name = (&apos;Mark&apos;,&apos;Alison&apos;,&apos;xiyouMc&apos;)</div></pre></td></tr></table></figure>
+<p>即tuple没有 <code>append</code> <code>insert</code>函数。</p>
+<p><code>a = (1,)</code>表示只有一个元素的tuple.</p>
+<p>当然如果tuple中包含list那么这个list是可变的,因此tuple中保存的只是list的指针，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a = (&apos;A&apos;,[&apos;B&apos;,&apos;C&apos;])</div><div class="line">a[1][1] = &apos;D&apos;</div><div class="line">(&apos;A&apos;,[&apos;D&apos;,&apos;C&apos;])</div></pre></td></tr></table></figure>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>本篇主要讲了计算机的基础知识–编码，看过这篇文章之后，以后遇到乱码的问题，相信你不用再百度了。 其次就是Python中常用到的基础类型和集合，玩一玩吧…少年</p>
 
       
     </div>
@@ -680,7 +696,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python新手引导-第三篇-Python基础"><span class="nav-number">1.</span> <span class="nav-text">Python新手引导 第三篇 Python基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一、基础类型、变量和字符编码"><span class="nav-number">1.1.</span> <span class="nav-text">第一、基础类型、变量和字符编码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-基础类型"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1 基础类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-变量"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2 变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-‘aaa’"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">a = ‘aaa’</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-字符编码"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.3 字符编码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二、List和tuple"><span class="nav-number">1.2.</span> <span class="nav-text">第二、List和tuple</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python新手引导-第三篇-Python基础和字符编码"><span class="nav-number">1.</span> <span class="nav-text">Python新手引导 第三篇-Python基础和字符编码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一、基础类型、变量和字符编码"><span class="nav-number">1.1.</span> <span class="nav-text">第一、基础类型、变量和字符编码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-基础类型"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1 基础类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-变量"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2 变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-‘aaa’"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">a = ‘aaa’</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-字符编码"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.3 字符编码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二、List和tuple"><span class="nav-number">1.2.</span> <span class="nav-text">第二、List和tuple</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-List"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1 List</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-tuple"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2 tuple</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">1.3.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></div>
             
           </div>
         </section>
@@ -1042,7 +1058,7 @@
   }
   $(function () {
     var Counter = AV.Object.extend("Counter");
-    alert($('.leancloud_visitors').length)
+    alert(Counter)
     if ($('.leancloud_visitors').length == 1) {
       addCount(Counter);
     } else if ($('.post-title-link').length > 1) {
