@@ -464,8 +464,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/08/18/822/" rel="prev" title="平淡">
-                平淡 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/08/18/Lover/" rel="prev" title="爱情观">
+                爱情观 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -922,6 +922,7 @@
       var url = $(this).attr("id").trim();
       query.equalTo("url", url);
       query.find({
+        alert(results)
         success: function (results) {
           if (results.length == 0) {
             var content = '0 ' + $(document.getElementById(url)).text();
@@ -949,6 +950,7 @@
     var query = new AV.Query(Counter);
     query.equalTo("url", url);
     query.find({
+      alert(results)
       success: function (results) {
         if (results.length > 0) {
           var counter = results[0];
@@ -988,7 +990,6 @@
   }
   $(function () {
     var Counter = AV.Object.extend("Counter");
-    alert(Counter)
     if ($('.leancloud_visitors').length == 1) {
       addCount(Counter);
     } else if ($('.post-title-link').length > 1) {

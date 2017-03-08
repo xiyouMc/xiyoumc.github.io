@@ -977,6 +977,7 @@ limitations under the License.
       var url = $(this).attr("id").trim();
       query.equalTo("url", url);
       query.find({
+        alert(results)
         success: function (results) {
           if (results.length == 0) {
             var content = '0 ' + $(document.getElementById(url)).text();
@@ -1004,6 +1005,7 @@ limitations under the License.
     var query = new AV.Query(Counter);
     query.equalTo("url", url);
     query.find({
+      alert(results)
       success: function (results) {
         if (results.length > 0) {
           var counter = results[0];
@@ -1043,7 +1045,6 @@ limitations under the License.
   }
   $(function () {
     var Counter = AV.Object.extend("Counter");
-    alert(Counter)
     if ($('.leancloud_visitors').length == 1) {
       addCount(Counter);
     } else if ($('.post-title-link').length > 1) {
