@@ -408,9 +408,9 @@
 
       <h1 class="post-title">
         
-            <a class="post-title-link" href="/2016/09/07/Home/" itemprop="url">
+            <a class="post-title-link" href="/2016/09/07/Alison/" itemprop="url">
               
-                <span itemprop="name">憧憬</span>
+                <span itemprop="name">Alison</span>
               
             </a>
         
@@ -445,9 +445,9 @@
 
       <h1 class="post-title">
         
-            <a class="post-title-link" href="/2016/09/07/Alison/" itemprop="url">
+            <a class="post-title-link" href="/2016/09/07/Home/" itemprop="url">
               
-                <span itemprop="name">Alison</span>
+                <span itemprop="name">憧憬</span>
               
             </a>
         
@@ -1077,6 +1077,7 @@
               $(document.getElementById(url)).text(content);
             },
             error: function (counter, error) {
+              alert(error.message)
               console.log('Failed to save Visitor num, with error message: ' + error.message);
             }
           });

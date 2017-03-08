@@ -967,6 +967,7 @@
               $(document.getElementById(url)).text(content);
             },
             error: function (counter, error) {
+              alert(error.message)
               console.log('Failed to save Visitor num, with error message: ' + error.message);
             }
           });
