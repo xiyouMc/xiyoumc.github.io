@@ -1,0 +1,1030 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Mark And Alison`s Home" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="https://avatars1.githubusercontent.com/u/8032883?v=3&s=460?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Python新手引导 第四篇
+###阅读本文需要4.66分钟">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python新手引导第二篇">
+<meta property="og:url" content="https://xiyoumc.github.com/2017/03/09/Python新手引导 第四篇/index.html">
+<meta property="og:site_name" content="XiyouMc">
+<meta property="og:description" content="Python新手引导 第四篇
+###阅读本文需要4.66分钟">
+<meta property="og:updated_time" content="2017-03-10T12:56:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python新手引导第二篇">
+<meta name="twitter:description" content="Python新手引导 第四篇
+###阅读本文需要4.66分钟">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://xiyoumc.github.com/2017/03/09/Python新手引导 第四篇/"/>
+
+  <title> Python新手引导第二篇 | XiyouMc </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">XiyouMc</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Python新手引导第二篇
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-09T16:56:12+08:00" content="2017-03-09">
+              2017-03-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Python新手引导/" itemprop="url" rel="index">
+                    <span itemprop="name">Python新手引导</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <a href="/2017/03/09/Python新手引导 第四篇/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/09/Python新手引导 第四篇/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/2017/03/09/Python新手引导 第四篇/" class="leancloud_visitors" data-flag-title="Python新手引导第二篇">
+                  阅读次数
+            </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Python新手引导-第四篇"><a href="#Python新手引导-第四篇" class="headerlink" title="Python新手引导 第四篇"></a>Python新手引导 第四篇</h1><blockquote>
+<p>###阅读本文需要4.66分钟</p>
+</blockquote>
+<a id="more"></a>
+<p>之后的引导将以例子入手，作为一个程序员，我相信你从例子入手的话会更快的掌握一门语言。</p>
+<ol>
+<li>条件判断、循环、dict和set</li>
+<li>函数</li>
+<li>列表生成式</li>
+</ol>
+<h2 id="第一、条件判断、循环、dict和set"><a href="#第一、条件判断、循环、dict和set" class="headerlink" title="第一、条件判断、循环、dict和set"></a>第一、条件判断、循环、dict和set</h2><h3 id="1-1-条件判断"><a href="#1-1-条件判断" class="headerlink" title="1.1 条件判断"></a>1.1 条件判断</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#coding:utf-8</span></div><div class="line">age = input(<span class="string">'input num:'</span>)</div><div class="line"><span class="keyword">if</span> age &gt; <span class="number">18</span>:</div><div class="line">	print(<span class="string">'age 大于 18'</span>)</div><div class="line"><span class="keyword">elif</span> age &gt; <span class="number">11</span> <span class="keyword">and</span> age &lt; <span class="number">18</span>:</div><div class="line">	print(<span class="string">'age 大于11 并小于18'</span>)</div><div class="line"><span class="keyword">else</span> :</div><div class="line">	print(<span class="string">'其他'</span>)</div></pre></td></tr></table></figure>
+<p>如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> &lt;条件判断<span class="number">1</span>&gt;:</div><div class="line">    &lt;执行<span class="number">1</span>&gt;</div><div class="line"><span class="keyword">elif</span> &lt;条件判断<span class="number">2</span>&gt;:</div><div class="line">    &lt;执行<span class="number">2</span>&gt;</div><div class="line"><span class="keyword">elif</span> &lt;条件判断<span class="number">3</span>&gt;:</div><div class="line">    &lt;执行<span class="number">3</span>&gt;</div><div class="line"><span class="keyword">else</span>:</div><div class="line">    &lt;执行<span class="number">4</span>&gt;</div></pre></td></tr></table></figure>
+<p>其中<code>input()</code>:<br>2.x 下 <code>input</code>读取的内容和输入的一样的。 但在3.x以上 读取的都是字符串，这一点大家要和<code>raw_input()</code>做区分</p>
+<h3 id="1-2-循环"><a href="#1-2-循环" class="headerlink" title="1.2 循环"></a>1.2 循环</h3><h4 id="1-2-1-for-in"><a href="#1-2-1-for-in" class="headerlink" title="1.2.1 for in"></a>1.2.1 <code>for in</code></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">names = [<span class="string">'Mark'</span>,<span class="string">'Alison'</span>]</div><div class="line"><span class="keyword">for</span> name <span class="keyword">in</span> names:</div><div class="line">	print(name)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">for &lt;元素&gt; in &lt;集合&gt;：</div></pre></td></tr></table></figure>
+<p>在这里给大家讲一下 <code>range()</code>，rangek可以生成对应参数的n个整数。如： <code>range(100)</code>,就会生成0 到 100的整数。因此在遍历list的时候也可以这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">names = [<span class="string">'Mark'</span>,<span class="string">'Alison'</span>]</div><div class="line"><span class="keyword">for</span> index <span class="keyword">in</span> range(len(names)):</div><div class="line">	print(names[index])</div></pre></td></tr></table></figure>
+<h4 id="1-2-2-while"><a href="#1-2-2-while" class="headerlink" title="1.2.2 while"></a>1.2.2 <code>while</code></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">sum = <span class="number">0</span></div><div class="line">n = <span class="number">99</span></div><div class="line"><span class="keyword">while</span> n &gt; <span class="number">0</span>:</div><div class="line">	sum = sum + n</div><div class="line">	n = n <span class="number">-2</span></div><div class="line">print(sum)</div></pre></td></tr></table></figure>
+<h3 id="1-3-集合"><a href="#1-3-集合" class="headerlink" title="1.3 集合"></a>1.3 集合</h3><h4 id="1-3-1-dict"><a href="#1-3-1-dict" class="headerlink" title="1.3.1 dict"></a>1.3.1 dict</h4><blockquote>
+<p>Python中内置的字典。在其他语言中是 map之类的 (key-value)</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>names = &#123;<span class="string">'Mark'</span>:<span class="string">'18'</span>,<span class="string">'Alison'</span>:<span class="string">'18'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>names</div><div class="line">&#123;<span class="string">'Alison'</span>: <span class="string">'18'</span>, <span class="string">'Mark'</span>: <span class="string">'18'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>names[<span class="string">'Mark'</span>]</div><div class="line"><span class="string">'18'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>names[<span class="string">'Jordan'</span>] = <span class="string">'88'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>names</div><div class="line">&#123;<span class="string">'Jordan'</span>: <span class="string">'88'</span>, <span class="string">'Alison'</span>: <span class="string">'18'</span>, <span class="string">'Mark'</span>: <span class="string">'18'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>names.get(<span class="string">'Ali'</span>,<span class="string">'-1'</span>) <span class="comment">#get方法可指定默认值，若这个key不存在，返回默认值</span></div><div class="line"><span class="string">'-1'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>names.pop(<span class="string">'Jordan'</span>) <span class="comment">#Pop出栈</span></div><div class="line"><span class="string">'88'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>names</div><div class="line">&#123;<span class="string">'Alison'</span>: <span class="string">'18'</span>, <span class="string">'Mark'</span>: <span class="string">'18'</span>&#125;</div></pre></td></tr></table></figure>
+<p>dict适用于需要高速查找的地方。</p>
+<h4 id="1-3-2-set"><a href="#1-3-2-set" class="headerlink" title="1.3.2 set"></a>1.3.2 set</h4><blockquote>
+<p>一组不包含value的  key集合，并且不能重复。入参是 list</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>a = set([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a</div><div class="line">set([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a.add(<span class="number">5</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a</div><div class="line">set([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>])</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a.remove(<span class="number">5</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a</div><div class="line">set([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</div></pre></td></tr></table></figure>
+<p>切记关于<code>key</code>的都是不可变的。因为存储的时候，是通过计算key的hash来做的。</p>
+<h2 id="第二、函数"><a href="#第二、函数" class="headerlink" title="第二、函数"></a>第二、函数</h2><h3 id="2-1-内置函数"><a href="#2-1-内置函数" class="headerlink" title="2.1 内置函数"></a>2.1 内置函数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>abs(<span class="number">1.2</span>) <span class="comment"># 求绝对值</span></div><div class="line"><span class="number">1.2</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>abs(<span class="number">-1</span>)</div><div class="line"><span class="number">1</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>int(<span class="string">'1'</span>) <span class="comment"># 将str的转换为int</span></div><div class="line"><span class="number">1</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>str(<span class="number">1</span>) <span class="comment"># 将int转换为str</span></div><div class="line"><span class="string">'1'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>bool(<span class="number">1</span>) <span class="comment"># 转换bool值</span></div><div class="line"><span class="keyword">True</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>bool(<span class="string">''</span>)</div><div class="line"><span class="keyword">False</span></div></pre></td></tr></table></figure>
+<h3 id="2-2-定义函数"><a href="#2-2-定义函数" class="headerlink" title="2.2 定义函数"></a>2.2 定义函数</h3><blockquote>
+<p>Python中使用<code>def</code>定义函数，并可通过 <code>return</code>来返回值</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">myAbs</span><span class="params">(x)</span>:</span></div><div class="line"><span class="meta">... </span>    <span class="keyword">if</span> x &gt; <span class="number">0</span>:</div><div class="line"><span class="meta">... </span>            <span class="keyword">return</span> x</div><div class="line"><span class="meta">... </span>    <span class="keyword">else</span>:</div><div class="line"><span class="meta">... </span>            <span class="keyword">return</span> -x</div><div class="line">...</div><div class="line">&gt;&gt;&gt;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>myAbs(<span class="number">1</span>)</div><div class="line"><span class="number">1</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>myAbs(<span class="number">-1</span>)</div><div class="line"><span class="number">1</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>myAbs(<span class="number">-2</span>)</div><div class="line"><span class="number">2</span></div></pre></td></tr></table></figure>
+<p>其中 <code>return</code>表示函数执行的终止，并将结果返回。<br>需要注意的是 <code>return None</code>可直接用 <code>return</code>表示</p>
+<h4 id="2-2-1-空函数"><a href="#2-2-1-空函数" class="headerlink" title="2.2.1 空函数"></a>2.2.1 空函数</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">nop</span><span class="params">()</span>:</span></div><div class="line">	<span class="keyword">pass</span> <span class="comment">#可作为占位符，表示还没想好写什么</span></div></pre></td></tr></table></figure>
+<h4 id="2-2-2-返回多个值"><a href="#2-2-2-返回多个值" class="headerlink" title="2.2.2 返回多个值"></a>2.2.2 返回多个值</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fun</span><span class="params">()</span>:</span></div><div class="line">	<span class="keyword">return</span> <span class="string">'1'</span>,<span class="string">'2'</span></div><div class="line">a,b = fun()</div></pre></td></tr></table></figure>
+<p>这个还是比较方便的。 不用我们再继续封装起来返回，唯一恶心的就是得约定好规则。</p>
+<p>其实这返回不是两个值，而是一个tuple，这个得理解下</p>
+<h4 id="2-2-3-默认参数"><a href="#2-2-3-默认参数" class="headerlink" title="2.2.3 默认参数"></a>2.2.3 默认参数</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">def fun(a,b=2)</div><div class="line">	print a,b</div></pre></td></tr></table></figure>
+<p>其中b的默认值是2</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">def fun(L=[])</div><div class="line">	L.append('End')</div><div class="line">	return L</div></pre></td></tr></table></figure>
+<p>传一个list，并添加 <code>End</code>再返回。其中要注意的是，python会记住append的元素。意思就是：如果你多次调用 fun() ，会发现 之后的元素都是 <code>End</code></p>
+<p>因此这种传递List的方式如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fun</span><span class="params">(L=None)</span>:</span></div><div class="line">	<span class="keyword">if</span> L <span class="keyword">is</span> <span class="keyword">None</span>:</div><div class="line">		L = []</div><div class="line">	L.append(<span class="string">'End'</span>)</div><div class="line">	<span class="keyword">return</span> L</div></pre></td></tr></table></figure>
+<h4 id="2-2-4-可变参数，使用"><a href="#2-2-4-可变参数，使用" class="headerlink" title="2.2.4 可变参数，使用 *"></a>2.2.4 可变参数，使用 <code>*</code></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">nums = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">addNum</span><span class="params">(*n)</span>:</span></div><div class="line">	sum = <span class="number">0</span></div><div class="line">	<span class="keyword">for</span> num <span class="keyword">in</span> n:</div><div class="line">		sum +=num</div><div class="line">	<span class="keyword">return</span> sum</div><div class="line">addNum(*nums)</div></pre></td></tr></table></figure>
+<p>*nums表示把nums这个list的所有元素作为可变参数传进去。这种写法相当有用，而且很常见。</p>
+<h4 id="2-2-5-关键字参数"><a href="#2-2-5-关键字参数" class="headerlink" title="2.2.5 关键字参数 **"></a>2.2.5 关键字参数 <code>**</code></h4><p>表示允许传入0个或者任意个含参数名的参数，这些关键字参数在函数内部自动组装为一个dict.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">person</span><span class="params">(name, age, **kw)</span>:</span></div><div class="line">    print(<span class="string">'name:'</span>, name, <span class="string">'age:'</span>, age, <span class="string">'other:'</span>, kw)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>person(<span class="string">'Michael'</span>, <span class="number">30</span>)</div><div class="line">name: Michael age: <span class="number">30</span> other: &#123;&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>person(<span class="string">'Bob'</span>, <span class="number">35</span>, city=<span class="string">'Beijing'</span>)</div><div class="line">name: Bob age: <span class="number">35</span> other: &#123;<span class="string">'city'</span>: <span class="string">'Beijing'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>person(<span class="string">'Adam'</span>, <span class="number">45</span>, gender=<span class="string">'M'</span>, job=<span class="string">'Engineer'</span>)</div><div class="line">name: Adam age: <span class="number">45</span> other: &#123;<span class="string">'gender'</span>: <span class="string">'M'</span>, <span class="string">'job'</span>: <span class="string">'Engineer'</span>&#125;</div></pre></td></tr></table></figure>
+<p>和可变参数类似，也可以先组装出一个dict，然后，把该dict转换为关键字参数传进去：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>extra = &#123;<span class="string">'city'</span>: <span class="string">'Beijing'</span>, <span class="string">'job'</span>: <span class="string">'Engineer'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>person(<span class="string">'Jack'</span>, <span class="number">24</span>, city=extra[<span class="string">'city'</span>], job=extra[<span class="string">'job'</span>])</div><div class="line">name: Jack age: <span class="number">24</span> other: &#123;<span class="string">'city'</span>: <span class="string">'Beijing'</span>, <span class="string">'job'</span>: <span class="string">'Engineer'</span>&#125;</div></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>extra = &#123;<span class="string">'city'</span>: <span class="string">'Beijing'</span>, <span class="string">'job'</span>: <span class="string">'Engineer'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>person(<span class="string">'Jack'</span>, <span class="number">24</span>, **extra)</div><div class="line">name: Jack age: <span class="number">24</span> other: &#123;<span class="string">'city'</span>: <span class="string">'Beijing'</span>, <span class="string">'job'</span>: <span class="string">'Engineer'</span>&#125;</div></pre></td></tr></table></figure>
+<h4 id="2-2-6-命名关键字参数"><a href="#2-2-6-命名关键字参数" class="headerlink" title="2.2.6 命名关键字参数"></a>2.2.6 命名关键字参数</h4><p>对于关键字参数，函数的调用者可以传入任意不受限制的关键字参数。至于到底传入了哪些，就需要在函数内部通过kw检查。</p>
+<p>仍以person()函数为例，我们希望检查是否有city和job参数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">person</span><span class="params">(name, age, **kw)</span>:</span></div><div class="line">    <span class="keyword">if</span> <span class="string">'city'</span> <span class="keyword">in</span> kw:</div><div class="line">        <span class="comment"># 有city参数</span></div><div class="line">        <span class="keyword">pass</span></div><div class="line">    <span class="keyword">if</span> <span class="string">'job'</span> <span class="keyword">in</span> kw:</div><div class="line">        <span class="comment"># 有job参数</span></div><div class="line">        <span class="keyword">pass</span></div><div class="line">    print(<span class="string">'name:'</span>, name, <span class="string">'age:'</span>, age, <span class="string">'other:'</span>, kw)</div></pre></td></tr></table></figure>
+<p>但是调用者仍可以传入不受限制的关键字参数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>person(<span class="string">'Jack'</span>, <span class="number">24</span>, city=<span class="string">'Beijing'</span>, addr=<span class="string">'Chaoyang'</span>, zipcode=<span class="number">123456</span>)</div></pre></td></tr></table></figure>
+<p>如果要限制关键字参数的名字，就可以用命名关键字参数，例如，只接收city和job作为关键字参数。这种方式定义的函数如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">person</span><span class="params">(name, age, *, city, job)</span>:</span></div><div class="line">    print(name, age, city, job)</div></pre></td></tr></table></figure>
+<p>和关键字参数<em>*kw不同，命名关键字参数需要一个特殊分隔符</em>，*后面的参数被视为命名关键字参数。</p>
+<p>调用方式如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>person(<span class="string">'Mark'</span>, <span class="number">24</span>, city=<span class="string">'hangzhou'</span>, job=<span class="string">'Engineer'</span>)</div><div class="line">Mark <span class="number">24</span> hangzhou Engineer</div></pre></td></tr></table></figure>
+<h2 id="第三、列表生成式"><a href="#第三、列表生成式" class="headerlink" title="第三、列表生成式"></a>第三、列表生成式</h2><blockquote>
+<p>List Comprehensions，是Python内置的非常简单却强大的可以用来创建list的生成式</p>
+</blockquote>
+<p>举例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>[x*x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">11</span>)]</div><div class="line">[<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>, <span class="number">36</span>, <span class="number">49</span>, <span class="number">64</span>, <span class="number">81</span>, <span class="number">100</span>]</div><div class="line">&gt;&gt;&gt;</div><div class="line">&gt;&gt;&gt;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>[m + n <span class="keyword">for</span> m <span class="keyword">in</span> <span class="string">'ABC'</span> <span class="keyword">for</span> n <span class="keyword">in</span> <span class="string">'XYZ'</span>]</div><div class="line">[<span class="string">'AX'</span>, <span class="string">'AY'</span>, <span class="string">'AZ'</span>, <span class="string">'BX'</span>, <span class="string">'BY'</span>, <span class="string">'BZ'</span>, <span class="string">'CX'</span>, <span class="string">'CY'</span>, <span class="string">'CZ'</span>]</div><div class="line">&gt;&gt;&gt;</div><div class="line">&gt;&gt;&gt;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>d = &#123;<span class="string">'x'</span>: <span class="string">'A'</span>, <span class="string">'y'</span>: <span class="string">'B'</span>, <span class="string">'z'</span>: <span class="string">'C'</span> &#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> k, v <span class="keyword">in</span> d.items():</div><div class="line"><span class="meta">... </span>    print(k, <span class="string">'='</span>, v)</div><div class="line">...</div><div class="line">y = B</div><div class="line">x = A</div><div class="line">z = C</div></pre></td></tr></table></figure>
+<h2 id="第四、生成器-generator"><a href="#第四、生成器-generator" class="headerlink" title="第四、生成器 generator"></a>第四、生成器 generator</h2><blockquote>
+<p>如名字，其就是一个生成我们所需数据的容器，而不像 列表生成式，计算出所有数据。因此节省了空间，也解决了时间</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>g = (x * x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">10</span>))</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>g</div><div class="line">&lt;generator object &lt;genexpr&gt; at <span class="number">0x1022ef630</span>&gt;</div></pre></td></tr></table></figure>
+<p> 遍历: next(g)</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>g = (x * x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">10</span>))</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> n <span class="keyword">in</span> g:</div><div class="line"><span class="meta">... </span>    print(n)</div><div class="line"><span class="meta">... </span></div><div class="line"><span class="number">0</span></div><div class="line"><span class="number">1</span></div><div class="line"><span class="number">4</span></div><div class="line"><span class="number">9</span></div><div class="line"><span class="number">16</span></div><div class="line"><span class="number">25</span></div><div class="line"><span class="number">36</span></div><div class="line"><span class="number">49</span></div><div class="line"><span class="number">64</span></div><div class="line"><span class="number">81</span></div></pre></td></tr></table></figure>
+<p> <code>yeild</code>可中断当前操作，使函数成为 生成器 而不是普通函数</p>
+<p>举例： 杨慧三角</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">         <span class="number">1</span></div><div class="line">        <span class="number">1</span>   <span class="number">1</span></div><div class="line">      <span class="number">1</span>   <span class="number">2</span>   <span class="number">1</span></div><div class="line">    <span class="number">1</span>   <span class="number">3</span>   <span class="number">3</span>   <span class="number">1</span></div><div class="line">  <span class="number">1</span>   <span class="number">4</span>   <span class="number">6</span>   <span class="number">4</span>   <span class="number">1</span></div><div class="line"><span class="number">1</span>   <span class="number">5</span>   <span class="number">10</span>  <span class="number">10</span>  <span class="number">5</span>   <span class="number">1</span></div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">yanghu</span><span class="params">(n)</span>:</span></div><div class="line">	L=[<span class="number">1</span>]</div><div class="line">	<span class="keyword">while</span> <span class="number">1</span>:</div><div class="line">		yeild L</div><div class="line">		L = [L[x] + L[x+<span class="number">1</span>] <span class="keyword">for</span> x <span class="keyword">in</span> range(len(L) <span class="number">-1</span>)]</div><div class="line">		L.insert(<span class="number">0</span>,<span class="number">1</span>)</div><div class="line">		L.append(<span class="number">1</span>)</div><div class="line">		<span class="keyword">if</span> len(L)&gt;n:</div><div class="line">			<span class="keyword">break</span></div><div class="line"><span class="keyword">for</span> n <span class="keyword">in</span> yanghu(<span class="number">10</span>):</div><div class="line">	<span class="keyword">print</span> n</div></pre></td></tr></table></figure>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>本篇用一些简单的例子来讲解了下基础知识。 多动手练练哦</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/path/to/wechat.png" alt="xiyouMc WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/path/to/alipay.jpg" alt="xiyouMc Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/06/Python新手引导 第三篇 Python基础/" rel="next" title="Python新手引导第二篇">
+                <i class="fa fa-chevron-left"></i> Python新手引导第二篇
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/16/Google Hacking --你真的会用Google吗？/" rel="prev" title="Google Hacking --你真的会用Google吗？">
+                Google Hacking --你真的会用Google吗？ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+
+      
+<span id="/" class="leancloud_visitors" data-flag-title="">
+         阅读次数
+        </span>
+
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/03/09/Python新手引导 第四篇/"
+           data-title="Python新手引导第二篇" data-url="https://xiyoumc.github.com/2017/03/09/Python新手引导 第四篇/">
+      </div>
+    
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/8032883?v=3&s=460 xiyouMc"
+               alt="xiyouMc" />
+          <p class="site-author-name" itemprop="name">xiyouMc</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">22</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/xiyouMc" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python新手引导-第四篇"><span class="nav-number">1.</span> <span class="nav-text">Python新手引导 第四篇</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一、条件判断、循环、dict和set"><span class="nav-number">1.1.</span> <span class="nav-text">第一、条件判断、循环、dict和set</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-条件判断"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1 条件判断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-循环"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2 循环</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-1-for-in"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">1.2.1 for in</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-2-while"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">1.2.2 while</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-集合"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.3 集合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-1-dict"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">1.3.1 dict</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-2-set"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">1.3.2 set</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二、函数"><span class="nav-number">1.2.</span> <span class="nav-text">第二、函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-内置函数"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1 内置函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-定义函数"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2 定义函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-空函数"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">2.2.1 空函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-返回多个值"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">2.2.2 返回多个值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-3-默认参数"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">2.2.3 默认参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-4-可变参数，使用"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">2.2.4 可变参数，使用 *</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-5-关键字参数"><span class="nav-number">1.2.2.5.</span> <span class="nav-text">2.2.5 关键字参数 **</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-6-命名关键字参数"><span class="nav-number">1.2.2.6.</span> <span class="nav-text">2.2.6 命名关键字参数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三、列表生成式"><span class="nav-number">1.3.</span> <span class="nav-text">第三、列表生成式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第四、生成器-generator"><span class="nav-number">1.4.</span> <span class="nav-text">第四、生成器 generator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">1.5.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiyouMc</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+  <span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+<span id="busuanzi_container_site_uv">
+  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+</span>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xiyoumc"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+<!-- custom analytics part create by xiamo -->
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+<script>
+  AV.initialize("0pk36yKP5OUYI9dqKuPbWwii-gzGzoHsz", "HHx7adxKEzQPo7wutBmFKXDC");
+</script>
+<script>
+  function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    $(".leancloud_visitors").each(function () {
+      var url = $(this).attr("id").trim();
+      query.equalTo("url", url);
+      query.find({
+        alert(results)
+        success: function (results) {
+          if (results.length == 0) {
+            var content = '0 ' + $(document.getElementById(url)).text();
+            $(document.getElementById(url)).text(content);
+            return;
+          }
+          for (var i = 0; i < results.length; i++) {
+            var object = results[i];
+            var content = object.get('time') + ' ' + $(document.getElementById(url)).text();
+            $(document.getElementById(url)).text(content);
+          }
+        },
+        error: function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        }
+      });
+
+    });
+  }
+
+  function addCount(Counter) {
+    var Counter = AV.Object.extend("Counter");
+    url = $(".leancloud_visitors").attr('id').trim();
+    title = $(".leancloud_visitors").attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+    query.equalTo("url", url);
+    query.find({
+      alert(results)
+      success: function (results) {
+        if (results.length > 0) {
+          var counter = results[0];
+          counter.fetchWhenSave(true);
+          counter.increment("time");
+          counter.save(null, {
+            success: function (counter) {
+              var content = counter.get('time') + ' ' + $(document.getElementById(url)).text();
+              $(document.getElementById(url)).text(content);
+            },
+            error: function (counter, error) {
+              alert(error.message)
+              console.log('Failed to save Visitor num, with error message: ' + error.message);
+            }
+          });
+        } else {
+          var newcounter = new Counter();
+          newcounter.set("title", title);
+          newcounter.set("url", url);
+          newcounter.set("time", 1);
+          newcounter.save(null, {
+            success: function (newcounter) {
+              console.log("newcounter.get('time')=" + newcounter.get('time'));
+              var content = newcounter.get('time') + ' ' + $(document.getElementById(url)).text();
+              $(document.getElementById(url)).text(content);
+            },
+            error: function (newcounter, error) {
+              console.log('Failed to create');
+            }
+          });
+        }
+      },
+      error: function (error) {
+        console.log('Error:' + error.code + " " + error.message);
+      }
+    });
+  }
+  $(function () {
+    var Counter = AV.Object.extend("Counter");
+    if ($('.leancloud_visitors').length == 1) {
+      addCount(Counter);
+    } else if ($('.post-title-link').length > 1) {
+      showTime(Counter);
+    }
+  });
+</script>
+
+
+  
+
+</body>
+</html>

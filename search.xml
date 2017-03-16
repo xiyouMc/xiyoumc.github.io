@@ -4,6 +4,186 @@
   
     
     <entry>
+      <title><![CDATA[Google Hacking --你真的会用Google吗？]]></title>
+      <url>https://xiyoumc.github.com/2017/03/16/Google%20Hacking%20--%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BC%9A%E7%94%A8Google%E5%90%97%EF%BC%9F/</url>
+      <content type="html"><![CDATA[<h2 id="Google-Hacking-–你真的会用Google吗？"><a href="#Google-Hacking-–你真的会用Google吗？" class="headerlink" title="Google Hacking –你真的会用Google吗？"></a>Google Hacking –你真的会用Google吗？</h2><blockquote>
+<p>阅读本文需要6.66分钟</p>
+</blockquote>
+<a id="more"></a>
+<p>Google hacking，也叫作google dorking,其实可以如果在 Google 上搜索 ‘GoogleHack’,你会发现很多文章都是零几年的。所以已经不是陌生词了。</p>
+<ol>
+<li>简介</li>
+<li>语法</li>
+<li>具体应用和示例</li>
+</ol>
+<h2 id="0x00、简介"><a href="#0x00、简介" class="headerlink" title="0x00、简介"></a>0x00、简介</h2><blockquote>
+<p>GoogleHack,旨在使用Google搜索引擎或者其他Google应用程序通过特定语法来查找网站配置或代码中的安全漏洞</p>
+</blockquote>
+<h2 id="0x01、语法"><a href="#0x01、语法" class="headerlink" title="0x01、语法"></a>0x01、语法</h2><blockquote>
+<p>基本语法: operator:search_term</p>
+</blockquote>
+<p>其中以 all 开头的操作符在一般情况下一个查询中只能使用一次，不能与其他操作符混用.</p>
+<ul>
+<li><p>intext:</p>
+<p>  可以指定网页内容中的关键字作为搜索条件,并且冒号后面只能跟一个关键词。如 Google 搜索： <code>intext:爬虫</code> 那么将返回所有包含 “爬虫” 的网页,同时也可以与其他操作符混用。</p>
+</li>
+<li><p>allintext:</p>
+<p>  类似于 <code>intext:</code> ，能接多个关键词，不可以与其他操作符混用。</p>
+</li>
+<li><p>intitle:</p>
+<p>  搜索标题中包含关键字的网页。如 Google搜索: <code>intitle:DeveloperPython</code>,那么搜索出来的将都是标题中包含 <code>DeveloperPython</code>的网页。</p>
+</li>
+<li><p>allintitle:</p>
+<p>  同 <code>intitle:</code>,可接多个关键字，但不能和其他其他操作符混用。</p>
+</li>
+<li><p>cache:</p>
+<p>  输入URL，搜索特定网页的缓存快照，即使页面发生了变动甚至不存在了，依然能看到它的副本。</p>
+</li>
+<li><p>define:</p>
+<p>  搜索关键词的定义来源。如 Google搜索: <code>define:java</code>，那么将返回关于<code>python</code>的定义，不能与其他操作符混用</p>
+</li>
+<li><p>filetype:</p>
+<p>  搜索指定类型的文件。 如 Google搜索： <code>filetype:txt</code>，那么将返回以 <code>txt</code> 结尾的文件URL，可以与其他操作符混用.</p>
+</li>
+<li><p>ext:</p>
+<p>  同filetype</p>
+</li>
+<li><p>info:</p>
+<p>  搜索到指定URL的摘要信息和其他相关信息,如 Google搜索： <code>info:facebook.com</code>，就会放回facebook的相关信息。不能与其他操作符混用。</p>
+</li>
+<li><p>inurl:</p>
+<p>  搜索URL中包含指定关键字的网站。一般与site联合指定来找后台、管理等之类的页面，可以与其他操作符混用。</p>
+</li>
+<li><p>allinurl:</p>
+<p>  同 <code>inurl:</code>,可接多个关键字。不能与其他操作符混用。</p>
+</li>
+<li><p>link:</p>
+<p>  可搜索到链接到该URL的页面。如 Google搜索: <code>link:www.xiyoumobile.com</code> ，就会返回所有链接到该网站的页面。</p>
+</li>
+<li><p>site:</p>
+<p>  可以指定网站、域或者子域，将搜索范围缩小。</p>
+</li>
+<li><p>related:</p>
+<p>  搜索与该URL相关的页面。 如 Google搜索： ‘related:www.baidu.com’</p>
+</li>
+<li><p>inanchor:</p>
+<p>  搜索一个HTML标记中的一个链接的文本表现形式。即在链接文本中搜索冒号后面紧接的一个关键词。</p>
+<p>  至于“链接文本”，比如<br>  <code>&lt;a href=&quot;GNU/Linuxhttp://www.linux.org/&quot;&gt;GNU/Linux&lt;/a&gt;</code></p>
+<p>  以上代码中的“GNU/Linux”就是链接文本</p>
+</li>
+<li><p>stocks:</p>
+<p>  搜索指定公司的股票市场信息</p>
+</li>
+</ul>
+<h2 id="0x03、具体应用和示例"><a href="#0x03、具体应用和示例" class="headerlink" title="0x03、具体应用和示例"></a>0x03、具体应用和示例</h2><h3 id="A-基础网站爬取（site-）"><a href="#A-基础网站爬取（site-）" class="headerlink" title="A.基础网站爬取（site:）"></a>A.基础网站爬取（site:）</h3><p><code>site:</code>旨在将搜索范围缩小到指定的网站、域或子域，如下：</p>
+<p><code>site:facebook.com</code></p>
+<p> <img src="http://115.28.132.58:8080/docs/site_facebook.png" alt=""></p>
+<p> 一般我们剔除一些无意义的干扰网站，这时候就需要使用到 <code>负搜索</code>.</p>
+<p> <code>site:facebook.com -site:www.facebook.com</code><br> <img src="http://115.28.132.58:8080/docs/fu_site_facebook.png" alt=""></p>
+<p> 在这里我推荐一个终端浏览器 <code>lynx</code> ，玩Linux的应该很清楚这个。</p>
+<p> 关于 <code>lynx</code> 的简介，这里有篇文章: <a href="http://linux.ximizi.com/linux/linux3298.htm" target="_blank" rel="external">http://linux.ximizi.com/linux/linux3298.htm</a></p>
+<p> 如下，可通过 <code>lynx</code> 来代替我们手动在Google搜索引擎中做的操作：</p>
+<p> dump这些操作符的结果<br> <img src="http://115.28.132.58:8080/docs/lynx_facebook.png" alt=""></p>
+<p> 然后我们通过正则拿到我们想要的链接:</p>
+<p>  <img src="http://115.28.132.58:8080/docs/sort_facebook.png" alt=""></p>
+<h3 id="B-端口扫描"><a href="#B-端口扫描" class="headerlink" title="B. 端口扫描"></a>B. 端口扫描</h3><p> 可使用 <code>inurl:</code>结合 ‘intext:’</p>
+<p> 如下：</p>
+<p><img src="http://115.28.132.58:8080/docs/inurl_8080.png" alt=""></p>
+<p> 这里分享一个端口扫描的工具 <code>Network Query Tool</code> 简称 <code>nqt</code>.</p>
+<p> 我们通过 GoogleHack 来找到这个工具:</p>
+<p><img src="http://115.28.132.58:8080/docs/nqt.png" alt=""></p>
+<p> 打开第一个:</p>
+<p><img src="http://115.28.132.58:8080/docs/nqt_site.png" alt=""></p>
+<h2 id="0x04、总结"><a href="#0x04、总结" class="headerlink" title="0x04、总结"></a>0x04、总结</h2><p>如上面例子，我们正确的使用Google，不仅能帮我们快速找到所需要的文章、电影、各种种子、*V等等的，并且还能针对我们的渗透测试省时省力。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Python新手引导第二篇]]></title>
+      <url>https://xiyoumc.github.com/2017/03/09/Python%E6%96%B0%E6%89%8B%E5%BC%95%E5%AF%BC%20%E7%AC%AC%E5%9B%9B%E7%AF%87/</url>
+      <content type="html"><![CDATA[<h1 id="Python新手引导-第四篇"><a href="#Python新手引导-第四篇" class="headerlink" title="Python新手引导 第四篇"></a>Python新手引导 第四篇</h1><blockquote>
+<p>###阅读本文需要4.66分钟</p>
+</blockquote>
+<a id="more"></a>
+<p>之后的引导将以例子入手，作为一个程序员，我相信你从例子入手的话会更快的掌握一门语言。</p>
+<ol>
+<li>条件判断、循环、dict和set</li>
+<li>函数</li>
+<li>列表生成式</li>
+</ol>
+<h2 id="第一、条件判断、循环、dict和set"><a href="#第一、条件判断、循环、dict和set" class="headerlink" title="第一、条件判断、循环、dict和set"></a>第一、条件判断、循环、dict和set</h2><h3 id="1-1-条件判断"><a href="#1-1-条件判断" class="headerlink" title="1.1 条件判断"></a>1.1 条件判断</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#coding:utf-8</span></div><div class="line">age = input(<span class="string">'input num:'</span>)</div><div class="line"><span class="keyword">if</span> age &gt; <span class="number">18</span>:</div><div class="line">	print(<span class="string">'age 大于 18'</span>)</div><div class="line"><span class="keyword">elif</span> age &gt; <span class="number">11</span> <span class="keyword">and</span> age &lt; <span class="number">18</span>:</div><div class="line">	print(<span class="string">'age 大于11 并小于18'</span>)</div><div class="line"><span class="keyword">else</span> :</div><div class="line">	print(<span class="string">'其他'</span>)</div></pre></td></tr></table></figure>
+<p>如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> &lt;条件判断<span class="number">1</span>&gt;:</div><div class="line">    &lt;执行<span class="number">1</span>&gt;</div><div class="line"><span class="keyword">elif</span> &lt;条件判断<span class="number">2</span>&gt;:</div><div class="line">    &lt;执行<span class="number">2</span>&gt;</div><div class="line"><span class="keyword">elif</span> &lt;条件判断<span class="number">3</span>&gt;:</div><div class="line">    &lt;执行<span class="number">3</span>&gt;</div><div class="line"><span class="keyword">else</span>:</div><div class="line">    &lt;执行<span class="number">4</span>&gt;</div></pre></td></tr></table></figure>
+<p>其中<code>input()</code>:<br>2.x 下 <code>input</code>读取的内容和输入的一样的。 但在3.x以上 读取的都是字符串，这一点大家要和<code>raw_input()</code>做区分</p>
+<h3 id="1-2-循环"><a href="#1-2-循环" class="headerlink" title="1.2 循环"></a>1.2 循环</h3><h4 id="1-2-1-for-in"><a href="#1-2-1-for-in" class="headerlink" title="1.2.1 for in"></a>1.2.1 <code>for in</code></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">names = [<span class="string">'Mark'</span>,<span class="string">'Alison'</span>]</div><div class="line"><span class="keyword">for</span> name <span class="keyword">in</span> names:</div><div class="line">	print(name)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">for &lt;元素&gt; in &lt;集合&gt;：</div></pre></td></tr></table></figure>
+<p>在这里给大家讲一下 <code>range()</code>，rangek可以生成对应参数的n个整数。如： <code>range(100)</code>,就会生成0 到 100的整数。因此在遍历list的时候也可以这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">names = [<span class="string">'Mark'</span>,<span class="string">'Alison'</span>]</div><div class="line"><span class="keyword">for</span> index <span class="keyword">in</span> range(len(names)):</div><div class="line">	print(names[index])</div></pre></td></tr></table></figure>
+<h4 id="1-2-2-while"><a href="#1-2-2-while" class="headerlink" title="1.2.2 while"></a>1.2.2 <code>while</code></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">sum = <span class="number">0</span></div><div class="line">n = <span class="number">99</span></div><div class="line"><span class="keyword">while</span> n &gt; <span class="number">0</span>:</div><div class="line">	sum = sum + n</div><div class="line">	n = n <span class="number">-2</span></div><div class="line">print(sum)</div></pre></td></tr></table></figure>
+<h3 id="1-3-集合"><a href="#1-3-集合" class="headerlink" title="1.3 集合"></a>1.3 集合</h3><h4 id="1-3-1-dict"><a href="#1-3-1-dict" class="headerlink" title="1.3.1 dict"></a>1.3.1 dict</h4><blockquote>
+<p>Python中内置的字典。在其他语言中是 map之类的 (key-value)</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>names = &#123;<span class="string">'Mark'</span>:<span class="string">'18'</span>,<span class="string">'Alison'</span>:<span class="string">'18'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>names</div><div class="line">&#123;<span class="string">'Alison'</span>: <span class="string">'18'</span>, <span class="string">'Mark'</span>: <span class="string">'18'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>names[<span class="string">'Mark'</span>]</div><div class="line"><span class="string">'18'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>names[<span class="string">'Jordan'</span>] = <span class="string">'88'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>names</div><div class="line">&#123;<span class="string">'Jordan'</span>: <span class="string">'88'</span>, <span class="string">'Alison'</span>: <span class="string">'18'</span>, <span class="string">'Mark'</span>: <span class="string">'18'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>names.get(<span class="string">'Ali'</span>,<span class="string">'-1'</span>) <span class="comment">#get方法可指定默认值，若这个key不存在，返回默认值</span></div><div class="line"><span class="string">'-1'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>names.pop(<span class="string">'Jordan'</span>) <span class="comment">#Pop出栈</span></div><div class="line"><span class="string">'88'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>names</div><div class="line">&#123;<span class="string">'Alison'</span>: <span class="string">'18'</span>, <span class="string">'Mark'</span>: <span class="string">'18'</span>&#125;</div></pre></td></tr></table></figure>
+<p>dict适用于需要高速查找的地方。</p>
+<h4 id="1-3-2-set"><a href="#1-3-2-set" class="headerlink" title="1.3.2 set"></a>1.3.2 set</h4><blockquote>
+<p>一组不包含value的  key集合，并且不能重复。入参是 list</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>a = set([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a</div><div class="line">set([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a.add(<span class="number">5</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a</div><div class="line">set([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>])</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a.remove(<span class="number">5</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a</div><div class="line">set([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</div></pre></td></tr></table></figure>
+<p>切记关于<code>key</code>的都是不可变的。因为存储的时候，是通过计算key的hash来做的。</p>
+<h2 id="第二、函数"><a href="#第二、函数" class="headerlink" title="第二、函数"></a>第二、函数</h2><h3 id="2-1-内置函数"><a href="#2-1-内置函数" class="headerlink" title="2.1 内置函数"></a>2.1 内置函数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>abs(<span class="number">1.2</span>) <span class="comment"># 求绝对值</span></div><div class="line"><span class="number">1.2</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>abs(<span class="number">-1</span>)</div><div class="line"><span class="number">1</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>int(<span class="string">'1'</span>) <span class="comment"># 将str的转换为int</span></div><div class="line"><span class="number">1</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>str(<span class="number">1</span>) <span class="comment"># 将int转换为str</span></div><div class="line"><span class="string">'1'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>bool(<span class="number">1</span>) <span class="comment"># 转换bool值</span></div><div class="line"><span class="keyword">True</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>bool(<span class="string">''</span>)</div><div class="line"><span class="keyword">False</span></div></pre></td></tr></table></figure>
+<h3 id="2-2-定义函数"><a href="#2-2-定义函数" class="headerlink" title="2.2 定义函数"></a>2.2 定义函数</h3><blockquote>
+<p>Python中使用<code>def</code>定义函数，并可通过 <code>return</code>来返回值</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">myAbs</span><span class="params">(x)</span>:</span></div><div class="line"><span class="meta">... </span>    <span class="keyword">if</span> x &gt; <span class="number">0</span>:</div><div class="line"><span class="meta">... </span>            <span class="keyword">return</span> x</div><div class="line"><span class="meta">... </span>    <span class="keyword">else</span>:</div><div class="line"><span class="meta">... </span>            <span class="keyword">return</span> -x</div><div class="line">...</div><div class="line">&gt;&gt;&gt;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>myAbs(<span class="number">1</span>)</div><div class="line"><span class="number">1</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>myAbs(<span class="number">-1</span>)</div><div class="line"><span class="number">1</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>myAbs(<span class="number">-2</span>)</div><div class="line"><span class="number">2</span></div></pre></td></tr></table></figure>
+<p>其中 <code>return</code>表示函数执行的终止，并将结果返回。<br>需要注意的是 <code>return None</code>可直接用 <code>return</code>表示</p>
+<h4 id="2-2-1-空函数"><a href="#2-2-1-空函数" class="headerlink" title="2.2.1 空函数"></a>2.2.1 空函数</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">nop</span><span class="params">()</span>:</span></div><div class="line">	<span class="keyword">pass</span> <span class="comment">#可作为占位符，表示还没想好写什么</span></div></pre></td></tr></table></figure>
+<h4 id="2-2-2-返回多个值"><a href="#2-2-2-返回多个值" class="headerlink" title="2.2.2 返回多个值"></a>2.2.2 返回多个值</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fun</span><span class="params">()</span>:</span></div><div class="line">	<span class="keyword">return</span> <span class="string">'1'</span>,<span class="string">'2'</span></div><div class="line">a,b = fun()</div></pre></td></tr></table></figure>
+<p>这个还是比较方便的。 不用我们再继续封装起来返回，唯一恶心的就是得约定好规则。</p>
+<p>其实这返回不是两个值，而是一个tuple，这个得理解下</p>
+<h4 id="2-2-3-默认参数"><a href="#2-2-3-默认参数" class="headerlink" title="2.2.3 默认参数"></a>2.2.3 默认参数</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">def fun(a,b=2)</div><div class="line">	print a,b</div></pre></td></tr></table></figure>
+<p>其中b的默认值是2</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">def fun(L=[])</div><div class="line">	L.append('End')</div><div class="line">	return L</div></pre></td></tr></table></figure>
+<p>传一个list，并添加 <code>End</code>再返回。其中要注意的是，python会记住append的元素。意思就是：如果你多次调用 fun() ，会发现 之后的元素都是 <code>End</code></p>
+<p>因此这种传递List的方式如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fun</span><span class="params">(L=None)</span>:</span></div><div class="line">	<span class="keyword">if</span> L <span class="keyword">is</span> <span class="keyword">None</span>:</div><div class="line">		L = []</div><div class="line">	L.append(<span class="string">'End'</span>)</div><div class="line">	<span class="keyword">return</span> L</div></pre></td></tr></table></figure>
+<h4 id="2-2-4-可变参数，使用"><a href="#2-2-4-可变参数，使用" class="headerlink" title="2.2.4 可变参数，使用 *"></a>2.2.4 可变参数，使用 <code>*</code></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">nums = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">addNum</span><span class="params">(*n)</span>:</span></div><div class="line">	sum = <span class="number">0</span></div><div class="line">	<span class="keyword">for</span> num <span class="keyword">in</span> n:</div><div class="line">		sum +=num</div><div class="line">	<span class="keyword">return</span> sum</div><div class="line">addNum(*nums)</div></pre></td></tr></table></figure>
+<p>*nums表示把nums这个list的所有元素作为可变参数传进去。这种写法相当有用，而且很常见。</p>
+<h4 id="2-2-5-关键字参数"><a href="#2-2-5-关键字参数" class="headerlink" title="2.2.5 关键字参数 **"></a>2.2.5 关键字参数 <code>**</code></h4><p>表示允许传入0个或者任意个含参数名的参数，这些关键字参数在函数内部自动组装为一个dict.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">person</span><span class="params">(name, age, **kw)</span>:</span></div><div class="line">    print(<span class="string">'name:'</span>, name, <span class="string">'age:'</span>, age, <span class="string">'other:'</span>, kw)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>person(<span class="string">'Michael'</span>, <span class="number">30</span>)</div><div class="line">name: Michael age: <span class="number">30</span> other: &#123;&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>person(<span class="string">'Bob'</span>, <span class="number">35</span>, city=<span class="string">'Beijing'</span>)</div><div class="line">name: Bob age: <span class="number">35</span> other: &#123;<span class="string">'city'</span>: <span class="string">'Beijing'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>person(<span class="string">'Adam'</span>, <span class="number">45</span>, gender=<span class="string">'M'</span>, job=<span class="string">'Engineer'</span>)</div><div class="line">name: Adam age: <span class="number">45</span> other: &#123;<span class="string">'gender'</span>: <span class="string">'M'</span>, <span class="string">'job'</span>: <span class="string">'Engineer'</span>&#125;</div></pre></td></tr></table></figure>
+<p>和可变参数类似，也可以先组装出一个dict，然后，把该dict转换为关键字参数传进去：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>extra = &#123;<span class="string">'city'</span>: <span class="string">'Beijing'</span>, <span class="string">'job'</span>: <span class="string">'Engineer'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>person(<span class="string">'Jack'</span>, <span class="number">24</span>, city=extra[<span class="string">'city'</span>], job=extra[<span class="string">'job'</span>])</div><div class="line">name: Jack age: <span class="number">24</span> other: &#123;<span class="string">'city'</span>: <span class="string">'Beijing'</span>, <span class="string">'job'</span>: <span class="string">'Engineer'</span>&#125;</div></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>extra = &#123;<span class="string">'city'</span>: <span class="string">'Beijing'</span>, <span class="string">'job'</span>: <span class="string">'Engineer'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>person(<span class="string">'Jack'</span>, <span class="number">24</span>, **extra)</div><div class="line">name: Jack age: <span class="number">24</span> other: &#123;<span class="string">'city'</span>: <span class="string">'Beijing'</span>, <span class="string">'job'</span>: <span class="string">'Engineer'</span>&#125;</div></pre></td></tr></table></figure>
+<h4 id="2-2-6-命名关键字参数"><a href="#2-2-6-命名关键字参数" class="headerlink" title="2.2.6 命名关键字参数"></a>2.2.6 命名关键字参数</h4><p>对于关键字参数，函数的调用者可以传入任意不受限制的关键字参数。至于到底传入了哪些，就需要在函数内部通过kw检查。</p>
+<p>仍以person()函数为例，我们希望检查是否有city和job参数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">person</span><span class="params">(name, age, **kw)</span>:</span></div><div class="line">    <span class="keyword">if</span> <span class="string">'city'</span> <span class="keyword">in</span> kw:</div><div class="line">        <span class="comment"># 有city参数</span></div><div class="line">        <span class="keyword">pass</span></div><div class="line">    <span class="keyword">if</span> <span class="string">'job'</span> <span class="keyword">in</span> kw:</div><div class="line">        <span class="comment"># 有job参数</span></div><div class="line">        <span class="keyword">pass</span></div><div class="line">    print(<span class="string">'name:'</span>, name, <span class="string">'age:'</span>, age, <span class="string">'other:'</span>, kw)</div></pre></td></tr></table></figure>
+<p>但是调用者仍可以传入不受限制的关键字参数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>person(<span class="string">'Jack'</span>, <span class="number">24</span>, city=<span class="string">'Beijing'</span>, addr=<span class="string">'Chaoyang'</span>, zipcode=<span class="number">123456</span>)</div></pre></td></tr></table></figure>
+<p>如果要限制关键字参数的名字，就可以用命名关键字参数，例如，只接收city和job作为关键字参数。这种方式定义的函数如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">person</span><span class="params">(name, age, *, city, job)</span>:</span></div><div class="line">    print(name, age, city, job)</div></pre></td></tr></table></figure>
+<p>和关键字参数<em>*kw不同，命名关键字参数需要一个特殊分隔符</em>，*后面的参数被视为命名关键字参数。</p>
+<p>调用方式如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>person(<span class="string">'Mark'</span>, <span class="number">24</span>, city=<span class="string">'hangzhou'</span>, job=<span class="string">'Engineer'</span>)</div><div class="line">Mark <span class="number">24</span> hangzhou Engineer</div></pre></td></tr></table></figure>
+<h2 id="第三、列表生成式"><a href="#第三、列表生成式" class="headerlink" title="第三、列表生成式"></a>第三、列表生成式</h2><blockquote>
+<p>List Comprehensions，是Python内置的非常简单却强大的可以用来创建list的生成式</p>
+</blockquote>
+<p>举例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>[x*x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">11</span>)]</div><div class="line">[<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>, <span class="number">36</span>, <span class="number">49</span>, <span class="number">64</span>, <span class="number">81</span>, <span class="number">100</span>]</div><div class="line">&gt;&gt;&gt;</div><div class="line">&gt;&gt;&gt;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>[m + n <span class="keyword">for</span> m <span class="keyword">in</span> <span class="string">'ABC'</span> <span class="keyword">for</span> n <span class="keyword">in</span> <span class="string">'XYZ'</span>]</div><div class="line">[<span class="string">'AX'</span>, <span class="string">'AY'</span>, <span class="string">'AZ'</span>, <span class="string">'BX'</span>, <span class="string">'BY'</span>, <span class="string">'BZ'</span>, <span class="string">'CX'</span>, <span class="string">'CY'</span>, <span class="string">'CZ'</span>]</div><div class="line">&gt;&gt;&gt;</div><div class="line">&gt;&gt;&gt;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>d = &#123;<span class="string">'x'</span>: <span class="string">'A'</span>, <span class="string">'y'</span>: <span class="string">'B'</span>, <span class="string">'z'</span>: <span class="string">'C'</span> &#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> k, v <span class="keyword">in</span> d.items():</div><div class="line"><span class="meta">... </span>    print(k, <span class="string">'='</span>, v)</div><div class="line">...</div><div class="line">y = B</div><div class="line">x = A</div><div class="line">z = C</div></pre></td></tr></table></figure>
+<h2 id="第四、生成器-generator"><a href="#第四、生成器-generator" class="headerlink" title="第四、生成器 generator"></a>第四、生成器 generator</h2><blockquote>
+<p>如名字，其就是一个生成我们所需数据的容器，而不像 列表生成式，计算出所有数据。因此节省了空间，也解决了时间</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>g = (x * x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">10</span>))</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>g</div><div class="line">&lt;generator object &lt;genexpr&gt; at <span class="number">0x1022ef630</span>&gt;</div></pre></td></tr></table></figure>
+<p> 遍历: next(g)</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>g = (x * x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">10</span>))</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> n <span class="keyword">in</span> g:</div><div class="line"><span class="meta">... </span>    print(n)</div><div class="line"><span class="meta">... </span></div><div class="line"><span class="number">0</span></div><div class="line"><span class="number">1</span></div><div class="line"><span class="number">4</span></div><div class="line"><span class="number">9</span></div><div class="line"><span class="number">16</span></div><div class="line"><span class="number">25</span></div><div class="line"><span class="number">36</span></div><div class="line"><span class="number">49</span></div><div class="line"><span class="number">64</span></div><div class="line"><span class="number">81</span></div></pre></td></tr></table></figure>
+<p> <code>yeild</code>可中断当前操作，使函数成为 生成器 而不是普通函数</p>
+<p>举例： 杨慧三角</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">         <span class="number">1</span></div><div class="line">        <span class="number">1</span>   <span class="number">1</span></div><div class="line">      <span class="number">1</span>   <span class="number">2</span>   <span class="number">1</span></div><div class="line">    <span class="number">1</span>   <span class="number">3</span>   <span class="number">3</span>   <span class="number">1</span></div><div class="line">  <span class="number">1</span>   <span class="number">4</span>   <span class="number">6</span>   <span class="number">4</span>   <span class="number">1</span></div><div class="line"><span class="number">1</span>   <span class="number">5</span>   <span class="number">10</span>  <span class="number">10</span>  <span class="number">5</span>   <span class="number">1</span></div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">yanghu</span><span class="params">(n)</span>:</span></div><div class="line">	L=[<span class="number">1</span>]</div><div class="line">	<span class="keyword">while</span> <span class="number">1</span>:</div><div class="line">		yeild L</div><div class="line">		L = [L[x] + L[x+<span class="number">1</span>] <span class="keyword">for</span> x <span class="keyword">in</span> range(len(L) <span class="number">-1</span>)]</div><div class="line">		L.insert(<span class="number">0</span>,<span class="number">1</span>)</div><div class="line">		L.append(<span class="number">1</span>)</div><div class="line">		<span class="keyword">if</span> len(L)&gt;n:</div><div class="line">			<span class="keyword">break</span></div><div class="line"><span class="keyword">for</span> n <span class="keyword">in</span> yanghu(<span class="number">10</span>):</div><div class="line">	<span class="keyword">print</span> n</div></pre></td></tr></table></figure>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>本篇用一些简单的例子来讲解了下基础知识。 多动手练练哦</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Python新手引导第二篇]]></title>
       <url>https://xiyoumc.github.com/2017/03/06/Python%E6%96%B0%E6%89%8B%E5%BC%95%E5%AF%BC%20%E7%AC%AC%E4%B8%89%E7%AF%87%20Python%E5%9F%BA%E7%A1%80/</url>
       <content type="html"><![CDATA[<h1 id="Python新手引导-第三篇-Python基础和字符编码"><a href="#Python新手引导-第三篇-Python基础和字符编码" class="headerlink" title="Python新手引导 第三篇-Python基础和字符编码"></a>Python新手引导 第三篇-Python基础和字符编码</h1><blockquote>
@@ -469,24 +649,6 @@
     </entry>
     
     <entry>
-      <title><![CDATA[憧憬]]></title>
-      <url>https://xiyoumc.github.com/2016/09/07/Home/</url>
-      <content type="html"><![CDATA[<blockquote>
-<p>时常在憧憬未来 、未来 家的样子</p>
-</blockquote>
-<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/home.jpg?raw=true" alt="zls"></p>
-<a id="more"></a>
-<blockquote>
-<ul>
-<li>一直都想有个家、有自己的妻儿</li>
-<li>有一个可以依靠、也可以安心的家</li>
-<li>So 让我们一起努力。有一天你会是我的妻子，我会是你的丈夫，你我会是孩子的父母。</li>
-</ul>
-</blockquote>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[Alison]]></title>
       <url>https://xiyoumc.github.com/2016/09/07/Alison/</url>
       <content type="html"><![CDATA[<blockquote>
@@ -510,21 +672,30 @@
     </entry>
     
     <entry>
+      <title><![CDATA[憧憬]]></title>
+      <url>https://xiyoumc.github.com/2016/09/07/Home/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>时常在憧憬未来 、未来 家的样子</p>
+</blockquote>
+<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/home.jpg?raw=true" alt="zls"></p>
+<a id="more"></a>
+<blockquote>
+<ul>
+<li>一直都想有个家、有自己的妻儿</li>
+<li>有一个可以依靠、也可以安心的家</li>
+<li>So 让我们一起努力。有一天你会是我的妻子，我会是你的丈夫，你我会是孩子的父母。</li>
+</ul>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[You are My Sunshine.]]></title>
       <url>https://xiyoumc.github.com/2016/09/02/Sun/</url>
       <content type="html"><![CDATA[<p>我喜欢温暖、你恰好是太阳<br><a id="more"></a></p>
 <blockquote>
 <p>时间流逝<br>忙碌的项目开发，无数的接口，无数的调试<br>Github也好久没更新<br>不过。。。<br>不过。。。最开心 幸福的事是拥有了你<br>我喜欢温暖、你恰好是太阳</p>
 </blockquote>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[平淡]]></title>
-      <url>https://xiyoumc.github.com/2016/08/18/822/</url>
-      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/lover.jpg?raw=true" alt="zls"></p>
-<p>少年，我爱上你了<br><a id="more"></a></p>
-<p>&lt;告白气球&gt;</p>
 ]]></content>
     </entry>
     
@@ -561,6 +732,15 @@
 <li><p>古人说“相敬如宾”，虽是老生常谈，却是能够维系长久爱情的真正智慧。如果想避免吵架、误解，或者是想消融不断的期待、要求，在遇到诸如此类的问题时，不妨以尊重的心态，心悦诚服、欢欢喜喜、平平静静去面对、解决，心中的纠结，其实在当下都能即得化解。爱情里的关系，并不是在互相执着、纠缠和占有，而是互相的贡献、成长和学习。能够互相关怀、照顾、包容，去彼此计较、相互猜疑，多沟通，并相互信赖，才能成为菩萨伴侣。</p>
 </li>
 </ul>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[平淡]]></title>
+      <url>https://xiyoumc.github.com/2016/08/18/822/</url>
+      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/lover.jpg?raw=true" alt="zls"></p>
+<p>少年，我爱上你了<br><a id="more"></a></p>
+<p>&lt;告白气球&gt;</p>
 ]]></content>
     </entry>
     
