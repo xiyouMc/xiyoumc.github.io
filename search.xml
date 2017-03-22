@@ -4,22 +4,64 @@
   
     
     <entry>
+      <title><![CDATA[当我玩哔哩哔哩的时候，一不小心。。。]]></title>
+      <url>https://xiyoumc.github.com/2017/03/22/%E5%BD%93%E6%88%91%E7%8E%A9%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E4%B8%80%E4%B8%8D%E5%B0%8F%E5%BF%83%E3%80%82%E3%80%82%E3%80%82/</url>
+      <content type="html"><![CDATA[<h2 id="一不小心用代码登陆了B站。。。并上传了。。视频"><a href="#一不小心用代码登陆了B站。。。并上传了。。视频" class="headerlink" title="一不小心用代码登陆了B站。。。并上传了。。视频"></a>一不小心用代码登陆了B站。。。并上传了。。视频</h2><blockquote>
+<p>阅读本文需要4.66分钟</p>
+</blockquote>
+<a id="more"></a>
+<p>你被标题吸引了吧。。。别急着关。。重头戏在后面</p>
+<p>最近当我玩B站的时候，一不小心用代码登录了它，并几乎无限制的上传视频。</p>
+<p>那么接下来，我来讲解如何通过Hack技术来模拟 哔哩哔哩 的登录，并完成我们的视频上传等操作。因此内容中略有“暴力”，若您感到不适，那还是也请看完它。</p>
+<p>按照以往的老套路，我们首先需要弄清楚它的登录逻辑，并通过我们的代码来实现登录操作，其次拿到所谓的 Cookie 或者 Token、Sign等校验字段来做其他的操作，以下将围绕 B站 一步步来讲解破解的思路:</p>
+<p>首先我们访问到 哔哩哔哩 的登录页面:</p>
+<p>  <img src="http://115.28.132.58:8080/docs/BiliLogin.png" alt=""></p>
+<p>当我们在未登录的状态下访问登录页面的时候，会发现验证码已经显示出来了。那么他们是怎么做到当我输入账号、密码并输入一个已经出来的验证码之后就能校验成功呢。这时候就得提前动动脑子，当然如果你是开发服务器的话，应该明白里面的道理。这里我简单的讲下，其实在访问这个登录页面的时候，B站 已经将一个唯一的标识和验证码绑定起来了（也就是后面说到的Cookie），并且在登录的时候将这个标识一并发送上去。也就是说：通过一个标识来绑定验证码和登录操作。</p>
+<p>那么接下来我们看看在第一次访问登录页面的时候，都有哪些可用的数据,打开 Charles 抓包工具(Charles抓包工具可在历史文章中找到)，重新访问登录页面.</p>
+<p>这是登录页面的Request数据:<br><img src="http://115.28.132.58:8080/docs/BLReq.png" alt=""><br>当然一眼看上去并没有什么可用数据。其实确实是没什么卵用的数据.那么我们来看看Response数据:<br><img src="http://115.28.132.58:8080/docs/BLRes.png" alt=""><br>一眼看上去是挺乱的。细看下它的Raw数据。其中包括了使用的Server、Set-Cookie等等的数据，还有登录页面的html文本. 那么其中最重要的数据也就是 Set-Cookie，这个Set-Cookie中的数据就是之前讲到的 用来和验证码绑定的唯一标示。那么我们来确认下，来看看验证码图片的包:<br><img src="http://115.28.132.58:8080/docs/BLCap.png" alt=""><br>快看，快看 验证码 Request 中的 Cookie，果然是上面登录页面的 Response 的 Set-Cookie。</p>
+<p>那么验证码就简单了，我们通过代码来访问 B站 的登录页面，并拿到Response的Set-Cookie，然后再将这个Set-Cookie放到下载验证码Request的Cookie中，就这样，我们的验证码搞定了，那是不是登录就很简单了，少年憋急。登录才是大头..</p>
+<p>来来来，基于上面的登录页面，我们在里面输入自己的账号，并完成登录来看看发的包都有哪些.</p>
+<p>登录操作之后的Request:<br><img src="http://115.28.132.58:8080/docs/BLDolog.png" alt=""><br>可以看出来这是一个 post 请求，当然 Cookie 和验证码的一样将之前保存下来的 Set-Cookie 传给Request的Cookie.</p>
+<p>post 参数如下:<br><img src="http://115.28.132.58:8080/docs/BLOnLogForm.png" alt=""><br>Orz,WTF，提交的密码加密了。那么我就需要来找一下它的加密算法了。其实网页端的加密并没有什么卵用。对我来说，就是随便翻翻代码的事（毕竟我很帅）。</p>
+<p>来来来，找啊找啊找加密。然后我们先试探性的搜索下请求的字段 ‘pwd’ 如下图:<br><img src="http://115.28.132.58:8080/docs/SeachPwd.png" alt=""><br>果然定位到了加密的位置，当然前端页面的加密大部分都是很容易找到的，只要你有耐心.<br><img src="http://115.28.132.58:8080/docs/BLEncPwd.png" alt=""><br>以上就是 B站 加密密码的算法。简单讲下就是：通过 /login?act=getkey 拿到一个数据(hash,key),并以key作为RSA算法的公钥来加密 (hash+明文密码),然后针对这个数据来一次base64即可</p>
+<p>python实现如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> rsa</div><div class="line">pub = rsa.PublicKey.load_pkcs1_openssl_pem(_key)</div><div class="line">_pwd = rsa.encrypt((_hash + psw).encode(),pub)</div><div class="line">_real_pwd = base64.b64encode(str(_pwd))</div></pre></td></tr></table></figure>
+<p>那么现在我们就需要把问题聚焦到 /login?act=getkey 这个接口上。那么我们再回到之前的抓包数据上，会发现果然有一个 getkey 的请求:<br><img src="http://115.28.132.58:8080/docs/BLGetKey.png" alt=""><br>同上，Cookie是最开始的Set-Cookie。<br><img src="http://115.28.132.58:8080/docs/BLGetKeyRes.png" alt=""><br>Response中也就同时拿到了我们需要的 hash 和 key.大功告成，所有请求和加密都被我们搞定。</p>
+<p>这时候我们再思考下登录脚本应该怎么判断是否登录成功呢，回头过来看下之前的登录操作的结果 也就是 上面的 dologin 接口.<br><img src="http://115.28.132.58:8080/docs/BLogLocation.png" alt=""><br>会发现如果你成功登录之后，在 dologin 接口上会有 302 重定向跳转，并最终跳转到 主页上。因此这时候我们就可以来写代码，模拟登录，并且在最后一步登录请求中判断当前请求历史的第一个状态码是不是 302 ，如果是302，说明我们的登录脚本是没问题的。同时，再拿到 dologin的Response中的Set-Cookie作为新的Cookie，因为这个Cookie才是真正验证通过的Cookie，当然它是存在有效期的。具体多少我还不清楚，一般有一个礼拜、一个月、甚至一年之久。之后我们用这个Cookie去做其他有意义的事情，是完全没问题的。</p>
+<p>其次就是上传视频接口，也是类似的方法，需要分析上传视频的接口数据。并将最终的Cookie携带到请求包中。其中需要注意的是B站的上传视频可简单的分为以下几个步骤：</p>
+<ol>
+<li>将视频以Chunk的方式，而且是options的请求方式上传到服务器。因此它是支持断点续传的。</li>
+<li>拿到options请求之后的视频id，再请求 add 接口将数据post上去即可</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>虽然这篇文章很短，但是当你真正坐下来分析的时候，将是一段非常枯燥的过程。需要的就是你的耐心。</p>
+<p>其次之所以写这篇文章，其实重点不是怎么去破解B站的登录，而是这些破解的逻辑是否可以提供给我们一些服务器架构的思路，抑或防范别人的破解。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title></title>
+      <url>https://xiyoumc.github.com/2017/03/17/Untitled/</url>
+      <content type="html"><![CDATA[<p>   前段时间花了点功夫研究了下Django框架，也就是Python后端+Web端的开发框架，可以快速完成服务端的搭建.<br>借用 <code>Django</code> 官网的一句话 - “Django makes it easier to build better Web apps more quickly and with less code.”</p>
+<p>   然后这两天又抽空翻了下之前自己做的Hybrid，然后顺其自然的我使用Django框架和Hybrid框架做了个简单的 Demo,并将其放到了Github上。有兴趣的朋友可以共同探讨下。</p>
+<p>   地址在这: <a href="https://github.com/xiyouMc/HybridFramework" target="_blank" rel="external">https://github.com/xiyouMc/HybridFramework</a></p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Google Hacking --你真的会用Google吗？]]></title>
       <url>https://xiyoumc.github.com/2017/03/16/Google%20Hacking%20--%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BC%9A%E7%94%A8Google%E5%90%97%EF%BC%9F/</url>
-      <content type="html"><![CDATA[<h2 id="Google-Hacking-–你真的会用Google吗？"><a href="#Google-Hacking-–你真的会用Google吗？" class="headerlink" title="Google Hacking –你真的会用Google吗？"></a>Google Hacking –你真的会用Google吗？</h2><blockquote>
+      <content type="html"><![CDATA[<h2 id="你真的会用Google吗？Google-Hacking提升工作效率"><a href="#你真的会用Google吗？Google-Hacking提升工作效率" class="headerlink" title="你真的会用Google吗？Google Hacking提升工作效率"></a>你真的会用Google吗？Google Hacking提升工作效率</h2><blockquote>
 <p>阅读本文需要6.66分钟</p>
 </blockquote>
 <a id="more"></a>
-<p>Google hacking，也叫作google dorking,其实可以如果在 Google 上搜索 ‘GoogleHack’,你会发现很多文章都是零几年的。所以已经不是陌生词了。</p>
-<ol>
+<p>Google hacking，也叫作google dorking。如果在 Google 上搜索 <code>GoogleHack</code>,你会发现很多文章都是零几年的。所以已经不是陌生词了。</p>
+<ul>
 <li>简介</li>
 <li>语法</li>
 <li>具体应用和示例</li>
-</ol>
-<h2 id="0x00、简介"><a href="#0x00、简介" class="headerlink" title="0x00、简介"></a>0x00、简介</h2><blockquote>
-<p>GoogleHack,旨在使用Google搜索引擎或者其他Google应用程序通过特定语法来查找网站配置或代码中的安全漏洞</p>
-</blockquote>
-<h2 id="0x01、语法"><a href="#0x01、语法" class="headerlink" title="0x01、语法"></a>0x01、语法</h2><blockquote>
+</ul>
+<h2 id="0x00-简介"><a href="#0x00-简介" class="headerlink" title="0x00. 简介"></a>0x00. 简介</h2><p> GoogleHack,旨在使用Google搜索引擎或者其他Google应用程序通过特定语法来查找网站配置或代码中的安全漏洞。</p>
+<h2 id="0x01-语法"><a href="#0x01-语法" class="headerlink" title="0x01. 语法"></a>0x01. 语法</h2><blockquote>
 <p>基本语法: operator:search_term</p>
 </blockquote>
 <p>其中以 all 开头的操作符在一般情况下一个查询中只能使用一次，不能与其他操作符混用.</p>
@@ -75,7 +117,7 @@
 <p>  搜索指定公司的股票市场信息</p>
 </li>
 </ul>
-<h2 id="0x03、具体应用和示例"><a href="#0x03、具体应用和示例" class="headerlink" title="0x03、具体应用和示例"></a>0x03、具体应用和示例</h2><h3 id="A-基础网站爬取（site-）"><a href="#A-基础网站爬取（site-）" class="headerlink" title="A.基础网站爬取（site:）"></a>A.基础网站爬取（site:）</h3><p><code>site:</code>旨在将搜索范围缩小到指定的网站、域或子域，如下：</p>
+<h2 id="0x03-具体应用和示例"><a href="#0x03-具体应用和示例" class="headerlink" title="0x03. 具体应用和示例"></a>0x03. 具体应用和示例</h2><h3 id="A-基础网站爬取（site-）"><a href="#A-基础网站爬取（site-）" class="headerlink" title="A.基础网站爬取（site:）"></a>A.基础网站爬取（site:）</h3><p><code>site:</code>旨在将搜索范围缩小到指定的网站、域或子域，如下：</p>
 <p><code>site:facebook.com</code></p>
 <p> <img src="http://115.28.132.58:8080/docs/site_facebook.png" alt=""></p>
 <p> 一般我们剔除一些无意义的干扰网站，这时候就需要使用到 <code>负搜索</code>.</p>
@@ -94,7 +136,7 @@
 <p><img src="http://115.28.132.58:8080/docs/nqt.png" alt=""></p>
 <p> 打开第一个:</p>
 <p><img src="http://115.28.132.58:8080/docs/nqt_site.png" alt=""></p>
-<h2 id="0x04、总结"><a href="#0x04、总结" class="headerlink" title="0x04、总结"></a>0x04、总结</h2><p>如上面例子，我们正确的使用Google，不仅能帮我们快速找到所需要的文章、电影、各种种子、*V等等的，并且还能针对我们的渗透测试省时省力。</p>
+<h2 id="0x04-总结"><a href="#0x04-总结" class="headerlink" title="0x04. 总结"></a>0x04. 总结</h2><p>如上面例子，我们正确的使用Google，不仅能帮我们快速找到所需要的文章、电影、各种种子、*V等等的，并且还能针对我们的渗透测试省时省力。</p>
 ]]></content>
     </entry>
     
@@ -109,9 +151,9 @@
 <ol>
 <li>条件判断、循环、dict和set</li>
 <li>函数</li>
-<li>列表生成式</li>
+<li>列表生成式<br>update order_pay_num set content = ‘支付一次，永久免费使用’<h2 id="第一、条件判断、循环、dict和set"><a href="#第一、条件判断、循环、dict和set" class="headerlink" title="第一、条件判断、循环、dict和set"></a>第一、条件判断、循环、dict和set</h2></li>
 </ol>
-<h2 id="第一、条件判断、循环、dict和set"><a href="#第一、条件判断、循环、dict和set" class="headerlink" title="第一、条件判断、循环、dict和set"></a>第一、条件判断、循环、dict和set</h2><h3 id="1-1-条件判断"><a href="#1-1-条件判断" class="headerlink" title="1.1 条件判断"></a>1.1 条件判断</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#coding:utf-8</span></div><div class="line">age = input(<span class="string">'input num:'</span>)</div><div class="line"><span class="keyword">if</span> age &gt; <span class="number">18</span>:</div><div class="line">	print(<span class="string">'age 大于 18'</span>)</div><div class="line"><span class="keyword">elif</span> age &gt; <span class="number">11</span> <span class="keyword">and</span> age &lt; <span class="number">18</span>:</div><div class="line">	print(<span class="string">'age 大于11 并小于18'</span>)</div><div class="line"><span class="keyword">else</span> :</div><div class="line">	print(<span class="string">'其他'</span>)</div></pre></td></tr></table></figure>
+<h3 id="1-1-条件判断"><a href="#1-1-条件判断" class="headerlink" title="1.1 条件判断"></a>1.1 条件判断</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#coding:utf-8</span></div><div class="line">age = input(<span class="string">'input num:'</span>)</div><div class="line"><span class="keyword">if</span> age &gt; <span class="number">18</span>:</div><div class="line">	print(<span class="string">'age 大于 18'</span>)</div><div class="line"><span class="keyword">elif</span> age &gt; <span class="number">11</span> <span class="keyword">and</span> age &lt; <span class="number">18</span>:</div><div class="line">	print(<span class="string">'age 大于11 并小于18'</span>)</div><div class="line"><span class="keyword">else</span> :</div><div class="line">	print(<span class="string">'其他'</span>)</div></pre></td></tr></table></figure>
 <p>如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> &lt;条件判断<span class="number">1</span>&gt;:</div><div class="line">    &lt;执行<span class="number">1</span>&gt;</div><div class="line"><span class="keyword">elif</span> &lt;条件判断<span class="number">2</span>&gt;:</div><div class="line">    &lt;执行<span class="number">2</span>&gt;</div><div class="line"><span class="keyword">elif</span> &lt;条件判断<span class="number">3</span>&gt;:</div><div class="line">    &lt;执行<span class="number">3</span>&gt;</div><div class="line"><span class="keyword">else</span>:</div><div class="line">    &lt;执行<span class="number">4</span>&gt;</div></pre></td></tr></table></figure>
 <p>其中<code>input()</code>:<br>2.x 下 <code>input</code>读取的内容和输入的一样的。 但在3.x以上 读取的都是字符串，这一点大家要和<code>raw_input()</code>做区分</p>
@@ -649,6 +691,24 @@
     </entry>
     
     <entry>
+      <title><![CDATA[憧憬]]></title>
+      <url>https://xiyoumc.github.com/2016/09/07/Home/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>时常在憧憬未来 、未来 家的样子</p>
+</blockquote>
+<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/home.jpg?raw=true" alt="zls"></p>
+<a id="more"></a>
+<blockquote>
+<ul>
+<li>一直都想有个家、有自己的妻儿</li>
+<li>有一个可以依靠、也可以安心的家</li>
+<li>So 让我们一起努力。有一天你会是我的妻子，我会是你的丈夫，你我会是孩子的父母。</li>
+</ul>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Alison]]></title>
       <url>https://xiyoumc.github.com/2016/09/07/Alison/</url>
       <content type="html"><![CDATA[<blockquote>
@@ -666,24 +726,6 @@
 <li>Come get it,girl</li>
 <li>I need you,baby</li>
 <li>I`m on you,girl</li>
-</ul>
-</blockquote>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[憧憬]]></title>
-      <url>https://xiyoumc.github.com/2016/09/07/Home/</url>
-      <content type="html"><![CDATA[<blockquote>
-<p>时常在憧憬未来 、未来 家的样子</p>
-</blockquote>
-<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/home.jpg?raw=true" alt="zls"></p>
-<a id="more"></a>
-<blockquote>
-<ul>
-<li>一直都想有个家、有自己的妻儿</li>
-<li>有一个可以依靠、也可以安心的家</li>
-<li>So 让我们一起努力。有一天你会是我的妻子，我会是你的丈夫，你我会是孩子的父母。</li>
 </ul>
 </blockquote>
 ]]></content>
