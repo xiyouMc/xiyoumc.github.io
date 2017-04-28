@@ -4,6 +4,142 @@
   
     
     <entry>
+      <title><![CDATA[Github系列教程二 「平台介绍」]]></title>
+      <url>https://xiyoumc.github.com/2017/04/28/Github%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%E4%BA%8C%20%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/</url>
+      <content type="html"><![CDATA[<h3 id="本文同步在我的公众号-DeveloperPython"><a href="#本文同步在我的公众号-DeveloperPython" class="headerlink" title="本文同步在我的公众号: DeveloperPython"></a>本文同步在我的公众号: DeveloperPython</h3><p><img src="http://upload-images.jianshu.io/upload_images/4653472-1ff8d4743422cfaf?imageMogr2/auto-orient/strip" alt=""><br>相信昨天大家看过 <a href="http://mp.weixin.qq.com/s?__biz=MzU3ODAxNDcwNQ==&amp;mid=2247483866&amp;idx=1&amp;sn=9692ca0d4a25ee4675d073e9643b7e30&amp;chksm=fd7a9d44ca0d1452f0e7d55d412e5469a3d82fbb00153e7d9b99a33e0424d6eb47b54903b5ad&amp;scene=21#wechat_redirect" target="_blank" rel="external">Github系列教程一 「开门」</a>之后，已经对Github的简介和发展史有了一个详细的了解。</p>
+<p>那么多的不说，我继续更新。</p>
+<p>为了更好的使用Github，第一步去了解这个平台是重要的。</p>
+<p>因此这篇我将针对Github平台进行一个全面的讲解。</p>
+<h2 id="1、注册Github账号"><a href="#1、注册Github账号" class="headerlink" title="1、注册Github账号"></a>1、注册Github账号</h2><p>访问 <a href="https://github.com/官网。" target="_blank" rel="external">https://github.com/官网。</a></p>
+<p>首页就是一个注册Github的入口。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-5d3b14792b78caf5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>这里就很简单了，填写你的用户名、邮箱和密码。</p>
+<p>不过提醒下，这个用户名比较重要，这相当于是你在Github的ID。</p>
+<p>上一篇文章讲过Github可以搭建个人博客username.github.io。那么这个用户名就会在这里用到。</p>
+<p>所以建议填写一个代表自己的ID。</p>
+<p>比如我的xiyouMc，博客就是xiyouMc.github.io。</p>
+<h2 id="2、Github主面板"><a href="#2、Github主面板" class="headerlink" title="2、Github主面板"></a>2、Github主面板</h2><p>注册完成之后，就来到了Github的主面板。</p>
+<p>如果你是新注册的，那么不会像我这么丰富，不过玩上一段时间也就差不多类似了。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-f9ed3b8bfceb47f1?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>以下，我针对主要的两点进行讲解：</p>
+<p><strong>Github的工具栏</strong></p>
+<p>1、Logo<br>左上角这个Logo在Github每个页面都有，同时也是可以点击的。</p>
+<p>当你在Github里面打开了很多页面，然后想快速回到这个面板。直接点击左上角的Logo即可。</p>
+<p>2、搜索项目的入口<br>这里可以输入关键字，去搜索自己想要的项目。</p>
+<p>3、Pull requests(PR)<br>一个可查看自己贡献代码给其他人项目的面板。</p>
+<p>关于pr的含义，就是当自己针对别人的开源项目做了改动之后，就可以将这些改动pull requests 到对应开源者的项目中。</p>
+<p>4、Issues<br>这个你可以理解为Github上的聊天功能。</p>
+<p>用这个功能你可以很方便的给别人的项目提建议或者提Bug。同时你们也可以在里面进行沟通。</p>
+<p>5、Gist<br>如果你没有自己的开源项目，但是你有很不错的代码片段。就可以在Gist里面将自己优秀的代码片段进行提交。</p>
+<p>当然，你可以在Gist里面学习别人优秀的代码片段.<br><img src="http://upload-images.jianshu.io/upload_images/4653472-edf4803b2fbf547a?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><strong>动态栏</strong></p>
+<p>这里是你关注人的动态列表和你自己项目的状态记录。<br>所以在Github上多关注一些大牛，你会看到他们的动态，包括他们点赞的项目和创建的项目。这些项目也绝对是有水平的。</p>
+<h2 id="3、Github个人主页"><a href="#3、Github个人主页" class="headerlink" title="3、Github个人主页"></a>3、Github个人主页</h2><p>点击右上角的头像，会弹出下拉列表，在里面点击 Your profile。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-fd77f7f2c44fefef?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>进来之后，就进入了个人的主页。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-63d6baee40eaa391?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>你会看到我的简介里面养了条狗。<br>其中，几个重要的功能，我也都在上面标注出来了。</p>
+<h2 id="4、修改个人标签"><a href="#4、修改个人标签" class="headerlink" title="4、修改个人标签"></a>4、修改个人标签</h2><p>同样的，参考上面 Your profile。在那个下拉列表中，会有一个Settings，点击之后就会来到个人设置页面。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-c322da7781011eb4?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>这里面的内容，也都很清楚了。比如修改头像、修改用户名、简介等等的。</p>
+<p>不过到这里，我就讲个课外话。</p>
+<p>很多人都说Github是免费的，那他们怎么赢利的呢?</p>
+<p>我可以很明确的告诉你，Github有付费功能，而且有点贵。</p>
+<p>它的付费功能其实也很简单，就是一个创建私有仓库的权限。如果你买了的话，就可以创建私有的项目，当然私有的意思就是别人无法看到你的代码。</p>
+<p>具体价格，每个月大概7刀，折合人民币就是42块钱左右。所以如果不是非必须使用私有，还是建议别买这个。</p>
+<h2 id="5、创建项目"><a href="#5、创建项目" class="headerlink" title="5、创建项目"></a>5、创建项目</h2><p>点击 New repository，就进入了创建项目的页面。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-e6ecdc3e4b4c112d?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>填写你的项目名字、加上一句高大上的简介，选择Public，然后点击Create repository。就走出了开源的第一步。</p>
+<p>创建之后的项目面板大概是这样的：<br><img src="http://upload-images.jianshu.io/upload_images/4653472-38b3d9f4e6a939fc?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>因为这是一个已经成型的项目，所以说，如果你们是刚创建的一个项目，那么不会有这么丰富的内容。最多里面也就一个项目的说明文档Readme.md。当然这是需要使用 Markdown语法的，简称md,也同样是程序员必备的技能。</p>
+<h2 id="6、总结"><a href="#6、总结" class="headerlink" title="6、总结"></a>6、总结</h2><p>其实这篇文章写得相对简单点，如果你是一个已经使用Github一段时间的可能帮助不大。但是如果你刚接触或者没接触过Github，我相信这些基础知识对于你来讲还是有很大意义的。</p>
+<p>所以走出你的开源第一步，勇敢的将自己的项目提交到Github吧。</p>
+<hr>
+<p>扫描二维码，关注公众号</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-b61ffc02ee6e4db5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>生活不止眼前的苟且，还有手下的代码、<br>和嘴上的扯淡<br>——</p>
+<p>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a></p>
+<p>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[从0开始Github系列教程一  开门]]></title>
+      <url>https://xiyoumc.github.com/2017/04/28/Github%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%E4%B8%80%20%E5%BC%80%E9%97%A8/</url>
+      <content type="html"><![CDATA[<p><img src="http://upload-images.jianshu.io/upload_images/4653472-2bd1a717e57c76f3?imageMogr2/auto-orient/strip" alt=""></p>
+<p>这是一套Github的小白教程<br><a id="more"></a></p>
+<h3 id="本文来自我的公众号：DeveloperPython"><a href="#本文来自我的公众号：DeveloperPython" class="headerlink" title="本文来自我的公众号：DeveloperPython"></a>本文来自我的公众号：DeveloperPython</h3><p><img src="http://upload-images.jianshu.io/upload_images/4653472-2bd1a717e57c76f3?imageMogr2/auto-orient/strip" alt=""><br>对于Github,我相信很多人都不陌生，并且我也一直认为Github是程序员的必备，当然还有一个 StackOverFlow。</p>
+<p>但是在我周围、包括公号里面的读者，大部分都不怎么使用Github。</p>
+<p>因为上次我的项目被点赞到Github Trending之后（全球开源项目的热门），我发现很多点赞的国内开发者都是不怎么使用Github的。因为几乎看不到他们的代码提交记录，然而里面很多国外开发者的点赞，我再进入他们的主页，大部分开发者都是持续提交代码中。</p>
+<p>之后我也收到好多消息，希望我写一篇关于Github的教程或者如何上Trending。</p>
+<p>其实，我接触Github时间挺早的了，大概在上大学开始写代码的时候，就已经使用上了 Github。当时我也是只下载，不用的那种。大概在接触 Github 一年左右之后，我就开始深入使用。</p>
+<p>到目前为止，自己 Github 中的项目已经有了130多个。</p>
+<p><a href="https://www.github.com/xiyouMc/" target="_blank" rel="external">https://www.github.com/xiyouMc/</a> </p>
+<p>Github是一个开源、开放、免费的平台，它更多的是提供给我们学习和贡献的。</p>
+<p>所以我决定写一个系列来讲解如何去更好的使用Github，为了让国内的开发者能合理的使用Github。</p>
+<h2 id="01、什么是-Github"><a href="#01、什么是-Github" class="headerlink" title="01、什么是 Github"></a>01、什么是 Github</h2><p>Github其实是一家公司，坐落在旧金山。是由三个知名的开发者在08年创办的，具体是谁就不用讲了，讲了也记不住。</p>
+<p>这是它的 Logo:</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-a9a0ffeb0f3deb93?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>大概也就在08年4月多，正式上线。</p>
+<p><a href="https://www.github.com/" target="_blank" rel="external">https://www.github.com/</a> </p>
+<p>简单的来讲，Github是一个基于 Git 的版本托管平台。</p>
+<p>大概在13年的时候，Github 用户数量已经破300万，到目前为止我想也应该上千万了吧。</p>
+<p>因此它有一个很洋气的名字就是全球最大同性交友平台。GayHub。</p>
+<h2 id="02、Github、Gitlab-和-Git-的区别"><a href="#02、Github、Gitlab-和-Git-的区别" class="headerlink" title="02、Github、Gitlab 和 Git 的区别"></a>02、Github、Gitlab 和 Git 的区别</h2><p>这个问题，我相信很多人都分不清。</p>
+<p>有的人会把Git理解成Github。你会经常听到有人跟你讲：“你可以去Git上找下，看看有没有你想要的代码”。 如果这句话，是别人跟我讲的，那我绝对是一脸懵逼的。</p>
+<p>至于为什么，那么我就来详细讲下这三个的区别。</p>
+<p><strong>先说下Git</strong></p>
+<p>Git是一款免费、开源的分布式版本控制系统，他是由著名的Linux发明者 Linus Torvalds 开发的。</p>
+<p>所以说Git是一个版本的控制系统，而非一个平台。</p>
+<p>提到这个版本控制系统，大家可能会想到SVN，毕竟这是很多大学都让学生使用的东西。只不过Git是新时代的产物。</p>
+<p>如果在15年的时候，你告诉我你们在使用SVN，那么还情有可原。毕竟那时候很多大公司还在用SVN，比如支付宝。但到现在了，你还在使用SVN那么真的是太落伍了。</p>
+<p>所以不管是学习Github，或者从事编程行业，Git绝对算是必备技能。</p>
+<p><strong>接下来说Github</strong></p>
+<p>上面已经说过，Github 是基于Git的版本托管服务。所以Git对于Github来讲就是一个版本管理的工具。</p>
+<p>其次Github，还有更多的功能，毕竟它是一个平台。后面的文章中，我也会列举出重要的几个。</p>
+<p><strong>最后来讲讲Gitlab</strong></p>
+<p>这个东西呢，其实是<strong>企业内部</strong>的Github。</p>
+<p>因为Github毕竟是一个开源的、全球性的代码托管平台。</p>
+<p>对于企业来讲，他们更希望内部有个这样类似的Git代码托管服务。所以他们会选择Gitlab，这个开源的代码托管平台。</p>
+<p>而且Gitlab一直在更新版本，目前已经到了9.1版本。</p>
+<p><a href="https://github.com/gitlabhq/gitlabhq/" target="_blank" rel="external">https://github.com/gitlabhq/gitlabhq/</a></p>
+<p>从地址来看，你也会发现Gitlab是Github平台上的一个开源项目，这样也就不难理解这两个的区别了。</p>
+<h2 id="03、Github-的影响力"><a href="#03、Github-的影响力" class="headerlink" title="03、Github 的影响力"></a>03、Github 的影响力</h2><p>我可以这么说吧，只要你能想到的大公司，他们都会在Github上有一个组织来贡献内部的优秀代码和框架。</p>
+<p>比如：<br>Google: <a href="https://www.gihutb.com/google" target="_blank" rel="external">https://www.gihutb.com/google</a><br>Apple: <a href="https://www.github.com/apple/" target="_blank" rel="external">https://www.github.com/apple/</a><br>Facebook: <a href="https://www.github.com/facebook/" target="_blank" rel="external">https://www.github.com/facebook/</a><br>Alibaba: <a href="https://www.github.com/alibaba" target="_blank" rel="external">https://www.github.com/alibaba</a><br>….<br>还有全球顶级的项目，也同样在Github。<br>Linux: <a href="https://www.github.com/torvalds/linux" target="_blank" rel="external">https://www.github.com/torvalds/linux</a><br>Nodejs: <a href="https://www.github.com/nodejs/node" target="_blank" rel="external">https://www.github.com/nodejs/node</a><br>Weex: <a href="https://github.com/alibaba/weex" target="_blank" rel="external">https://github.com/alibaba/weex</a><br>等等的….<br>同样还有全球顶尖级的开发者。<br>Linux之父 Linus:<br><img src="http://upload-images.jianshu.io/upload_images/4653472-b3a42f0dacbef2cd?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>Android 之神 Jake:<br><img src="http://upload-images.jianshu.io/upload_images/4653472-e0d5bf0e4644d3cc?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>等等的，我就不一一列举了。</p>
+<p>只要是在编程届厉害的人物，都会出现在Github。</p>
+<p>并且很多牛逼的项目做开源，比如你某天听说了某个公司的xx框架开源了。那么它们绝对在Github上开源的。</p>
+<p>因此，Github已经是开源的代名词。</p>
+<h2 id="04、Github能做什么"><a href="#04、Github能做什么" class="headerlink" title="04、Github能做什么"></a>04、Github能做什么</h2><ul>
+<li><strong>优秀的开源项目</strong></li>
+</ul>
+<p>学好使用优秀的开源项目，是一个可以避免你在软件开发中重复造轮子的事情。</p>
+<p>确切的来讲，正是因为有个Github上优秀的开源项目，才促使了我们在软件开发中变得越来越容易、越来越快速。</p>
+<p>比如说：网络请求库、图片加载库。如果让你去自己实现，那么时间和资源是一个很大的成本。对于大公司，可能在人力和资源上是充沛的。但是对于大部分互联网来讲时间就是一切。</p>
+<p>所以在使用开源项目的同时，学习他们优秀的设计思想和实现方式，无疑是提升自我编程能力的好时机。</p>
+<p>同样的，如果你能拥有一个优秀的开源项目，那么绝对是一个很好的体验。</p>
+<p>比如说我开源的WebHubBot，当你看到自己的项目每天每时都有人在点赞，那种感觉真心是比朋友圈被点赞爽很多倍的！！！</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-b63084401d16c5a5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><img src="http://upload-images.jianshu.io/upload_images/4653472-a4be03a4fa7183b0?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<ul>
+<li><strong>多人协作</strong><br>其实多人协作对于Github来讲无疑是一个转折点。</li>
+</ul>
+<p>因为一个好的项目，绝非几个人就能搞定的，因此Github提供了很好的协作平台。</p>
+<p>当你把代码提交上去之后，你可以让其他人和你一同开发，或者说如果你的项目很好，全球的开发者都会给你的项目做贡献。</p>
+<p>以我为例，前段时间提交了一个很有意思的项目，之后就收到了好几个全球开发者代码贡献，如下：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-668e59895e243bdb?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>因此，多人协作真心是一个很爽、很棒的功能。</p>
+<ul>
+<li><strong>其次就是搭建个人网站</strong></li>
+</ul>
+<p>Github Pages是Github提供的一套完整的博客搭建环境。</p>
+<p>平时你会发现很多人的个人博客域名都是xxxx.github.io。这就是使用Github Pages来搭建的。使用方法很简单，也绝对是一个装逼利器。</p>
+<ul>
+<li><strong>个人简历</strong></li>
+</ul>
+<p>活跃的Github账号，是一个很好的个人简历。</p>
+<p>据我所知，目前很多猎头和公司的HR都很喜欢逛Github。</p>
+<p>并且很多国外的科技公司也都会通过Github来寻找优秀的人才。</p>
+<p>所以多用Github，会让你收到很多意外的惊喜。</p>
+<h2 id="05、加入Github"><a href="#05、加入Github" class="headerlink" title="05、加入Github"></a>05、加入Github</h2><p>相信大家读到这里，都迫不及待的想去使用Github了。</p>
+<p>那么事不宜迟，从现在开始，快去注册一个Github账号。 </p>
+<p>链接： <a href="https://www.github.com/" target="_blank" rel="external">https://www.github.com/</a> 。</p>
+<p>注册完成之后，先玩着，了解下整个平台的功能。</p>
+<p>同时也可以试着搜索下我的Github：<br>ID：xiyouMc<br><a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a> </p>
+<p>接下来，我还会继续连载Github一系列的文章。</p>
+<p>保证你们看完之后，会有不一样的收获。</p>
+<p>同时如果你目前在使用Git或者Github中，那么有问题的话，也同样可以给我留言，我会一一给你们解答。</p>
+<p>——<br>扫描二维码，关注公众号<br><img src="http://upload-images.jianshu.io/upload_images/4653472-1c1e06e2f58b0610?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>生活不止眼前的苟且，还有手下的代码、<br>和嘴上的扯淡<br>——<br>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a><br>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Python爬虫利器---PhamtomJS]]></title>
       <url>https://xiyoumc.github.com/2017/03/30/Python%E7%88%AC%E8%99%AB%E5%88%A9%E5%99%A8---PhamtomJS/</url>
       <content type="html"><![CDATA[<h2 id="Python爬虫利器—PhamtomJS"><a href="#Python爬虫利器—PhamtomJS" class="headerlink" title="Python爬虫利器—PhamtomJS"></a>Python爬虫利器—PhamtomJS</h2><blockquote>
@@ -571,54 +707,6 @@
     </entry>
     
     <entry>
-      <title><![CDATA[Github系列教程二 「平台介绍」]]></title>
-      <url>https://xiyoumc.github.com/2017/03/03/Github%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%E4%BA%8C%20%E5%B9%B3%E5%8F%B0%E4%BB%8B%E7%BB%8D/</url>
-      <content type="html"><![CDATA[<h3 id="本文同步在我的公众号-DeveloperPython"><a href="#本文同步在我的公众号-DeveloperPython" class="headerlink" title="本文同步在我的公众号: DeveloperPython"></a>本文同步在我的公众号: DeveloperPython</h3><p><img src="http://upload-images.jianshu.io/upload_images/4653472-1ff8d4743422cfaf?imageMogr2/auto-orient/strip" alt=""><br>相信昨天大家看过 <a href="http://mp.weixin.qq.com/s?__biz=MzU3ODAxNDcwNQ==&amp;mid=2247483866&amp;idx=1&amp;sn=9692ca0d4a25ee4675d073e9643b7e30&amp;chksm=fd7a9d44ca0d1452f0e7d55d412e5469a3d82fbb00153e7d9b99a33e0424d6eb47b54903b5ad&amp;scene=21#wechat_redirect" target="_blank" rel="external">Github系列教程一 「开门」</a>之后，已经对Github的简介和发展史有了一个详细的了解。</p>
-<p>那么多的不说，我继续更新。</p>
-<p>为了更好的使用Github，第一步去了解这个平台是重要的。</p>
-<p>因此这篇我将针对Github平台进行一个全面的讲解。</p>
-<h2 id="1、注册Github账号"><a href="#1、注册Github账号" class="headerlink" title="1、注册Github账号"></a>1、注册Github账号</h2><p>访问 <a href="https://github.com/官网。" target="_blank" rel="external">https://github.com/官网。</a></p>
-<p>首页就是一个注册Github的入口。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-5d3b14792b78caf5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>这里就很简单了，填写你的用户名、邮箱和密码。</p>
-<p>不过提醒下，这个用户名比较重要，这相当于是你在Github的ID。</p>
-<p>上一篇文章讲过Github可以搭建个人博客username.github.io。那么这个用户名就会在这里用到。</p>
-<p>所以建议填写一个代表自己的ID。</p>
-<p>比如我的xiyouMc，博客就是xiyouMc.github.io。</p>
-<h2 id="2、Github主面板"><a href="#2、Github主面板" class="headerlink" title="2、Github主面板"></a>2、Github主面板</h2><p>注册完成之后，就来到了Github的主面板。</p>
-<p>如果你是新注册的，那么不会像我这么丰富，不过玩上一段时间也就差不多类似了。</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-f9ed3b8bfceb47f1?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>以下，我针对主要的两点进行讲解：</p>
-<p><strong>Github的工具栏</strong></p>
-<p>1、Logo<br>左上角这个Logo在Github每个页面都有，同时也是可以点击的。</p>
-<p>当你在Github里面打开了很多页面，然后想快速回到这个面板。直接点击左上角的Logo即可。</p>
-<p>2、搜索项目的入口<br>这里可以输入关键字，去搜索自己想要的项目。</p>
-<p>3、Pull requests(PR)<br>一个可查看自己贡献代码给其他人项目的面板。</p>
-<p>关于pr的含义，就是当自己针对别人的开源项目做了改动之后，就可以将这些改动pull requests 到对应开源者的项目中。</p>
-<p>4、Issues<br>这个你可以理解为Github上的聊天功能。</p>
-<p>用这个功能你可以很方便的给别人的项目提建议或者提Bug。同时你们也可以在里面进行沟通。</p>
-<p>5、Gist<br>如果你没有自己的开源项目，但是你有很不错的代码片段。就可以在Gist里面将自己优秀的代码片段进行提交。</p>
-<p>当然，你可以在Gist里面学习别人优秀的代码片段.<br><img src="http://upload-images.jianshu.io/upload_images/4653472-edf4803b2fbf547a?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><strong>动态栏</strong></p>
-<p>这里是你关注人的动态列表和你自己项目的状态记录。<br>所以在Github上多关注一些大牛，你会看到他们的动态，包括他们点赞的项目和创建的项目。这些项目也绝对是有水平的。</p>
-<h2 id="3、Github个人主页"><a href="#3、Github个人主页" class="headerlink" title="3、Github个人主页"></a>3、Github个人主页</h2><p>点击右上角的头像，会弹出下拉列表，在里面点击 Your profile。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-fd77f7f2c44fefef?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>进来之后，就进入了个人的主页。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-63d6baee40eaa391?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>你会看到我的简介里面养了条狗。<br>其中，几个重要的功能，我也都在上面标注出来了。</p>
-<h2 id="4、修改个人标签"><a href="#4、修改个人标签" class="headerlink" title="4、修改个人标签"></a>4、修改个人标签</h2><p>同样的，参考上面 Your profile。在那个下拉列表中，会有一个Settings，点击之后就会来到个人设置页面。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-c322da7781011eb4?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>这里面的内容，也都很清楚了。比如修改头像、修改用户名、简介等等的。</p>
-<p>不过到这里，我就讲个课外话。</p>
-<p>很多人都说Github是免费的，那他们怎么赢利的呢?</p>
-<p>我可以很明确的告诉你，Github有付费功能，而且有点贵。</p>
-<p>它的付费功能其实也很简单，就是一个创建私有仓库的权限。如果你买了的话，就可以创建私有的项目，当然私有的意思就是别人无法看到你的代码。</p>
-<p>具体价格，每个月大概7刀，折合人民币就是42块钱左右。所以如果不是非必须使用私有，还是建议别买这个。</p>
-<h2 id="5、创建项目"><a href="#5、创建项目" class="headerlink" title="5、创建项目"></a>5、创建项目</h2><p>点击 New repository，就进入了创建项目的页面。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-e6ecdc3e4b4c112d?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>填写你的项目名字、加上一句高大上的简介，选择Public，然后点击Create repository。就走出了开源的第一步。</p>
-<p>创建之后的项目面板大概是这样的：<br><img src="http://upload-images.jianshu.io/upload_images/4653472-38b3d9f4e6a939fc?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>因为这是一个已经成型的项目，所以说，如果你们是刚创建的一个项目，那么不会有这么丰富的内容。最多里面也就一个项目的说明文档Readme.md。当然这是需要使用 Markdown语法的，简称md,也同样是程序员必备的技能。</p>
-<h2 id="6、总结"><a href="#6、总结" class="headerlink" title="6、总结"></a>6、总结</h2><p>其实这篇文章写得相对简单点，如果你是一个已经使用Github一段时间的可能帮助不大。但是如果你刚接触或者没接触过Github，我相信这些基础知识对于你来讲还是有很大意义的。</p>
-<p>所以走出你的开源第一步，勇敢的将自己的项目提交到Github吧。</p>
-<hr>
-<p>扫描二维码，关注公众号</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-b61ffc02ee6e4db5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>生活不止眼前的苟且，还有手下的代码、<br>和嘴上的扯淡<br>——</p>
-<p>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a></p>
-<p>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[Charles破解教程，适用于所有版本]]></title>
       <url>https://xiyoumc.github.com/2017/02/08/charles_break/</url>
       <content type="html"><![CDATA[<h1 id="Charles-注册码"><a href="#Charles-注册码" class="headerlink" title="Charles 注册码"></a>Charles 注册码</h1><h3 id="1-Windows-用户"><a href="#1-Windows-用户" class="headerlink" title="1. Windows 用户"></a>1. Windows 用户</h3><p>RegName: ANONYMOUS@chinapyg.com<br>Reg_Key: 5fae99ec65736945ba<br>官方下载后可直接激活。神key.</p>
@@ -761,24 +849,6 @@
     </entry>
     
     <entry>
-      <title><![CDATA[憧憬]]></title>
-      <url>https://xiyoumc.github.com/2016/09/07/Home/</url>
-      <content type="html"><![CDATA[<blockquote>
-<p>时常在憧憬未来 、未来 家的样子</p>
-</blockquote>
-<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/home.jpg?raw=true" alt="zls"></p>
-<a id="more"></a>
-<blockquote>
-<ul>
-<li>一直都想有个家、有自己的妻儿</li>
-<li>有一个可以依靠、也可以安心的家</li>
-<li>So 让我们一起努力。有一天你会是我的妻子，我会是你的丈夫，你我会是孩子的父母。</li>
-</ul>
-</blockquote>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[Alison]]></title>
       <url>https://xiyoumc.github.com/2016/09/07/Alison/</url>
       <content type="html"><![CDATA[<blockquote>
@@ -796,6 +866,24 @@
 <li>Come get it,girl</li>
 <li>I need you,baby</li>
 <li>I`m on you,girl</li>
+</ul>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[憧憬]]></title>
+      <url>https://xiyoumc.github.com/2016/09/07/Home/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>时常在憧憬未来 、未来 家的样子</p>
+</blockquote>
+<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/home.jpg?raw=true" alt="zls"></p>
+<a id="more"></a>
+<blockquote>
+<ul>
+<li>一直都想有个家、有自己的妻儿</li>
+<li>有一个可以依靠、也可以安心的家</li>
+<li>So 让我们一起努力。有一天你会是我的妻子，我会是你的丈夫，你我会是孩子的父母。</li>
 </ul>
 </blockquote>
 ]]></content>
