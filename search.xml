@@ -4,7 +4,7 @@
   
     
     <entry>
-      <title><![CDATA[Github系列教程二 「平台介绍」]]></title>
+      <title><![CDATA[Github系列教程二 「加入Github」]]></title>
       <url>https://xiyoumc.github.com/2017/04/28/Github%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%E4%BA%8C%20%E5%8A%A0%E5%85%A5Github/</url>
       <content type="html"><![CDATA[<h3 id="本文同步在我的公众号-DeveloperPython"><a href="#本文同步在我的公众号-DeveloperPython" class="headerlink" title="本文同步在我的公众号: DeveloperPython"></a>本文同步在我的公众号: DeveloperPython</h3><p><img src="http://upload-images.jianshu.io/upload_images/4653472-1ff8d4743422cfaf?imageMogr2/auto-orient/strip" alt=""><br><a id="more"></a><br>相信昨天大家看过 <a href="http://mp.weixin.qq.com/s?__biz=MzU3ODAxNDcwNQ==&amp;mid=2247483866&amp;idx=1&amp;sn=9692ca0d4a25ee4675d073e9643b7e30&amp;chksm=fd7a9d44ca0d1452f0e7d55d412e5469a3d82fbb00153e7d9b99a33e0424d6eb47b54903b5ad&amp;scene=21#wechat_redirect" target="_blank" rel="external">Github系列教程一 「开门」</a>之后，已经对Github的简介和发展史有了一个详细的了解。</p>
 <p>那么多的不说，我继续更新。</p>
@@ -896,94 +896,6 @@
 <blockquote>
 <p>时间流逝<br>忙碌的项目开发，无数的接口，无数的调试<br>Github也好久没更新<br>不过。。。<br>不过。。。最开心 幸福的事是拥有了你<br>我喜欢温暖、你恰好是太阳</p>
 </blockquote>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[从0开始Github系列教程一  开门]]></title>
-      <url>https://xiyoumc.github.com/2016/08/18/%E4%BB%8E0%E5%BC%80%E5%A7%8BGithub%E4%B8%80/</url>
-      <content type="html"><![CDATA[<p><img src="http://upload-images.jianshu.io/upload_images/4653472-2bd1a717e57c76f3?imageMogr2/auto-orient/strip" alt=""></p>
-<p>这是一套Github的小白教程<br><a id="more"></a></p>
-<h3 id="本文来自我的公众号：DeveloperPython"><a href="#本文来自我的公众号：DeveloperPython" class="headerlink" title="本文来自我的公众号：DeveloperPython"></a>本文来自我的公众号：DeveloperPython</h3><p><img src="http://upload-images.jianshu.io/upload_images/4653472-2bd1a717e57c76f3?imageMogr2/auto-orient/strip" alt=""><br>对于Github,我相信很多人都不陌生，并且我也一直认为Github是程序员的必备，当然还有一个 StackOverFlow。</p>
-<p>但是在我周围、包括公号里面的读者，大部分都不怎么使用Github。</p>
-<p>因为上次我的项目被点赞到Github Trending之后（全球开源项目的热门），我发现很多点赞的国内开发者都是不怎么使用Github的。因为几乎看不到他们的代码提交记录，然而里面很多国外开发者的点赞，我再进入他们的主页，大部分开发者都是持续提交代码中。</p>
-<p>之后我也收到好多消息，希望我写一篇关于Github的教程或者如何上Trending。</p>
-<p>其实，我接触Github时间挺早的了，大概在上大学开始写代码的时候，就已经使用上了 Github。当时我也是只下载，不用的那种。大概在接触 Github 一年左右之后，我就开始深入使用。</p>
-<p>到目前为止，自己 Github 中的项目已经有了130多个。</p>
-<p><a href="https://www.github.com/xiyouMc/" target="_blank" rel="external">https://www.github.com/xiyouMc/</a> </p>
-<p>Github是一个开源、开放、免费的平台，它更多的是提供给我们学习和贡献的。</p>
-<p>所以我决定写一个系列来讲解如何去更好的使用Github，为了让国内的开发者能合理的使用Github。</p>
-<h2 id="01、什么是-Github"><a href="#01、什么是-Github" class="headerlink" title="01、什么是 Github"></a>01、什么是 Github</h2><p>Github其实是一家公司，坐落在旧金山。是由三个知名的开发者在08年创办的，具体是谁就不用讲了，讲了也记不住。</p>
-<p>这是它的 Logo:</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-a9a0ffeb0f3deb93?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>大概也就在08年4月多，正式上线。</p>
-<p><a href="https://www.github.com/" target="_blank" rel="external">https://www.github.com/</a> </p>
-<p>简单的来讲，Github是一个基于 Git 的版本托管平台。</p>
-<p>大概在13年的时候，Github 用户数量已经破300万，到目前为止我想也应该上千万了吧。</p>
-<p>因此它有一个很洋气的名字就是全球最大同性交友平台。GayHub。</p>
-<h2 id="02、Github、Gitlab-和-Git-的区别"><a href="#02、Github、Gitlab-和-Git-的区别" class="headerlink" title="02、Github、Gitlab 和 Git 的区别"></a>02、Github、Gitlab 和 Git 的区别</h2><p>这个问题，我相信很多人都分不清。</p>
-<p>有的人会把Git理解成Github。你会经常听到有人跟你讲：“你可以去Git上找下，看看有没有你想要的代码”。 如果这句话，是别人跟我讲的，那我绝对是一脸懵逼的。</p>
-<p>至于为什么，那么我就来详细讲下这三个的区别。</p>
-<p><strong>先说下Git</strong></p>
-<p>Git是一款免费、开源的分布式版本控制系统，他是由著名的Linux发明者 Linus Torvalds 开发的。</p>
-<p>所以说Git是一个版本的控制系统，而非一个平台。</p>
-<p>提到这个版本控制系统，大家可能会想到SVN，毕竟这是很多大学都让学生使用的东西。只不过Git是新时代的产物。</p>
-<p>如果在15年的时候，你告诉我你们在使用SVN，那么还情有可原。毕竟那时候很多大公司还在用SVN，比如支付宝。但到现在了，你还在使用SVN那么真的是太落伍了。</p>
-<p>所以不管是学习Github，或者从事编程行业，Git绝对算是必备技能。</p>
-<p><strong>接下来说Github</strong></p>
-<p>上面已经说过，Github 是基于Git的版本托管服务。所以Git对于Github来讲就是一个版本管理的工具。</p>
-<p>其次Github，还有更多的功能，毕竟它是一个平台。后面的文章中，我也会列举出重要的几个。</p>
-<p><strong>最后来讲讲Gitlab</strong></p>
-<p>这个东西呢，其实是<strong>企业内部</strong>的Github。</p>
-<p>因为Github毕竟是一个开源的、全球性的代码托管平台。</p>
-<p>对于企业来讲，他们更希望内部有个这样类似的Git代码托管服务。所以他们会选择Gitlab，这个开源的代码托管平台。</p>
-<p>而且Gitlab一直在更新版本，目前已经到了9.1版本。</p>
-<p><a href="https://github.com/gitlabhq/gitlabhq/" target="_blank" rel="external">https://github.com/gitlabhq/gitlabhq/</a></p>
-<p>从地址来看，你也会发现Gitlab是Github平台上的一个开源项目，这样也就不难理解这两个的区别了。</p>
-<h2 id="03、Github-的影响力"><a href="#03、Github-的影响力" class="headerlink" title="03、Github 的影响力"></a>03、Github 的影响力</h2><p>我可以这么说吧，只要你能想到的大公司，他们都会在Github上有一个组织来贡献内部的优秀代码和框架。</p>
-<p>比如：<br>Google: <a href="https://www.gihutb.com/google" target="_blank" rel="external">https://www.gihutb.com/google</a><br>Apple: <a href="https://www.github.com/apple/" target="_blank" rel="external">https://www.github.com/apple/</a><br>Facebook: <a href="https://www.github.com/facebook/" target="_blank" rel="external">https://www.github.com/facebook/</a><br>Alibaba: <a href="https://www.github.com/alibaba" target="_blank" rel="external">https://www.github.com/alibaba</a><br>….<br>还有全球顶级的项目，也同样在Github。<br>Linux: <a href="https://www.github.com/torvalds/linux" target="_blank" rel="external">https://www.github.com/torvalds/linux</a><br>Nodejs: <a href="https://www.github.com/nodejs/node" target="_blank" rel="external">https://www.github.com/nodejs/node</a><br>Weex: <a href="https://github.com/alibaba/weex" target="_blank" rel="external">https://github.com/alibaba/weex</a><br>等等的….<br>同样还有全球顶尖级的开发者。<br>Linux之父 Linus:<br><img src="http://upload-images.jianshu.io/upload_images/4653472-b3a42f0dacbef2cd?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>Android 之神 Jake:<br><img src="http://upload-images.jianshu.io/upload_images/4653472-e0d5bf0e4644d3cc?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>等等的，我就不一一列举了。</p>
-<p>只要是在编程届厉害的人物，都会出现在Github。</p>
-<p>并且很多牛逼的项目做开源，比如你某天听说了某个公司的xx框架开源了。那么它们绝对在Github上开源的。</p>
-<p>因此，Github已经是开源的代名词。</p>
-<h2 id="04、Github能做什么"><a href="#04、Github能做什么" class="headerlink" title="04、Github能做什么"></a>04、Github能做什么</h2><ul>
-<li><strong>优秀的开源项目</strong></li>
-</ul>
-<p>学好使用优秀的开源项目，是一个可以避免你在软件开发中重复造轮子的事情。</p>
-<p>确切的来讲，正是因为有个Github上优秀的开源项目，才促使了我们在软件开发中变得越来越容易、越来越快速。</p>
-<p>比如说：网络请求库、图片加载库。如果让你去自己实现，那么时间和资源是一个很大的成本。对于大公司，可能在人力和资源上是充沛的。但是对于大部分互联网来讲时间就是一切。</p>
-<p>所以在使用开源项目的同时，学习他们优秀的设计思想和实现方式，无疑是提升自我编程能力的好时机。</p>
-<p>同样的，如果你能拥有一个优秀的开源项目，那么绝对是一个很好的体验。</p>
-<p>比如说我开源的WebHubBot，当你看到自己的项目每天每时都有人在点赞，那种感觉真心是比朋友圈被点赞爽很多倍的！！！</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-b63084401d16c5a5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><img src="http://upload-images.jianshu.io/upload_images/4653472-a4be03a4fa7183b0?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<ul>
-<li><strong>多人协作</strong><br>其实多人协作对于Github来讲无疑是一个转折点。</li>
-</ul>
-<p>因为一个好的项目，绝非几个人就能搞定的，因此Github提供了很好的协作平台。</p>
-<p>当你把代码提交上去之后，你可以让其他人和你一同开发，或者说如果你的项目很好，全球的开发者都会给你的项目做贡献。</p>
-<p>以我为例，前段时间提交了一个很有意思的项目，之后就收到了好几个全球开发者代码贡献，如下：</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-668e59895e243bdb?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>因此，多人协作真心是一个很爽、很棒的功能。</p>
-<ul>
-<li><strong>其次就是搭建个人网站</strong></li>
-</ul>
-<p>Github Pages是Github提供的一套完整的博客搭建环境。</p>
-<p>平时你会发现很多人的个人博客域名都是xxxx.github.io。这就是使用Github Pages来搭建的。使用方法很简单，也绝对是一个装逼利器。</p>
-<ul>
-<li><strong>个人简历</strong></li>
-</ul>
-<p>活跃的Github账号，是一个很好的个人简历。</p>
-<p>据我所知，目前很多猎头和公司的HR都很喜欢逛Github。</p>
-<p>并且很多国外的科技公司也都会通过Github来寻找优秀的人才。</p>
-<p>所以多用Github，会让你收到很多意外的惊喜。</p>
-<h2 id="05、加入Github"><a href="#05、加入Github" class="headerlink" title="05、加入Github"></a>05、加入Github</h2><p>相信大家读到这里，都迫不及待的想去使用Github了。</p>
-<p>那么事不宜迟，从现在开始，快去注册一个Github账号。 </p>
-<p>链接： <a href="https://www.github.com/" target="_blank" rel="external">https://www.github.com/</a> 。</p>
-<p>注册完成之后，先玩着，了解下整个平台的功能。</p>
-<p>同时也可以试着搜索下我的Github：<br>ID：xiyouMc<br><a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a> </p>
-<p>接下来，我还会继续连载Github一系列的文章。</p>
-<p>保证你们看完之后，会有不一样的收获。</p>
-<p>同时如果你目前在使用Git或者Github中，那么有问题的话，也同样可以给我留言，我会一一给你们解答。</p>
-<p>——<br>扫描二维码，关注公众号<br><img src="http://upload-images.jianshu.io/upload_images/4653472-1c1e06e2f58b0610?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>生活不止眼前的苟且，还有手下的代码、<br>和嘴上的扯淡<br>——<br>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a><br>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
 ]]></content>
     </entry>
     
