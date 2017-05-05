@@ -4,6 +4,84 @@
   
     
     <entry>
+      <title><![CDATA[2000个Star的Github项目很牛逼？]]></title>
+      <url>https://xiyoumc.github.com/2017/05/06/2000%E4%B8%AAStar%E7%9A%84Github%E9%A1%B9%E7%9B%AE%E5%BE%88%E7%89%9B%E9%80%BC%EF%BC%9F/</url>
+      <content type="html"><![CDATA[<p><img src="https://mmbiz.qlogo.cn/mmbiz_gif/BAYrQMKkbTZ2ARlAibc3HVXYdrwge4UtpMHubJFog2pgGnWJhTicnRox8mXpEyjCfhmp4vtq4qAwbPW87OpUcocw/0?wx_fmt=gif" alt=""></p>
+<blockquote>
+<p>首先，说明下，这篇文章是基于我的开源项目WebHubBot来讲的。不清楚的可以看<a href="https://github.com/xiyouMc/WebHubBot" target="_blank" rel="external">XiyouMc/WebHubBot</a>。<br><a id="more"></a></p>
+</blockquote>
+<p>这篇文章，其实我很早都想写了。也算是对整个项目的总结，其次也是给那些问WebHubBot技术的人一个答复。</p>
+<p>说实话，这个项目的技术很普通。普通到什么程度呢？我可以很清楚的告诉你，这个项目就用了屈指可数的几个技术点：Http协议、Html、Python、MongoDB 和 Scrapy。就这么几个技术，对于一般的程序员来讲，真心不是什么牛逼点。</p>
+<p>那么接下来，我主要从为什么会火和具体的技术点来扯下。</p>
+<h3 id="1、为什么这个项目会火呢？"><a href="#1、为什么这个项目会火呢？" class="headerlink" title="1、为什么这个项目会火呢？"></a>1、为什么这个项目会火呢？</h3><p>在我看来，它能火起来真的是运气。</p>
+<p>如果真的要我说出个所以然，那么我觉得就因为这两点它才会火起来。</p>
+<ul>
+<li>第一点，因为项目爬的网站是有诱惑力的。</li>
+</ul>
+<p>其实，大家可以在Github上搜索下此类网站的爬虫。你会搜索到很多类似的爬虫。但是他们的Star反而都是几十个，甚至没有。</p>
+<ul>
+<li>第二点，我有一份精简、清晰的英文文档。</li>
+</ul>
+<p><img src="https://mmbiz.qlogo.cn/mmbiz_png/BAYrQMKkbTZ2ARlAibc3HVXYdrwge4UtpdiaiagLgggxdHn1Vt6j8kFcfGPee7KXcDKl92eoVadVSBOchKb2dFgGA/0?wx_fmt=png" alt=""></p>
+<p>其中，我很清晰的从项目简介、项目环境、启动前配置、启动方式、截图、数据库说明等的这几个方面进行简单描述。而且我觉得这些就够了。</p>
+<p>最重要的一点，就是这篇英文文档写的很简单，都是简单词汇。</p>
+<h4 id="2、牛逼的技术？"><a href="#2、牛逼的技术？" class="headerlink" title="2、牛逼的技术？"></a>2、牛逼的技术？</h4><p>其实，在这个社会，同一个行业并没有牛逼一说，反而牛逼的是不同行业的。就比如，会造飞机的就是牛逼。所以，这个项目的技术点在整个互联网的圈子并没有牛逼到哪去。</p>
+<p>为什么这么说呢 ？</p>
+<ul>
+<li><strong>Http协议</strong></li>
+</ul>
+<p>一套应用层的协议，官话是超文本传输协议。为什么提这个呢，是因为要去爬一个网站，你首先需要弄清楚，在什么样的请求下才能响应正常、又是怎么拿到网页数据的。这样，你才有去写爬虫请求的能力。</p>
+<p><img src="https://mmbiz.qlogo.cn/mmbiz_jpg/BAYrQMKkbTZ2ARlAibc3HVXYdrwge4UtpgLgmGJQE4xMvfiaJsU5hspojqNwes5gcsicrKd4ZMtvBloIrngdJCxLQ/0?wx_fmt=jpeg" alt=""></p>
+<p>我这里推荐一个学习的地址：<br><a href="http://www.cnblogs.com/ranyonsue/p/5984001.html" target="_blank" rel="external">http://www.cnblogs.com/ranyonsue/p/5984001.html</a></p>
+<ul>
+<li><strong>Html页面</strong></li>
+</ul>
+<p>写爬虫不需要你有多么牛逼的前端经验。就像我，从未写过前端页面，但是前端那些标签，我几乎都能看懂。</p>
+<p>不过对于爬虫来讲，可能Xpath语法的会重要一点。Xpath是什么呢？<br>Xpath是XML路径语言。它是为了确定XML文档中某部分位置的语言。众所周知，Html其中也是使用XML语言。因此，简单的来说，我们可以通过Xpath来定位到Html页面中某个控件的位置。</p>
+<p>比如，就Baidu.com的首页来讲，我们通过Xpath来拿到 “百度一下” 按钮的位置。</p>
+<p><img src="https://mmbiz.qlogo.cn/mmbiz_png/BAYrQMKkbTZ2ARlAibc3HVXYdrwge4UtpnZiaquBbDVFvAeYts2H5GvIXYXuN9OndX7lwtzllFvXoQHXHWcrEB7A/0?wx_fmt=png" alt=""></p>
+<p>那么， “百度一下” 的XPath路径将是 //input[@class=”bg s_btn”] ，这个路径也就会定位到这个控件的位置。</p>
+<p>接下来就简单了，我们可以拿到这个控件之后去做Click操作。这样的话，就用代码完成了百度一下的功能。</p>
+<p>同样的，推荐教程附上：<br><a href="http://www.w3school.com.cn/xpath/index.asp" target="_blank" rel="external">http://www.w3school.com.cn/xpath/index.asp</a></p>
+<ul>
+<li><strong>Python + Scrapy</strong></li>
+</ul>
+<p>Python算是爬虫中的利器了，如果你不会Python。那么其他语言同样可以实现爬虫。但是，工作量将是Python的n倍。</p>
+<p>Python更适合做爬虫。之所以这么讲，是因为它的框架很多，开放的依赖库很多，其次就是工作效率高，Java要用100行来实现的一个小工具，Python也许只要10行。就是这么牛逼。所以，你不上手更待何时。</p>
+<p>这里，送上我的福利，PythonDev小密圈，适合老司机更适合新手。<br><img src="https://mmbiz.qlogo.cn/mmbiz_png/BAYrQMKkbTZ2ARlAibc3HVXYdrwge4UtpbIZR2vzK4jFPcNWZVldXHuA98SxyBM0WII3vvzpfIRqKKkGGaYIrew/0?wx_fmt=png" alt=""></p>
+<p>其次，Scrapy框架。这个框架呢，其实很难评价。因为你要是用不好的话，会出现杀鸡焉用牛刀的笑话。</p>
+<p>Scrapy是一套及其灵活的框架。为什么说它灵活呢？</p>
+<p>首先它的parse -&gt; yield item -&gt; pipeline流程已经是所有爬虫的固有模式，其中解析函数可以自己来实现，怎么处理网页自己决定。pipeline可以自己写，爬到的数据怎么处理也是自己可以决定的。</p>
+<p>其次，就是底层操作的修改，包括代理中间件、下载中间件之类的，这些也都可以通过middleware来实现。甚至，目前已经有很多开源的中间件已经实现绝大部分的爬虫需求。</p>
+<p>奉上Scrapy教程:<br><a href="http://scrapy-chs.readthedocs.io/zh_CN/0.24/intro/tutorial.html" target="_blank" rel="external">http://scrapy-chs.readthedocs.io/zh_CN/0.24/intro/tutorial.html</a></p>
+<p>最后，来简单的说一个针对新手的爬虫框架，Beautiful Soup。<br>这个，我也没接触过。但是，我知道它是真的很简单。首先，它不需要多少代码就可以写出一个完整的爬虫应用程序；其次，是因为我家属，做Android的司机，第一次玩BS也是非常快的就上手了。</p>
+<p>所以，Beautiful Soup，这个框架绝对是新手必备的。</p>
+<ul>
+<li><strong>MongoDB</strong></li>
+</ul>
+<p>持久化、非关系型数据库。多用于分布式系统。</p>
+<p>之所以，WebHubBot会选择用MongoDB。重要的一点是Python可以直接将对象转化为JSON，并且pymongo可以直接将JSON数据插入到MongoDB，这不是很方便嘛，且减少了我来写SQL的很多时间，何乐而不为呢。</p>
+<p>当然，MongoDB存储数据的格式不是JSON，而是一个非常类似于JSON的BSON数据。</p>
+<p>其次，Python中使用到的是pymongo。使用pip安装下就好了。</p>
+<p>同时MongoDB的安装方式和教程，也很简单。</p>
+<p>教程链接：<br><a href="http://www.runoob.com/mongodb/mongodb-tutorial.html" target="_blank" rel="external">http://www.runoob.com/mongodb/mongodb-tutorial.html</a></p>
+<p>最后推荐几个MongoDB的可视化工具。<br>RoboMongo : <a href="https://robomongo.org/" target="_blank" rel="external">https://robomongo.org/</a><br>Toad：<a href="http://www.toadworld.com/products/toad-for-oracle" target="_blank" rel="external">http://www.toadworld.com/products/toad-for-oracle</a></p>
+<p>第一个，Windows系统多数使用。第二，Mac多数。<br>Linux的大神，就用命令好了。</p>
+<h4 id="3、总结"><a href="#3、总结" class="headerlink" title="3、总结"></a>3、总结</h4><p>项目中的技术点其实都是基础。我并没有资格说这个项目有多牛逼。在我看来，它就是基础知识堆积起来的而已。</p>
+<p>所以，学好基础才是王道，其次要把技术玩起来。</p>
+<p>努力成为一个有想法的全栈工程师。</p>
+<hr>
+<p>长摁‘识别二维码’，一起进步</p>
+<p><img src="https://mmbiz.qlogo.cn/mmbiz_png/BAYrQMKkbTbS8e8ibKzUsdcO7Dx3ILTib4daQiaaywnBk1dBd2ZfsxlSKZ7KdwA8kyN1unwBH5BbKpg2SGYP60VrQ/640?wx_fmt=png" alt=""></p>
+<p>生活不止眼前的苟且，还有手下的代码、</p>
+<p>和嘴上的扯淡<br>——<br>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a></p>
+<p>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
+<hr>
+<p>点击 <a href="http://t.xiaomiquan.com/7ey3rZv" target="_blank" rel="external">Join</a>，加入Python技术成长圈子，我在这里等着你。</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Github系列教程二 「加入Github」]]></title>
       <url>https://xiyoumc.github.com/2017/04/28/Github%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%E4%BA%8C%20%E5%8A%A0%E5%85%A5Github/</url>
       <content type="html"><![CDATA[<h3 id="本文同步在我的公众号-DeveloperPython"><a href="#本文同步在我的公众号-DeveloperPython" class="headerlink" title="本文同步在我的公众号: DeveloperPython"></a>本文同步在我的公众号: DeveloperPython</h3><p><img src="http://upload-images.jianshu.io/upload_images/4653472-1ff8d4743422cfaf?imageMogr2/auto-orient/strip" alt=""><br><a id="more"></a><br>相信昨天大家看过 <a href="http://mp.weixin.qq.com/s?__biz=MzU3ODAxNDcwNQ==&amp;mid=2247483866&amp;idx=1&amp;sn=9692ca0d4a25ee4675d073e9643b7e30&amp;chksm=fd7a9d44ca0d1452f0e7d55d412e5469a3d82fbb00153e7d9b99a33e0424d6eb47b54903b5ad&amp;scene=21#wechat_redirect" target="_blank" rel="external">Github系列教程一 「开门」</a>之后，已经对Github的简介和发展史有了一个详细的了解。</p>
