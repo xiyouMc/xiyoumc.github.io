@@ -84,19 +84,19 @@
 
 
 
-<meta name="description" content="前段时间花了点功夫研究了下Django框架，也就是Python后端+Web端的开发框架，可以快速完成服务端的搭建.借用 Django 官网的一句话 - “Django makes it easier to build better Web apps more quickly and with less code.”
-   然后这两天又抽空翻了下之前自己做的Hybrid，然后顺其自然的我使用D">
+<meta name="description" content="Python爬虫如何入门？其实，“入门”最好的方式是以项目开始，这样实践起来你会被目标驱动。从而，不用一步一步慢慢的学习模块化的东西。
+其实，知识体系里面的每一个知识点类似于图里的点。边就是知识体系的依赖关系，那么整个图也就是一个有向无环图。因为学习A的经验可以帮助到你学习B。因此，入门的东西根本不用学习，因为入门点根本不存在。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="XiyouMc">
-<meta property="og:url" content="https://xiyoumc.github.com/2017/03/17/Untitled/index.html">
+<meta property="og:url" content="https://xiyoumc.github.com/2017/05/08/爬虫如何入门？/index.html">
 <meta property="og:site_name" content="XiyouMc">
-<meta property="og:description" content="前段时间花了点功夫研究了下Django框架，也就是Python后端+Web端的开发框架，可以快速完成服务端的搭建.借用 Django 官网的一句话 - “Django makes it easier to build better Web apps more quickly and with less code.”
-   然后这两天又抽空翻了下之前自己做的Hybrid，然后顺其自然的我使用D">
-<meta property="og:updated_time" content="2017-03-17T15:20:35.000Z">
+<meta property="og:description" content="Python爬虫如何入门？其实，“入门”最好的方式是以项目开始，这样实践起来你会被目标驱动。从而，不用一步一步慢慢的学习模块化的东西。
+其实，知识体系里面的每一个知识点类似于图里的点。边就是知识体系的依赖关系，那么整个图也就是一个有向无环图。因为学习A的经验可以帮助到你学习B。因此，入门的东西根本不用学习，因为入门点根本不存在。">
+<meta property="og:updated_time" content="2017-05-08T08:00:01.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="XiyouMc">
-<meta name="twitter:description" content="前段时间花了点功夫研究了下Django框架，也就是Python后端+Web端的开发框架，可以快速完成服务端的搭建.借用 Django 官网的一句话 - “Django makes it easier to build better Web apps more quickly and with less code.”
-   然后这两天又抽空翻了下之前自己做的Hybrid，然后顺其自然的我使用D">
+<meta name="twitter:description" content="Python爬虫如何入门？其实，“入门”最好的方式是以项目开始，这样实践起来你会被目标驱动。从而，不用一步一步慢慢的学习模块化的东西。
+其实，知识体系里面的每一个知识点类似于图里的点。边就是知识体系的依赖关系，那么整个图也就是一个有向无环图。因为学习A的经验可以帮助到你学习B。因此，入门的东西根本不用学习，因为入门点根本不存在。">
 
 
 
@@ -117,7 +117,7 @@
 
 
 
-  <link rel="canonical" href="https://xiyoumc.github.com/2017/03/17/Untitled/"/>
+  <link rel="canonical" href="https://xiyoumc.github.com/2017/05/08/爬虫如何入门？/"/>
 
   <title>  | XiyouMc </title>
 </head>
@@ -304,8 +304,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-03-17T23:20:11+08:00" content="2017-03-17">
-              2017-03-17
+            <time itemprop="dateCreated" datetime="2017-05-08T14:06:51+08:00" content="2017-05-08">
+              2017-05-08
             </time>
           </span>
 
@@ -314,8 +314,8 @@
           
             
               <span class="post-comments-count">
-                <a href="/2017/03/17/Untitled/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/17/Untitled/" itemprop="commentsCount"></span>
+                <a href="/2017/05/08/爬虫如何入门？/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/08/爬虫如何入门？/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -323,7 +323,7 @@
 
           
           
-            <span id="/2017/03/17/Untitled/" class="leancloud_visitors" data-flag-title="">
+            <span id="/2017/05/08/爬虫如何入门？/" class="leancloud_visitors" data-flag-title="">
                   阅读次数
             </span>
           
@@ -338,9 +338,65 @@
       
 
       
-        <p>   前段时间花了点功夫研究了下Django框架，也就是Python后端+Web端的开发框架，可以快速完成服务端的搭建.<br>借用 <code>Django</code> 官网的一句话 - “Django makes it easier to build better Web apps more quickly and with less code.”</p>
-<p>   然后这两天又抽空翻了下之前自己做的Hybrid，然后顺其自然的我使用Django框架和Hybrid框架做了个简单的 Demo,并将其放到了Github上。有兴趣的朋友可以共同探讨下。</p>
-<p>   地址在这: <a href="https://github.com/xiyouMc/HybridFramework" target="_blank" rel="external">https://github.com/xiyouMc/HybridFramework</a></p>
+        <h2 id="Python爬虫如何入门？"><a href="#Python爬虫如何入门？" class="headerlink" title=" Python爬虫如何入门？"></a> Python爬虫如何入门？</h2><p>其实，“入门”最好的方式是以项目开始，这样实践起来你会被目标驱动。从而，不用一步一步慢慢的学习模块化的东西。</p>
+<p>其实，知识体系里面的每一个知识点类似于图里的点。边就是知识体系的依赖关系，那么整个图也就是一个有向无环图。因为学习A的经验可以帮助到你学习B。因此，入门的东西根本不用学习，因为入门点根本不存在。</p>
+<a id="more"></a>
+<p>同时，你需要学习的是如何去做一个大的项目，来亲身体会爬虫， 并一步步学习爬虫的知识点。</p>
+<p>那么，我总结下知乎上的相关知识点：</p>
+<ol>
+<li>爬虫的工作原理</li>
+<li>基本的Https爬虫工具：Scrapy</li>
+<li>分布式爬虫系统。也就是维护一个集群机器来高效的完成分布式队列。Github上也有一个现成的例子: <a href="https://github.com/nvie/rq" target="_blank" rel="external">nvie/rq</a></li>
+<li>rq和Scrapy的结合： <a href="https://github.com/rolando/scrapy-redis" target="_blank" rel="external">rolando/scrapy-redis</a></li>
+<li>后续处理: <a href="https://github.com/grangier/python-goose" target="_blank" rel="external">网页处理grangier/python-goose</a> 存储(Mongodb)</li>
+</ol>
+<p>以下，我将基于WebHubBot的经验来讲：</p>
+<ol>
+<li><p>爬虫的怎么工作的</p>
+<p> 爬虫的另一个意思其实就是🕷（Spider） ，互联“网”也是它的环境。简单的来说，也就是你需要用这个蜘蛛来把相关的网站的所有角落(网页)都爬一边。</p>
+<p> 那么，你可以选择一个自己感兴趣的平台，如知乎、淘宝等等的。</p>
+<p> 我这里通过PornHub来讲解。比如，我们访问PornHub的首页，里面会出现很多链接。同时最初我们的目标是拿到所有的视频标题、视频简介、视频链接或者其他有用信息。然后我们兴高采烈的将整个首页都爬下来，这里想象下，你就是将整个页面完完整整的Copy了下来。</p>
+<p> 然后，我们随便点击一个链接进入视频详情页，进入第二个页面之后，那就会看到具体的视频标题、简介等等的。那么这只是一个视频，我们又是如何做到爬取整站的数据呢。这里可以动下脑子，一种是返回再回到首页去拿一个链接，另一种则是基于第一步爬下来的首页来找下一个链接。这里，当然是第二种方案。同时我们要做去重，爬过的链接，就不要再去爬第二遍。</p>
+<p> 所以，理论上如果后续的所有视频详情页都是从首页可达的话，那么我们就一定可以将所有网页都爬下来。</p>
+<p> 以下是Python的伪代码实现:</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">from</span> Queue <span class="keyword">import</span> Queue</div><div class="line">home_page = <span class="string">'https://www.pornhub.com/'</span></div><div class="line">link_queue = Queue()</div><div class="line">seen = set()</div><div class="line">seen.insert(home_page)</div><div class="line">link_queue.put(home_page)</div><div class="line"></div><div class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</div><div class="line">	<span class="keyword">if</span> link_queue.size() &gt; <span class="number">0</span>:</div><div class="line">		current_url = url_queue.get() <span class="comment">#拿到队列中第一个url</span></div><div class="line">		links = save(current_url)  <span class="comment">#保存这个页面的html，并返回当前页面的所有link</span></div><div class="line">		<span class="keyword">for</span> link <span class="keyword">in</span> links:</div><div class="line">			<span class="keyword">if</span> link <span class="keyword">not</span> <span class="keyword">in</span> seen:</div><div class="line">				seen.put(link)</div><div class="line">				link_queue.put(link)</div><div class="line">	<span class="keyword">else</span>:</div><div class="line">		<span class="keyword">break</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
+<pre><code>以上就是一个简单的伪代码来爬取pornhub中视频资源的例子。当然， 这只是一个非常简单的例子，其实爬虫是一个非常复杂的项目，类似的就是搜索引擎需要爬取整站的数据，更是需要一整个团队来开发和维护。
+</code></pre><ol>
+<li><p>效率</p>
+<p> 如果，使用上述的代码来爬取PornHub的话，那么你是绝对无法在一天时间内完成500万的海量数据的，更别说在短时间内爬取PornHub的所有数据。</p>
+<p> 那么，问题出在哪？爬的网页太多太多了，而且上面的代码太慢太慢了。</p>
+<p> PornHub的全网有N个页面，那么分析下判重的时间复杂度将是 N * log(N)，因为每个网页都要遍历一遍，而使用Set来做判重，需要 log(N) 的复杂度。</p>
+<p> 所以，我们需要一个成熟的判重方案。Bloom Filter。 它是一个空间效率很高的随机数据结构。<a href="http://blog.csdn.net/jiaomeng/article/details/1495500" target="_blank" rel="external">官方简介</a>：</p>
+<blockquote>
+<p>Bloom Filter是一种空间效率很高的随机数据结构，它利用位数组很简洁地表示一个集合，并能判断一个元素是否属于这个集合。Bloom Filter的这种高效是有一定代价的：在判断一个元素是否属于某个集合时，有可能会把不属于这个集合的元素误认为属于这个集合（false positive）。因此，Bloom Filter不适合那些“零错误”的应用场合。而在能容忍低错误率的应用场合下，Bloom Filter通过极少的错误换取了存储空间的极大节省。</p>
+</blockquote>
+<p> 有兴趣可以详细学习下这个算法。</p>
+<p> 简单的来说，它是一种利用Hash的方法来判重的。并且在使用固定的内存，不随url的数量增加而增长,以 O（1）的效率判断url是否已经在set中。但是荣然有极小的可能性会误判，所以对于“零错误”的系统不适用。但是对于爬虫，小概率的重复爬取也是可以接受的。</p>
+<p> 那么，以上就是判重的最快方式了。</p>
+<p> 当然，另一个瓶颈又会出现，如果你只有一台机器，那么不管你的带宽有多大你的机器下载网页的速度还是会有瓶颈。那么，只有加快这个速度，我们使用多台机器来跑。</p>
+</li>
+<li><p>集群化爬取</p>
+<p> 集群化爬取，其实不难理解。也就是将你的爬虫任务分发到n台机器来处理，当然每台机器处理的任务不同，且不重复。</p>
+<p> 那么，假设你有100台机器，怎么用Python实现一个分布式的爬取算法呢？</p>
+<p> Server -&gt; Client 。这种C/S 的模式，我相信大家也不陌生。那么分布式的系统，其实就是一台Server -&gt; n个Client 来处理。这里我们将Server定义为 Master机，多个Client定义为多个 Slave。所以基于开始的伪代码，我们可以将link_queue 放到Master上，其他的Slave都可以通过网络跟Master联通，每当一个Slave下载完成一个页面之后，就会将这个页面的结果告知Master，同时获取一个新的link 来爬取。同时 BloomFliter 也是放在Master的，用来针对Links进行去重。 其中Slave和Server联通的方式，就是通过Redis，这是一个可以远程操作的缓存数据，提供了完善的队列管理。其次，Redis的队列中已经包含的去重的，当Push一个url 到Redis之后，某一个Slave Pop拿到数据之后，这个Url将只会在这个Slave进行处理。</p>
+<p> 因此，我们可以用Python来实现。Slave的机器上安装Scrapy，Master上安装Redis和rq用作分布式队列。</p>
+<p> 伪代码:</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="string">"""</span></div><div class="line">Slave</div><div class="line">"""</div><div class="line"></div><div class="line">url = link_from_master() <span class="comment"># 从Master机Get到最新的链接</span></div><div class="line">content = save(url) <span class="comment"># 请求并保存这个链接下的视频信息</span></div><div class="line">send_to_master(url) <span class="comment"># 将当前处理过的url Post给主机。</span></div><div class="line"></div><div class="line"><span class="string">"""</span></div><div class="line">Master</div><div class="line">"""</div><div class="line">queue = Queue()</div><div class="line">bf = BloomFilter()</div><div class="line"></div><div class="line">home_pages = <span class="string">"https://www.pornhub.com/"</span></div><div class="line"></div><div class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</div><div class="line">    <span class="keyword">if</span> request == <span class="string">'GET'</span>:</div><div class="line">        <span class="keyword">if</span> distributed_queue.size()&gt;<span class="number">0</span>:</div><div class="line">            send(queue.get()) <span class="comment"># 将当前url push到Redis，从而让Slave获取到。</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            <span class="keyword">break</span></div><div class="line">    <span class="keyword">elif</span> request == <span class="string">'POST'</span>:</div><div class="line">        bf.put(request.url) <span class="comment">#将处理过的Url 保存到bf队列</span></div></pre></td></tr></table></figure>
+<p> 轮子: <a href="https://github.com/rolando/scrapy-redis" target="_blank" rel="external">rolando/scrapy-redis</a></p>
+</li>
+<li><p>后处理</p>
+</li>
+</ol>
+<p>上面的路子，其实是很简单很简单的一部分。同样的，后续你还要进行其他的处理，比如：</p>
+<ul>
+<li>有效的存储</li>
+<li>有效的判重</li>
+<li>有效的信息提取</li>
+<li>及时更新</li>
+</ul>
+<p>所以，不要在意如何“入门”，只管上路就好了。</p>
 
       
     </div>
@@ -387,17 +443,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/16/Google Hacking --你真的会用Google吗？/" rel="next" title="Google Hacking --你真的会用Google吗？">
-                <i class="fa fa-chevron-left"></i> Google Hacking --你真的会用Google吗？
+              <a href="/2017/05/06/2000个Star的Github项目很牛逼？/" rel="next" title="2000个Star的Github项目很牛逼？">
+                <i class="fa fa-chevron-left"></i> 2000个Star的Github项目很牛逼？
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/03/22/当我玩哔哩哔哩的时候，一不小心。。。/" rel="prev" title="当我玩哔哩哔哩的时候，一不小心。。。">
-                当我玩哔哩哔哩的时候，一不小心。。。 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -452,8 +504,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2017/03/17/Untitled/"
-           data-title="" data-url="https://xiyoumc.github.com/2017/03/17/Untitled/">
+      <div class="ds-thread" data-thread-key="2017/05/08/爬虫如何入门？/"
+           data-title="" data-url="https://xiyoumc.github.com/2017/05/08/爬虫如何入门？/">
       </div>
     
 
@@ -553,7 +605,7 @@
               
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Python爬虫如何入门？"><span class="nav-number">1.</span> <span class="nav-text"> Python爬虫如何入门？</span></a></li></ol></div>
             
           </div>
         </section>
