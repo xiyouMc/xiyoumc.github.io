@@ -4,13 +4,99 @@
   
     
     <entry>
-      <title></title>
+      <title><![CDATA[小程序之Github开源社区]]></title>
+      <url>https://xiyoumc.github.com/2017/05/25/GithubTrending/</url>
+      <content type="html"><![CDATA[<p><img src="http://upload-images.jianshu.io/upload_images/4653472-92c6e0096c11c841.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h2 id="01、初衷"><a href="#01、初衷" class="headerlink" title="01、初衷"></a>01、初衷</h2><p>大概上上周我花了周末两天的时间编写了一款小程序并顺利提交审核。</p>
+<p>也就在前两天我的小程序 「Github开源社区」 历经了两周的审核，终于。。。。。。成功发布了，并且绑定到了公众号。 </p>
+<a id="more"></a>
+<p>以下是这两天时间的数据分析报表。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-5db25e9b492954ec.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>（实时访问次数 pv）</p>
+<p>粗略的分析下：实时访问次数波动很明显，当然这也是正常的。高流量基本保持在早上十点到中午。晚上还会出现个别熬夜的程序员在看代码。总体呈下降趋势。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-4bab8d746061c759.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>(访问来源、访问时长、访问深度)</p>
+<p>粗略的分析下：</p>
+<p>访问来源主要来自会话，其次来自扫小程序码。</p>
+<p>访问时长最高点在 11-20 秒，当然还有大量用户超过1分多钟在使用小程序。</p>
+<p>其次，访问深度（访问了多少个页面），大部分只访问了一个页面，最深页面在5个页面的深度。</p>
+<p>——————划重点———–</p>
+<p>那么，为什么我会选择去编写一个关于 <strong>程序员 </strong>的小程序呢？</p>
+<p>首先，我是程序员。其次，也是因为前段时间我一直在更新关于Github的教程。因此，为了方便自己，同时方便读者和开发者，我选择开发了一款关于Github的小程序。 </p>
+<h2 id="02、小程序的功能"><a href="#02、小程序的功能" class="headerlink" title="02、小程序的功能"></a>02、小程序的功能</h2><p>「Github开源社区」目前的功能很简单，包括每日开源趋势、模糊搜索想要的代码、查看具体的代码文档以及仓库的信息。</p>
+<p>用微信扫一扫下方，可体验小程序。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-90ad79d09f150843.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>效果图<br><img src="http://upload-images.jianshu.io/upload_images/4653472-3ba1bce01266f9f2?imageMogr2/auto-orient/strip" alt=""><br>(启动小程序，默认展示当天最热开源项目,并支持查看文档)</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-e142717e120e467a?imageMogr2/auto-orient/strip" alt=""><br>(支持搜索代码)</p>
+<p><strong>后续将支持的功能</strong></p>
+<p>代码查看<br>登录Github账号，实现点赞等<br>社区<br>。。。</p>
+<h2 id="03、开发过程"><a href="#03、开发过程" class="headerlink" title="03、开发过程"></a>03、开发过程</h2><p>虽说这是一款工具性的小程序，但确切的说是一款C/S的软件。C端也就是集成进微信的小程序，S端的话就是我编写并部署在阿里云的服务端。</p>
+<p>C端包含了wxml、wxss、json、js还有其他配置属性。</p>
+<p>S端的话我就直接用Python + web.py构建的，同时基于Github Api开发。</p>
+<p>开发流程看似简单，但对于我这个前端半调子来讲，确实在开发C端遇到很多问题。当然，解决方法也就是Google + 大神。</p>
+<h2 id="04、如何开发一款自己的小程序"><a href="#04、如何开发一款自己的小程序" class="headerlink" title="04、如何开发一款自己的小程序"></a>04、如何开发一款自己的小程序</h2><p><strong>一个idea</strong></p>
+<p>这个idea很重要，因为自己的想法将会推动自己去实践并完成。如果没有一个自己的idea，那么与其说学技术，倒不如说你是在说服自己拥有多一点的技能。</p>
+<p>所以，idea很重要。</p>
+<p>如果一开始我并没有想好要去做什么小程序，然后就上手去学习如何开发，我猜可能在后面的学习过程中我将会很难坚持。因为那样是枯燥无味的，我并不知道自己用这个技术能做点什么。</p>
+<p>其次，Github开源社区的idea我在开发前一个礼拜都有了。外加晚上熬夜到一两点，加上周末，大概花了两三天时间就出来了。</p>
+<p>所以，在学习开发小程序之前，先想好自己要做什么。接下来，再动手去了解、学习这个技术，并运用起来。</p>
+<p><strong>需要了解的技术点</strong></p>
+<p>虽说小程序有一套自己的开发语言，但是，框架中主要的还是Page的生命周期和App的管理。其次，就是css的一些知识点。</p>
+<p>所以，一开始你可以去小程序的官网着重了解Page生命周期和App的管理。其次，熟悉下小程序的那几个重要的组件，其中包括View、button等等的。</p>
+<p>官网：<br><a href="https://mp.weixin.qq.com/debug/wxadoc/dev/component/" target="_blank" rel="external">https://mp.weixin.qq.com/debug/wxadoc/dev/component/</a></p>
+<p>接下来，你需要学习css的东西，这个其实不复杂，去w3c上面将css的关键知识点过一遍。了解前端的页面是如何布局的。</p>
+<p><strong>上手</strong></p>
+<ul>
+<li>IDE搭建<br>微信团队针对小程序专门出了一款开发工具。这里我直接上链接:<br><a href="https://mp.weixin.qq.com/debug/wxadoc/dev/devtools/download.html" target="_blank" rel="external">https://mp.weixin.qq.com/debug/wxadoc/dev/devtools/download.html</a></li>
+<li>项目结构</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">js ---------- JavaScript文件</div><div class="line"></div><div class="line">json -------- 项目配置文件，负责窗口颜色等等</div><div class="line"></div><div class="line">wxml ------- 类似HTML文件</div><div class="line"></div><div class="line">wxss ------- 类似CSS文件</div></pre></td></tr></table></figure>
+<p>在根目录通过App来命名这四种文件，也就是程序的入口。<br>App.js</p>
+<p>这个文件是必须要有的。其中主要写的内容也就是上面提到过管理App生命周期的。<br>App.json</p>
+<p>这个也是必须要有的。其中包含了整个小程序的全局配置。<br>App.wxss</p>
+<p>有点类似于css的，进行布局用的。当然，这也是全局的。<br>App.wxml</p>
+<p>这个可选，是用来布局小程序的界面的。有点类似于html。<br>关于具体的文档，链接在这。<br><a href="https://mp.weixin.qq.com/debug/wxadoc/dev/component/" target="_blank" rel="external">https://mp.weixin.qq.com/debug/wxadoc/dev/component/</a><br>如果有需要详细的讲解，那么可以留言，我考虑后续更新一系列的小程序开发教程。</p>
+<h2 id="05、个人开发经验"><a href="#05、个人开发经验" class="headerlink" title="05、个人开发经验"></a>05、个人开发经验</h2><p>虽说在不早之前，微信开放了个人小程序的开发资格。不过，你还是不能随心所欲的开发小程序。</p>
+<p>你能随心所欲开发的功能也大概只有工具类的。假设，你要是想开发一个社区类的小程序，那么你得要有诸多的证件。所以，在上手小程序之前，你需要看看小程序的开发规约，确保自己的idea是否需要各种证件。</p>
+<p>其次，小程序的兼容性，目前Github开源社区在 iOS 9.3.2 上出现 SDK Exception 。还没找到合理的解决方案。</p>
+<p>审核时间较长。你能做的就是等待。</p>
+<p>开发工具有时候响应很慢，同样的你只有等待，毕竟目前开发工具并没有到1.0版本。</p>
+<p>等等的坑。。。</p>
+<p>目前动态化的开发模式越来越火了，包括JSBridge、Weex、React等等的。所以，作为非前端的你是否也需要学习下前端的知识点呢？</p>
+<h4 id="来自公众号-DeveloperPython"><a href="#来自公众号-DeveloperPython" class="headerlink" title="来自公众号 : DeveloperPython"></a>来自公众号 : DeveloperPython</h4><p><img src="http://upload-images.jianshu.io/upload_images/4653472-b61ffc02ee6e4db5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<hr>
+<p>行为艺术要持之以恒，iOS专用赞赏通道。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-2fa6f51658dee088?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[编写高质量的Pythonic风格代码]]></title>
+      <url>https://xiyoumc.github.com/2017/05/12/%E7%BC%96%E5%86%99%E9%AB%98%E8%B4%A8%E9%87%8F%E7%9A%84Pythonic/</url>
+      <content type="html"><![CDATA[<h4 id="来自公众号-DeveloperPython"><a href="#来自公众号-DeveloperPython" class="headerlink" title="来自公众号: DeveloperPython"></a>来自公众号: DeveloperPython</h4><blockquote>
+<p>我知道有些新人肯定不了解Pythonic是什么，也许在某些论坛看到过这个词语。其实，它的意思很简单。这是Python的开发者用来表示代码风格的名词。它是在Python开发过程中指定的一种指南，一种习惯。宗旨是 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;!--more--&gt;</div><div class="line"></div><div class="line">### 1、不用害怕长变量名</div><div class="line"></div><div class="line">长一点的变量名，有时候是为了让程序更容易理解和阅读。并且，有的编辑器已经支持自动提示，所以不用太担心敲键盘太多的烦恼。</div><div class="line"></div><div class="line">比如: user_info 就是比 ui 的可读性高很多:</div><div class="line"></div><div class="line">user_info = &#123;&apos;name&apos;:&apos;xiyouMc&apos;,&apos;age&apos;:&apos;保密&apos;,&apos;address&apos;:&apos;Hangzhou&apos;&#125;</div><div class="line"></div><div class="line">### 2、避免使用容易混淆的名称</div><div class="line"></div><div class="line">尽量不要使用 ```内建``` 的函数名来表示其他含义的名称。比如 list、dict等。不要使用 o(字符O的小写，很容易被当做数字0)，1(字母 L 的小写，也容易和数字 1 混淆)</div><div class="line"></div><div class="line">其次，变量名最好和你要解决的问题联系起来。</div><div class="line"></div><div class="line">### 3、尽量不要使用大小写来区分不同的对象</div><div class="line"></div><div class="line">比如 b是一个树脂类型的变量，但 A 是 String 类型，虽然在编码过程中容易区分这两者的含义，但是没啥卵用，它并不会给其他阅读代码的人带来福利。反而，带来的呕吐的感觉。</div><div class="line"></div><div class="line">### 4、其次，最重要的一点是，多看源码，学习别人的风格</div><div class="line"></div><div class="line">Github 上有数不胜数的优秀代码，比如web框架里面有名的Flask、Requests，还有爬虫界的Scrapy，这些都是经典中的经典，并且都是比较好的理解pythonic代码风格精髓的例子。</div><div class="line"></div><div class="line">### 5、最后，你实在是懒得不想关注这些，只想写代码，那么。。。</div><div class="line"></div><div class="line">我推荐一个神器，在你写完代码之后，执行这个神器就可以看到检测代码风格后的结果。</div><div class="line"></div><div class="line">```PEP8```，全称，&quot;Python Enhancement Proposal #8&quot;，它列举除了很多对代码的布局、注释、命名的要求。</div><div class="line"></div><div class="line">pip install -U pep8 #来安装 pep8z</div><div class="line"></div><div class="line">然后用它来检测代码：</div><div class="line"></div><div class="line">```python</div><div class="line">➜ /Users/xiyoumc &gt;pep8 --first pornHubSpider.py</div><div class="line">pornHubSpider.py:1:1: E265 block comment should start with &apos;# &apos;</div><div class="line">pornHubSpider.py:19:43: E124 closing bracket does not match visual indentation</div><div class="line">pornHubSpider.py:22:16: E251 unexpected spaces around keyword / parameter equals</div><div class="line">pornHubSpider.py:53:5: E301 expected 1 blank line, found 0</div><div class="line">pornHubSpider.py:71:22: W503 line break before binary operator</div></pre></td></tr></table></figure></p>
+</blockquote>
+<p>同时，如果对pep8感兴趣的话，可以留言，我可以开个系列来讲解 PEP8里面的变量、函数、类、木块和包，这样就会更加容易的理解Pythonic风格。</p>
+<p>最后，如若我写的对大家有点帮助，那么关注公众号 <code>DeveloperPython</code>，你将会收到关于Python技术第一时间的推送</p>
+<hr>
+<p> 长摁‘识别二维码’，一起进步</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-20b8964865a3ae4f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>生活不止眼前的苟且，还有手下的代码、</p>
+<p>和嘴上的扯淡<br>——<br>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a></p>
+<p>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
+<hr>
+<p>点击 <a href="http://t.xiaomiquan.com/7ey3rZv" target="_blank" rel="external">Join</a>，加入Python技术成长圈子，我在这里等着你。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Python爬虫如何入门？]]></title>
       <url>https://xiyoumc.github.com/2017/05/08/%E7%88%AC%E8%99%AB%E5%A6%82%E4%BD%95%E5%85%A5%E9%97%A8%EF%BC%9F/</url>
-      <content type="html"><![CDATA[<h2 id="Python爬虫如何入门？"><a href="#Python爬虫如何入门？" class="headerlink" title=" Python爬虫如何入门？"></a> Python爬虫如何入门？</h2><p>其实，“入门”最好的方式是以项目开始，这样实践起来你会被目标驱动。从而，不用一步一步慢慢的学习模块化的东西。</p>
+      <content type="html"><![CDATA[<p> Python爬虫如何入门？</p>
+<h4 id="源自公众号-DeveloperPython"><a href="#源自公众号-DeveloperPython" class="headerlink" title="源自公众号:DeveloperPython"></a>源自公众号:DeveloperPython</h4><h2 id="扯淡"><a href="#扯淡" class="headerlink" title="扯淡"></a>扯淡</h2><p>其实，“入门”最好的方式是以项目开始，这样实践起来你会被目标驱动。从而，不用一步一步慢慢的学习模块化的东西。</p>
 <p>其实，知识体系里面的每一个知识点类似于图里的点。边就是知识体系的依赖关系，那么整个图也就是一个有向无环图。因为学习A的经验可以帮助到你学习B。因此，入门的东西根本不用学习，因为入门点根本不存在。</p>
 <a id="more"></a>
 <p>同时，你需要学习的是如何去做一个大的项目，来亲身体会爬虫， 并一步步学习爬虫的知识点。</p>
-<p>那么，我总结下知乎上的相关知识点：</p>
+<p>那么，我总结下在其他平台上的相关知识点和自己的想法：</p>
 <ol>
 <li>爬虫的工作原理</li>
 <li>基本的Https爬虫工具：Scrapy</li>
@@ -18,46 +104,35 @@
 <li>rq和Scrapy的结合： <a href="https://github.com/rolando/scrapy-redis" target="_blank" rel="external">rolando/scrapy-redis</a></li>
 <li>后续处理: <a href="https://github.com/grangier/python-goose" target="_blank" rel="external">网页处理grangier/python-goose</a> 存储(Mongodb)</li>
 </ol>
-<p>以下，我将基于WebHubBot的经验来讲：</p>
-<ol>
-<li><p>爬虫的怎么工作的</p>
-<p> 爬虫的另一个意思其实就是🕷（Spider） ，互联“网”也是它的环境。简单的来说，也就是你需要用这个蜘蛛来把相关的网站的所有角落(网页)都爬一边。</p>
-<p> 那么，你可以选择一个自己感兴趣的平台，如知乎、淘宝等等的。</p>
-<p> 我这里通过PornHub来讲解。比如，我们访问PornHub的首页，里面会出现很多链接。同时最初我们的目标是拿到所有的视频标题、视频简介、视频链接或者其他有用信息。然后我们兴高采烈的将整个首页都爬下来，这里想象下，你就是将整个页面完完整整的Copy了下来。</p>
-<p> 然后，我们随便点击一个链接进入视频详情页，进入第二个页面之后，那就会看到具体的视频标题、简介等等的。那么这只是一个视频，我们又是如何做到爬取整站的数据呢。这里可以动下脑子，一种是返回再回到首页去拿一个链接，另一种则是基于第一步爬下来的首页来找下一个链接。这里，当然是第二种方案。同时我们要做去重，爬过的链接，就不要再去爬第二遍。</p>
-<p> 所以，理论上如果后续的所有视频详情页都是从首页可达的话，那么我们就一定可以将所有网页都爬下来。</p>
-<p> 以下是Python的伪代码实现:</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">from</span> Queue <span class="keyword">import</span> Queue</div><div class="line">home_page = <span class="string">'https://www.pornhub.com/'</span></div><div class="line">link_queue = Queue()</div><div class="line">seen = set()</div><div class="line">seen.insert(home_page)</div><div class="line">link_queue.put(home_page)</div><div class="line"></div><div class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</div><div class="line">	<span class="keyword">if</span> link_queue.size() &gt; <span class="number">0</span>:</div><div class="line">		current_url = url_queue.get() <span class="comment">#拿到队列中第一个url</span></div><div class="line">		links = save(current_url)  <span class="comment">#保存这个页面的html，并返回当前页面的所有link</span></div><div class="line">		<span class="keyword">for</span> link <span class="keyword">in</span> links:</div><div class="line">			<span class="keyword">if</span> link <span class="keyword">not</span> <span class="keyword">in</span> seen:</div><div class="line">				seen.put(link)</div><div class="line">				link_queue.put(link)</div><div class="line">	<span class="keyword">else</span>:</div><div class="line">		<span class="keyword">break</span></div></pre></td></tr></table></figure>
-</li>
-</ol>
-<pre><code>以上就是一个简单的伪代码来爬取pornhub中视频资源的例子。当然， 这只是一个非常简单的例子，其实爬虫是一个非常复杂的项目，类似的就是搜索引擎需要爬取整站的数据，更是需要一整个团队来开发和维护。
-</code></pre><ol>
-<li><p>效率</p>
-<p> 如果，使用上述的代码来爬取PornHub的话，那么你是绝对无法在一天时间内完成500万的海量数据的，更别说在短时间内爬取PornHub的所有数据。</p>
-<p> 那么，问题出在哪？爬的网页太多太多了，而且上面的代码太慢太慢了。</p>
-<p> PornHub的全网有N个页面，那么分析下判重的时间复杂度将是 N * log(N)，因为每个网页都要遍历一遍，而使用Set来做判重，需要 log(N) 的复杂度。</p>
-<p> 所以，我们需要一个成熟的判重方案。Bloom Filter。 它是一个空间效率很高的随机数据结构。<a href="http://blog.csdn.net/jiaomeng/article/details/1495500" target="_blank" rel="external">官方简介</a>：</p>
+<p>以下，我将基于<a href="https://github.com/xiyouMc/WebHubBot" target="_blank" rel="external">xiyouMc/WebHubBot</a>的经验来讲：</p>
+<h3 id="一、-爬虫的怎么工作的"><a href="#一、-爬虫的怎么工作的" class="headerlink" title="一、  爬虫的怎么工作的"></a>一、  爬虫的怎么工作的</h3><p>爬虫的另一个意思其实就是🕷（Spider） ，互联“网”就是它的环境。简单的来说，也就是你需要用这个蜘蛛来把相关网站的所有角落(网页)都爬一边。</p>
+<p>那么，你可以选择一个自己感兴趣的平台，如知乎、淘宝等等的。</p>
+<p>我这里通过PornHub来讲解。</p>
+<p>比如，我们访问PornHub的首页，里面会出现很多链接。最初我们的目标是拿到该站中所有的视频标题、视频简介、视频链接或者其他有用信息。然后我们兴高采烈的将整个首页都爬下来，这里可以理解为你就是将整个页面完完整整的Copy了下来。</p>
+<p>然后，我们随便点击一个链接进入视频详情页，进入第二个页面之后，就会看到具体的视频标题、简介等等的。那么这只是一个视频信息，我们又是如何做到爬取整站的数据呢。这里可以动下脑子，一种是返回到首页去拿另一个链接，另一种则是基于第一步爬下来的首页来找下一个链接。这里，当然是第二种方案。同时我们要做去重，爬过的链接，就不要再去爬第二遍。</p>
+<p>所以，理论上如果后续的所有视频详情页都是从首页可达的话，那么我们就一定可以将所有网页都爬下来。</p>
+<p>以下是Python的伪代码实现:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line"><span class="keyword">from</span> Queue <span class="keyword">import</span> Queue</div><div class="line">home_page = <span class="string">'https://www.pornhub.com/'</span></div><div class="line">link_queue = Queue()</div><div class="line">seen = set()</div><div class="line">seen.insert(home_page)</div><div class="line">link_queue.put(home_page)</div><div class="line">	</div><div class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</div><div class="line">	<span class="keyword">if</span> link_queue.size() &gt; <span class="number">0</span>:</div><div class="line">		current_url = url_queue.get() <span class="comment">#拿到队列中第一个url</span></div><div class="line">		links = save(current_url)  <span class="comment">#保存这个页面的html，并返回当前页面的所有link</span></div><div class="line">		<span class="keyword">for</span> link <span class="keyword">in</span> links:</div><div class="line">			<span class="keyword">if</span> link <span class="keyword">not</span> <span class="keyword">in</span> seen:</div><div class="line">				seen.put(link)</div><div class="line">				link_queue.put(link)</div><div class="line">	<span class="keyword">else</span>:</div><div class="line">		<span class="keyword">break</span></div></pre></td></tr></table></figure>
+<p>以上就是一个简单的伪代码来爬取pornhub中视频资源的例子。当然， 这只是一个非常简单的例子，其实爬虫是一个非常复杂的项目，类似的就是搜索引擎需要爬取整站的数据，更是需要一整个团队来开发和维护。</p>
+<h3 id="二、-效率"><a href="#二、-效率" class="headerlink" title="二、  效率"></a>二、  效率</h3><p>如果，使用上述的代码来爬取PornHub的话，那么你是绝对无法在一天时间内完成500万的海量数据，更别说在短时间内爬取PornHub的所有数据。</p>
+<p>那么，问题出在哪？爬的网页太多太多了，而且上面的代码太慢太慢了。</p>
+<p>PornHub的全网有N个页面，那么分析下判重的时间复杂度将是 N * log(N)，因为每个网页都要遍历一遍，而使用Set来做判重，需要 log(N) 的复杂度。</p>
+<p>所以，我们需要一个成熟的判重方案。Bloom Filter。 它是一个空间效率很高的随机数据结构。<a href="http://blog.csdn.net/jiaomeng/article/details/1495500" target="_blank" rel="external">官方简介</a>：</p>
 <blockquote>
 <p>Bloom Filter是一种空间效率很高的随机数据结构，它利用位数组很简洁地表示一个集合，并能判断一个元素是否属于这个集合。Bloom Filter的这种高效是有一定代价的：在判断一个元素是否属于某个集合时，有可能会把不属于这个集合的元素误认为属于这个集合（false positive）。因此，Bloom Filter不适合那些“零错误”的应用场合。而在能容忍低错误率的应用场合下，Bloom Filter通过极少的错误换取了存储空间的极大节省。</p>
 </blockquote>
-<p> 有兴趣可以详细学习下这个算法。</p>
-<p> 简单的来说，它是一种利用Hash的方法来判重的。并且在使用固定的内存，不随url的数量增加而增长,以 O（1）的效率判断url是否已经在set中。但是荣然有极小的可能性会误判，所以对于“零错误”的系统不适用。但是对于爬虫，小概率的重复爬取也是可以接受的。</p>
-<p> 那么，以上就是判重的最快方式了。</p>
-<p> 当然，另一个瓶颈又会出现，如果你只有一台机器，那么不管你的带宽有多大你的机器下载网页的速度还是会有瓶颈。那么，只有加快这个速度，我们使用多台机器来跑。</p>
-</li>
-<li><p>集群化爬取</p>
-<p> 集群化爬取，其实不难理解。也就是将你的爬虫任务分发到n台机器来处理，当然每台机器处理的任务不同，且不重复。</p>
-<p> 那么，假设你有100台机器，怎么用Python实现一个分布式的爬取算法呢？</p>
-<p> Server -&gt; Client 。这种C/S 的模式，我相信大家也不陌生。那么分布式的系统，其实就是一台Server -&gt; n个Client 来处理。这里我们将Server定义为 Master机，多个Client定义为多个 Slave。所以基于开始的伪代码，我们可以将link_queue 放到Master上，其他的Slave都可以通过网络跟Master联通，每当一个Slave下载完成一个页面之后，就会将这个页面的结果告知Master，同时获取一个新的link 来爬取。同时 BloomFliter 也是放在Master的，用来针对Links进行去重。 其中Slave和Server联通的方式，就是通过Redis，这是一个可以远程操作的缓存数据，提供了完善的队列管理。其次，Redis的队列中已经包含的去重的，当Push一个url 到Redis之后，某一个Slave Pop拿到数据之后，这个Url将只会在这个Slave进行处理。</p>
-<p> 因此，我们可以用Python来实现。Slave的机器上安装Scrapy，Master上安装Redis和rq用作分布式队列。</p>
-<p> 伪代码:</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="string">"""</span></div><div class="line">Slave</div><div class="line">"""</div><div class="line"></div><div class="line">url = link_from_master() <span class="comment"># 从Master机Get到最新的链接</span></div><div class="line">content = save(url) <span class="comment"># 请求并保存这个链接下的视频信息</span></div><div class="line">send_to_master(url) <span class="comment"># 将当前处理过的url Post给主机。</span></div><div class="line"></div><div class="line"><span class="string">"""</span></div><div class="line">Master</div><div class="line">"""</div><div class="line">queue = Queue()</div><div class="line">bf = BloomFilter()</div><div class="line"></div><div class="line">home_pages = <span class="string">"https://www.pornhub.com/"</span></div><div class="line"></div><div class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</div><div class="line">    <span class="keyword">if</span> request == <span class="string">'GET'</span>:</div><div class="line">        <span class="keyword">if</span> distributed_queue.size()&gt;<span class="number">0</span>:</div><div class="line">            send(queue.get()) <span class="comment"># 将当前url push到Redis，从而让Slave获取到。</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            <span class="keyword">break</span></div><div class="line">    <span class="keyword">elif</span> request == <span class="string">'POST'</span>:</div><div class="line">        bf.put(request.url) <span class="comment">#将处理过的Url 保存到bf队列</span></div></pre></td></tr></table></figure>
-<p> 轮子: <a href="https://github.com/rolando/scrapy-redis" target="_blank" rel="external">rolando/scrapy-redis</a></p>
-</li>
-<li><p>后处理</p>
-</li>
-</ol>
-<p>上面的路子，其实是很简单很简单的一部分。同样的，后续你还要进行其他的处理，比如：</p>
+<p>有兴趣可以详细学习下这个算法。</p>
+<p>简单的来说，它是一种利用Hash的方法来判重的。并且在使用固定的内存，不随url的数量增加而增长,以 O（1）的效率判断url是否已经在set中。但是仍然有极小的可能性会误判，所以对于“零错误”的系统不适用。但是对于爬虫，小概率的重复爬取也是可以接受的。</p>
+<p>那么，以上就是判重的最快方式了。</p>
+<p>当然，另一个瓶颈又会出现，如果你只有一台机器，那么不管你的带宽有多大你的机器下载网页的速度还是会有瓶颈。那么，只有加快这个速度，我们使用多台机器来跑。</p>
+<h3 id="三、-集群化爬取"><a href="#三、-集群化爬取" class="headerlink" title="三、  集群化爬取"></a>三、  集群化爬取</h3><p>集群化爬取，其实不难理解。也就是将你的爬虫任务分发到n台机器来处理，当然每台机器处理的任务不同，且不重复。</p>
+<p>那么，假设你有100台机器，怎么用Python实现一个分布式的爬取算法呢？</p>
+<p>Server -&gt; Client 。这种C/S 的模式，我相信大家也不陌生。那么分布式的系统，其实就是一台Server -&gt; n个Client 来处理。这里我们将Server定义为 Master机，多个Client定义为多个 Slave。所以基于开始的伪代码，我们可以将link_queue 放到Master上，其他的Slave都可以通过网络跟Master联通，每当一个Slave下载完成一个页面之后，就会将这个页面的结果告知Master，同时获取一个新的link 来爬取。同时 BloomFliter 也是放在Master的，用来针对Links进行去重。 其中Slave和Server联通的方式，就是通过Redis，这是一个可以远程操作的缓存数据库，提供了完善的队列管理。其次，Redis的队列中已经包含的去重的，当Push一个url 到Redis之后，某一个Slave Pop拿到数据，那么这个Url将只会在这个Slave进行处理。</p>
+<p>因此，我们可以用Python来实现。Slave的机器上安装Scrapy，Master上安装Redis和rq用作分布式队列。</p>
+<p>伪代码:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="string">"""</span></div><div class="line">Slave</div><div class="line">"""</div><div class="line">	</div><div class="line">url = link_from_master() <span class="comment"># 从Master机Get到最新的链接</span></div><div class="line">content = save(url) <span class="comment"># 请求并保存这个链接下的视频信息</span></div><div class="line">send_to_master(url) <span class="comment"># 将当前处理过的url Post给主机。</span></div><div class="line">	</div><div class="line"><span class="string">"""</span></div><div class="line">Master</div><div class="line">"""</div><div class="line">queue = Queue()</div><div class="line">bf = BloomFilter()</div><div class="line">	</div><div class="line">home_pages = <span class="string">"https://www.pornhub.com/"</span></div><div class="line">	</div><div class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</div><div class="line">    <span class="keyword">if</span> request == <span class="string">'GET'</span>:</div><div class="line">        <span class="keyword">if</span> distributed_queue.size()&gt;<span class="number">0</span>:</div><div class="line">            send(queue.get()) <span class="comment"># 将当前url push到Redis，从而让Slave获取到。</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            <span class="keyword">break</span></div><div class="line">    <span class="keyword">elif</span> request == <span class="string">'POST'</span>:</div><div class="line">        bf.put(request.url) <span class="comment">#将处理过的Url 保存到bf队列</span></div></pre></td></tr></table></figure>
+<p>轮子: <a href="https://github.com/rolando/scrapy-redis" target="_blank" rel="external">rolando/scrapy-redis</a></p>
+<h3 id="四、-后处理"><a href="#四、-后处理" class="headerlink" title="四、 后处理"></a>四、 后处理</h3><p>上面的路子，其实是很简单很简单的一部分。同样的，后续你还要进行其他的处理，比如：</p>
 <ul>
 <li>有效的存储</li>
 <li>有效的判重</li>
@@ -65,6 +140,13 @@
 <li>及时更新</li>
 </ul>
 <p>所以，不要在意如何“入门”，只管上路就好了。</p>
+<h3 id="五、-更重要的一点"><a href="#五、-更重要的一点" class="headerlink" title="五、 更重要的一点"></a>五、 更重要的一点</h3><p> 长摁‘识别二维码’，一起进步</p>
+<p><img src="https://mmbiz.qlogo.cn/mmbiz_png/BAYrQMKkbTbS8e8ibKzUsdcO7Dx3ILTib4daQiaaywnBk1dBd2ZfsxlSKZ7KdwA8kyN1unwBH5BbKpg2SGYP60VrQ/640?wx_fmt=png" alt=""></p>
+<p>生活不止眼前的苟且，还有手下的代码、</p>
+<p>和嘴上的扯淡<br>——<br>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a></p>
+<p>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
+<hr>
+<h3 id="六、-如何找到一群学习Python的朋友圈"><a href="#六、-如何找到一群学习Python的朋友圈" class="headerlink" title="六、 如何找到一群学习Python的朋友圈"></a>六、 如何找到一群学习Python的朋友圈</h3><p>点击 <a href="http://t.xiaomiquan.com/7ey3rZv" target="_blank" rel="external">Join</a>，加入Python技术成长圈子，我们在这里等着你。</p>
 ]]></content>
     </entry>
     
