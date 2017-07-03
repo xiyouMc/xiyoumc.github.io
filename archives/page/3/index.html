@@ -563,9 +563,9 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/2017/07/03/Alison/" itemprop="url">
+            <a class="post-title-link" href="/2017/07/03/GithubTrending/" itemprop="url">
               
-                <span itemprop="name">Alison</span>
+                <span itemprop="name">小程序之Github开源社区</span>
               
             </a>
         
@@ -600,9 +600,9 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/2017/07/03/GithubTrending/" itemprop="url">
+            <a class="post-title-link" href="/2017/07/03/Alison/" itemprop="url">
               
-                <span itemprop="name">小程序之Github开源社区</span>
+                <span itemprop="name">Alison</span>
               
             </a>
         
@@ -983,13 +983,13 @@ function showTime(Counter) {
 		query.find({
 			success: function(results) {
 				if (results.length == 0) {
-					var content = '0 ' + $(document.getElementById(url)).text();
+					var content = $(document.getElementById(url)).text() + ' 0';
 					$(document.getElementById(url)).text(content);
 					return;
 				}
 				for (var i = 0; i < results.length; i++) {
 					var object = results[i];
-					var content =  $(document.getElementById(url)).text() + ' ' + object.get('time');
+					var content =  $(document.getElementById(url)).text() + ' +' + object.get('time');
 					$(document.getElementById(url)).text(content);
 				}
 			},
@@ -1015,7 +1015,7 @@ function addCount(Counter) {
 				counter.increment("time");
 				counter.save(null, {
 					success: function(counter) {
-						var content =  counter.get('time') + ' ' + $(document.getElementById(url)).text();
+						var content = $(document.getElementById(url)).text() + " +" + counter.get('time');
 						$(document.getElementById(url)).text(content);
 					},
 					error: function(counter, error) {
@@ -1030,7 +1030,7 @@ function addCount(Counter) {
 				newcounter.save(null, {
 					success: function(newcounter) {
 					    console.log("newcounter.get('time')="+newcounter.get('time'));
-						var content = newcounter.get('time') + ' ' + $(document.getElementById(url)).text();
+						var content = $(document.getElementById(url)).text() + ' +' +  newcounter.get('time') ;
 						$(document.getElementById(url)).text(content);
 					},
 					error: function(newcounter, error) {

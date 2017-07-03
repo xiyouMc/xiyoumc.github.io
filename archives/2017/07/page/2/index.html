@@ -304,7 +304,7 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/2017/07/03/Python新手引导第三篇/" itemprop="url">
+            <a class="post-title-link" href="/2017/07/03/Python新手引导 第四篇/" itemprop="url">
               
                 <span itemprop="name">Python新手引导第二篇</span>
               
@@ -341,7 +341,7 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/2017/07/03/Python新手引导 第四篇/" itemprop="url">
+            <a class="post-title-link" href="/2017/07/03/Python新手引导第三篇/" itemprop="url">
               
                 <span itemprop="name">Python新手引导第二篇</span>
               
@@ -563,43 +563,6 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/2017/07/03/linux_shell/" itemprop="url">
-              
-                <span itemprop="name">Shell语言基本教程</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-07-03T13:48:28+08:00"
-              content="2017-07-03" >
-          07-03
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
             <a class="post-title-link" href="/2017/07/03/Untitled/" itemprop="url">
               
                 <span itemprop="name">未命名</span>
@@ -640,6 +603,43 @@
             <a class="post-title-link" href="/2017/07/03/大姨夫/" itemprop="url">
               
                 <span itemprop="name">大姨夫</span>
+              
+            </a>
+        
+      </h2>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2017-07-03T13:48:28+08:00"
+              content="2017-07-03" >
+          07-03
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
+
+    
+
+      
+      
+      
+
+      
+      
+
+      
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h2 class="post-title">
+        
+            <a class="post-title-link" href="/2017/07/03/linux_shell/" itemprop="url">
+              
+                <span itemprop="name">Shell语言基本教程</span>
               
             </a>
         
@@ -983,13 +983,13 @@ function showTime(Counter) {
 		query.find({
 			success: function(results) {
 				if (results.length == 0) {
-					var content = '0 ' + $(document.getElementById(url)).text();
+					var content = $(document.getElementById(url)).text() + ' 0';
 					$(document.getElementById(url)).text(content);
 					return;
 				}
 				for (var i = 0; i < results.length; i++) {
 					var object = results[i];
-					var content =  $(document.getElementById(url)).text() + ' ' + object.get('time');
+					var content =  $(document.getElementById(url)).text() + ' +' + object.get('time');
 					$(document.getElementById(url)).text(content);
 				}
 			},
@@ -1015,7 +1015,7 @@ function addCount(Counter) {
 				counter.increment("time");
 				counter.save(null, {
 					success: function(counter) {
-						var content =  counter.get('time') + ' ' + $(document.getElementById(url)).text();
+						var content = $(document.getElementById(url)).text() + " +" + counter.get('time');
 						$(document.getElementById(url)).text(content);
 					},
 					error: function(counter, error) {
@@ -1030,7 +1030,7 @@ function addCount(Counter) {
 				newcounter.save(null, {
 					success: function(newcounter) {
 					    console.log("newcounter.get('time')="+newcounter.get('time'));
-						var content = newcounter.get('time') + ' ' + $(document.getElementById(url)).text();
+						var content = $(document.getElementById(url)).text() + ' +' +  newcounter.get('time') ;
 						$(document.getElementById(url)).text(content);
 					},
 					error: function(newcounter, error) {
