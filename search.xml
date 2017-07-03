@@ -103,6 +103,114 @@
     </entry>
     
     <entry>
+      <title><![CDATA[Python爬虫如何入门？]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/%E7%88%AC%E8%99%AB%E5%A6%82%E4%BD%95%E5%85%A5%E9%97%A8%EF%BC%9F/</url>
+      <content type="html"><![CDATA[<p> Python爬虫如何入门？</p>
+<h4 id="源自公众号-DeveloperPython"><a href="#源自公众号-DeveloperPython" class="headerlink" title="源自公众号:DeveloperPython"></a>源自公众号:DeveloperPython</h4><h2 id="扯淡"><a href="#扯淡" class="headerlink" title="扯淡"></a>扯淡</h2><p>其实，“入门”最好的方式是以项目开始，这样实践起来你会被目标驱动。从而，不用一步一步慢慢的学习模块化的东西。</p>
+<p>其实，知识体系里面的每一个知识点类似于图里的点。边就是知识体系的依赖关系，那么整个图也就是一个有向无环图。因为学习A的经验可以帮助到你学习B。因此，入门的东西根本不用学习，因为入门点根本不存在。</p>
+<a id="more"></a>
+<p>同时，你需要学习的是如何去做一个大的项目，来亲身体会爬虫， 并一步步学习爬虫的知识点。</p>
+<p>那么，我总结下在其他平台上的相关知识点和自己的想法：</p>
+<ol>
+<li>爬虫的工作原理</li>
+<li>基本的Https爬虫工具：Scrapy</li>
+<li>分布式爬虫系统。也就是维护一个集群机器来高效的完成分布式队列。Github上也有一个现成的例子: <a href="https://github.com/nvie/rq" target="_blank" rel="external">nvie/rq</a></li>
+<li>rq和Scrapy的结合： <a href="https://github.com/rolando/scrapy-redis" target="_blank" rel="external">rolando/scrapy-redis</a></li>
+<li>后续处理: <a href="https://github.com/grangier/python-goose" target="_blank" rel="external">网页处理grangier/python-goose</a> 存储(Mongodb)</li>
+</ol>
+<p>以下，我将基于<a href="https://github.com/xiyouMc/WebHubBot" target="_blank" rel="external">xiyouMc/WebHubBot</a>的经验来讲：</p>
+<h3 id="一、-爬虫的怎么工作的"><a href="#一、-爬虫的怎么工作的" class="headerlink" title="一、  爬虫的怎么工作的"></a>一、  爬虫的怎么工作的</h3><p>爬虫的另一个意思其实就是🕷（Spider） ，互联“网”就是它的环境。简单的来说，也就是你需要用这个蜘蛛来把相关网站的所有角落(网页)都爬一边。</p>
+<p>那么，你可以选择一个自己感兴趣的平台，如知乎、淘宝等等的。</p>
+<p>我这里通过PornHub来讲解。</p>
+<p>比如，我们访问PornHub的首页，里面会出现很多链接。最初我们的目标是拿到该站中所有的视频标题、视频简介、视频链接或者其他有用信息。然后我们兴高采烈的将整个首页都爬下来，这里可以理解为你就是将整个页面完完整整的Copy了下来。</p>
+<p>然后，我们随便点击一个链接进入视频详情页，进入第二个页面之后，就会看到具体的视频标题、简介等等的。那么这只是一个视频信息，我们又是如何做到爬取整站的数据呢。这里可以动下脑子，一种是返回到首页去拿另一个链接，另一种则是基于第一步爬下来的首页来找下一个链接。这里，当然是第二种方案。同时我们要做去重，爬过的链接，就不要再去爬第二遍。</p>
+<p>所以，理论上如果后续的所有视频详情页都是从首页可达的话，那么我们就一定可以将所有网页都爬下来。</p>
+<p>以下是Python的伪代码实现:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line"><span class="keyword">from</span> Queue <span class="keyword">import</span> Queue</div><div class="line">home_page = <span class="string">'https://www.pornhub.com/'</span></div><div class="line">link_queue = Queue()</div><div class="line">seen = set()</div><div class="line">seen.insert(home_page)</div><div class="line">link_queue.put(home_page)</div><div class="line">	</div><div class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</div><div class="line">	<span class="keyword">if</span> link_queue.size() &gt; <span class="number">0</span>:</div><div class="line">		current_url = url_queue.get() <span class="comment">#拿到队列中第一个url</span></div><div class="line">		links = save(current_url)  <span class="comment">#保存这个页面的html，并返回当前页面的所有link</span></div><div class="line">		<span class="keyword">for</span> link <span class="keyword">in</span> links:</div><div class="line">			<span class="keyword">if</span> link <span class="keyword">not</span> <span class="keyword">in</span> seen:</div><div class="line">				seen.put(link)</div><div class="line">				link_queue.put(link)</div><div class="line">	<span class="keyword">else</span>:</div><div class="line">		<span class="keyword">break</span></div></pre></td></tr></table></figure>
+<p>以上就是一个简单的伪代码来爬取pornhub中视频资源的例子。当然， 这只是一个非常简单的例子，其实爬虫是一个非常复杂的项目，类似的就是搜索引擎需要爬取整站的数据，更是需要一整个团队来开发和维护。</p>
+<h3 id="二、-效率"><a href="#二、-效率" class="headerlink" title="二、  效率"></a>二、  效率</h3><p>如果，使用上述的代码来爬取PornHub的话，那么你是绝对无法在一天时间内完成500万的海量数据，更别说在短时间内爬取PornHub的所有数据。</p>
+<p>那么，问题出在哪？爬的网页太多太多了，而且上面的代码太慢太慢了。</p>
+<p>PornHub的全网有N个页面，那么分析下判重的时间复杂度将是 N * log(N)，因为每个网页都要遍历一遍，而使用Set来做判重，需要 log(N) 的复杂度。</p>
+<p>所以，我们需要一个成熟的判重方案。Bloom Filter。 它是一个空间效率很高的随机数据结构。<a href="http://blog.csdn.net/jiaomeng/article/details/1495500" target="_blank" rel="external">官方简介</a>：</p>
+<blockquote>
+<p>Bloom Filter是一种空间效率很高的随机数据结构，它利用位数组很简洁地表示一个集合，并能判断一个元素是否属于这个集合。Bloom Filter的这种高效是有一定代价的：在判断一个元素是否属于某个集合时，有可能会把不属于这个集合的元素误认为属于这个集合（false positive）。因此，Bloom Filter不适合那些“零错误”的应用场合。而在能容忍低错误率的应用场合下，Bloom Filter通过极少的错误换取了存储空间的极大节省。</p>
+</blockquote>
+<p>有兴趣可以详细学习下这个算法。</p>
+<p>简单的来说，它是一种利用Hash的方法来判重的。并且在使用固定的内存，不随url的数量增加而增长,以 O（1）的效率判断url是否已经在set中。但是仍然有极小的可能性会误判，所以对于“零错误”的系统不适用。但是对于爬虫，小概率的重复爬取也是可以接受的。</p>
+<p>那么，以上就是判重的最快方式了。</p>
+<p>当然，另一个瓶颈又会出现，如果你只有一台机器，那么不管你的带宽有多大你的机器下载网页的速度还是会有瓶颈。那么，只有加快这个速度，我们使用多台机器来跑。</p>
+<h3 id="三、-集群化爬取"><a href="#三、-集群化爬取" class="headerlink" title="三、  集群化爬取"></a>三、  集群化爬取</h3><p>集群化爬取，其实不难理解。也就是将你的爬虫任务分发到n台机器来处理，当然每台机器处理的任务不同，且不重复。</p>
+<p>那么，假设你有100台机器，怎么用Python实现一个分布式的爬取算法呢？</p>
+<p>Server -&gt; Client 。这种C/S 的模式，我相信大家也不陌生。那么分布式的系统，其实就是一台Server -&gt; n个Client 来处理。这里我们将Server定义为 Master机，多个Client定义为多个 Slave。所以基于开始的伪代码，我们可以将link_queue 放到Master上，其他的Slave都可以通过网络跟Master联通，每当一个Slave下载完成一个页面之后，就会将这个页面的结果告知Master，同时获取一个新的link 来爬取。同时 BloomFliter 也是放在Master的，用来针对Links进行去重。 其中Slave和Server联通的方式，就是通过Redis，这是一个可以远程操作的缓存数据库，提供了完善的队列管理。其次，Redis的队列中已经包含的去重的，当Push一个url 到Redis之后，某一个Slave Pop拿到数据，那么这个Url将只会在这个Slave进行处理。</p>
+<p>因此，我们可以用Python来实现。Slave的机器上安装Scrapy，Master上安装Redis和rq用作分布式队列。</p>
+<p>伪代码:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="string">"""</span></div><div class="line">Slave</div><div class="line">"""</div><div class="line">	</div><div class="line">url = link_from_master() <span class="comment"># 从Master机Get到最新的链接</span></div><div class="line">content = save(url) <span class="comment"># 请求并保存这个链接下的视频信息</span></div><div class="line">send_to_master(url) <span class="comment"># 将当前处理过的url Post给主机。</span></div><div class="line">	</div><div class="line"><span class="string">"""</span></div><div class="line">Master</div><div class="line">"""</div><div class="line">queue = Queue()</div><div class="line">bf = BloomFilter()</div><div class="line">	</div><div class="line">home_pages = <span class="string">"https://www.pornhub.com/"</span></div><div class="line">	</div><div class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</div><div class="line">    <span class="keyword">if</span> request == <span class="string">'GET'</span>:</div><div class="line">        <span class="keyword">if</span> distributed_queue.size()&gt;<span class="number">0</span>:</div><div class="line">            send(queue.get()) <span class="comment"># 将当前url push到Redis，从而让Slave获取到。</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            <span class="keyword">break</span></div><div class="line">    <span class="keyword">elif</span> request == <span class="string">'POST'</span>:</div><div class="line">        bf.put(request.url) <span class="comment">#将处理过的Url 保存到bf队列</span></div></pre></td></tr></table></figure>
+<p>轮子: <a href="https://github.com/rolando/scrapy-redis" target="_blank" rel="external">rolando/scrapy-redis</a></p>
+<h3 id="四、-后处理"><a href="#四、-后处理" class="headerlink" title="四、 后处理"></a>四、 后处理</h3><p>上面的路子，其实是很简单很简单的一部分。同样的，后续你还要进行其他的处理，比如：</p>
+<ul>
+<li>有效的存储</li>
+<li>有效的判重</li>
+<li>有效的信息提取</li>
+<li>及时更新</li>
+</ul>
+<p>所以，不要在意如何“入门”，只管上路就好了。</p>
+<h3 id="五、-更重要的一点"><a href="#五、-更重要的一点" class="headerlink" title="五、 更重要的一点"></a>五、 更重要的一点</h3><p> 长摁‘识别二维码’，一起进步</p>
+<p><img src="https://mmbiz.qlogo.cn/mmbiz_png/BAYrQMKkbTbS8e8ibKzUsdcO7Dx3ILTib4daQiaaywnBk1dBd2ZfsxlSKZ7KdwA8kyN1unwBH5BbKpg2SGYP60VrQ/640?wx_fmt=png" alt=""></p>
+<p>生活不止眼前的苟且，还有手下的代码、</p>
+<p>和嘴上的扯淡<br>——<br>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a></p>
+<p>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
+<hr>
+<h3 id="六、-如何找到一群学习Python的朋友圈"><a href="#六、-如何找到一群学习Python的朋友圈" class="headerlink" title="六、 如何找到一群学习Python的朋友圈"></a>六、 如何找到一群学习Python的朋友圈</h3><p>点击 <a href="http://t.xiaomiquan.com/7ey3rZv" target="_blank" rel="external">Join</a>，加入Python技术成长圈子，我们在这里等着你。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[最近心烦]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/%E6%9C%80%E8%BF%91%E5%BF%83%E4%BA%8B/</url>
+      <content type="html"><![CDATA[<p>不知道自己是将工作带到了生活还是生活带到了工作。。。<br><a id="more"></a></p>
+<blockquote>
+<p>最近事真的很多，也导致了自己事很多。 </p>
+<p>喜欢的人，自己变得约束力越来越多。这不是我要的。<br>我很想放放松松的恋爱。 最近对你一直很闹脾气，动不动就闹脾气。  我想我是该冷静冷静了。<br>让我们开开心心的恋爱下去吧。  一直。相爱。</p>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[当我玩哔哩哔哩的时候，一不小心。。。]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/%E5%BD%93%E6%88%91%E7%8E%A9%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E4%B8%80%E4%B8%8D%E5%B0%8F%E5%BF%83%E3%80%82%E3%80%82%E3%80%82/</url>
+      <content type="html"><![CDATA[<h2 id="一不小心用代码登陆了B站。。。并上传了。。视频"><a href="#一不小心用代码登陆了B站。。。并上传了。。视频" class="headerlink" title="一不小心用代码登陆了B站。。。并上传了。。视频"></a>一不小心用代码登陆了B站。。。并上传了。。视频</h2><blockquote>
+<p>阅读本文需要4.66分钟</p>
+</blockquote>
+<a id="more"></a>
+<p>你被标题吸引了吧。。。别急着关。。重头戏在后面</p>
+<p>最近当我玩B站的时候，一不小心用代码登录了它，并几乎无限制的上传视频。</p>
+<p>那么接下来，我来讲解如何通过Hack技术来模拟 哔哩哔哩 的登录，并完成我们的视频上传等操作。因此内容中略有“暴力”，若您感到不适，那还是也请看完它。</p>
+<p>按照以往的老套路，我们首先需要弄清楚它的登录逻辑，并通过我们的代码来实现登录操作，其次拿到所谓的 Cookie 或者 Token、Sign等校验字段来做其他的操作，以下将围绕 B站 一步步来讲解破解的思路:</p>
+<p>首先我们访问到 哔哩哔哩 的登录页面:</p>
+<p>  <img src="http://115.28.132.58:8080/docs/BiliLogin.png" alt=""></p>
+<p>当我们在未登录的状态下访问登录页面的时候，会发现验证码已经显示出来了。那么他们是怎么做到当我输入账号、密码并输入一个已经出来的验证码之后就能校验成功呢。这时候就得提前动动脑子，当然如果你是开发服务器的话，应该明白里面的道理。这里我简单的讲下，其实在访问这个登录页面的时候，B站 已经将一个唯一的标识和验证码绑定起来了（也就是后面说到的Cookie），并且在登录的时候将这个标识一并发送上去。也就是说：通过一个标识来绑定验证码和登录操作。</p>
+<p>那么接下来我们看看在第一次访问登录页面的时候，都有哪些可用的数据,打开 Charles 抓包工具(Charles抓包工具可在历史文章中找到)，重新访问登录页面.</p>
+<p>这是登录页面的Request数据:<br><img src="http://115.28.132.58:8080/docs/BLReq.png" alt=""><br>当然一眼看上去并没有什么可用数据。其实确实是没什么卵用的数据.那么我们来看看Response数据:<br><img src="http://115.28.132.58:8080/docs/BLRes.png" alt=""><br>一眼看上去是挺乱的。细看下它的Raw数据。其中包括了使用的Server、Set-Cookie等等的数据，还有登录页面的html文本. 那么其中最重要的数据也就是 Set-Cookie，这个Set-Cookie中的数据就是之前讲到的 用来和验证码绑定的唯一标示。那么我们来确认下，来看看验证码图片的包:<br><img src="http://115.28.132.58:8080/docs/BLCap.png" alt=""><br>快看，快看 验证码 Request 中的 Cookie，果然是上面登录页面的 Response 的 Set-Cookie。</p>
+<p>那么验证码就简单了，我们通过代码来访问 B站 的登录页面，并拿到Response的Set-Cookie，然后再将这个Set-Cookie放到下载验证码Request的Cookie中，就这样，我们的验证码搞定了，那是不是登录就很简单了，少年憋急。登录才是大头..</p>
+<p>来来来，基于上面的登录页面，我们在里面输入自己的账号，并完成登录来看看发的包都有哪些.</p>
+<p>登录操作之后的Request:<br><img src="http://115.28.132.58:8080/docs/BLDolog.png" alt=""><br>可以看出来这是一个 post 请求，当然 Cookie 和验证码的一样将之前保存下来的 Set-Cookie 传给Request的Cookie.</p>
+<p>post 参数如下:<br><img src="http://115.28.132.58:8080/docs/BLOnLogForm.png" alt=""><br>Orz,WTF，提交的密码加密了。那么我就需要来找一下它的加密算法了。其实网页端的加密并没有什么卵用。对我来说，就是随便翻翻代码的事（毕竟我很帅）。</p>
+<p>来来来，找啊找啊找加密。然后我们先试探性的搜索下请求的字段 ‘pwd’ 如下图:<br><img src="http://115.28.132.58:8080/docs/SeachPwd.png" alt=""><br>果然定位到了加密的位置，当然前端页面的加密大部分都是很容易找到的，只要你有耐心.<br><img src="http://115.28.132.58:8080/docs/BLEncPwd.png" alt=""><br>以上就是 B站 加密密码的算法。简单讲下就是：通过 /login?act=getkey 拿到一个数据(hash,key),并以key作为RSA算法的公钥来加密 (hash+明文密码),然后针对这个数据来一次base64即可</p>
+<p>python实现如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> rsa</div><div class="line">pub = rsa.PublicKey.load_pkcs1_openssl_pem(_key)</div><div class="line">_pwd = rsa.encrypt((_hash + psw).encode(),pub)</div><div class="line">_real_pwd = base64.b64encode(str(_pwd))</div></pre></td></tr></table></figure>
+<p>那么现在我们就需要把问题聚焦到 /login?act=getkey 这个接口上。那么我们再回到之前的抓包数据上，会发现果然有一个 getkey 的请求:<br><img src="http://115.28.132.58:8080/docs/BLGetKey.png" alt=""><br>同上，Cookie是最开始的Set-Cookie。<br><img src="http://115.28.132.58:8080/docs/BLGetKeyRes.png" alt=""><br>Response中也就同时拿到了我们需要的 hash 和 key.大功告成，所有请求和加密都被我们搞定。</p>
+<p>这时候我们再思考下登录脚本应该怎么判断是否登录成功呢，回头过来看下之前的登录操作的结果 也就是 上面的 dologin 接口.<br><img src="http://115.28.132.58:8080/docs/BLogLocation.png" alt=""><br>会发现如果你成功登录之后，在 dologin 接口上会有 302 重定向跳转，并最终跳转到 主页上。因此这时候我们就可以来写代码，模拟登录，并且在最后一步登录请求中判断当前请求历史的第一个状态码是不是 302 ，如果是302，说明我们的登录脚本是没问题的。同时，再拿到 dologin的Response中的Set-Cookie作为新的Cookie，因为这个Cookie才是真正验证通过的Cookie，当然它是存在有效期的。具体多少我还不清楚，一般有一个礼拜、一个月、甚至一年之久。之后我们用这个Cookie去做其他有意义的事情，是完全没问题的。</p>
+<p>其次就是上传视频接口，也是类似的方法，需要分析上传视频的接口数据。并将最终的Cookie携带到请求包中。其中需要注意的是B站的上传视频可简单的分为以下几个步骤：</p>
+<ol>
+<li>将视频以Chunk的方式，而且是options的请求方式上传到服务器。因此它是支持断点续传的。</li>
+<li>拿到options请求之后的视频id，再请求 add 接口将数据post上去即可</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>虽然这篇文章很短，但是当你真正坐下来分析的时候，将是一段非常枯燥的过程。需要的就是你的耐心。</p>
+<p>其次之所以写这篇文章，其实重点不是怎么去破解B站的登录，而是这些破解的逻辑是否可以提供给我们一些服务器架构的思路，抑或防范别人的破解。</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[插件化框架简介]]></title>
       <url>https://xiyoumc.github.com/2017/07/03/%E6%A1%86%E6%9E%B6%E7%AE%80%E4%BB%8B/</url>
       <content type="html"><![CDATA[<p>本框架是建立在 <a href="https://github.com/singwhatiwanna/dynamic-load-apk" target="_blank" rel="external">Dynamic-load-apk</a>进行的上层封装。增加插件动态加载到libs目录和针对模块Service的注入。</p>
@@ -222,255 +330,9 @@ limitations under the License.
     </entry>
     
     <entry>
-      <title><![CDATA[Python爬虫如何入门？]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/%E7%88%AC%E8%99%AB%E5%A6%82%E4%BD%95%E5%85%A5%E9%97%A8%EF%BC%9F/</url>
-      <content type="html"><![CDATA[<p> Python爬虫如何入门？</p>
-<h4 id="源自公众号-DeveloperPython"><a href="#源自公众号-DeveloperPython" class="headerlink" title="源自公众号:DeveloperPython"></a>源自公众号:DeveloperPython</h4><h2 id="扯淡"><a href="#扯淡" class="headerlink" title="扯淡"></a>扯淡</h2><p>其实，“入门”最好的方式是以项目开始，这样实践起来你会被目标驱动。从而，不用一步一步慢慢的学习模块化的东西。</p>
-<p>其实，知识体系里面的每一个知识点类似于图里的点。边就是知识体系的依赖关系，那么整个图也就是一个有向无环图。因为学习A的经验可以帮助到你学习B。因此，入门的东西根本不用学习，因为入门点根本不存在。</p>
-<a id="more"></a>
-<p>同时，你需要学习的是如何去做一个大的项目，来亲身体会爬虫， 并一步步学习爬虫的知识点。</p>
-<p>那么，我总结下在其他平台上的相关知识点和自己的想法：</p>
-<ol>
-<li>爬虫的工作原理</li>
-<li>基本的Https爬虫工具：Scrapy</li>
-<li>分布式爬虫系统。也就是维护一个集群机器来高效的完成分布式队列。Github上也有一个现成的例子: <a href="https://github.com/nvie/rq" target="_blank" rel="external">nvie/rq</a></li>
-<li>rq和Scrapy的结合： <a href="https://github.com/rolando/scrapy-redis" target="_blank" rel="external">rolando/scrapy-redis</a></li>
-<li>后续处理: <a href="https://github.com/grangier/python-goose" target="_blank" rel="external">网页处理grangier/python-goose</a> 存储(Mongodb)</li>
-</ol>
-<p>以下，我将基于<a href="https://github.com/xiyouMc/WebHubBot" target="_blank" rel="external">xiyouMc/WebHubBot</a>的经验来讲：</p>
-<h3 id="一、-爬虫的怎么工作的"><a href="#一、-爬虫的怎么工作的" class="headerlink" title="一、  爬虫的怎么工作的"></a>一、  爬虫的怎么工作的</h3><p>爬虫的另一个意思其实就是🕷（Spider） ，互联“网”就是它的环境。简单的来说，也就是你需要用这个蜘蛛来把相关网站的所有角落(网页)都爬一边。</p>
-<p>那么，你可以选择一个自己感兴趣的平台，如知乎、淘宝等等的。</p>
-<p>我这里通过PornHub来讲解。</p>
-<p>比如，我们访问PornHub的首页，里面会出现很多链接。最初我们的目标是拿到该站中所有的视频标题、视频简介、视频链接或者其他有用信息。然后我们兴高采烈的将整个首页都爬下来，这里可以理解为你就是将整个页面完完整整的Copy了下来。</p>
-<p>然后，我们随便点击一个链接进入视频详情页，进入第二个页面之后，就会看到具体的视频标题、简介等等的。那么这只是一个视频信息，我们又是如何做到爬取整站的数据呢。这里可以动下脑子，一种是返回到首页去拿另一个链接，另一种则是基于第一步爬下来的首页来找下一个链接。这里，当然是第二种方案。同时我们要做去重，爬过的链接，就不要再去爬第二遍。</p>
-<p>所以，理论上如果后续的所有视频详情页都是从首页可达的话，那么我们就一定可以将所有网页都爬下来。</p>
-<p>以下是Python的伪代码实现:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line"><span class="keyword">from</span> Queue <span class="keyword">import</span> Queue</div><div class="line">home_page = <span class="string">'https://www.pornhub.com/'</span></div><div class="line">link_queue = Queue()</div><div class="line">seen = set()</div><div class="line">seen.insert(home_page)</div><div class="line">link_queue.put(home_page)</div><div class="line">	</div><div class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</div><div class="line">	<span class="keyword">if</span> link_queue.size() &gt; <span class="number">0</span>:</div><div class="line">		current_url = url_queue.get() <span class="comment">#拿到队列中第一个url</span></div><div class="line">		links = save(current_url)  <span class="comment">#保存这个页面的html，并返回当前页面的所有link</span></div><div class="line">		<span class="keyword">for</span> link <span class="keyword">in</span> links:</div><div class="line">			<span class="keyword">if</span> link <span class="keyword">not</span> <span class="keyword">in</span> seen:</div><div class="line">				seen.put(link)</div><div class="line">				link_queue.put(link)</div><div class="line">	<span class="keyword">else</span>:</div><div class="line">		<span class="keyword">break</span></div></pre></td></tr></table></figure>
-<p>以上就是一个简单的伪代码来爬取pornhub中视频资源的例子。当然， 这只是一个非常简单的例子，其实爬虫是一个非常复杂的项目，类似的就是搜索引擎需要爬取整站的数据，更是需要一整个团队来开发和维护。</p>
-<h3 id="二、-效率"><a href="#二、-效率" class="headerlink" title="二、  效率"></a>二、  效率</h3><p>如果，使用上述的代码来爬取PornHub的话，那么你是绝对无法在一天时间内完成500万的海量数据，更别说在短时间内爬取PornHub的所有数据。</p>
-<p>那么，问题出在哪？爬的网页太多太多了，而且上面的代码太慢太慢了。</p>
-<p>PornHub的全网有N个页面，那么分析下判重的时间复杂度将是 N * log(N)，因为每个网页都要遍历一遍，而使用Set来做判重，需要 log(N) 的复杂度。</p>
-<p>所以，我们需要一个成熟的判重方案。Bloom Filter。 它是一个空间效率很高的随机数据结构。<a href="http://blog.csdn.net/jiaomeng/article/details/1495500" target="_blank" rel="external">官方简介</a>：</p>
-<blockquote>
-<p>Bloom Filter是一种空间效率很高的随机数据结构，它利用位数组很简洁地表示一个集合，并能判断一个元素是否属于这个集合。Bloom Filter的这种高效是有一定代价的：在判断一个元素是否属于某个集合时，有可能会把不属于这个集合的元素误认为属于这个集合（false positive）。因此，Bloom Filter不适合那些“零错误”的应用场合。而在能容忍低错误率的应用场合下，Bloom Filter通过极少的错误换取了存储空间的极大节省。</p>
-</blockquote>
-<p>有兴趣可以详细学习下这个算法。</p>
-<p>简单的来说，它是一种利用Hash的方法来判重的。并且在使用固定的内存，不随url的数量增加而增长,以 O（1）的效率判断url是否已经在set中。但是仍然有极小的可能性会误判，所以对于“零错误”的系统不适用。但是对于爬虫，小概率的重复爬取也是可以接受的。</p>
-<p>那么，以上就是判重的最快方式了。</p>
-<p>当然，另一个瓶颈又会出现，如果你只有一台机器，那么不管你的带宽有多大你的机器下载网页的速度还是会有瓶颈。那么，只有加快这个速度，我们使用多台机器来跑。</p>
-<h3 id="三、-集群化爬取"><a href="#三、-集群化爬取" class="headerlink" title="三、  集群化爬取"></a>三、  集群化爬取</h3><p>集群化爬取，其实不难理解。也就是将你的爬虫任务分发到n台机器来处理，当然每台机器处理的任务不同，且不重复。</p>
-<p>那么，假设你有100台机器，怎么用Python实现一个分布式的爬取算法呢？</p>
-<p>Server -&gt; Client 。这种C/S 的模式，我相信大家也不陌生。那么分布式的系统，其实就是一台Server -&gt; n个Client 来处理。这里我们将Server定义为 Master机，多个Client定义为多个 Slave。所以基于开始的伪代码，我们可以将link_queue 放到Master上，其他的Slave都可以通过网络跟Master联通，每当一个Slave下载完成一个页面之后，就会将这个页面的结果告知Master，同时获取一个新的link 来爬取。同时 BloomFliter 也是放在Master的，用来针对Links进行去重。 其中Slave和Server联通的方式，就是通过Redis，这是一个可以远程操作的缓存数据库，提供了完善的队列管理。其次，Redis的队列中已经包含的去重的，当Push一个url 到Redis之后，某一个Slave Pop拿到数据，那么这个Url将只会在这个Slave进行处理。</p>
-<p>因此，我们可以用Python来实现。Slave的机器上安装Scrapy，Master上安装Redis和rq用作分布式队列。</p>
-<p>伪代码:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="string">"""</span></div><div class="line">Slave</div><div class="line">"""</div><div class="line">	</div><div class="line">url = link_from_master() <span class="comment"># 从Master机Get到最新的链接</span></div><div class="line">content = save(url) <span class="comment"># 请求并保存这个链接下的视频信息</span></div><div class="line">send_to_master(url) <span class="comment"># 将当前处理过的url Post给主机。</span></div><div class="line">	</div><div class="line"><span class="string">"""</span></div><div class="line">Master</div><div class="line">"""</div><div class="line">queue = Queue()</div><div class="line">bf = BloomFilter()</div><div class="line">	</div><div class="line">home_pages = <span class="string">"https://www.pornhub.com/"</span></div><div class="line">	</div><div class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</div><div class="line">    <span class="keyword">if</span> request == <span class="string">'GET'</span>:</div><div class="line">        <span class="keyword">if</span> distributed_queue.size()&gt;<span class="number">0</span>:</div><div class="line">            send(queue.get()) <span class="comment"># 将当前url push到Redis，从而让Slave获取到。</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            <span class="keyword">break</span></div><div class="line">    <span class="keyword">elif</span> request == <span class="string">'POST'</span>:</div><div class="line">        bf.put(request.url) <span class="comment">#将处理过的Url 保存到bf队列</span></div></pre></td></tr></table></figure>
-<p>轮子: <a href="https://github.com/rolando/scrapy-redis" target="_blank" rel="external">rolando/scrapy-redis</a></p>
-<h3 id="四、-后处理"><a href="#四、-后处理" class="headerlink" title="四、 后处理"></a>四、 后处理</h3><p>上面的路子，其实是很简单很简单的一部分。同样的，后续你还要进行其他的处理，比如：</p>
-<ul>
-<li>有效的存储</li>
-<li>有效的判重</li>
-<li>有效的信息提取</li>
-<li>及时更新</li>
-</ul>
-<p>所以，不要在意如何“入门”，只管上路就好了。</p>
-<h3 id="五、-更重要的一点"><a href="#五、-更重要的一点" class="headerlink" title="五、 更重要的一点"></a>五、 更重要的一点</h3><p> 长摁‘识别二维码’，一起进步</p>
-<p><img src="https://mmbiz.qlogo.cn/mmbiz_png/BAYrQMKkbTbS8e8ibKzUsdcO7Dx3ILTib4daQiaaywnBk1dBd2ZfsxlSKZ7KdwA8kyN1unwBH5BbKpg2SGYP60VrQ/640?wx_fmt=png" alt=""></p>
-<p>生活不止眼前的苟且，还有手下的代码、</p>
-<p>和嘴上的扯淡<br>——<br>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a></p>
-<p>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
-<hr>
-<h3 id="六、-如何找到一群学习Python的朋友圈"><a href="#六、-如何找到一群学习Python的朋友圈" class="headerlink" title="六、 如何找到一群学习Python的朋友圈"></a>六、 如何找到一群学习Python的朋友圈</h3><p>点击 <a href="http://t.xiaomiquan.com/7ey3rZv" target="_blank" rel="external">Join</a>，加入Python技术成长圈子，我们在这里等着你。</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[最近心烦]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/%E6%9C%80%E8%BF%91%E5%BF%83%E4%BA%8B/</url>
-      <content type="html"><![CDATA[<p>不知道自己是将工作带到了生活还是生活带到了工作。。。<br><a id="more"></a></p>
-<blockquote>
-<p>最近事真的很多，也导致了自己事很多。 </p>
-<p>喜欢的人，自己变得约束力越来越多。这不是我要的。<br>我很想放放松松的恋爱。 最近对你一直很闹脾气，动不动就闹脾气。  我想我是该冷静冷静了。<br>让我们开开心心的恋爱下去吧。  一直。相爱。</p>
-</blockquote>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[戒烟]]></title>
       <url>https://xiyoumc.github.com/2017/07/03/%E6%88%92%E7%83%9F/</url>
       <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/timg.jpeg?raw=true" alt=""><br>以后每天都会在这里记录，戒烟史！<br><a id="more"></a><br>GoGoGo</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[当我玩哔哩哔哩的时候，一不小心。。。]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/%E5%BD%93%E6%88%91%E7%8E%A9%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E4%B8%80%E4%B8%8D%E5%B0%8F%E5%BF%83%E3%80%82%E3%80%82%E3%80%82/</url>
-      <content type="html"><![CDATA[<h2 id="一不小心用代码登陆了B站。。。并上传了。。视频"><a href="#一不小心用代码登陆了B站。。。并上传了。。视频" class="headerlink" title="一不小心用代码登陆了B站。。。并上传了。。视频"></a>一不小心用代码登陆了B站。。。并上传了。。视频</h2><blockquote>
-<p>阅读本文需要4.66分钟</p>
-</blockquote>
-<a id="more"></a>
-<p>你被标题吸引了吧。。。别急着关。。重头戏在后面</p>
-<p>最近当我玩B站的时候，一不小心用代码登录了它，并几乎无限制的上传视频。</p>
-<p>那么接下来，我来讲解如何通过Hack技术来模拟 哔哩哔哩 的登录，并完成我们的视频上传等操作。因此内容中略有“暴力”，若您感到不适，那还是也请看完它。</p>
-<p>按照以往的老套路，我们首先需要弄清楚它的登录逻辑，并通过我们的代码来实现登录操作，其次拿到所谓的 Cookie 或者 Token、Sign等校验字段来做其他的操作，以下将围绕 B站 一步步来讲解破解的思路:</p>
-<p>首先我们访问到 哔哩哔哩 的登录页面:</p>
-<p>  <img src="http://115.28.132.58:8080/docs/BiliLogin.png" alt=""></p>
-<p>当我们在未登录的状态下访问登录页面的时候，会发现验证码已经显示出来了。那么他们是怎么做到当我输入账号、密码并输入一个已经出来的验证码之后就能校验成功呢。这时候就得提前动动脑子，当然如果你是开发服务器的话，应该明白里面的道理。这里我简单的讲下，其实在访问这个登录页面的时候，B站 已经将一个唯一的标识和验证码绑定起来了（也就是后面说到的Cookie），并且在登录的时候将这个标识一并发送上去。也就是说：通过一个标识来绑定验证码和登录操作。</p>
-<p>那么接下来我们看看在第一次访问登录页面的时候，都有哪些可用的数据,打开 Charles 抓包工具(Charles抓包工具可在历史文章中找到)，重新访问登录页面.</p>
-<p>这是登录页面的Request数据:<br><img src="http://115.28.132.58:8080/docs/BLReq.png" alt=""><br>当然一眼看上去并没有什么可用数据。其实确实是没什么卵用的数据.那么我们来看看Response数据:<br><img src="http://115.28.132.58:8080/docs/BLRes.png" alt=""><br>一眼看上去是挺乱的。细看下它的Raw数据。其中包括了使用的Server、Set-Cookie等等的数据，还有登录页面的html文本. 那么其中最重要的数据也就是 Set-Cookie，这个Set-Cookie中的数据就是之前讲到的 用来和验证码绑定的唯一标示。那么我们来确认下，来看看验证码图片的包:<br><img src="http://115.28.132.58:8080/docs/BLCap.png" alt=""><br>快看，快看 验证码 Request 中的 Cookie，果然是上面登录页面的 Response 的 Set-Cookie。</p>
-<p>那么验证码就简单了，我们通过代码来访问 B站 的登录页面，并拿到Response的Set-Cookie，然后再将这个Set-Cookie放到下载验证码Request的Cookie中，就这样，我们的验证码搞定了，那是不是登录就很简单了，少年憋急。登录才是大头..</p>
-<p>来来来，基于上面的登录页面，我们在里面输入自己的账号，并完成登录来看看发的包都有哪些.</p>
-<p>登录操作之后的Request:<br><img src="http://115.28.132.58:8080/docs/BLDolog.png" alt=""><br>可以看出来这是一个 post 请求，当然 Cookie 和验证码的一样将之前保存下来的 Set-Cookie 传给Request的Cookie.</p>
-<p>post 参数如下:<br><img src="http://115.28.132.58:8080/docs/BLOnLogForm.png" alt=""><br>Orz,WTF，提交的密码加密了。那么我就需要来找一下它的加密算法了。其实网页端的加密并没有什么卵用。对我来说，就是随便翻翻代码的事（毕竟我很帅）。</p>
-<p>来来来，找啊找啊找加密。然后我们先试探性的搜索下请求的字段 ‘pwd’ 如下图:<br><img src="http://115.28.132.58:8080/docs/SeachPwd.png" alt=""><br>果然定位到了加密的位置，当然前端页面的加密大部分都是很容易找到的，只要你有耐心.<br><img src="http://115.28.132.58:8080/docs/BLEncPwd.png" alt=""><br>以上就是 B站 加密密码的算法。简单讲下就是：通过 /login?act=getkey 拿到一个数据(hash,key),并以key作为RSA算法的公钥来加密 (hash+明文密码),然后针对这个数据来一次base64即可</p>
-<p>python实现如下:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> rsa</div><div class="line">pub = rsa.PublicKey.load_pkcs1_openssl_pem(_key)</div><div class="line">_pwd = rsa.encrypt((_hash + psw).encode(),pub)</div><div class="line">_real_pwd = base64.b64encode(str(_pwd))</div></pre></td></tr></table></figure>
-<p>那么现在我们就需要把问题聚焦到 /login?act=getkey 这个接口上。那么我们再回到之前的抓包数据上，会发现果然有一个 getkey 的请求:<br><img src="http://115.28.132.58:8080/docs/BLGetKey.png" alt=""><br>同上，Cookie是最开始的Set-Cookie。<br><img src="http://115.28.132.58:8080/docs/BLGetKeyRes.png" alt=""><br>Response中也就同时拿到了我们需要的 hash 和 key.大功告成，所有请求和加密都被我们搞定。</p>
-<p>这时候我们再思考下登录脚本应该怎么判断是否登录成功呢，回头过来看下之前的登录操作的结果 也就是 上面的 dologin 接口.<br><img src="http://115.28.132.58:8080/docs/BLogLocation.png" alt=""><br>会发现如果你成功登录之后，在 dologin 接口上会有 302 重定向跳转，并最终跳转到 主页上。因此这时候我们就可以来写代码，模拟登录，并且在最后一步登录请求中判断当前请求历史的第一个状态码是不是 302 ，如果是302，说明我们的登录脚本是没问题的。同时，再拿到 dologin的Response中的Set-Cookie作为新的Cookie，因为这个Cookie才是真正验证通过的Cookie，当然它是存在有效期的。具体多少我还不清楚，一般有一个礼拜、一个月、甚至一年之久。之后我们用这个Cookie去做其他有意义的事情，是完全没问题的。</p>
-<p>其次就是上传视频接口，也是类似的方法，需要分析上传视频的接口数据。并将最终的Cookie携带到请求包中。其中需要注意的是B站的上传视频可简单的分为以下几个步骤：</p>
-<ol>
-<li>将视频以Chunk的方式，而且是options的请求方式上传到服务器。因此它是支持断点续传的。</li>
-<li>拿到options请求之后的视频id，再请求 add 接口将数据post上去即可</li>
-</ol>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>虽然这篇文章很短，但是当你真正坐下来分析的时候，将是一段非常枯燥的过程。需要的就是你的耐心。</p>
-<p>其次之所以写这篇文章，其实重点不是怎么去破解B站的登录，而是这些破解的逻辑是否可以提供给我们一些服务器架构的思路，抑或防范别人的破解。</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[爱情观]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/Lover/</url>
-      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/shelizi.png?raw=true" alt="zls"></p>
-<p>诸心，皆为非心 心中无物、无心，便是真心<br><a id="more"></a></p>
-<ul>
-<li>佛教劝人学习放下万缘，不要执着感情，却不是要人无情，因为，人本来就是有情众生，只要把爱情的聚散当成因缘变化来看，明白“缘散则散，缘聚则聚”的道理，爱、恨便能在这一念之间转变、释怀。只要是人，就不可能没有感情，佛教称众生为“有情”，就是因为“有爱”的缘故。人活在世界上，除了饮食的养分，还需要精神的滋润，而感情就是最好的精神滋润剂，因此，感情和生命可说是息息相关的。感情虽然带给人很多温暖，却也充满痛苦；相爱的人，感情浓烈，如胶似漆分不开，一旦爱过了头，或失去了爱，就变成了苦；也有人以为只要不动情，就不会为爱所苦，这恐怕是一厢情愿的想法，既然情爱和生命息息相关，无论是否定它，或硬生生地把它切断，既不合乎佛法的因果，也不合乎人情的道理。佛教虽然劝人学习放下万缘，不要执着感情，却不是要人无情，因为，人本来就是有情众生。</li>
-</ul>
-<ul>
-<li>遇上触礁的爱情<blockquote>
-<p>然而，男女间的感情，往往非自己的期待所能控制。假如有一天，你的女朋友或是男朋友突然跟你说：“对不起！我已经遇到更适合的人，请你以后不要再来找我。”你会不会觉得晴天霹雳？觉得自己被背叛、被抛弃了？失恋的人，常常悲观地觉得生不如死：“连我最爱的人都不要我了，我还活下去做什么？” 有时候甚至还会骂说：“哼！你不要我，我本来就不想要你了。”或是“真是有眼无珠。”<br>有人为情轻生，结束自己的生命；有人为情杀人，抱着“你让我这样痛苦，我也不让你快活”；或是“我得不到你，天下人也甭想得到你”的偏激心理，而把对方杀了，甚至有的在杀了对方之后，自己也跟着自杀。大多数的人都知道，爱情是双向的，既然如此，如果对方不爱你，就不要苦苦追求不舍，应该知趣地离开，可是，有些人偏偏就是死心眼，非卿不娶，非君不嫁，不但为对方带来困扰，也让自己陷入困境。话虽这么说，毕竟人非草木，谁能无情？一般的人，仍常常为情所苦，可见得要放下感情，其实是件很不容易的事。</p>
-</blockquote>
-</li>
-</ul>
-<ul>
-<li><p>以因缘观化解爱恨* </p>
-<blockquote>
-<p>因爱而生怨、生恨是很不幸的，从佛法的观点来看，这些都是愚痴的行为，因为真正的爱情要双方你情我愿，有因有缘才能成就，不是自己想要就要。假使对方已经明白拒绝你的感情，自己却还想尽办法，想把对方追回来；就好像赌输的人一样，心中不服气，老是想翻本，钱输光了就想办法再借，也因而愈陷愈深，不可自拔，既然知道无法挽回，就不要再陷下去了，应该赶快撤退，就算是以此为戒，至少学到经验，也就够了，这样就是对自己慈悲。慈悲不仅是照顾别人，事实上，也是在保护自己。当爱情受到挫折时，应试着化解自己心中的愤怒、不平。佛法当中“空”的观念，是最能够助人摆脱痛苦的。只要把爱情的聚散当成因缘变化来看，明白“缘散则散，缘聚则聚”的道理，爱、恨便能在这一念之间转变、释怀。</p>
-</blockquote>
-</li>
-<li><p>陷入痛苦的爱情</p>
-<blockquote>
-<p>为什么爱情要俘虏人呢？很多情侣往往会说：“我爱你爱得要死！”或是喜欢说：“我是你的一半，你是我的一半！” 明明是不同的两个人，却彼此互相要求对方，成为自己的一部分，这种“爱”，都希望既要俘虏对方的人，也要俘虏对方的心；控制他的行动，还要控制他的心。所谓“俘虏”，其实就是占有，就是把自我价值扩展到他人身上。男女间的爱，本来就是一种互相的占有。你想占有他，他也想占有你，因为都想占有，所以就分不开了，这样的“爱”，到头来，却只让对方更想逃走。<br>此外，很多人谈恋爱，其实是想找个依靠，也就是找“靠山”的心态。我要靠我的男朋友、我要靠我的女朋友、我要靠我的丈夫、我要靠我的太太，刚开始，依赖一下、靠一靠，可能觉得很温馨。可是，靠久了，对方可能就会想：“怎么老是要靠我？我好累喔！” 偶尔靠一靠是甜蜜的，但老是靠着，就会成了对方的麻烦和负担。即使在爱情的两人世界中，每个人都还是独立的自我，不管是男的还是女的，每个人都怕别人变成自己的负担，如果不能够独立，只想要依靠或是指望另一半，就会成了对方的包袱。</p>
-</blockquote>
-</li>
-<li><p>以尊重的心态经营爱情</p>
-<blockquote>
-<p>真正的爱情应该是无私的付出，但是多半的爱情还是以占有、控制为出发点，这和人的不安全感有关，因此，要求情人对你做到全心的奉献，恐怕是很困难的事。也因如此，甜蜜的爱情，却往往是最痛苦的。期待、要求，希望得到对方“真心”的对待和付出，可是，这种心是“真心”吗？《金刚经》中有一段话：“如来说诸心，皆为非心，是名为心。”“诸心”，是指每一个众生的种种心理活动现象，这些都是虚妄的，从佛法的观点来看，只要有心，就都不是真心，要“心无所住”，心中无物、无心，那才是“真心”。所以说，占有心、依靠心、期待心，都不叫“真心”，而是“烦恼心”。</p>
-</blockquote>
-</li>
-<li><p>古人说“相敬如宾”，虽是老生常谈，却是能够维系长久爱情的真正智慧。如果想避免吵架、误解，或者是想消融不断的期待、要求，在遇到诸如此类的问题时，不妨以尊重的心态，心悦诚服、欢欢喜喜、平平静静去面对、解决，心中的纠结，其实在当下都能即得化解。爱情里的关系，并不是在互相执着、纠缠和占有，而是互相的贡献、成长和学习。能够互相关怀、照顾、包容，去彼此计较、相互猜疑，多沟通，并相互信赖，才能成为菩萨伴侣。</p>
-</li>
-</ul>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Python新手引导第二篇]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/Python%E6%96%B0%E6%89%8B%E5%BC%95%E5%AF%BC%20%E7%AC%AC%E5%9B%9B%E7%AF%87/</url>
-      <content type="html"><![CDATA[<h1 id="Python新手引导-第四篇"><a href="#Python新手引导-第四篇" class="headerlink" title="Python新手引导 第四篇"></a>Python新手引导 第四篇</h1><blockquote>
-<p>###阅读本文需要4.66分钟</p>
-</blockquote>
-<a id="more"></a>
-<p>之后的引导将以例子入手，作为一个程序员，我相信你从例子入手的话会更快的掌握一门语言。</p>
-<ol>
-<li>条件判断、循环、dict和set</li>
-<li>函数</li>
-<li>列表生成式<br>update order_pay_num set content = ‘支付一次，永久免费使用’<h2 id="第一、条件判断、循环、dict和set"><a href="#第一、条件判断、循环、dict和set" class="headerlink" title="第一、条件判断、循环、dict和set"></a>第一、条件判断、循环、dict和set</h2></li>
-</ol>
-<h3 id="1-1-条件判断"><a href="#1-1-条件判断" class="headerlink" title="1.1 条件判断"></a>1.1 条件判断</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#coding:utf-8</span></div><div class="line">age = input(<span class="string">'input num:'</span>)</div><div class="line"><span class="keyword">if</span> age &gt; <span class="number">18</span>:</div><div class="line">	print(<span class="string">'age 大于 18'</span>)</div><div class="line"><span class="keyword">elif</span> age &gt; <span class="number">11</span> <span class="keyword">and</span> age &lt; <span class="number">18</span>:</div><div class="line">	print(<span class="string">'age 大于11 并小于18'</span>)</div><div class="line"><span class="keyword">else</span> :</div><div class="line">	print(<span class="string">'其他'</span>)</div></pre></td></tr></table></figure>
-<p>如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> &lt;条件判断<span class="number">1</span>&gt;:</div><div class="line">    &lt;执行<span class="number">1</span>&gt;</div><div class="line"><span class="keyword">elif</span> &lt;条件判断<span class="number">2</span>&gt;:</div><div class="line">    &lt;执行<span class="number">2</span>&gt;</div><div class="line"><span class="keyword">elif</span> &lt;条件判断<span class="number">3</span>&gt;:</div><div class="line">    &lt;执行<span class="number">3</span>&gt;</div><div class="line"><span class="keyword">else</span>:</div><div class="line">    &lt;执行<span class="number">4</span>&gt;</div></pre></td></tr></table></figure>
-<p>其中<code>input()</code>:<br>2.x 下 <code>input</code>读取的内容和输入的一样的。 但在3.x以上 读取的都是字符串，这一点大家要和<code>raw_input()</code>做区分</p>
-<h3 id="1-2-循环"><a href="#1-2-循环" class="headerlink" title="1.2 循环"></a>1.2 循环</h3><h4 id="1-2-1-for-in"><a href="#1-2-1-for-in" class="headerlink" title="1.2.1 for in"></a>1.2.1 <code>for in</code></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">names = [<span class="string">'Mark'</span>,<span class="string">'Alison'</span>]</div><div class="line"><span class="keyword">for</span> name <span class="keyword">in</span> names:</div><div class="line">	print(name)</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">for &lt;元素&gt; in &lt;集合&gt;：</div></pre></td></tr></table></figure>
-<p>在这里给大家讲一下 <code>range()</code>，rangek可以生成对应参数的n个整数。如： <code>range(100)</code>,就会生成0 到 100的整数。因此在遍历list的时候也可以这样：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">names = [<span class="string">'Mark'</span>,<span class="string">'Alison'</span>]</div><div class="line"><span class="keyword">for</span> index <span class="keyword">in</span> range(len(names)):</div><div class="line">	print(names[index])</div></pre></td></tr></table></figure>
-<h4 id="1-2-2-while"><a href="#1-2-2-while" class="headerlink" title="1.2.2 while"></a>1.2.2 <code>while</code></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">sum = <span class="number">0</span></div><div class="line">n = <span class="number">99</span></div><div class="line"><span class="keyword">while</span> n &gt; <span class="number">0</span>:</div><div class="line">	sum = sum + n</div><div class="line">	n = n <span class="number">-2</span></div><div class="line">print(sum)</div></pre></td></tr></table></figure>
-<h3 id="1-3-集合"><a href="#1-3-集合" class="headerlink" title="1.3 集合"></a>1.3 集合</h3><h4 id="1-3-1-dict"><a href="#1-3-1-dict" class="headerlink" title="1.3.1 dict"></a>1.3.1 dict</h4><blockquote>
-<p>Python中内置的字典。在其他语言中是 map之类的 (key-value)</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>names = &#123;<span class="string">'Mark'</span>:<span class="string">'18'</span>,<span class="string">'Alison'</span>:<span class="string">'18'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>names</div><div class="line">&#123;<span class="string">'Alison'</span>: <span class="string">'18'</span>, <span class="string">'Mark'</span>: <span class="string">'18'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>names[<span class="string">'Mark'</span>]</div><div class="line"><span class="string">'18'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>names[<span class="string">'Jordan'</span>] = <span class="string">'88'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>names</div><div class="line">&#123;<span class="string">'Jordan'</span>: <span class="string">'88'</span>, <span class="string">'Alison'</span>: <span class="string">'18'</span>, <span class="string">'Mark'</span>: <span class="string">'18'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>names.get(<span class="string">'Ali'</span>,<span class="string">'-1'</span>) <span class="comment">#get方法可指定默认值，若这个key不存在，返回默认值</span></div><div class="line"><span class="string">'-1'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>names.pop(<span class="string">'Jordan'</span>) <span class="comment">#Pop出栈</span></div><div class="line"><span class="string">'88'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>names</div><div class="line">&#123;<span class="string">'Alison'</span>: <span class="string">'18'</span>, <span class="string">'Mark'</span>: <span class="string">'18'</span>&#125;</div></pre></td></tr></table></figure>
-<p>dict适用于需要高速查找的地方。</p>
-<h4 id="1-3-2-set"><a href="#1-3-2-set" class="headerlink" title="1.3.2 set"></a>1.3.2 set</h4><blockquote>
-<p>一组不包含value的  key集合，并且不能重复。入参是 list</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>a = set([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a</div><div class="line">set([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a.add(<span class="number">5</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a</div><div class="line">set([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>])</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a.remove(<span class="number">5</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a</div><div class="line">set([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</div></pre></td></tr></table></figure>
-<p>切记关于<code>key</code>的都是不可变的。因为存储的时候，是通过计算key的hash来做的。</p>
-<h2 id="第二、函数"><a href="#第二、函数" class="headerlink" title="第二、函数"></a>第二、函数</h2><h3 id="2-1-内置函数"><a href="#2-1-内置函数" class="headerlink" title="2.1 内置函数"></a>2.1 内置函数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>abs(<span class="number">1.2</span>) <span class="comment"># 求绝对值</span></div><div class="line"><span class="number">1.2</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>abs(<span class="number">-1</span>)</div><div class="line"><span class="number">1</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>int(<span class="string">'1'</span>) <span class="comment"># 将str的转换为int</span></div><div class="line"><span class="number">1</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>str(<span class="number">1</span>) <span class="comment"># 将int转换为str</span></div><div class="line"><span class="string">'1'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>bool(<span class="number">1</span>) <span class="comment"># 转换bool值</span></div><div class="line"><span class="keyword">True</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>bool(<span class="string">''</span>)</div><div class="line"><span class="keyword">False</span></div></pre></td></tr></table></figure>
-<h3 id="2-2-定义函数"><a href="#2-2-定义函数" class="headerlink" title="2.2 定义函数"></a>2.2 定义函数</h3><blockquote>
-<p>Python中使用<code>def</code>定义函数，并可通过 <code>return</code>来返回值</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">myAbs</span><span class="params">(x)</span>:</span></div><div class="line"><span class="meta">... </span>    <span class="keyword">if</span> x &gt; <span class="number">0</span>:</div><div class="line"><span class="meta">... </span>            <span class="keyword">return</span> x</div><div class="line"><span class="meta">... </span>    <span class="keyword">else</span>:</div><div class="line"><span class="meta">... </span>            <span class="keyword">return</span> -x</div><div class="line">...</div><div class="line">&gt;&gt;&gt;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>myAbs(<span class="number">1</span>)</div><div class="line"><span class="number">1</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>myAbs(<span class="number">-1</span>)</div><div class="line"><span class="number">1</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>myAbs(<span class="number">-2</span>)</div><div class="line"><span class="number">2</span></div></pre></td></tr></table></figure>
-<p>其中 <code>return</code>表示函数执行的终止，并将结果返回。<br>需要注意的是 <code>return None</code>可直接用 <code>return</code>表示</p>
-<h4 id="2-2-1-空函数"><a href="#2-2-1-空函数" class="headerlink" title="2.2.1 空函数"></a>2.2.1 空函数</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">nop</span><span class="params">()</span>:</span></div><div class="line">	<span class="keyword">pass</span> <span class="comment">#可作为占位符，表示还没想好写什么</span></div></pre></td></tr></table></figure>
-<h4 id="2-2-2-返回多个值"><a href="#2-2-2-返回多个值" class="headerlink" title="2.2.2 返回多个值"></a>2.2.2 返回多个值</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fun</span><span class="params">()</span>:</span></div><div class="line">	<span class="keyword">return</span> <span class="string">'1'</span>,<span class="string">'2'</span></div><div class="line">a,b = fun()</div></pre></td></tr></table></figure>
-<p>这个还是比较方便的。 不用我们再继续封装起来返回，唯一恶心的就是得约定好规则。</p>
-<p>其实这返回不是两个值，而是一个tuple，这个得理解下</p>
-<h4 id="2-2-3-默认参数"><a href="#2-2-3-默认参数" class="headerlink" title="2.2.3 默认参数"></a>2.2.3 默认参数</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">def fun(a,b=2)</div><div class="line">	print a,b</div></pre></td></tr></table></figure>
-<p>其中b的默认值是2</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">def fun(L=[])</div><div class="line">	L.append('End')</div><div class="line">	return L</div></pre></td></tr></table></figure>
-<p>传一个list，并添加 <code>End</code>再返回。其中要注意的是，python会记住append的元素。意思就是：如果你多次调用 fun() ，会发现 之后的元素都是 <code>End</code></p>
-<p>因此这种传递List的方式如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fun</span><span class="params">(L=None)</span>:</span></div><div class="line">	<span class="keyword">if</span> L <span class="keyword">is</span> <span class="keyword">None</span>:</div><div class="line">		L = []</div><div class="line">	L.append(<span class="string">'End'</span>)</div><div class="line">	<span class="keyword">return</span> L</div></pre></td></tr></table></figure>
-<h4 id="2-2-4-可变参数，使用"><a href="#2-2-4-可变参数，使用" class="headerlink" title="2.2.4 可变参数，使用 *"></a>2.2.4 可变参数，使用 <code>*</code></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">nums = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">addNum</span><span class="params">(*n)</span>:</span></div><div class="line">	sum = <span class="number">0</span></div><div class="line">	<span class="keyword">for</span> num <span class="keyword">in</span> n:</div><div class="line">		sum +=num</div><div class="line">	<span class="keyword">return</span> sum</div><div class="line">addNum(*nums)</div></pre></td></tr></table></figure>
-<p>*nums表示把nums这个list的所有元素作为可变参数传进去。这种写法相当有用，而且很常见。</p>
-<h4 id="2-2-5-关键字参数"><a href="#2-2-5-关键字参数" class="headerlink" title="2.2.5 关键字参数 **"></a>2.2.5 关键字参数 <code>**</code></h4><p>表示允许传入0个或者任意个含参数名的参数，这些关键字参数在函数内部自动组装为一个dict.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">person</span><span class="params">(name, age, **kw)</span>:</span></div><div class="line">    print(<span class="string">'name:'</span>, name, <span class="string">'age:'</span>, age, <span class="string">'other:'</span>, kw)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>person(<span class="string">'Michael'</span>, <span class="number">30</span>)</div><div class="line">name: Michael age: <span class="number">30</span> other: &#123;&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>person(<span class="string">'Bob'</span>, <span class="number">35</span>, city=<span class="string">'Beijing'</span>)</div><div class="line">name: Bob age: <span class="number">35</span> other: &#123;<span class="string">'city'</span>: <span class="string">'Beijing'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>person(<span class="string">'Adam'</span>, <span class="number">45</span>, gender=<span class="string">'M'</span>, job=<span class="string">'Engineer'</span>)</div><div class="line">name: Adam age: <span class="number">45</span> other: &#123;<span class="string">'gender'</span>: <span class="string">'M'</span>, <span class="string">'job'</span>: <span class="string">'Engineer'</span>&#125;</div></pre></td></tr></table></figure>
-<p>和可变参数类似，也可以先组装出一个dict，然后，把该dict转换为关键字参数传进去：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>extra = &#123;<span class="string">'city'</span>: <span class="string">'Beijing'</span>, <span class="string">'job'</span>: <span class="string">'Engineer'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>person(<span class="string">'Jack'</span>, <span class="number">24</span>, city=extra[<span class="string">'city'</span>], job=extra[<span class="string">'job'</span>])</div><div class="line">name: Jack age: <span class="number">24</span> other: &#123;<span class="string">'city'</span>: <span class="string">'Beijing'</span>, <span class="string">'job'</span>: <span class="string">'Engineer'</span>&#125;</div></pre></td></tr></table></figure>
-<p>或者</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>extra = &#123;<span class="string">'city'</span>: <span class="string">'Beijing'</span>, <span class="string">'job'</span>: <span class="string">'Engineer'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>person(<span class="string">'Jack'</span>, <span class="number">24</span>, **extra)</div><div class="line">name: Jack age: <span class="number">24</span> other: &#123;<span class="string">'city'</span>: <span class="string">'Beijing'</span>, <span class="string">'job'</span>: <span class="string">'Engineer'</span>&#125;</div></pre></td></tr></table></figure>
-<h4 id="2-2-6-命名关键字参数"><a href="#2-2-6-命名关键字参数" class="headerlink" title="2.2.6 命名关键字参数"></a>2.2.6 命名关键字参数</h4><p>对于关键字参数，函数的调用者可以传入任意不受限制的关键字参数。至于到底传入了哪些，就需要在函数内部通过kw检查。</p>
-<p>仍以person()函数为例，我们希望检查是否有city和job参数：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">person</span><span class="params">(name, age, **kw)</span>:</span></div><div class="line">    <span class="keyword">if</span> <span class="string">'city'</span> <span class="keyword">in</span> kw:</div><div class="line">        <span class="comment"># 有city参数</span></div><div class="line">        <span class="keyword">pass</span></div><div class="line">    <span class="keyword">if</span> <span class="string">'job'</span> <span class="keyword">in</span> kw:</div><div class="line">        <span class="comment"># 有job参数</span></div><div class="line">        <span class="keyword">pass</span></div><div class="line">    print(<span class="string">'name:'</span>, name, <span class="string">'age:'</span>, age, <span class="string">'other:'</span>, kw)</div></pre></td></tr></table></figure>
-<p>但是调用者仍可以传入不受限制的关键字参数：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>person(<span class="string">'Jack'</span>, <span class="number">24</span>, city=<span class="string">'Beijing'</span>, addr=<span class="string">'Chaoyang'</span>, zipcode=<span class="number">123456</span>)</div></pre></td></tr></table></figure>
-<p>如果要限制关键字参数的名字，就可以用命名关键字参数，例如，只接收city和job作为关键字参数。这种方式定义的函数如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">person</span><span class="params">(name, age, *, city, job)</span>:</span></div><div class="line">    print(name, age, city, job)</div></pre></td></tr></table></figure>
-<p>和关键字参数<em>*kw不同，命名关键字参数需要一个特殊分隔符</em>，*后面的参数被视为命名关键字参数。</p>
-<p>调用方式如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>person(<span class="string">'Mark'</span>, <span class="number">24</span>, city=<span class="string">'hangzhou'</span>, job=<span class="string">'Engineer'</span>)</div><div class="line">Mark <span class="number">24</span> hangzhou Engineer</div></pre></td></tr></table></figure>
-<h2 id="第三、列表生成式"><a href="#第三、列表生成式" class="headerlink" title="第三、列表生成式"></a>第三、列表生成式</h2><blockquote>
-<p>List Comprehensions，是Python内置的非常简单却强大的可以用来创建list的生成式</p>
-</blockquote>
-<p>举例：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>[x*x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">11</span>)]</div><div class="line">[<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>, <span class="number">36</span>, <span class="number">49</span>, <span class="number">64</span>, <span class="number">81</span>, <span class="number">100</span>]</div><div class="line">&gt;&gt;&gt;</div><div class="line">&gt;&gt;&gt;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>[m + n <span class="keyword">for</span> m <span class="keyword">in</span> <span class="string">'ABC'</span> <span class="keyword">for</span> n <span class="keyword">in</span> <span class="string">'XYZ'</span>]</div><div class="line">[<span class="string">'AX'</span>, <span class="string">'AY'</span>, <span class="string">'AZ'</span>, <span class="string">'BX'</span>, <span class="string">'BY'</span>, <span class="string">'BZ'</span>, <span class="string">'CX'</span>, <span class="string">'CY'</span>, <span class="string">'CZ'</span>]</div><div class="line">&gt;&gt;&gt;</div><div class="line">&gt;&gt;&gt;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>d = &#123;<span class="string">'x'</span>: <span class="string">'A'</span>, <span class="string">'y'</span>: <span class="string">'B'</span>, <span class="string">'z'</span>: <span class="string">'C'</span> &#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> k, v <span class="keyword">in</span> d.items():</div><div class="line"><span class="meta">... </span>    print(k, <span class="string">'='</span>, v)</div><div class="line">...</div><div class="line">y = B</div><div class="line">x = A</div><div class="line">z = C</div></pre></td></tr></table></figure>
-<h2 id="第四、生成器-generator"><a href="#第四、生成器-generator" class="headerlink" title="第四、生成器 generator"></a>第四、生成器 generator</h2><blockquote>
-<p>如名字，其就是一个生成我们所需数据的容器，而不像 列表生成式，计算出所有数据。因此节省了空间，也解决了时间</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>g = (x * x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">10</span>))</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>g</div><div class="line">&lt;generator object &lt;genexpr&gt; at <span class="number">0x1022ef630</span>&gt;</div></pre></td></tr></table></figure>
-<p> 遍历: next(g)</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>g = (x * x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">10</span>))</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> n <span class="keyword">in</span> g:</div><div class="line"><span class="meta">... </span>    print(n)</div><div class="line"><span class="meta">... </span></div><div class="line"><span class="number">0</span></div><div class="line"><span class="number">1</span></div><div class="line"><span class="number">4</span></div><div class="line"><span class="number">9</span></div><div class="line"><span class="number">16</span></div><div class="line"><span class="number">25</span></div><div class="line"><span class="number">36</span></div><div class="line"><span class="number">49</span></div><div class="line"><span class="number">64</span></div><div class="line"><span class="number">81</span></div></pre></td></tr></table></figure>
-<p> <code>yeild</code>可中断当前操作，使函数成为 生成器 而不是普通函数</p>
-<p>举例： 杨慧三角</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">         <span class="number">1</span></div><div class="line">        <span class="number">1</span>   <span class="number">1</span></div><div class="line">      <span class="number">1</span>   <span class="number">2</span>   <span class="number">1</span></div><div class="line">    <span class="number">1</span>   <span class="number">3</span>   <span class="number">3</span>   <span class="number">1</span></div><div class="line">  <span class="number">1</span>   <span class="number">4</span>   <span class="number">6</span>   <span class="number">4</span>   <span class="number">1</span></div><div class="line"><span class="number">1</span>   <span class="number">5</span>   <span class="number">10</span>  <span class="number">10</span>  <span class="number">5</span>   <span class="number">1</span></div></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">yanghu</span><span class="params">(n)</span>:</span></div><div class="line">	L=[<span class="number">1</span>]</div><div class="line">	<span class="keyword">while</span> <span class="number">1</span>:</div><div class="line">		yeild L</div><div class="line">		L = [L[x] + L[x+<span class="number">1</span>] <span class="keyword">for</span> x <span class="keyword">in</span> range(len(L) <span class="number">-1</span>)]</div><div class="line">		L.insert(<span class="number">0</span>,<span class="number">1</span>)</div><div class="line">		L.append(<span class="number">1</span>)</div><div class="line">		<span class="keyword">if</span> len(L)&gt;n:</div><div class="line">			<span class="keyword">break</span></div><div class="line"><span class="keyword">for</span> n <span class="keyword">in</span> yanghu(<span class="number">10</span>):</div><div class="line">	<span class="keyword">print</span> n</div></pre></td></tr></table></figure>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>本篇用一些简单的例子来讲解了下基础知识。 多动手练练哦</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Python新手引导第二篇]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/Python%E6%96%B0%E6%89%8B%E5%BC%95%E5%AF%BC%E7%AC%AC%E4%B8%89%E7%AF%87/</url>
-      <content type="html"><![CDATA[<h1 id="Python新手引导-第三篇-Python基础"><a href="#Python新手引导-第三篇-Python基础" class="headerlink" title="Python新手引导 第三篇 Python基础"></a>Python新手引导 第三篇 Python基础</h1><blockquote>
-<p>###阅读本文需要4.66分钟</p>
-</blockquote>
-<a id="more"></a>
-<p>有其他计算机语言基础的同学，阅读本篇基础部分建议1到2分钟。</p>
-<ol>
-<li>基础类型和变量</li>
-<li>list 和 tuple</li>
-</ol>
-<h2 id="第一、基础类型和变量"><a href="#第一、基础类型和变量" class="headerlink" title="第一、基础类型和变量"></a>第一、基础类型和变量</h2><blockquote>
-</blockquote>
 ]]></content>
     </entry>
     
@@ -610,6 +472,127 @@ limitations under the License.
     </entry>
     
     <entry>
+      <title><![CDATA[爱情观]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/Lover/</url>
+      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/shelizi.png?raw=true" alt="zls"></p>
+<p>诸心，皆为非心 心中无物、无心，便是真心<br><a id="more"></a></p>
+<ul>
+<li>佛教劝人学习放下万缘，不要执着感情，却不是要人无情，因为，人本来就是有情众生，只要把爱情的聚散当成因缘变化来看，明白“缘散则散，缘聚则聚”的道理，爱、恨便能在这一念之间转变、释怀。只要是人，就不可能没有感情，佛教称众生为“有情”，就是因为“有爱”的缘故。人活在世界上，除了饮食的养分，还需要精神的滋润，而感情就是最好的精神滋润剂，因此，感情和生命可说是息息相关的。感情虽然带给人很多温暖，却也充满痛苦；相爱的人，感情浓烈，如胶似漆分不开，一旦爱过了头，或失去了爱，就变成了苦；也有人以为只要不动情，就不会为爱所苦，这恐怕是一厢情愿的想法，既然情爱和生命息息相关，无论是否定它，或硬生生地把它切断，既不合乎佛法的因果，也不合乎人情的道理。佛教虽然劝人学习放下万缘，不要执着感情，却不是要人无情，因为，人本来就是有情众生。</li>
+</ul>
+<ul>
+<li>遇上触礁的爱情<blockquote>
+<p>然而，男女间的感情，往往非自己的期待所能控制。假如有一天，你的女朋友或是男朋友突然跟你说：“对不起！我已经遇到更适合的人，请你以后不要再来找我。”你会不会觉得晴天霹雳？觉得自己被背叛、被抛弃了？失恋的人，常常悲观地觉得生不如死：“连我最爱的人都不要我了，我还活下去做什么？” 有时候甚至还会骂说：“哼！你不要我，我本来就不想要你了。”或是“真是有眼无珠。”<br>有人为情轻生，结束自己的生命；有人为情杀人，抱着“你让我这样痛苦，我也不让你快活”；或是“我得不到你，天下人也甭想得到你”的偏激心理，而把对方杀了，甚至有的在杀了对方之后，自己也跟着自杀。大多数的人都知道，爱情是双向的，既然如此，如果对方不爱你，就不要苦苦追求不舍，应该知趣地离开，可是，有些人偏偏就是死心眼，非卿不娶，非君不嫁，不但为对方带来困扰，也让自己陷入困境。话虽这么说，毕竟人非草木，谁能无情？一般的人，仍常常为情所苦，可见得要放下感情，其实是件很不容易的事。</p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li><p>以因缘观化解爱恨* </p>
+<blockquote>
+<p>因爱而生怨、生恨是很不幸的，从佛法的观点来看，这些都是愚痴的行为，因为真正的爱情要双方你情我愿，有因有缘才能成就，不是自己想要就要。假使对方已经明白拒绝你的感情，自己却还想尽办法，想把对方追回来；就好像赌输的人一样，心中不服气，老是想翻本，钱输光了就想办法再借，也因而愈陷愈深，不可自拔，既然知道无法挽回，就不要再陷下去了，应该赶快撤退，就算是以此为戒，至少学到经验，也就够了，这样就是对自己慈悲。慈悲不仅是照顾别人，事实上，也是在保护自己。当爱情受到挫折时，应试着化解自己心中的愤怒、不平。佛法当中“空”的观念，是最能够助人摆脱痛苦的。只要把爱情的聚散当成因缘变化来看，明白“缘散则散，缘聚则聚”的道理，爱、恨便能在这一念之间转变、释怀。</p>
+</blockquote>
+</li>
+<li><p>陷入痛苦的爱情</p>
+<blockquote>
+<p>为什么爱情要俘虏人呢？很多情侣往往会说：“我爱你爱得要死！”或是喜欢说：“我是你的一半，你是我的一半！” 明明是不同的两个人，却彼此互相要求对方，成为自己的一部分，这种“爱”，都希望既要俘虏对方的人，也要俘虏对方的心；控制他的行动，还要控制他的心。所谓“俘虏”，其实就是占有，就是把自我价值扩展到他人身上。男女间的爱，本来就是一种互相的占有。你想占有他，他也想占有你，因为都想占有，所以就分不开了，这样的“爱”，到头来，却只让对方更想逃走。<br>此外，很多人谈恋爱，其实是想找个依靠，也就是找“靠山”的心态。我要靠我的男朋友、我要靠我的女朋友、我要靠我的丈夫、我要靠我的太太，刚开始，依赖一下、靠一靠，可能觉得很温馨。可是，靠久了，对方可能就会想：“怎么老是要靠我？我好累喔！” 偶尔靠一靠是甜蜜的，但老是靠着，就会成了对方的麻烦和负担。即使在爱情的两人世界中，每个人都还是独立的自我，不管是男的还是女的，每个人都怕别人变成自己的负担，如果不能够独立，只想要依靠或是指望另一半，就会成了对方的包袱。</p>
+</blockquote>
+</li>
+<li><p>以尊重的心态经营爱情</p>
+<blockquote>
+<p>真正的爱情应该是无私的付出，但是多半的爱情还是以占有、控制为出发点，这和人的不安全感有关，因此，要求情人对你做到全心的奉献，恐怕是很困难的事。也因如此，甜蜜的爱情，却往往是最痛苦的。期待、要求，希望得到对方“真心”的对待和付出，可是，这种心是“真心”吗？《金刚经》中有一段话：“如来说诸心，皆为非心，是名为心。”“诸心”，是指每一个众生的种种心理活动现象，这些都是虚妄的，从佛法的观点来看，只要有心，就都不是真心，要“心无所住”，心中无物、无心，那才是“真心”。所以说，占有心、依靠心、期待心，都不叫“真心”，而是“烦恼心”。</p>
+</blockquote>
+</li>
+<li><p>古人说“相敬如宾”，虽是老生常谈，却是能够维系长久爱情的真正智慧。如果想避免吵架、误解，或者是想消融不断的期待、要求，在遇到诸如此类的问题时，不妨以尊重的心态，心悦诚服、欢欢喜喜、平平静静去面对、解决，心中的纠结，其实在当下都能即得化解。爱情里的关系，并不是在互相执着、纠缠和占有，而是互相的贡献、成长和学习。能够互相关怀、照顾、包容，去彼此计较、相互猜疑，多沟通，并相互信赖，才能成为菩萨伴侣。</p>
+</li>
+</ul>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Python新手引导第二篇]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/Python%E6%96%B0%E6%89%8B%E5%BC%95%E5%AF%BC%20%E7%AC%AC%E5%9B%9B%E7%AF%87/</url>
+      <content type="html"><![CDATA[<h1 id="Python新手引导-第四篇"><a href="#Python新手引导-第四篇" class="headerlink" title="Python新手引导 第四篇"></a>Python新手引导 第四篇</h1><blockquote>
+<p>###阅读本文需要4.66分钟</p>
+</blockquote>
+<a id="more"></a>
+<p>之后的引导将以例子入手，作为一个程序员，我相信你从例子入手的话会更快的掌握一门语言。</p>
+<ol>
+<li>条件判断、循环、dict和set</li>
+<li>函数</li>
+<li>列表生成式<br>update order_pay_num set content = ‘支付一次，永久免费使用’<h2 id="第一、条件判断、循环、dict和set"><a href="#第一、条件判断、循环、dict和set" class="headerlink" title="第一、条件判断、循环、dict和set"></a>第一、条件判断、循环、dict和set</h2></li>
+</ol>
+<h3 id="1-1-条件判断"><a href="#1-1-条件判断" class="headerlink" title="1.1 条件判断"></a>1.1 条件判断</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#coding:utf-8</span></div><div class="line">age = input(<span class="string">'input num:'</span>)</div><div class="line"><span class="keyword">if</span> age &gt; <span class="number">18</span>:</div><div class="line">	print(<span class="string">'age 大于 18'</span>)</div><div class="line"><span class="keyword">elif</span> age &gt; <span class="number">11</span> <span class="keyword">and</span> age &lt; <span class="number">18</span>:</div><div class="line">	print(<span class="string">'age 大于11 并小于18'</span>)</div><div class="line"><span class="keyword">else</span> :</div><div class="line">	print(<span class="string">'其他'</span>)</div></pre></td></tr></table></figure>
+<p>如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> &lt;条件判断<span class="number">1</span>&gt;:</div><div class="line">    &lt;执行<span class="number">1</span>&gt;</div><div class="line"><span class="keyword">elif</span> &lt;条件判断<span class="number">2</span>&gt;:</div><div class="line">    &lt;执行<span class="number">2</span>&gt;</div><div class="line"><span class="keyword">elif</span> &lt;条件判断<span class="number">3</span>&gt;:</div><div class="line">    &lt;执行<span class="number">3</span>&gt;</div><div class="line"><span class="keyword">else</span>:</div><div class="line">    &lt;执行<span class="number">4</span>&gt;</div></pre></td></tr></table></figure>
+<p>其中<code>input()</code>:<br>2.x 下 <code>input</code>读取的内容和输入的一样的。 但在3.x以上 读取的都是字符串，这一点大家要和<code>raw_input()</code>做区分</p>
+<h3 id="1-2-循环"><a href="#1-2-循环" class="headerlink" title="1.2 循环"></a>1.2 循环</h3><h4 id="1-2-1-for-in"><a href="#1-2-1-for-in" class="headerlink" title="1.2.1 for in"></a>1.2.1 <code>for in</code></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">names = [<span class="string">'Mark'</span>,<span class="string">'Alison'</span>]</div><div class="line"><span class="keyword">for</span> name <span class="keyword">in</span> names:</div><div class="line">	print(name)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">for &lt;元素&gt; in &lt;集合&gt;：</div></pre></td></tr></table></figure>
+<p>在这里给大家讲一下 <code>range()</code>，rangek可以生成对应参数的n个整数。如： <code>range(100)</code>,就会生成0 到 100的整数。因此在遍历list的时候也可以这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">names = [<span class="string">'Mark'</span>,<span class="string">'Alison'</span>]</div><div class="line"><span class="keyword">for</span> index <span class="keyword">in</span> range(len(names)):</div><div class="line">	print(names[index])</div></pre></td></tr></table></figure>
+<h4 id="1-2-2-while"><a href="#1-2-2-while" class="headerlink" title="1.2.2 while"></a>1.2.2 <code>while</code></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">sum = <span class="number">0</span></div><div class="line">n = <span class="number">99</span></div><div class="line"><span class="keyword">while</span> n &gt; <span class="number">0</span>:</div><div class="line">	sum = sum + n</div><div class="line">	n = n <span class="number">-2</span></div><div class="line">print(sum)</div></pre></td></tr></table></figure>
+<h3 id="1-3-集合"><a href="#1-3-集合" class="headerlink" title="1.3 集合"></a>1.3 集合</h3><h4 id="1-3-1-dict"><a href="#1-3-1-dict" class="headerlink" title="1.3.1 dict"></a>1.3.1 dict</h4><blockquote>
+<p>Python中内置的字典。在其他语言中是 map之类的 (key-value)</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>names = &#123;<span class="string">'Mark'</span>:<span class="string">'18'</span>,<span class="string">'Alison'</span>:<span class="string">'18'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>names</div><div class="line">&#123;<span class="string">'Alison'</span>: <span class="string">'18'</span>, <span class="string">'Mark'</span>: <span class="string">'18'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>names[<span class="string">'Mark'</span>]</div><div class="line"><span class="string">'18'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>names[<span class="string">'Jordan'</span>] = <span class="string">'88'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>names</div><div class="line">&#123;<span class="string">'Jordan'</span>: <span class="string">'88'</span>, <span class="string">'Alison'</span>: <span class="string">'18'</span>, <span class="string">'Mark'</span>: <span class="string">'18'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>names.get(<span class="string">'Ali'</span>,<span class="string">'-1'</span>) <span class="comment">#get方法可指定默认值，若这个key不存在，返回默认值</span></div><div class="line"><span class="string">'-1'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>names.pop(<span class="string">'Jordan'</span>) <span class="comment">#Pop出栈</span></div><div class="line"><span class="string">'88'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>names</div><div class="line">&#123;<span class="string">'Alison'</span>: <span class="string">'18'</span>, <span class="string">'Mark'</span>: <span class="string">'18'</span>&#125;</div></pre></td></tr></table></figure>
+<p>dict适用于需要高速查找的地方。</p>
+<h4 id="1-3-2-set"><a href="#1-3-2-set" class="headerlink" title="1.3.2 set"></a>1.3.2 set</h4><blockquote>
+<p>一组不包含value的  key集合，并且不能重复。入参是 list</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>a = set([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a</div><div class="line">set([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a.add(<span class="number">5</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a</div><div class="line">set([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>])</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a.remove(<span class="number">5</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a</div><div class="line">set([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</div></pre></td></tr></table></figure>
+<p>切记关于<code>key</code>的都是不可变的。因为存储的时候，是通过计算key的hash来做的。</p>
+<h2 id="第二、函数"><a href="#第二、函数" class="headerlink" title="第二、函数"></a>第二、函数</h2><h3 id="2-1-内置函数"><a href="#2-1-内置函数" class="headerlink" title="2.1 内置函数"></a>2.1 内置函数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>abs(<span class="number">1.2</span>) <span class="comment"># 求绝对值</span></div><div class="line"><span class="number">1.2</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>abs(<span class="number">-1</span>)</div><div class="line"><span class="number">1</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>int(<span class="string">'1'</span>) <span class="comment"># 将str的转换为int</span></div><div class="line"><span class="number">1</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>str(<span class="number">1</span>) <span class="comment"># 将int转换为str</span></div><div class="line"><span class="string">'1'</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>bool(<span class="number">1</span>) <span class="comment"># 转换bool值</span></div><div class="line"><span class="keyword">True</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>bool(<span class="string">''</span>)</div><div class="line"><span class="keyword">False</span></div></pre></td></tr></table></figure>
+<h3 id="2-2-定义函数"><a href="#2-2-定义函数" class="headerlink" title="2.2 定义函数"></a>2.2 定义函数</h3><blockquote>
+<p>Python中使用<code>def</code>定义函数，并可通过 <code>return</code>来返回值</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">myAbs</span><span class="params">(x)</span>:</span></div><div class="line"><span class="meta">... </span>    <span class="keyword">if</span> x &gt; <span class="number">0</span>:</div><div class="line"><span class="meta">... </span>            <span class="keyword">return</span> x</div><div class="line"><span class="meta">... </span>    <span class="keyword">else</span>:</div><div class="line"><span class="meta">... </span>            <span class="keyword">return</span> -x</div><div class="line">...</div><div class="line">&gt;&gt;&gt;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>myAbs(<span class="number">1</span>)</div><div class="line"><span class="number">1</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>myAbs(<span class="number">-1</span>)</div><div class="line"><span class="number">1</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>myAbs(<span class="number">-2</span>)</div><div class="line"><span class="number">2</span></div></pre></td></tr></table></figure>
+<p>其中 <code>return</code>表示函数执行的终止，并将结果返回。<br>需要注意的是 <code>return None</code>可直接用 <code>return</code>表示</p>
+<h4 id="2-2-1-空函数"><a href="#2-2-1-空函数" class="headerlink" title="2.2.1 空函数"></a>2.2.1 空函数</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">nop</span><span class="params">()</span>:</span></div><div class="line">	<span class="keyword">pass</span> <span class="comment">#可作为占位符，表示还没想好写什么</span></div></pre></td></tr></table></figure>
+<h4 id="2-2-2-返回多个值"><a href="#2-2-2-返回多个值" class="headerlink" title="2.2.2 返回多个值"></a>2.2.2 返回多个值</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fun</span><span class="params">()</span>:</span></div><div class="line">	<span class="keyword">return</span> <span class="string">'1'</span>,<span class="string">'2'</span></div><div class="line">a,b = fun()</div></pre></td></tr></table></figure>
+<p>这个还是比较方便的。 不用我们再继续封装起来返回，唯一恶心的就是得约定好规则。</p>
+<p>其实这返回不是两个值，而是一个tuple，这个得理解下</p>
+<h4 id="2-2-3-默认参数"><a href="#2-2-3-默认参数" class="headerlink" title="2.2.3 默认参数"></a>2.2.3 默认参数</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">def fun(a,b=2)</div><div class="line">	print a,b</div></pre></td></tr></table></figure>
+<p>其中b的默认值是2</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">def fun(L=[])</div><div class="line">	L.append('End')</div><div class="line">	return L</div></pre></td></tr></table></figure>
+<p>传一个list，并添加 <code>End</code>再返回。其中要注意的是，python会记住append的元素。意思就是：如果你多次调用 fun() ，会发现 之后的元素都是 <code>End</code></p>
+<p>因此这种传递List的方式如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fun</span><span class="params">(L=None)</span>:</span></div><div class="line">	<span class="keyword">if</span> L <span class="keyword">is</span> <span class="keyword">None</span>:</div><div class="line">		L = []</div><div class="line">	L.append(<span class="string">'End'</span>)</div><div class="line">	<span class="keyword">return</span> L</div></pre></td></tr></table></figure>
+<h4 id="2-2-4-可变参数，使用"><a href="#2-2-4-可变参数，使用" class="headerlink" title="2.2.4 可变参数，使用 *"></a>2.2.4 可变参数，使用 <code>*</code></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">nums = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">addNum</span><span class="params">(*n)</span>:</span></div><div class="line">	sum = <span class="number">0</span></div><div class="line">	<span class="keyword">for</span> num <span class="keyword">in</span> n:</div><div class="line">		sum +=num</div><div class="line">	<span class="keyword">return</span> sum</div><div class="line">addNum(*nums)</div></pre></td></tr></table></figure>
+<p>*nums表示把nums这个list的所有元素作为可变参数传进去。这种写法相当有用，而且很常见。</p>
+<h4 id="2-2-5-关键字参数"><a href="#2-2-5-关键字参数" class="headerlink" title="2.2.5 关键字参数 **"></a>2.2.5 关键字参数 <code>**</code></h4><p>表示允许传入0个或者任意个含参数名的参数，这些关键字参数在函数内部自动组装为一个dict.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">person</span><span class="params">(name, age, **kw)</span>:</span></div><div class="line">    print(<span class="string">'name:'</span>, name, <span class="string">'age:'</span>, age, <span class="string">'other:'</span>, kw)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>person(<span class="string">'Michael'</span>, <span class="number">30</span>)</div><div class="line">name: Michael age: <span class="number">30</span> other: &#123;&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>person(<span class="string">'Bob'</span>, <span class="number">35</span>, city=<span class="string">'Beijing'</span>)</div><div class="line">name: Bob age: <span class="number">35</span> other: &#123;<span class="string">'city'</span>: <span class="string">'Beijing'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>person(<span class="string">'Adam'</span>, <span class="number">45</span>, gender=<span class="string">'M'</span>, job=<span class="string">'Engineer'</span>)</div><div class="line">name: Adam age: <span class="number">45</span> other: &#123;<span class="string">'gender'</span>: <span class="string">'M'</span>, <span class="string">'job'</span>: <span class="string">'Engineer'</span>&#125;</div></pre></td></tr></table></figure>
+<p>和可变参数类似，也可以先组装出一个dict，然后，把该dict转换为关键字参数传进去：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>extra = &#123;<span class="string">'city'</span>: <span class="string">'Beijing'</span>, <span class="string">'job'</span>: <span class="string">'Engineer'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>person(<span class="string">'Jack'</span>, <span class="number">24</span>, city=extra[<span class="string">'city'</span>], job=extra[<span class="string">'job'</span>])</div><div class="line">name: Jack age: <span class="number">24</span> other: &#123;<span class="string">'city'</span>: <span class="string">'Beijing'</span>, <span class="string">'job'</span>: <span class="string">'Engineer'</span>&#125;</div></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>extra = &#123;<span class="string">'city'</span>: <span class="string">'Beijing'</span>, <span class="string">'job'</span>: <span class="string">'Engineer'</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>person(<span class="string">'Jack'</span>, <span class="number">24</span>, **extra)</div><div class="line">name: Jack age: <span class="number">24</span> other: &#123;<span class="string">'city'</span>: <span class="string">'Beijing'</span>, <span class="string">'job'</span>: <span class="string">'Engineer'</span>&#125;</div></pre></td></tr></table></figure>
+<h4 id="2-2-6-命名关键字参数"><a href="#2-2-6-命名关键字参数" class="headerlink" title="2.2.6 命名关键字参数"></a>2.2.6 命名关键字参数</h4><p>对于关键字参数，函数的调用者可以传入任意不受限制的关键字参数。至于到底传入了哪些，就需要在函数内部通过kw检查。</p>
+<p>仍以person()函数为例，我们希望检查是否有city和job参数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">person</span><span class="params">(name, age, **kw)</span>:</span></div><div class="line">    <span class="keyword">if</span> <span class="string">'city'</span> <span class="keyword">in</span> kw:</div><div class="line">        <span class="comment"># 有city参数</span></div><div class="line">        <span class="keyword">pass</span></div><div class="line">    <span class="keyword">if</span> <span class="string">'job'</span> <span class="keyword">in</span> kw:</div><div class="line">        <span class="comment"># 有job参数</span></div><div class="line">        <span class="keyword">pass</span></div><div class="line">    print(<span class="string">'name:'</span>, name, <span class="string">'age:'</span>, age, <span class="string">'other:'</span>, kw)</div></pre></td></tr></table></figure>
+<p>但是调用者仍可以传入不受限制的关键字参数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>person(<span class="string">'Jack'</span>, <span class="number">24</span>, city=<span class="string">'Beijing'</span>, addr=<span class="string">'Chaoyang'</span>, zipcode=<span class="number">123456</span>)</div></pre></td></tr></table></figure>
+<p>如果要限制关键字参数的名字，就可以用命名关键字参数，例如，只接收city和job作为关键字参数。这种方式定义的函数如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">person</span><span class="params">(name, age, *, city, job)</span>:</span></div><div class="line">    print(name, age, city, job)</div></pre></td></tr></table></figure>
+<p>和关键字参数<em>*kw不同，命名关键字参数需要一个特殊分隔符</em>，*后面的参数被视为命名关键字参数。</p>
+<p>调用方式如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>person(<span class="string">'Mark'</span>, <span class="number">24</span>, city=<span class="string">'hangzhou'</span>, job=<span class="string">'Engineer'</span>)</div><div class="line">Mark <span class="number">24</span> hangzhou Engineer</div></pre></td></tr></table></figure>
+<h2 id="第三、列表生成式"><a href="#第三、列表生成式" class="headerlink" title="第三、列表生成式"></a>第三、列表生成式</h2><blockquote>
+<p>List Comprehensions，是Python内置的非常简单却强大的可以用来创建list的生成式</p>
+</blockquote>
+<p>举例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>[x*x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">11</span>)]</div><div class="line">[<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>, <span class="number">36</span>, <span class="number">49</span>, <span class="number">64</span>, <span class="number">81</span>, <span class="number">100</span>]</div><div class="line">&gt;&gt;&gt;</div><div class="line">&gt;&gt;&gt;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>[m + n <span class="keyword">for</span> m <span class="keyword">in</span> <span class="string">'ABC'</span> <span class="keyword">for</span> n <span class="keyword">in</span> <span class="string">'XYZ'</span>]</div><div class="line">[<span class="string">'AX'</span>, <span class="string">'AY'</span>, <span class="string">'AZ'</span>, <span class="string">'BX'</span>, <span class="string">'BY'</span>, <span class="string">'BZ'</span>, <span class="string">'CX'</span>, <span class="string">'CY'</span>, <span class="string">'CZ'</span>]</div><div class="line">&gt;&gt;&gt;</div><div class="line">&gt;&gt;&gt;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>d = &#123;<span class="string">'x'</span>: <span class="string">'A'</span>, <span class="string">'y'</span>: <span class="string">'B'</span>, <span class="string">'z'</span>: <span class="string">'C'</span> &#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> k, v <span class="keyword">in</span> d.items():</div><div class="line"><span class="meta">... </span>    print(k, <span class="string">'='</span>, v)</div><div class="line">...</div><div class="line">y = B</div><div class="line">x = A</div><div class="line">z = C</div></pre></td></tr></table></figure>
+<h2 id="第四、生成器-generator"><a href="#第四、生成器-generator" class="headerlink" title="第四、生成器 generator"></a>第四、生成器 generator</h2><blockquote>
+<p>如名字，其就是一个生成我们所需数据的容器，而不像 列表生成式，计算出所有数据。因此节省了空间，也解决了时间</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>g = (x * x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">10</span>))</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>g</div><div class="line">&lt;generator object &lt;genexpr&gt; at <span class="number">0x1022ef630</span>&gt;</div></pre></td></tr></table></figure>
+<p> 遍历: next(g)</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>g = (x * x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">10</span>))</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> n <span class="keyword">in</span> g:</div><div class="line"><span class="meta">... </span>    print(n)</div><div class="line"><span class="meta">... </span></div><div class="line"><span class="number">0</span></div><div class="line"><span class="number">1</span></div><div class="line"><span class="number">4</span></div><div class="line"><span class="number">9</span></div><div class="line"><span class="number">16</span></div><div class="line"><span class="number">25</span></div><div class="line"><span class="number">36</span></div><div class="line"><span class="number">49</span></div><div class="line"><span class="number">64</span></div><div class="line"><span class="number">81</span></div></pre></td></tr></table></figure>
+<p> <code>yeild</code>可中断当前操作，使函数成为 生成器 而不是普通函数</p>
+<p>举例： 杨慧三角</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">         <span class="number">1</span></div><div class="line">        <span class="number">1</span>   <span class="number">1</span></div><div class="line">      <span class="number">1</span>   <span class="number">2</span>   <span class="number">1</span></div><div class="line">    <span class="number">1</span>   <span class="number">3</span>   <span class="number">3</span>   <span class="number">1</span></div><div class="line">  <span class="number">1</span>   <span class="number">4</span>   <span class="number">6</span>   <span class="number">4</span>   <span class="number">1</span></div><div class="line"><span class="number">1</span>   <span class="number">5</span>   <span class="number">10</span>  <span class="number">10</span>  <span class="number">5</span>   <span class="number">1</span></div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">yanghu</span><span class="params">(n)</span>:</span></div><div class="line">	L=[<span class="number">1</span>]</div><div class="line">	<span class="keyword">while</span> <span class="number">1</span>:</div><div class="line">		yeild L</div><div class="line">		L = [L[x] + L[x+<span class="number">1</span>] <span class="keyword">for</span> x <span class="keyword">in</span> range(len(L) <span class="number">-1</span>)]</div><div class="line">		L.insert(<span class="number">0</span>,<span class="number">1</span>)</div><div class="line">		L.append(<span class="number">1</span>)</div><div class="line">		<span class="keyword">if</span> len(L)&gt;n:</div><div class="line">			<span class="keyword">break</span></div><div class="line"><span class="keyword">for</span> n <span class="keyword">in</span> yanghu(<span class="number">10</span>):</div><div class="line">	<span class="keyword">print</span> n</div></pre></td></tr></table></figure>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>本篇用一些简单的例子来讲解了下基础知识。 多动手练练哦</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Python新手引导第二篇]]></title>
       <url>https://xiyoumc.github.com/2017/07/03/Python%E6%96%B0%E6%89%8B%E5%BC%95%E5%AF%BC%E7%AC%AC%E4%BA%8C%E7%AF%87/</url>
       <content type="html"><![CDATA[<h1 id="Python新手引导-第二篇-你不知道的Python"><a href="#Python新手引导-第二篇-你不知道的Python" class="headerlink" title="Python新手引导 第二篇 你不知道的Python"></a>Python新手引导 第二篇 你不知道的Python</h1><blockquote>
@@ -663,6 +646,23 @@ limitations under the License.
 </blockquote>
 <p>运行结果如下<br><img src="http://115.28.132.58:8080/docs/HelloWorld.png" alt=""></p>
 <h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>本篇阅读完成之后，花上几分钟时间自行编写并运行下Python，熟悉下Python的环境。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Python新手引导第二篇]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/Python%E6%96%B0%E6%89%8B%E5%BC%95%E5%AF%BC%E7%AC%AC%E4%B8%89%E7%AF%87/</url>
+      <content type="html"><![CDATA[<h1 id="Python新手引导-第三篇-Python基础"><a href="#Python新手引导-第三篇-Python基础" class="headerlink" title="Python新手引导 第三篇 Python基础"></a>Python新手引导 第三篇 Python基础</h1><blockquote>
+<p>###阅读本文需要4.66分钟</p>
+</blockquote>
+<a id="more"></a>
+<p>有其他计算机语言基础的同学，阅读本篇基础部分建议1到2分钟。</p>
+<ol>
+<li>基础类型和变量</li>
+<li>list 和 tuple</li>
+</ol>
+<h2 id="第一、基础类型和变量"><a href="#第一、基础类型和变量" class="headerlink" title="第一、基础类型和变量"></a>第一、基础类型和变量</h2><blockquote>
+</blockquote>
 ]]></content>
     </entry>
     
@@ -740,15 +740,6 @@ limitations under the License.
     </entry>
     
     <entry>
-      <title></title>
-      <url>https://xiyoumc.github.com/2017/07/03/Untitled/</url>
-      <content type="html"><![CDATA[<p>   前段时间花了点功夫研究了下Django框架，也就是Python后端+Web端的开发框架，可以快速完成服务端的搭建.<br>借用 <code>Django</code> 官网的一句话 - “Django makes it easier to build better Web apps more quickly and with less code.”</p>
-<p>   然后这两天又抽空翻了下之前自己做的Hybrid，然后顺其自然的我使用Django框架和Hybrid框架做了个简单的 Demo,并将其放到了Github上。有兴趣的朋友可以共同探讨下。</p>
-<p>   地址在这: <a href="https://github.com/xiyouMc/HybridFramework" target="_blank" rel="external">https://github.com/xiyouMc/HybridFramework</a></p>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[Tar包高优化解析]]></title>
       <url>https://xiyoumc.github.com/2017/07/03/TarParse/</url>
       <content type="html"><![CDATA[<h1 id="本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。"><a href="#本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。" class="headerlink" title="本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。"></a>本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。</h1><h3 id="一、首先讲一个tar包的文件结构。（懂得可以绕开此段）"><a href="#一、首先讲一个tar包的文件结构。（懂得可以绕开此段）" class="headerlink" title="一、首先讲一个tar包的文件结构。（懂得可以绕开此段）"></a>一、首先讲一个tar包的文件结构。（懂得可以绕开此段）</h3><pre><code>tar只是一个归档文件，并不进行压缩。
@@ -783,9 +774,12 @@ limitations under the License.
     </entry>
     
     <entry>
-      <title><![CDATA[Shell语言基本教程]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/linux_shell/</url>
-      <content type="html"></content>
+      <title></title>
+      <url>https://xiyoumc.github.com/2017/07/03/Untitled/</url>
+      <content type="html"><![CDATA[<p>   前段时间花了点功夫研究了下Django框架，也就是Python后端+Web端的开发框架，可以快速完成服务端的搭建.<br>借用 <code>Django</code> 官网的一句话 - “Django makes it easier to build better Web apps more quickly and with less code.”</p>
+<p>   然后这两天又抽空翻了下之前自己做的Hybrid，然后顺其自然的我使用Django框架和Hybrid框架做了个简单的 Demo,并将其放到了Github上。有兴趣的朋友可以共同探讨下。</p>
+<p>   地址在这: <a href="https://github.com/xiyouMc/HybridFramework" target="_blank" rel="external">https://github.com/xiyouMc/HybridFramework</a></p>
+]]></content>
     </entry>
     
     <entry>
@@ -800,6 +794,24 @@ limitations under the License.
 <h4 id="ubuntu下安装需要添加一个新的软件库，里面包含了libimobiledevice"><a href="#ubuntu下安装需要添加一个新的软件库，里面包含了libimobiledevice" class="headerlink" title="ubuntu下安装需要添加一个新的软件库，里面包含了libimobiledevice"></a>ubuntu下安装需要添加一个新的软件库，里面包含了libimobiledevice</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sudo add-apt-repository ppa:pmcenery/ppa</div><div class="line">sudo apt-get update</div><div class="line">apt-get install libimobiledevice-utils</div><div class="line">sudo apt-get install ideviceinstaller</div></pre></td></tr></table></figure>
 <p>这里面包含了很多命令，如下<br><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/idevice.png?raw=true" alt="zls"></p>
 <h3 id="如要安装一个ipa文件到手机上可以使用"><a href="#如要安装一个ipa文件到手机上可以使用" class="headerlink" title="如要安装一个ipa文件到手机上可以使用"></a>如要安装一个ipa文件到手机上可以使用</h3><p>ideviceinstaller -i 命令安装一个ipa文件到手机上，如果是企业签名的，非越狱机器也可以直接安装了</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Shell语言基本教程]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/linux_shell/</url>
+      <content type="html"></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Charles破解教程，适用于所有版本]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/charles_break/</url>
+      <content type="html"><![CDATA[<h1 id="Charles-注册码"><a href="#Charles-注册码" class="headerlink" title="Charles 注册码"></a>Charles 注册码</h1><h3 id="1-Windows-用户"><a href="#1-Windows-用户" class="headerlink" title="1. Windows 用户"></a>1. Windows 用户</h3><p>RegName: ANONYMOUS@chinapyg.com<br>Reg_Key: 5fae99ec65736945ba<br>官方下载后可直接激活。神key.</p>
+<h3 id="2-Mac-用户"><a href="#2-Mac-用户" class="headerlink" title="2. Mac 用户"></a>2. Mac 用户</h3><p>方式一如果不行，方式二绝对可以。</p>
+<h4 id="1-方式一"><a href="#1-方式一" class="headerlink" title="1. 方式一"></a>1. 方式一</h4><p>账号：WaitsUn.com<br>密码：vapg-fold-dreg-inky</p>
+<h4 id="2-方式二"><a href="#2-方式二" class="headerlink" title="2. 方式二"></a>2. 方式二</h4><p>先安装Charles，然后在终端中执行下面的命令即可实现破解。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">charles=/Applications/Charles.app/Contents/Java/charles.jar</div><div class="line">dir=charleshack</div><div class="line">mkdir $dir</div><div class="line">cd $dir</div><div class="line">cat &gt;&gt; License.java &lt;&lt;EOF</div><div class="line">package com.xk72.charles;</div><div class="line">public final class License &#123;</div><div class="line">    public static boolean a() &#123; return true; &#125;</div><div class="line">    public static String b() &#123; return &quot;http://www.gfzj.us&quot;; &#125;</div><div class="line">    public static String a(String name, String key) &#123; return null; &#125;</div><div class="line">&#125;</div><div class="line">EOF</div><div class="line">javac -encoding UTF-8 License.java -d .&amp;&amp; jar -uvf $charles com/xk72/charles/License.class</div><div class="line">cd .. &amp;&amp; rm -rf $dir</div></pre></td></tr></table></figure>
+<a id="more"></a>
 ]]></content>
     </entry>
     
@@ -853,37 +865,68 @@ limitations under the License.
     </entry>
     
     <entry>
-      <title><![CDATA[Charles破解教程，适用于所有版本]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/charles_break/</url>
-      <content type="html"><![CDATA[<h1 id="Charles-注册码"><a href="#Charles-注册码" class="headerlink" title="Charles 注册码"></a>Charles 注册码</h1><h3 id="1-Windows-用户"><a href="#1-Windows-用户" class="headerlink" title="1. Windows 用户"></a>1. Windows 用户</h3><p>RegName: ANONYMOUS@chinapyg.com<br>Reg_Key: 5fae99ec65736945ba<br>官方下载后可直接激活。神key.</p>
-<h3 id="2-Mac-用户"><a href="#2-Mac-用户" class="headerlink" title="2. Mac 用户"></a>2. Mac 用户</h3><p>方式一如果不行，方式二绝对可以。</p>
-<h4 id="1-方式一"><a href="#1-方式一" class="headerlink" title="1. 方式一"></a>1. 方式一</h4><p>账号：WaitsUn.com<br>密码：vapg-fold-dreg-inky</p>
-<h4 id="2-方式二"><a href="#2-方式二" class="headerlink" title="2. 方式二"></a>2. 方式二</h4><p>先安装Charles，然后在终端中执行下面的命令即可实现破解。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">charles=/Applications/Charles.app/Contents/Java/charles.jar</div><div class="line">dir=charleshack</div><div class="line">mkdir $dir</div><div class="line">cd $dir</div><div class="line">cat &gt;&gt; License.java &lt;&lt;EOF</div><div class="line">package com.xk72.charles;</div><div class="line">public final class License &#123;</div><div class="line">    public static boolean a() &#123; return true; &#125;</div><div class="line">    public static String b() &#123; return &quot;http://www.gfzj.us&quot;; &#125;</div><div class="line">    public static String a(String name, String key) &#123; return null; &#125;</div><div class="line">&#125;</div><div class="line">EOF</div><div class="line">javac -encoding UTF-8 License.java -d .&amp;&amp; jar -uvf $charles com/xk72/charles/License.class</div><div class="line">cd .. &amp;&amp; rm -rf $dir</div></pre></td></tr></table></figure>
+      <title><![CDATA[小程序之Github开源社区]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/GithubTrending/</url>
+      <content type="html"><![CDATA[<p><img src="http://upload-images.jianshu.io/upload_images/4653472-92c6e0096c11c841.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h2 id="01、初衷"><a href="#01、初衷" class="headerlink" title="01、初衷"></a>01、初衷</h2><p>大概上上周我花了周末两天的时间编写了一款小程序并顺利提交审核。</p>
+<p>也就在前两天我的小程序 「Github开源社区」 历经了两周的审核，终于。。。。。。成功发布了，并且绑定到了公众号。 </p>
 <a id="more"></a>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Alison]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/Alison/</url>
-      <content type="html"><![CDATA[<blockquote>
-<p>Baby, You Complete Me.<br><a id="more"></a></p>
+<p>以下是这两天时间的数据分析报表。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-5db25e9b492954ec.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>（实时访问次数 pv）</p>
+<p>粗略的分析下：实时访问次数波动很明显，当然这也是正常的。高流量基本保持在早上十点到中午。晚上还会出现个别熬夜的程序员在看代码。总体呈下降趋势。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-4bab8d746061c759.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>(访问来源、访问时长、访问深度)</p>
+<p>粗略的分析下：</p>
+<p>访问来源主要来自会话，其次来自扫小程序码。</p>
+<p>访问时长最高点在 11-20 秒，当然还有大量用户超过1分多钟在使用小程序。</p>
+<p>其次，访问深度（访问了多少个页面），大部分只访问了一个页面，最深页面在5个页面的深度。</p>
+<p>——————划重点———–</p>
+<p>那么，为什么我会选择去编写一个关于 <strong>程序员 </strong>的小程序呢？</p>
+<p>首先，我是程序员。其次，也是因为前段时间我一直在更新关于Github的教程。因此，为了方便自己，同时方便读者和开发者，我选择开发了一款关于Github的小程序。 </p>
+<h2 id="02、小程序的功能"><a href="#02、小程序的功能" class="headerlink" title="02、小程序的功能"></a>02、小程序的功能</h2><p>「Github开源社区」目前的功能很简单，包括每日开源趋势、模糊搜索想要的代码、查看具体的代码文档以及仓库的信息。</p>
+<p>用微信扫一扫下方，可体验小程序。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-90ad79d09f150843.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>效果图<br><img src="http://upload-images.jianshu.io/upload_images/4653472-3ba1bce01266f9f2?imageMogr2/auto-orient/strip" alt=""><br>(启动小程序，默认展示当天最热开源项目,并支持查看文档)</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-e142717e120e467a?imageMogr2/auto-orient/strip" alt=""><br>(支持搜索代码)</p>
+<p><strong>后续将支持的功能</strong></p>
+<p>代码查看<br>登录Github账号，实现点赞等<br>社区<br>。。。</p>
+<h2 id="03、开发过程"><a href="#03、开发过程" class="headerlink" title="03、开发过程"></a>03、开发过程</h2><p>虽说这是一款工具性的小程序，但确切的说是一款C/S的软件。C端也就是集成进微信的小程序，S端的话就是我编写并部署在阿里云的服务端。</p>
+<p>C端包含了wxml、wxss、json、js还有其他配置属性。</p>
+<p>S端的话我就直接用Python + web.py构建的，同时基于Github Api开发。</p>
+<p>开发流程看似简单，但对于我这个前端半调子来讲，确实在开发C端遇到很多问题。当然，解决方法也就是Google + 大神。</p>
+<h2 id="04、如何开发一款自己的小程序"><a href="#04、如何开发一款自己的小程序" class="headerlink" title="04、如何开发一款自己的小程序"></a>04、如何开发一款自己的小程序</h2><p><strong>一个idea</strong></p>
+<p>这个idea很重要，因为自己的想法将会推动自己去实践并完成。如果没有一个自己的idea，那么与其说学技术，倒不如说你是在说服自己拥有多一点的技能。</p>
+<p>所以，idea很重要。</p>
+<p>如果一开始我并没有想好要去做什么小程序，然后就上手去学习如何开发，我猜可能在后面的学习过程中我将会很难坚持。因为那样是枯燥无味的，我并不知道自己用这个技术能做点什么。</p>
+<p>其次，Github开源社区的idea我在开发前一个礼拜都有了。外加晚上熬夜到一两点，加上周末，大概花了两三天时间就出来了。</p>
+<p>所以，在学习开发小程序之前，先想好自己要做什么。接下来，再动手去了解、学习这个技术，并运用起来。</p>
+<p><strong>需要了解的技术点</strong></p>
+<p>虽说小程序有一套自己的开发语言，但是，框架中主要的还是Page的生命周期和App的管理。其次，就是css的一些知识点。</p>
+<p>所以，一开始你可以去小程序的官网着重了解Page生命周期和App的管理。其次，熟悉下小程序的那几个重要的组件，其中包括View、button等等的。</p>
+<p>官网：<br><a href="https://mp.weixin.qq.com/debug/wxadoc/dev/component/" target="_blank" rel="external">https://mp.weixin.qq.com/debug/wxadoc/dev/component/</a></p>
+<p>接下来，你需要学习css的东西，这个其实不复杂，去w3c上面将css的关键知识点过一遍。了解前端的页面是如何布局的。</p>
+<p><strong>上手</strong></p>
 <ul>
-<li>Hey there,sexy lady</li>
-<li>I`m loving what you do</li>
-<li>I`m thinking so are you</li>
-<li>You`re trying to dent it</li>
-<li>But I know I changed your mind</li>
-<li>And please don`t try to fight it</li>
-<li>Cause I know that you`ll be mine</li>
-<li>Be mine.</li>
-<li>I want you,baby</li>
-<li>Come get it,girl</li>
-<li>I need you,baby</li>
-<li>I`m on you,girl</li>
+<li>IDE搭建<br>微信团队针对小程序专门出了一款开发工具。这里我直接上链接:<br><a href="https://mp.weixin.qq.com/debug/wxadoc/dev/devtools/download.html" target="_blank" rel="external">https://mp.weixin.qq.com/debug/wxadoc/dev/devtools/download.html</a></li>
+<li>项目结构</li>
 </ul>
-</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">js ---------- JavaScript文件</div><div class="line"></div><div class="line">json -------- 项目配置文件，负责窗口颜色等等</div><div class="line"></div><div class="line">wxml ------- 类似HTML文件</div><div class="line"></div><div class="line">wxss ------- 类似CSS文件</div></pre></td></tr></table></figure>
+<p>在根目录通过App来命名这四种文件，也就是程序的入口。<br>App.js</p>
+<p>这个文件是必须要有的。其中主要写的内容也就是上面提到过管理App生命周期的。<br>App.json</p>
+<p>这个也是必须要有的。其中包含了整个小程序的全局配置。<br>App.wxss</p>
+<p>有点类似于css的，进行布局用的。当然，这也是全局的。<br>App.wxml</p>
+<p>这个可选，是用来布局小程序的界面的。有点类似于html。<br>关于具体的文档，链接在这。<br><a href="https://mp.weixin.qq.com/debug/wxadoc/dev/component/" target="_blank" rel="external">https://mp.weixin.qq.com/debug/wxadoc/dev/component/</a><br>如果有需要详细的讲解，那么可以留言，我考虑后续更新一系列的小程序开发教程。</p>
+<h2 id="05、个人开发经验"><a href="#05、个人开发经验" class="headerlink" title="05、个人开发经验"></a>05、个人开发经验</h2><p>虽说在不早之前，微信开放了个人小程序的开发资格。不过，你还是不能随心所欲的开发小程序。</p>
+<p>你能随心所欲开发的功能也大概只有工具类的。假设，你要是想开发一个社区类的小程序，那么你得要有诸多的证件。所以，在上手小程序之前，你需要看看小程序的开发规约，确保自己的idea是否需要各种证件。</p>
+<p>其次，小程序的兼容性，目前Github开源社区在 iOS 9.3.2 上出现 SDK Exception 。还没找到合理的解决方案。</p>
+<p>审核时间较长。你能做的就是等待。</p>
+<p>开发工具有时候响应很慢，同样的你只有等待，毕竟目前开发工具并没有到1.0版本。</p>
+<p>等等的坑。。。</p>
+<p>目前动态化的开发模式越来越火了，包括JSBridge、Weex、React等等的。所以，作为非前端的你是否也需要学习下前端的知识点呢？</p>
+<h4 id="来自公众号-DeveloperPython"><a href="#来自公众号-DeveloperPython" class="headerlink" title="来自公众号 : DeveloperPython"></a>来自公众号 : DeveloperPython</h4><p><img src="http://upload-images.jianshu.io/upload_images/4653472-b61ffc02ee6e4db5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<hr>
+<p>行为艺术要持之以恒，iOS专用赞赏通道。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-2fa6f51658dee088?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
 ]]></content>
     </entry>
     
@@ -906,50 +949,90 @@ limitations under the License.
     </entry>
     
     <entry>
-      <title><![CDATA[Github系列教程二 「加入Github」]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/Github%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%E4%BA%8C%20%E5%8A%A0%E5%85%A5Github/</url>
-      <content type="html"><![CDATA[<h3 id="本文同步在我的公众号-DeveloperPython"><a href="#本文同步在我的公众号-DeveloperPython" class="headerlink" title="本文同步在我的公众号: DeveloperPython"></a>本文同步在我的公众号: DeveloperPython</h3><p><img src="http://upload-images.jianshu.io/upload_images/4653472-1ff8d4743422cfaf?imageMogr2/auto-orient/strip" alt=""><br><a id="more"></a><br>相信昨天大家看过 <a href="http://mp.weixin.qq.com/s?__biz=MzU3ODAxNDcwNQ==&amp;mid=2247483866&amp;idx=1&amp;sn=9692ca0d4a25ee4675d073e9643b7e30&amp;chksm=fd7a9d44ca0d1452f0e7d55d412e5469a3d82fbb00153e7d9b99a33e0424d6eb47b54903b5ad&amp;scene=21#wechat_redirect" target="_blank" rel="external">Github系列教程一 「开门」</a>之后，已经对Github的简介和发展史有了一个详细的了解。</p>
-<p>那么多的不说，我继续更新。</p>
-<p>为了更好的使用Github，第一步去了解这个平台是重要的。</p>
-<p>因此这篇我将针对Github平台进行一个全面的讲解。</p>
-<h2 id="1、注册Github账号"><a href="#1、注册Github账号" class="headerlink" title="1、注册Github账号"></a>1、注册Github账号</h2><p>访问 <a href="https://github.com/官网。" target="_blank" rel="external">https://github.com/官网。</a></p>
-<p>首页就是一个注册Github的入口。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-5d3b14792b78caf5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>这里就很简单了，填写你的用户名、邮箱和密码。</p>
-<p>不过提醒下，这个用户名比较重要，这相当于是你在Github的ID。</p>
-<p>上一篇文章讲过Github可以搭建个人博客username.github.io。那么这个用户名就会在这里用到。</p>
-<p>所以建议填写一个代表自己的ID。</p>
-<p>比如我的xiyouMc，博客就是xiyouMc.github.io。</p>
-<h2 id="2、Github主面板"><a href="#2、Github主面板" class="headerlink" title="2、Github主面板"></a>2、Github主面板</h2><p>注册完成之后，就来到了Github的主面板。</p>
-<p>如果你是新注册的，那么不会像我这么丰富，不过玩上一段时间也就差不多类似了。</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-f9ed3b8bfceb47f1?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>以下，我针对主要的两点进行讲解：</p>
-<p><strong>Github的工具栏</strong></p>
-<p>1、Logo<br>左上角这个Logo在Github每个页面都有，同时也是可以点击的。</p>
-<p>当你在Github里面打开了很多页面，然后想快速回到这个面板。直接点击左上角的Logo即可。</p>
-<p>2、搜索项目的入口<br>这里可以输入关键字，去搜索自己想要的项目。</p>
-<p>3、Pull requests(PR)<br>一个可查看自己贡献代码给其他人项目的面板。</p>
-<p>关于pr的含义，就是当自己针对别人的开源项目做了改动之后，就可以将这些改动pull requests 到对应开源者的项目中。</p>
-<p>4、Issues<br>这个你可以理解为Github上的聊天功能。</p>
-<p>用这个功能你可以很方便的给别人的项目提建议或者提Bug。同时你们也可以在里面进行沟通。</p>
-<p>5、Gist<br>如果你没有自己的开源项目，但是你有很不错的代码片段。就可以在Gist里面将自己优秀的代码片段进行提交。</p>
-<p>当然，你可以在Gist里面学习别人优秀的代码片段.<br><img src="http://upload-images.jianshu.io/upload_images/4653472-edf4803b2fbf547a?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><strong>动态栏</strong></p>
-<p>这里是你关注人的动态列表和你自己项目的状态记录。<br>所以在Github上多关注一些大牛，你会看到他们的动态，包括他们点赞的项目和创建的项目。这些项目也绝对是有水平的。</p>
-<h2 id="3、Github个人主页"><a href="#3、Github个人主页" class="headerlink" title="3、Github个人主页"></a>3、Github个人主页</h2><p>点击右上角的头像，会弹出下拉列表，在里面点击 Your profile。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-fd77f7f2c44fefef?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>进来之后，就进入了个人的主页。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-63d6baee40eaa391?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>你会看到我的简介里面养了条狗。<br>其中，几个重要的功能，我也都在上面标注出来了。</p>
-<h2 id="4、修改个人标签"><a href="#4、修改个人标签" class="headerlink" title="4、修改个人标签"></a>4、修改个人标签</h2><p>同样的，参考上面 Your profile。在那个下拉列表中，会有一个Settings，点击之后就会来到个人设置页面。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-c322da7781011eb4?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>这里面的内容，也都很清楚了。比如修改头像、修改用户名、简介等等的。</p>
-<p>不过到这里，我就讲个课外话。</p>
-<p>很多人都说Github是免费的，那他们怎么赢利的呢?</p>
-<p>我可以很明确的告诉你，Github有付费功能，而且有点贵。</p>
-<p>它的付费功能其实也很简单，就是一个创建私有仓库的权限。如果你买了的话，就可以创建私有的项目，当然私有的意思就是别人无法看到你的代码。</p>
-<p>具体价格，每个月大概7刀，折合人民币就是42块钱左右。所以如果不是非必须使用私有，还是建议别买这个。</p>
-<h2 id="5、创建项目"><a href="#5、创建项目" class="headerlink" title="5、创建项目"></a>5、创建项目</h2><p>点击 New repository，就进入了创建项目的页面。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-e6ecdc3e4b4c112d?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>填写你的项目名字、加上一句高大上的简介，选择Public，然后点击Create repository。就走出了开源的第一步。</p>
-<p>创建之后的项目面板大概是这样的：<br><img src="http://upload-images.jianshu.io/upload_images/4653472-38b3d9f4e6a939fc?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>因为这是一个已经成型的项目，所以说，如果你们是刚创建的一个项目，那么不会有这么丰富的内容。最多里面也就一个项目的说明文档Readme.md。当然这是需要使用 Markdown语法的，简称md,也同样是程序员必备的技能。</p>
-<h2 id="6、总结"><a href="#6、总结" class="headerlink" title="6、总结"></a>6、总结</h2><p>其实这篇文章写得相对简单点，如果你是一个已经使用Github一段时间的可能帮助不大。但是如果你刚接触或者没接触过Github，我相信这些基础知识对于你来讲还是有很大意义的。</p>
-<p>所以走出你的开源第一步，勇敢的将自己的项目提交到Github吧。</p>
-<hr>
-<p>扫描二维码，关注公众号</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-b61ffc02ee6e4db5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>生活不止眼前的苟且，还有手下的代码、<br>和嘴上的扯淡<br>——</p>
-<p>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a></p>
-<p>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
+      <title><![CDATA[Github系列教程一  开门]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/Github%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%E4%B8%80%20%E5%BC%80%E9%97%A8/</url>
+      <content type="html"><![CDATA[<p><img src="http://upload-images.jianshu.io/upload_images/4653472-2bd1a717e57c76f3?imageMogr2/auto-orient/strip" alt=""></p>
+<p>这是一套Github的小白教程<br><a id="more"></a></p>
+<h3 id="本文来自我的公众号：DeveloperPython"><a href="#本文来自我的公众号：DeveloperPython" class="headerlink" title="本文来自我的公众号：DeveloperPython"></a>本文来自我的公众号：DeveloperPython</h3><p><img src="http://upload-images.jianshu.io/upload_images/4653472-2bd1a717e57c76f3?imageMogr2/auto-orient/strip" alt=""><br>对于Github,我相信很多人都不陌生，并且我也一直认为Github是程序员的必备，当然还有一个 StackOverFlow。</p>
+<p>但是在我周围、包括公号里面的读者，大部分都不怎么使用Github。</p>
+<p>因为上次我的项目被点赞到Github Trending之后（全球开源项目的热门），我发现很多点赞的国内开发者都是不怎么使用Github的。因为几乎看不到他们的代码提交记录，然而里面很多国外开发者的点赞，我再进入他们的主页，大部分开发者都是持续提交代码中。</p>
+<p>之后我也收到好多消息，希望我写一篇关于Github的教程或者如何上Trending。</p>
+<p>其实，我接触Github时间挺早的了，大概在上大学开始写代码的时候，就已经使用上了 Github。当时我也是只下载，不用的那种。大概在接触 Github 一年左右之后，我就开始深入使用。</p>
+<p>到目前为止，自己 Github 中的项目已经有了130多个。</p>
+<p><a href="https://www.github.com/xiyouMc/" target="_blank" rel="external">https://www.github.com/xiyouMc/</a> </p>
+<p>Github是一个开源、开放、免费的平台，它更多的是提供给我们学习和贡献的。</p>
+<p>所以我决定写一个系列来讲解如何去更好的使用Github，为了让国内的开发者能合理的使用Github。</p>
+<h2 id="01、什么是-Github"><a href="#01、什么是-Github" class="headerlink" title="01、什么是 Github"></a>01、什么是 Github</h2><p>Github其实是一家公司，坐落在旧金山。是由三个知名的开发者在08年创办的，具体是谁就不用讲了，讲了也记不住。</p>
+<p>这是它的 Logo:</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-a9a0ffeb0f3deb93?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>大概也就在08年4月多，正式上线。</p>
+<p><a href="https://www.github.com/" target="_blank" rel="external">https://www.github.com/</a> </p>
+<p>简单的来讲，Github是一个基于 Git 的版本托管平台。</p>
+<p>大概在13年的时候，Github 用户数量已经破300万，到目前为止我想也应该上千万了吧。</p>
+<p>因此它有一个很洋气的名字就是全球最大同性交友平台。GayHub。</p>
+<h2 id="02、Github、Gitlab-和-Git-的区别"><a href="#02、Github、Gitlab-和-Git-的区别" class="headerlink" title="02、Github、Gitlab 和 Git 的区别"></a>02、Github、Gitlab 和 Git 的区别</h2><p>这个问题，我相信很多人都分不清。</p>
+<p>有的人会把Git理解成Github。你会经常听到有人跟你讲：“你可以去Git上找下，看看有没有你想要的代码”。 如果这句话，是别人跟我讲的，那我绝对是一脸懵逼的。</p>
+<p>至于为什么，那么我就来详细讲下这三个的区别。</p>
+<p><strong>先说下Git</strong></p>
+<p>Git是一款免费、开源的分布式版本控制系统，他是由著名的Linux发明者 Linus Torvalds 开发的。</p>
+<p>所以说Git是一个版本的控制系统，而非一个平台。</p>
+<p>提到这个版本控制系统，大家可能会想到SVN，毕竟这是很多大学都让学生使用的东西。只不过Git是新时代的产物。</p>
+<p>如果在15年的时候，你告诉我你们在使用SVN，那么还情有可原。毕竟那时候很多大公司还在用SVN，比如支付宝。但到现在了，你还在使用SVN那么真的是太落伍了。</p>
+<p>所以不管是学习Github，或者从事编程行业，Git绝对算是必备技能。</p>
+<p><strong>接下来说Github</strong></p>
+<p>上面已经说过，Github 是基于Git的版本托管服务。所以Git对于Github来讲就是一个版本管理的工具。</p>
+<p>其次Github，还有更多的功能，毕竟它是一个平台。后面的文章中，我也会列举出重要的几个。</p>
+<p><strong>最后来讲讲Gitlab</strong></p>
+<p>这个东西呢，其实是<strong>企业内部</strong>的Github。</p>
+<p>因为Github毕竟是一个开源的、全球性的代码托管平台。</p>
+<p>对于企业来讲，他们更希望内部有个这样类似的Git代码托管服务。所以他们会选择Gitlab，这个开源的代码托管平台。</p>
+<p>而且Gitlab一直在更新版本，目前已经到了9.1版本。</p>
+<p><a href="https://github.com/gitlabhq/gitlabhq/" target="_blank" rel="external">https://github.com/gitlabhq/gitlabhq/</a></p>
+<p>从地址来看，你也会发现Gitlab是Github平台上的一个开源项目，这样也就不难理解这两个的区别了。</p>
+<h2 id="03、Github-的影响力"><a href="#03、Github-的影响力" class="headerlink" title="03、Github 的影响力"></a>03、Github 的影响力</h2><p>我可以这么说吧，只要你能想到的大公司，他们都会在Github上有一个组织来贡献内部的优秀代码和框架。</p>
+<p>比如：<br>Google: <a href="https://www.gihutb.com/google" target="_blank" rel="external">https://www.gihutb.com/google</a><br>Apple: <a href="https://www.github.com/apple/" target="_blank" rel="external">https://www.github.com/apple/</a><br>Facebook: <a href="https://www.github.com/facebook/" target="_blank" rel="external">https://www.github.com/facebook/</a><br>Alibaba: <a href="https://www.github.com/alibaba" target="_blank" rel="external">https://www.github.com/alibaba</a><br>….<br>还有全球顶级的项目，也同样在Github。<br>Linux: <a href="https://www.github.com/torvalds/linux" target="_blank" rel="external">https://www.github.com/torvalds/linux</a><br>Nodejs: <a href="https://www.github.com/nodejs/node" target="_blank" rel="external">https://www.github.com/nodejs/node</a><br>Weex: <a href="https://github.com/alibaba/weex" target="_blank" rel="external">https://github.com/alibaba/weex</a><br>等等的….<br>同样还有全球顶尖级的开发者。<br>Linux之父 Linus:<br><img src="http://upload-images.jianshu.io/upload_images/4653472-b3a42f0dacbef2cd?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>Android 之神 Jake:<br><img src="http://upload-images.jianshu.io/upload_images/4653472-e0d5bf0e4644d3cc?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>等等的，我就不一一列举了。</p>
+<p>只要是在编程届厉害的人物，都会出现在Github。</p>
+<p>并且很多牛逼的项目做开源，比如你某天听说了某个公司的xx框架开源了。那么它们绝对在Github上开源的。</p>
+<p>因此，Github已经是开源的代名词。</p>
+<h2 id="04、Github能做什么"><a href="#04、Github能做什么" class="headerlink" title="04、Github能做什么"></a>04、Github能做什么</h2><ul>
+<li><strong>优秀的开源项目</strong></li>
+</ul>
+<p>学好使用优秀的开源项目，是一个可以避免你在软件开发中重复造轮子的事情。</p>
+<p>确切的来讲，正是因为有个Github上优秀的开源项目，才促使了我们在软件开发中变得越来越容易、越来越快速。</p>
+<p>比如说：网络请求库、图片加载库。如果让你去自己实现，那么时间和资源是一个很大的成本。对于大公司，可能在人力和资源上是充沛的。但是对于大部分互联网来讲时间就是一切。</p>
+<p>所以在使用开源项目的同时，学习他们优秀的设计思想和实现方式，无疑是提升自我编程能力的好时机。</p>
+<p>同样的，如果你能拥有一个优秀的开源项目，那么绝对是一个很好的体验。</p>
+<p>比如说我开源的WebHubBot，当你看到自己的项目每天每时都有人在点赞，那种感觉真心是比朋友圈被点赞爽很多倍的！！！</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-b63084401d16c5a5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><img src="http://upload-images.jianshu.io/upload_images/4653472-a4be03a4fa7183b0?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<ul>
+<li><strong>多人协作</strong><br>其实多人协作对于Github来讲无疑是一个转折点。</li>
+</ul>
+<p>因为一个好的项目，绝非几个人就能搞定的，因此Github提供了很好的协作平台。</p>
+<p>当你把代码提交上去之后，你可以让其他人和你一同开发，或者说如果你的项目很好，全球的开发者都会给你的项目做贡献。</p>
+<p>以我为例，前段时间提交了一个很有意思的项目，之后就收到了好几个全球开发者代码贡献，如下：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-668e59895e243bdb?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>因此，多人协作真心是一个很爽、很棒的功能。</p>
+<ul>
+<li><strong>其次就是搭建个人网站</strong></li>
+</ul>
+<p>Github Pages是Github提供的一套完整的博客搭建环境。</p>
+<p>平时你会发现很多人的个人博客域名都是xxxx.github.io。这就是使用Github Pages来搭建的。使用方法很简单，也绝对是一个装逼利器。</p>
+<ul>
+<li><strong>个人简历</strong></li>
+</ul>
+<p>活跃的Github账号，是一个很好的个人简历。</p>
+<p>据我所知，目前很多猎头和公司的HR都很喜欢逛Github。</p>
+<p>并且很多国外的科技公司也都会通过Github来寻找优秀的人才。</p>
+<p>所以多用Github，会让你收到很多意外的惊喜。</p>
+<h2 id="05、加入Github"><a href="#05、加入Github" class="headerlink" title="05、加入Github"></a>05、加入Github</h2><p>相信大家读到这里，都迫不及待的想去使用Github了。</p>
+<p>那么事不宜迟，从现在开始，快去注册一个Github账号。 </p>
+<p>链接： <a href="https://www.github.com/" target="_blank" rel="external">https://www.github.com/</a> 。</p>
+<p>注册完成之后，先玩着，了解下整个平台的功能。</p>
+<p>同时也可以试着搜索下我的Github：<br>ID：xiyouMc<br><a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a> </p>
+<p>接下来，我还会继续连载Github一系列的文章。</p>
+<p>保证你们看完之后，会有不一样的收获。</p>
+<p>同时如果你目前在使用Git或者Github中，那么有问题的话，也同样可以给我留言，我会一一给你们解答。</p>
+<p>——<br>扫描二维码，关注公众号<br><img src="http://upload-images.jianshu.io/upload_images/4653472-1c1e06e2f58b0610?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>生活不止眼前的苟且，还有手下的代码、<br>和嘴上的扯淡<br>——<br>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a><br>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
 ]]></content>
     </entry>
     
@@ -1047,6 +1130,54 @@ limitations under the License.
     </entry>
     
     <entry>
+      <title><![CDATA[Github系列教程二 「加入Github」]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/Github%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%E4%BA%8C%20%E5%8A%A0%E5%85%A5Github/</url>
+      <content type="html"><![CDATA[<h3 id="本文同步在我的公众号-DeveloperPython"><a href="#本文同步在我的公众号-DeveloperPython" class="headerlink" title="本文同步在我的公众号: DeveloperPython"></a>本文同步在我的公众号: DeveloperPython</h3><p><img src="http://upload-images.jianshu.io/upload_images/4653472-1ff8d4743422cfaf?imageMogr2/auto-orient/strip" alt=""><br><a id="more"></a><br>相信昨天大家看过 <a href="http://mp.weixin.qq.com/s?__biz=MzU3ODAxNDcwNQ==&amp;mid=2247483866&amp;idx=1&amp;sn=9692ca0d4a25ee4675d073e9643b7e30&amp;chksm=fd7a9d44ca0d1452f0e7d55d412e5469a3d82fbb00153e7d9b99a33e0424d6eb47b54903b5ad&amp;scene=21#wechat_redirect" target="_blank" rel="external">Github系列教程一 「开门」</a>之后，已经对Github的简介和发展史有了一个详细的了解。</p>
+<p>那么多的不说，我继续更新。</p>
+<p>为了更好的使用Github，第一步去了解这个平台是重要的。</p>
+<p>因此这篇我将针对Github平台进行一个全面的讲解。</p>
+<h2 id="1、注册Github账号"><a href="#1、注册Github账号" class="headerlink" title="1、注册Github账号"></a>1、注册Github账号</h2><p>访问 <a href="https://github.com/官网。" target="_blank" rel="external">https://github.com/官网。</a></p>
+<p>首页就是一个注册Github的入口。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-5d3b14792b78caf5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>这里就很简单了，填写你的用户名、邮箱和密码。</p>
+<p>不过提醒下，这个用户名比较重要，这相当于是你在Github的ID。</p>
+<p>上一篇文章讲过Github可以搭建个人博客username.github.io。那么这个用户名就会在这里用到。</p>
+<p>所以建议填写一个代表自己的ID。</p>
+<p>比如我的xiyouMc，博客就是xiyouMc.github.io。</p>
+<h2 id="2、Github主面板"><a href="#2、Github主面板" class="headerlink" title="2、Github主面板"></a>2、Github主面板</h2><p>注册完成之后，就来到了Github的主面板。</p>
+<p>如果你是新注册的，那么不会像我这么丰富，不过玩上一段时间也就差不多类似了。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-f9ed3b8bfceb47f1?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>以下，我针对主要的两点进行讲解：</p>
+<p><strong>Github的工具栏</strong></p>
+<p>1、Logo<br>左上角这个Logo在Github每个页面都有，同时也是可以点击的。</p>
+<p>当你在Github里面打开了很多页面，然后想快速回到这个面板。直接点击左上角的Logo即可。</p>
+<p>2、搜索项目的入口<br>这里可以输入关键字，去搜索自己想要的项目。</p>
+<p>3、Pull requests(PR)<br>一个可查看自己贡献代码给其他人项目的面板。</p>
+<p>关于pr的含义，就是当自己针对别人的开源项目做了改动之后，就可以将这些改动pull requests 到对应开源者的项目中。</p>
+<p>4、Issues<br>这个你可以理解为Github上的聊天功能。</p>
+<p>用这个功能你可以很方便的给别人的项目提建议或者提Bug。同时你们也可以在里面进行沟通。</p>
+<p>5、Gist<br>如果你没有自己的开源项目，但是你有很不错的代码片段。就可以在Gist里面将自己优秀的代码片段进行提交。</p>
+<p>当然，你可以在Gist里面学习别人优秀的代码片段.<br><img src="http://upload-images.jianshu.io/upload_images/4653472-edf4803b2fbf547a?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><strong>动态栏</strong></p>
+<p>这里是你关注人的动态列表和你自己项目的状态记录。<br>所以在Github上多关注一些大牛，你会看到他们的动态，包括他们点赞的项目和创建的项目。这些项目也绝对是有水平的。</p>
+<h2 id="3、Github个人主页"><a href="#3、Github个人主页" class="headerlink" title="3、Github个人主页"></a>3、Github个人主页</h2><p>点击右上角的头像，会弹出下拉列表，在里面点击 Your profile。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-fd77f7f2c44fefef?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>进来之后，就进入了个人的主页。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-63d6baee40eaa391?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>你会看到我的简介里面养了条狗。<br>其中，几个重要的功能，我也都在上面标注出来了。</p>
+<h2 id="4、修改个人标签"><a href="#4、修改个人标签" class="headerlink" title="4、修改个人标签"></a>4、修改个人标签</h2><p>同样的，参考上面 Your profile。在那个下拉列表中，会有一个Settings，点击之后就会来到个人设置页面。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-c322da7781011eb4?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>这里面的内容，也都很清楚了。比如修改头像、修改用户名、简介等等的。</p>
+<p>不过到这里，我就讲个课外话。</p>
+<p>很多人都说Github是免费的，那他们怎么赢利的呢?</p>
+<p>我可以很明确的告诉你，Github有付费功能，而且有点贵。</p>
+<p>它的付费功能其实也很简单，就是一个创建私有仓库的权限。如果你买了的话，就可以创建私有的项目，当然私有的意思就是别人无法看到你的代码。</p>
+<p>具体价格，每个月大概7刀，折合人民币就是42块钱左右。所以如果不是非必须使用私有，还是建议别买这个。</p>
+<h2 id="5、创建项目"><a href="#5、创建项目" class="headerlink" title="5、创建项目"></a>5、创建项目</h2><p>点击 New repository，就进入了创建项目的页面。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-e6ecdc3e4b4c112d?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>填写你的项目名字、加上一句高大上的简介，选择Public，然后点击Create repository。就走出了开源的第一步。</p>
+<p>创建之后的项目面板大概是这样的：<br><img src="http://upload-images.jianshu.io/upload_images/4653472-38b3d9f4e6a939fc?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>因为这是一个已经成型的项目，所以说，如果你们是刚创建的一个项目，那么不会有这么丰富的内容。最多里面也就一个项目的说明文档Readme.md。当然这是需要使用 Markdown语法的，简称md,也同样是程序员必备的技能。</p>
+<h2 id="6、总结"><a href="#6、总结" class="headerlink" title="6、总结"></a>6、总结</h2><p>其实这篇文章写得相对简单点，如果你是一个已经使用Github一段时间的可能帮助不大。但是如果你刚接触或者没接触过Github，我相信这些基础知识对于你来讲还是有很大意义的。</p>
+<p>所以走出你的开源第一步，勇敢的将自己的项目提交到Github吧。</p>
+<hr>
+<p>扫描二维码，关注公众号</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-b61ffc02ee6e4db5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>生活不止眼前的苟且，还有手下的代码、<br>和嘴上的扯淡<br>——</p>
+<p>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a></p>
+<p>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[2016年度总结]]></title>
       <url>https://xiyoumc.github.com/2017/07/03/2016%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/</url>
       <content type="html"><![CDATA[<h1 id="2016年度总结"><a href="#2016年度总结" class="headerlink" title="2016年度总结"></a>2016年度总结</h1><blockquote>
@@ -1093,160 +1224,6 @@ limitations under the License.
 </blockquote>
 </li>
 </ul>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Github系列教程一  开门]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/Github%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%E4%B8%80%20%E5%BC%80%E9%97%A8/</url>
-      <content type="html"><![CDATA[<p><img src="http://upload-images.jianshu.io/upload_images/4653472-2bd1a717e57c76f3?imageMogr2/auto-orient/strip" alt=""></p>
-<p>这是一套Github的小白教程<br><a id="more"></a></p>
-<h3 id="本文来自我的公众号：DeveloperPython"><a href="#本文来自我的公众号：DeveloperPython" class="headerlink" title="本文来自我的公众号：DeveloperPython"></a>本文来自我的公众号：DeveloperPython</h3><p><img src="http://upload-images.jianshu.io/upload_images/4653472-2bd1a717e57c76f3?imageMogr2/auto-orient/strip" alt=""><br>对于Github,我相信很多人都不陌生，并且我也一直认为Github是程序员的必备，当然还有一个 StackOverFlow。</p>
-<p>但是在我周围、包括公号里面的读者，大部分都不怎么使用Github。</p>
-<p>因为上次我的项目被点赞到Github Trending之后（全球开源项目的热门），我发现很多点赞的国内开发者都是不怎么使用Github的。因为几乎看不到他们的代码提交记录，然而里面很多国外开发者的点赞，我再进入他们的主页，大部分开发者都是持续提交代码中。</p>
-<p>之后我也收到好多消息，希望我写一篇关于Github的教程或者如何上Trending。</p>
-<p>其实，我接触Github时间挺早的了，大概在上大学开始写代码的时候，就已经使用上了 Github。当时我也是只下载，不用的那种。大概在接触 Github 一年左右之后，我就开始深入使用。</p>
-<p>到目前为止，自己 Github 中的项目已经有了130多个。</p>
-<p><a href="https://www.github.com/xiyouMc/" target="_blank" rel="external">https://www.github.com/xiyouMc/</a> </p>
-<p>Github是一个开源、开放、免费的平台，它更多的是提供给我们学习和贡献的。</p>
-<p>所以我决定写一个系列来讲解如何去更好的使用Github，为了让国内的开发者能合理的使用Github。</p>
-<h2 id="01、什么是-Github"><a href="#01、什么是-Github" class="headerlink" title="01、什么是 Github"></a>01、什么是 Github</h2><p>Github其实是一家公司，坐落在旧金山。是由三个知名的开发者在08年创办的，具体是谁就不用讲了，讲了也记不住。</p>
-<p>这是它的 Logo:</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-a9a0ffeb0f3deb93?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>大概也就在08年4月多，正式上线。</p>
-<p><a href="https://www.github.com/" target="_blank" rel="external">https://www.github.com/</a> </p>
-<p>简单的来讲，Github是一个基于 Git 的版本托管平台。</p>
-<p>大概在13年的时候，Github 用户数量已经破300万，到目前为止我想也应该上千万了吧。</p>
-<p>因此它有一个很洋气的名字就是全球最大同性交友平台。GayHub。</p>
-<h2 id="02、Github、Gitlab-和-Git-的区别"><a href="#02、Github、Gitlab-和-Git-的区别" class="headerlink" title="02、Github、Gitlab 和 Git 的区别"></a>02、Github、Gitlab 和 Git 的区别</h2><p>这个问题，我相信很多人都分不清。</p>
-<p>有的人会把Git理解成Github。你会经常听到有人跟你讲：“你可以去Git上找下，看看有没有你想要的代码”。 如果这句话，是别人跟我讲的，那我绝对是一脸懵逼的。</p>
-<p>至于为什么，那么我就来详细讲下这三个的区别。</p>
-<p><strong>先说下Git</strong></p>
-<p>Git是一款免费、开源的分布式版本控制系统，他是由著名的Linux发明者 Linus Torvalds 开发的。</p>
-<p>所以说Git是一个版本的控制系统，而非一个平台。</p>
-<p>提到这个版本控制系统，大家可能会想到SVN，毕竟这是很多大学都让学生使用的东西。只不过Git是新时代的产物。</p>
-<p>如果在15年的时候，你告诉我你们在使用SVN，那么还情有可原。毕竟那时候很多大公司还在用SVN，比如支付宝。但到现在了，你还在使用SVN那么真的是太落伍了。</p>
-<p>所以不管是学习Github，或者从事编程行业，Git绝对算是必备技能。</p>
-<p><strong>接下来说Github</strong></p>
-<p>上面已经说过，Github 是基于Git的版本托管服务。所以Git对于Github来讲就是一个版本管理的工具。</p>
-<p>其次Github，还有更多的功能，毕竟它是一个平台。后面的文章中，我也会列举出重要的几个。</p>
-<p><strong>最后来讲讲Gitlab</strong></p>
-<p>这个东西呢，其实是<strong>企业内部</strong>的Github。</p>
-<p>因为Github毕竟是一个开源的、全球性的代码托管平台。</p>
-<p>对于企业来讲，他们更希望内部有个这样类似的Git代码托管服务。所以他们会选择Gitlab，这个开源的代码托管平台。</p>
-<p>而且Gitlab一直在更新版本，目前已经到了9.1版本。</p>
-<p><a href="https://github.com/gitlabhq/gitlabhq/" target="_blank" rel="external">https://github.com/gitlabhq/gitlabhq/</a></p>
-<p>从地址来看，你也会发现Gitlab是Github平台上的一个开源项目，这样也就不难理解这两个的区别了。</p>
-<h2 id="03、Github-的影响力"><a href="#03、Github-的影响力" class="headerlink" title="03、Github 的影响力"></a>03、Github 的影响力</h2><p>我可以这么说吧，只要你能想到的大公司，他们都会在Github上有一个组织来贡献内部的优秀代码和框架。</p>
-<p>比如：<br>Google: <a href="https://www.gihutb.com/google" target="_blank" rel="external">https://www.gihutb.com/google</a><br>Apple: <a href="https://www.github.com/apple/" target="_blank" rel="external">https://www.github.com/apple/</a><br>Facebook: <a href="https://www.github.com/facebook/" target="_blank" rel="external">https://www.github.com/facebook/</a><br>Alibaba: <a href="https://www.github.com/alibaba" target="_blank" rel="external">https://www.github.com/alibaba</a><br>….<br>还有全球顶级的项目，也同样在Github。<br>Linux: <a href="https://www.github.com/torvalds/linux" target="_blank" rel="external">https://www.github.com/torvalds/linux</a><br>Nodejs: <a href="https://www.github.com/nodejs/node" target="_blank" rel="external">https://www.github.com/nodejs/node</a><br>Weex: <a href="https://github.com/alibaba/weex" target="_blank" rel="external">https://github.com/alibaba/weex</a><br>等等的….<br>同样还有全球顶尖级的开发者。<br>Linux之父 Linus:<br><img src="http://upload-images.jianshu.io/upload_images/4653472-b3a42f0dacbef2cd?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>Android 之神 Jake:<br><img src="http://upload-images.jianshu.io/upload_images/4653472-e0d5bf0e4644d3cc?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>等等的，我就不一一列举了。</p>
-<p>只要是在编程届厉害的人物，都会出现在Github。</p>
-<p>并且很多牛逼的项目做开源，比如你某天听说了某个公司的xx框架开源了。那么它们绝对在Github上开源的。</p>
-<p>因此，Github已经是开源的代名词。</p>
-<h2 id="04、Github能做什么"><a href="#04、Github能做什么" class="headerlink" title="04、Github能做什么"></a>04、Github能做什么</h2><ul>
-<li><strong>优秀的开源项目</strong></li>
-</ul>
-<p>学好使用优秀的开源项目，是一个可以避免你在软件开发中重复造轮子的事情。</p>
-<p>确切的来讲，正是因为有个Github上优秀的开源项目，才促使了我们在软件开发中变得越来越容易、越来越快速。</p>
-<p>比如说：网络请求库、图片加载库。如果让你去自己实现，那么时间和资源是一个很大的成本。对于大公司，可能在人力和资源上是充沛的。但是对于大部分互联网来讲时间就是一切。</p>
-<p>所以在使用开源项目的同时，学习他们优秀的设计思想和实现方式，无疑是提升自我编程能力的好时机。</p>
-<p>同样的，如果你能拥有一个优秀的开源项目，那么绝对是一个很好的体验。</p>
-<p>比如说我开源的WebHubBot，当你看到自己的项目每天每时都有人在点赞，那种感觉真心是比朋友圈被点赞爽很多倍的！！！</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-b63084401d16c5a5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><img src="http://upload-images.jianshu.io/upload_images/4653472-a4be03a4fa7183b0?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<ul>
-<li><strong>多人协作</strong><br>其实多人协作对于Github来讲无疑是一个转折点。</li>
-</ul>
-<p>因为一个好的项目，绝非几个人就能搞定的，因此Github提供了很好的协作平台。</p>
-<p>当你把代码提交上去之后，你可以让其他人和你一同开发，或者说如果你的项目很好，全球的开发者都会给你的项目做贡献。</p>
-<p>以我为例，前段时间提交了一个很有意思的项目，之后就收到了好几个全球开发者代码贡献，如下：</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-668e59895e243bdb?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>因此，多人协作真心是一个很爽、很棒的功能。</p>
-<ul>
-<li><strong>其次就是搭建个人网站</strong></li>
-</ul>
-<p>Github Pages是Github提供的一套完整的博客搭建环境。</p>
-<p>平时你会发现很多人的个人博客域名都是xxxx.github.io。这就是使用Github Pages来搭建的。使用方法很简单，也绝对是一个装逼利器。</p>
-<ul>
-<li><strong>个人简历</strong></li>
-</ul>
-<p>活跃的Github账号，是一个很好的个人简历。</p>
-<p>据我所知，目前很多猎头和公司的HR都很喜欢逛Github。</p>
-<p>并且很多国外的科技公司也都会通过Github来寻找优秀的人才。</p>
-<p>所以多用Github，会让你收到很多意外的惊喜。</p>
-<h2 id="05、加入Github"><a href="#05、加入Github" class="headerlink" title="05、加入Github"></a>05、加入Github</h2><p>相信大家读到这里，都迫不及待的想去使用Github了。</p>
-<p>那么事不宜迟，从现在开始，快去注册一个Github账号。 </p>
-<p>链接： <a href="https://www.github.com/" target="_blank" rel="external">https://www.github.com/</a> 。</p>
-<p>注册完成之后，先玩着，了解下整个平台的功能。</p>
-<p>同时也可以试着搜索下我的Github：<br>ID：xiyouMc<br><a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a> </p>
-<p>接下来，我还会继续连载Github一系列的文章。</p>
-<p>保证你们看完之后，会有不一样的收获。</p>
-<p>同时如果你目前在使用Git或者Github中，那么有问题的话，也同样可以给我留言，我会一一给你们解答。</p>
-<p>——<br>扫描二维码，关注公众号<br><img src="http://upload-images.jianshu.io/upload_images/4653472-1c1e06e2f58b0610?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>生活不止眼前的苟且，还有手下的代码、<br>和嘴上的扯淡<br>——<br>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a><br>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[小程序之Github开源社区]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/GithubTrending/</url>
-      <content type="html"><![CDATA[<p><img src="http://upload-images.jianshu.io/upload_images/4653472-92c6e0096c11c841.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<h2 id="01、初衷"><a href="#01、初衷" class="headerlink" title="01、初衷"></a>01、初衷</h2><p>大概上上周我花了周末两天的时间编写了一款小程序并顺利提交审核。</p>
-<p>也就在前两天我的小程序 「Github开源社区」 历经了两周的审核，终于。。。。。。成功发布了，并且绑定到了公众号。 </p>
-<a id="more"></a>
-<p>以下是这两天时间的数据分析报表。</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-5db25e9b492954ec.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>（实时访问次数 pv）</p>
-<p>粗略的分析下：实时访问次数波动很明显，当然这也是正常的。高流量基本保持在早上十点到中午。晚上还会出现个别熬夜的程序员在看代码。总体呈下降趋势。</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-4bab8d746061c759.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>(访问来源、访问时长、访问深度)</p>
-<p>粗略的分析下：</p>
-<p>访问来源主要来自会话，其次来自扫小程序码。</p>
-<p>访问时长最高点在 11-20 秒，当然还有大量用户超过1分多钟在使用小程序。</p>
-<p>其次，访问深度（访问了多少个页面），大部分只访问了一个页面，最深页面在5个页面的深度。</p>
-<p>——————划重点———–</p>
-<p>那么，为什么我会选择去编写一个关于 <strong>程序员 </strong>的小程序呢？</p>
-<p>首先，我是程序员。其次，也是因为前段时间我一直在更新关于Github的教程。因此，为了方便自己，同时方便读者和开发者，我选择开发了一款关于Github的小程序。 </p>
-<h2 id="02、小程序的功能"><a href="#02、小程序的功能" class="headerlink" title="02、小程序的功能"></a>02、小程序的功能</h2><p>「Github开源社区」目前的功能很简单，包括每日开源趋势、模糊搜索想要的代码、查看具体的代码文档以及仓库的信息。</p>
-<p>用微信扫一扫下方，可体验小程序。</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-90ad79d09f150843.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>效果图<br><img src="http://upload-images.jianshu.io/upload_images/4653472-3ba1bce01266f9f2?imageMogr2/auto-orient/strip" alt=""><br>(启动小程序，默认展示当天最热开源项目,并支持查看文档)</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-e142717e120e467a?imageMogr2/auto-orient/strip" alt=""><br>(支持搜索代码)</p>
-<p><strong>后续将支持的功能</strong></p>
-<p>代码查看<br>登录Github账号，实现点赞等<br>社区<br>。。。</p>
-<h2 id="03、开发过程"><a href="#03、开发过程" class="headerlink" title="03、开发过程"></a>03、开发过程</h2><p>虽说这是一款工具性的小程序，但确切的说是一款C/S的软件。C端也就是集成进微信的小程序，S端的话就是我编写并部署在阿里云的服务端。</p>
-<p>C端包含了wxml、wxss、json、js还有其他配置属性。</p>
-<p>S端的话我就直接用Python + web.py构建的，同时基于Github Api开发。</p>
-<p>开发流程看似简单，但对于我这个前端半调子来讲，确实在开发C端遇到很多问题。当然，解决方法也就是Google + 大神。</p>
-<h2 id="04、如何开发一款自己的小程序"><a href="#04、如何开发一款自己的小程序" class="headerlink" title="04、如何开发一款自己的小程序"></a>04、如何开发一款自己的小程序</h2><p><strong>一个idea</strong></p>
-<p>这个idea很重要，因为自己的想法将会推动自己去实践并完成。如果没有一个自己的idea，那么与其说学技术，倒不如说你是在说服自己拥有多一点的技能。</p>
-<p>所以，idea很重要。</p>
-<p>如果一开始我并没有想好要去做什么小程序，然后就上手去学习如何开发，我猜可能在后面的学习过程中我将会很难坚持。因为那样是枯燥无味的，我并不知道自己用这个技术能做点什么。</p>
-<p>其次，Github开源社区的idea我在开发前一个礼拜都有了。外加晚上熬夜到一两点，加上周末，大概花了两三天时间就出来了。</p>
-<p>所以，在学习开发小程序之前，先想好自己要做什么。接下来，再动手去了解、学习这个技术，并运用起来。</p>
-<p><strong>需要了解的技术点</strong></p>
-<p>虽说小程序有一套自己的开发语言，但是，框架中主要的还是Page的生命周期和App的管理。其次，就是css的一些知识点。</p>
-<p>所以，一开始你可以去小程序的官网着重了解Page生命周期和App的管理。其次，熟悉下小程序的那几个重要的组件，其中包括View、button等等的。</p>
-<p>官网：<br><a href="https://mp.weixin.qq.com/debug/wxadoc/dev/component/" target="_blank" rel="external">https://mp.weixin.qq.com/debug/wxadoc/dev/component/</a></p>
-<p>接下来，你需要学习css的东西，这个其实不复杂，去w3c上面将css的关键知识点过一遍。了解前端的页面是如何布局的。</p>
-<p><strong>上手</strong></p>
-<ul>
-<li>IDE搭建<br>微信团队针对小程序专门出了一款开发工具。这里我直接上链接:<br><a href="https://mp.weixin.qq.com/debug/wxadoc/dev/devtools/download.html" target="_blank" rel="external">https://mp.weixin.qq.com/debug/wxadoc/dev/devtools/download.html</a></li>
-<li>项目结构</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">js ---------- JavaScript文件</div><div class="line"></div><div class="line">json -------- 项目配置文件，负责窗口颜色等等</div><div class="line"></div><div class="line">wxml ------- 类似HTML文件</div><div class="line"></div><div class="line">wxss ------- 类似CSS文件</div></pre></td></tr></table></figure>
-<p>在根目录通过App来命名这四种文件，也就是程序的入口。<br>App.js</p>
-<p>这个文件是必须要有的。其中主要写的内容也就是上面提到过管理App生命周期的。<br>App.json</p>
-<p>这个也是必须要有的。其中包含了整个小程序的全局配置。<br>App.wxss</p>
-<p>有点类似于css的，进行布局用的。当然，这也是全局的。<br>App.wxml</p>
-<p>这个可选，是用来布局小程序的界面的。有点类似于html。<br>关于具体的文档，链接在这。<br><a href="https://mp.weixin.qq.com/debug/wxadoc/dev/component/" target="_blank" rel="external">https://mp.weixin.qq.com/debug/wxadoc/dev/component/</a><br>如果有需要详细的讲解，那么可以留言，我考虑后续更新一系列的小程序开发教程。</p>
-<h2 id="05、个人开发经验"><a href="#05、个人开发经验" class="headerlink" title="05、个人开发经验"></a>05、个人开发经验</h2><p>虽说在不早之前，微信开放了个人小程序的开发资格。不过，你还是不能随心所欲的开发小程序。</p>
-<p>你能随心所欲开发的功能也大概只有工具类的。假设，你要是想开发一个社区类的小程序，那么你得要有诸多的证件。所以，在上手小程序之前，你需要看看小程序的开发规约，确保自己的idea是否需要各种证件。</p>
-<p>其次，小程序的兼容性，目前Github开源社区在 iOS 9.3.2 上出现 SDK Exception 。还没找到合理的解决方案。</p>
-<p>审核时间较长。你能做的就是等待。</p>
-<p>开发工具有时候响应很慢，同样的你只有等待，毕竟目前开发工具并没有到1.0版本。</p>
-<p>等等的坑。。。</p>
-<p>目前动态化的开发模式越来越火了，包括JSBridge、Weex、React等等的。所以，作为非前端的你是否也需要学习下前端的知识点呢？</p>
-<h4 id="来自公众号-DeveloperPython"><a href="#来自公众号-DeveloperPython" class="headerlink" title="来自公众号 : DeveloperPython"></a>来自公众号 : DeveloperPython</h4><p><img src="http://upload-images.jianshu.io/upload_images/4653472-b61ffc02ee6e4db5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<hr>
-<p>行为艺术要持之以恒，iOS专用赞赏通道。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-2fa6f51658dee088?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
 ]]></content>
     </entry>
     
@@ -1325,6 +1302,29 @@ limitations under the License.
 <p>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
 <hr>
 <p>点击 <a href="http://t.xiaomiquan.com/7ey3rZv" target="_blank" rel="external">Join</a>，加入Python技术成长圈子，我在这里等着你。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Alison]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/Alison/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>Baby, You Complete Me.<br><a id="more"></a></p>
+<ul>
+<li>Hey there,sexy lady</li>
+<li>I`m loving what you do</li>
+<li>I`m thinking so are you</li>
+<li>You`re trying to dent it</li>
+<li>But I know I changed your mind</li>
+<li>And please don`t try to fight it</li>
+<li>Cause I know that you`ll be mine</li>
+<li>Be mine.</li>
+<li>I want you,baby</li>
+<li>Come get it,girl</li>
+<li>I need you,baby</li>
+<li>I`m on you,girl</li>
+</ul>
+</blockquote>
 ]]></content>
     </entry>
     
