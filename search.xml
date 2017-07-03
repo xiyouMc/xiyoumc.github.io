@@ -33,6 +33,40 @@
     </entry>
     
     <entry>
+      <title><![CDATA[Tar包高优化解析]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/TarParse/</url>
+      <content type="html"><![CDATA[<h1 id="本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。"><a href="#本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。" class="headerlink" title="本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。"></a>本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。</h1><h3 id="一、首先讲一个tar包的文件结构。（懂得可以绕开此段）"><a href="#一、首先讲一个tar包的文件结构。（懂得可以绕开此段）" class="headerlink" title="一、首先讲一个tar包的文件结构。（懂得可以绕开此段）"></a>一、首先讲一个tar包的文件结构。（懂得可以绕开此段）</h3><pre><code>tar只是一个归档文件，并不进行压缩。
+</code></pre><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">　　<span class="keyword">struct</span> tar_header</div><div class="line">　　&#123;</div><div class="line">　　 <span class="keyword">char</span> name[<span class="number">100</span>];</div><div class="line">　　 <span class="keyword">char</span> mode[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> uid[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> gid[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> size[<span class="number">12</span>];</div><div class="line">　　 <span class="keyword">char</span> mtime[<span class="number">12</span>];</div><div class="line">　　 <span class="keyword">char</span> chksum[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> typeflag;</div><div class="line">　　 <span class="keyword">char</span> linkname[<span class="number">100</span>];</div><div class="line">　　 <span class="keyword">char</span> magic[<span class="number">6</span>];</div><div class="line">　　 <span class="keyword">char</span> version[<span class="number">2</span>];</div><div class="line">　　 <span class="keyword">char</span> uname[<span class="number">32</span>];</div><div class="line">　　 <span class="keyword">char</span> gname[<span class="number">32</span>];</div><div class="line">　　 <span class="keyword">char</span> devmajor[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> devminor[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> prefix[<span class="number">155</span>];</div><div class="line">　　 <span class="keyword">char</span> padding[<span class="number">12</span>];</div><div class="line">　　&#125;;</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>&gt;<br>　　以上是Tar中保存文件信息的数据结构，其后跟着的就是文件的内容。<br> size为文件大小的八进制字节表示，例如文件大小为90个字节，那么这里就是八进制的90，即为132。<br>　　其中，文件大小，修改时间，checksum都是存储的对应的八进制字符串，字符串最后一个字符为空格字符<br>　　checksum的计算方法为出去checksum字段其他所有的512-8共504个字节的ascii码相加的值再加上256(checksum当作八个空格，即8<em>0x20）<br>　　文件内容以512字节为一个block进行分割，最后一个block不足部分以0补齐<br>　　两个文件的tar包首先存放第一个文件的tar头结构，然后存储文件内容，接着存储第二个文件的tar头结构，然后存储文件内容<br>　　所有文件都存储完了以后，最后存放一个全零的tar结构<br>　　所有的tar文件大小应该都是512的倍数，一个空文件打包后为512</em>3字节，包括一个tar结构头，一个全零的block存储文件内容，一个全零的tar结构</p>
+<ul>
+<li>检测tar文件格式的方法：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">1、检测magic字段，即在0x101处检查字符串，是否为ustar。有时某些压缩软件将这个字段设置为空。如果magic字段为空，进入第2步。</div><div class="line">2、计算校验和，按照上面的方法计算校验和，如果校验和正确的话，那么这就是一个tar文件。</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>注意：在windows下面，不支持uid、uname等，有的甚至不支持magic，这样就比较麻烦了。</p>
+<h3 id="二、Java层普遍的“解压”方式"><a href="#二、Java层普遍的“解压”方式" class="headerlink" title="二、Java层普遍的“解压”方式"></a>二、Java层普遍的“解压”方式</h3><p>&gt;<br>     因为在jdk中提供了 FilterInputStream,因此我们可以通过继承该类，并构造一个TarEntry的模板，在子类中按每512个字节，将一个tar流分成包含N个512字节的TarEntry. 这样我们就可以将一个tar包通过TarInputStream和TarEntry解开到一个map集合中<entryname,data>.</entryname,data></p>
+<h3 id="三、内存优化的-“解压”方式"><a href="#三、内存优化的-“解压”方式" class="headerlink" title="三、内存优化的 “解压”方式"></a>三、内存优化的 “解压”方式</h3><p>&gt;<br>     由于每一个TarEntry都是一个固定大小字节的对象，那么我们可不可以直接读取这块内存，而不是将所有都常驻内存呢？<br>     答案当然是可以的。<br>    为了内存上的优化和效率上的提升，我们可以直接读取指定EntryNam的内存块。<br>    因为一个tar包基本的组成结构就是   entryName-&gt;data。我们可以拿到每一个EntryName和其对应的内存大小、偏移量，在读取的时候直接在TarInputStream中读取相应内存块。<br>   代码如下：</p>
+<ol>
+<li><p>一个简单维护TarEntry偏移量和字节大小的类McTarEntry。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">McTarEntry</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="keyword">private</span> <span class="keyword">long</span> offset;</div><div class="line"></div><div class="line">  <span class="keyword">private</span> <span class="keyword">int</span> size;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">private</span> <span class="title">McTarEntry</span><span class="params">(Builder builder)</span> </span>&#123;</div><div class="line">      offset = builder.offset;</div><div class="line">      size = builder.size;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">getOffset</span><span class="params">()</span> </span>&#123;</div><div class="line">      <span class="keyword">return</span> offset;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getSize</span><span class="params">()</span> </span>&#123;</div><div class="line">      <span class="keyword">return</span> size;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Builder</span> </span>&#123;</div><div class="line">      <span class="keyword">private</span> <span class="keyword">long</span> offset = <span class="number">0</span>;</div><div class="line">      <span class="keyword">private</span> <span class="keyword">int</span> size = <span class="number">0</span>;</div><div class="line"></div><div class="line">      <span class="function"><span class="keyword">public</span> Builder <span class="title">offset</span><span class="params">(<span class="keyword">long</span> offset)</span> </span>&#123;</div><div class="line">          <span class="keyword">this</span>.offset = offset;</div><div class="line">          <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      <span class="function"><span class="keyword">public</span> Builder <span class="title">size</span><span class="params">(<span class="keyword">int</span> size)</span> </span>&#123;</div><div class="line">          <span class="keyword">this</span>.size = size;</div><div class="line">          <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      <span class="function"><span class="keyword">public</span> H5TarEntry <span class="title">build</span><span class="params">()</span> </span>&#123;</div><div class="line">          <span class="keyword">return</span> <span class="keyword">new</span> McTarEntry(<span class="keyword">this</span>);</div><div class="line">      &#125;</div><div class="line"></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>解析Tar包，将每个McTarEntry保存在map</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">FileInputStream fis = <span class="keyword">new</span> FileInputStream(tarPath);</div><div class="line">BufferedInputStream bis = <span class="keyword">new</span> BufferedInputStream(fis);</div><div class="line">TarInputStream tis = <span class="keyword">new</span> TarInputStream(bis);</div><div class="line">TarEntry te = <span class="keyword">null</span>;</div><div class="line"><span class="keyword">while</span> ((te = tis.getNextEntry()) != <span class="keyword">null</span>) &#123;</div><div class="line">    String entryName = te.getName();</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (te.isDirectory() || TextUtils.isEmpty(entryName)) &#123;</div><div class="line">        <span class="keyword">continue</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    McTarEntry mcTarEntry = <span class="keyword">new</span> McTarEntry.Builder().offset(tis.getCurrentOffset())</div><div class="line">            .size((<span class="keyword">int</span>) te.getSize()).build();</div><div class="line"></div><div class="line">    tarEntryMap.put(entryName, h5TarEntry);</div><div class="line"></div><div class="line">&#125;</div><div class="line">tis.close();</div></pre></td></tr></table></figure>
+</li>
+<li><p>读取指定entryName的数据块</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">static</span> <span class="keyword">byte</span>[] get(String appId, String entryName) &#123;</div><div class="line">      <span class="keyword">try</span> &#123;</div><div class="line">          <span class="keyword">byte</span> buffer[] = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">2048</span>];</div><div class="line">          <span class="keyword">int</span> count;</div><div class="line">          ByteArrayOutputStream bos = <span class="keyword">new</span> ByteArrayOutputStream();</div><div class="line">          <span class="keyword">if</span> (!tarEntryMap.containsKey()) &#123;</div><div class="line">              <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">          &#125;</div><div class="line">          <span class="keyword">long</span> offset = tarEntryMap.get(entryName).getOffset();</div><div class="line">          <span class="keyword">int</span> entrySize = tarEntryMap.get(entryName).getSize();</div><div class="line">          FileInputStream fis = <span class="keyword">new</span> FileInputStream(tarPath);</div><div class="line">          BufferedInputStream bis = <span class="keyword">new</span> BufferedInputStream(fis);</div><div class="line">          TarInputStream tis = <span class="keyword">new</span> TarInputStream(bis);</div><div class="line">          H5Log.d(TAG, <span class="string">"entryName"</span> + entryName + <span class="string">" skip offset:"</span> + offset + <span class="string">" size"</span> + entrySize);</div><div class="line">          tis.skip(offset);</div><div class="line">          <span class="keyword">if</span> (buffer.length &gt; entrySize) &#123;</div><div class="line">              buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[entrySize];</div><div class="line">          &#125;</div><div class="line">          <span class="keyword">int</span> bufferSize = <span class="number">0</span>;</div><div class="line">          <span class="keyword">while</span> ((count = tis.read(buffer)) != -<span class="number">1</span>) &#123;</div><div class="line">              bos.write(buffer, <span class="number">0</span>, count);</div><div class="line">              bufferSize += count;</div><div class="line">                 <span class="comment">// 当前buffer加上已经读取的bufferSize如果超过entrySize那么我们就应该重新计算buffer进行最后一次读取。</span></div><div class="line">              <span class="keyword">if</span> ((bufferSize + buffer.length) &gt; entrySize) &#123;</div><div class="line">                  buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[entrySize % bufferSize];</div><div class="line">                  bufferSize = entrySize - entrySize % bufferSize;</div><div class="line">              &#125;</div><div class="line"></div><div class="line">              <span class="keyword">if</span> (buffer.length == entrySize || entrySize == bufferSize) &#123;</div><div class="line">                  <span class="keyword">break</span>;</div><div class="line">              &#125;</div><div class="line">          &#125;</div><div class="line">          tis.close();</div><div class="line">          <span class="keyword">byte</span>[] data = bos.toByteArray();</div><div class="line">          <span class="keyword">if</span> (data == <span class="keyword">null</span>) &#123;</div><div class="line">              <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">          &#125;</div><div class="line">          H5Log.d(TAG, <span class="string">"entryName:"</span> + entryName);</div><div class="line">          <span class="keyword">return</span> data;</div><div class="line">      &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">          H5Log.e(TAG, <span class="string">"exception :"</span> + e);</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>  这样就可以通过指定的entryName，根据其offset和 size 计算到这个entry在TarStream中固定内存块，从而拿到真正的数据。</p>
+</li>
+</ol>
+<h3 id="总结：两种读取方式的区别："><a href="#总结：两种读取方式的区别：" class="headerlink" title="总结：两种读取方式的区别："></a>总结：两种读取方式的区别：</h3><ul>
+<li>第一种<br>优点：减少了I/O操作。<br>缺点：耗费了内存。假如一个很大的资源在这个tar中，但是被使用的概率很低，这样耗费了内存从而不值得这么做。</li>
+<li>第二种<br>优点：节省了内存，提高了读取效率<br>缺点：增加了I/O操作，Tar资源可能存在被篡改的风险。</li>
+</ul>
+<p>Thanks.<br>  By MC.</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[程序员都应该会的抓包工具--Charles]]></title>
       <url>https://xiyoumc.github.com/2017/07/03/%E7%A8%8B%E5%BA%8F%E5%91%98%E9%83%BD%E5%BA%94%E8%AF%A5%E4%BC%9A%E7%9A%84%E6%8A%93%E5%8C%85%E5%B7%A5%E5%85%B7-Charles/</url>
       <content type="html"><![CDATA[<h1 id="程序员都应该会的抓包工具-Charles"><a href="#程序员都应该会的抓包工具-Charles" class="headerlink" title="程序员都应该会的抓包工具-Charles"></a>程序员都应该会的抓包工具-Charles</h1><blockquote>
@@ -98,6 +132,79 @@
 <h5 id="在对应接口上点击右键，出现菜单，其中我经常使用到的就是Compose、Repeat和RepeatAdvanced"><a href="#在对应接口上点击右键，出现菜单，其中我经常使用到的就是Compose、Repeat和RepeatAdvanced" class="headerlink" title="在对应接口上点击右键，出现菜单，其中我经常使用到的就是Compose、Repeat和RepeatAdvanced"></a>在对应接口上点击右键，出现菜单，其中我经常使用到的就是Compose、Repeat和RepeatAdvanced</h5><p><img src="http://blog.0x2048.com/docs/CharlesMenu.png" alt=""></p>
 <h5 id="Compose-可直接自定义对应的请求，并执行该请求。这个对我们抓包用处很大。我们可以从中得到该接口的必填参数等等的。"><a href="#Compose-可直接自定义对应的请求，并执行该请求。这个对我们抓包用处很大。我们可以从中得到该接口的必填参数等等的。" class="headerlink" title="Compose:可直接自定义对应的请求，并执行该请求。这个对我们抓包用处很大。我们可以从中得到该接口的必填参数等等的。"></a>Compose:可直接自定义对应的请求，并执行该请求。这个对我们抓包用处很大。我们可以从中得到该接口的必填参数等等的。</h5><h5 id="Repeat：很简单就是执行一次重复请求操作"><a href="#Repeat：很简单就是执行一次重复请求操作" class="headerlink" title="Repeat：很简单就是执行一次重复请求操作"></a>Repeat：很简单就是执行一次重复请求操作</h5><h5 id="Repeat-Advanved：重复请求的高级操作，可自定义重复的次数、每隔多少秒执行。这个功能对于我们的接口的压测是很有用的。"><a href="#Repeat-Advanved：重复请求的高级操作，可自定义重复的次数、每隔多少秒执行。这个功能对于我们的接口的压测是很有用的。" class="headerlink" title="Repeat Advanved：重复请求的高级操作，可自定义重复的次数、每隔多少秒执行。这个功能对于我们的接口的压测是很有用的。"></a>Repeat Advanved：重复请求的高级操作，可自定义重复的次数、每隔多少秒执行。这个功能对于我们的接口的压测是很有用的。</h5><h5 id="除了这几个我常用的功能，当然Charles还有更多更加实用的功能，如过滤、排序等等。还需要大家去自行使用，发现更多更好、并适用于自己的功能。"><a href="#除了这几个我常用的功能，当然Charles还有更多更加实用的功能，如过滤、排序等等。还需要大家去自行使用，发现更多更好、并适用于自己的功能。" class="headerlink" title="除了这几个我常用的功能，当然Charles还有更多更加实用的功能，如过滤、排序等等。还需要大家去自行使用，发现更多更好、并适用于自己的功能。"></a>除了这几个我常用的功能，当然Charles还有更多更加实用的功能，如过滤、排序等等。还需要大家去自行使用，发现更多更好、并适用于自己的功能。</h5><h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><blockquote>
 <p>抓包的用处其实很大，有时候可以用来调试我们的接口、有时候也可以用来做一些对工作有益的事，当然并”不建议”用来攻击别人的网络。</p>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Python爬虫如何入门？]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/%E7%88%AC%E8%99%AB%E5%A6%82%E4%BD%95%E5%85%A5%E9%97%A8%EF%BC%9F/</url>
+      <content type="html"><![CDATA[<p> Python爬虫如何入门？</p>
+<h4 id="源自公众号-DeveloperPython"><a href="#源自公众号-DeveloperPython" class="headerlink" title="源自公众号:DeveloperPython"></a>源自公众号:DeveloperPython</h4><h2 id="扯淡"><a href="#扯淡" class="headerlink" title="扯淡"></a>扯淡</h2><p>其实，“入门”最好的方式是以项目开始，这样实践起来你会被目标驱动。从而，不用一步一步慢慢的学习模块化的东西。</p>
+<p>其实，知识体系里面的每一个知识点类似于图里的点。边就是知识体系的依赖关系，那么整个图也就是一个有向无环图。因为学习A的经验可以帮助到你学习B。因此，入门的东西根本不用学习，因为入门点根本不存在。</p>
+<a id="more"></a>
+<p>同时，你需要学习的是如何去做一个大的项目，来亲身体会爬虫， 并一步步学习爬虫的知识点。</p>
+<p>那么，我总结下在其他平台上的相关知识点和自己的想法：</p>
+<ol>
+<li>爬虫的工作原理</li>
+<li>基本的Https爬虫工具：Scrapy</li>
+<li>分布式爬虫系统。也就是维护一个集群机器来高效的完成分布式队列。Github上也有一个现成的例子: <a href="https://github.com/nvie/rq" target="_blank" rel="external">nvie/rq</a></li>
+<li>rq和Scrapy的结合： <a href="https://github.com/rolando/scrapy-redis" target="_blank" rel="external">rolando/scrapy-redis</a></li>
+<li>后续处理: <a href="https://github.com/grangier/python-goose" target="_blank" rel="external">网页处理grangier/python-goose</a> 存储(Mongodb)</li>
+</ol>
+<p>以下，我将基于<a href="https://github.com/xiyouMc/WebHubBot" target="_blank" rel="external">xiyouMc/WebHubBot</a>的经验来讲：</p>
+<h3 id="一、-爬虫的怎么工作的"><a href="#一、-爬虫的怎么工作的" class="headerlink" title="一、  爬虫的怎么工作的"></a>一、  爬虫的怎么工作的</h3><p>爬虫的另一个意思其实就是🕷（Spider） ，互联“网”就是它的环境。简单的来说，也就是你需要用这个蜘蛛来把相关网站的所有角落(网页)都爬一边。</p>
+<p>那么，你可以选择一个自己感兴趣的平台，如知乎、淘宝等等的。</p>
+<p>我这里通过PornHub来讲解。</p>
+<p>比如，我们访问PornHub的首页，里面会出现很多链接。最初我们的目标是拿到该站中所有的视频标题、视频简介、视频链接或者其他有用信息。然后我们兴高采烈的将整个首页都爬下来，这里可以理解为你就是将整个页面完完整整的Copy了下来。</p>
+<p>然后，我们随便点击一个链接进入视频详情页，进入第二个页面之后，就会看到具体的视频标题、简介等等的。那么这只是一个视频信息，我们又是如何做到爬取整站的数据呢。这里可以动下脑子，一种是返回到首页去拿另一个链接，另一种则是基于第一步爬下来的首页来找下一个链接。这里，当然是第二种方案。同时我们要做去重，爬过的链接，就不要再去爬第二遍。</p>
+<p>所以，理论上如果后续的所有视频详情页都是从首页可达的话，那么我们就一定可以将所有网页都爬下来。</p>
+<p>以下是Python的伪代码实现:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line"><span class="keyword">from</span> Queue <span class="keyword">import</span> Queue</div><div class="line">home_page = <span class="string">'https://www.pornhub.com/'</span></div><div class="line">link_queue = Queue()</div><div class="line">seen = set()</div><div class="line">seen.insert(home_page)</div><div class="line">link_queue.put(home_page)</div><div class="line">	</div><div class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</div><div class="line">	<span class="keyword">if</span> link_queue.size() &gt; <span class="number">0</span>:</div><div class="line">		current_url = url_queue.get() <span class="comment">#拿到队列中第一个url</span></div><div class="line">		links = save(current_url)  <span class="comment">#保存这个页面的html，并返回当前页面的所有link</span></div><div class="line">		<span class="keyword">for</span> link <span class="keyword">in</span> links:</div><div class="line">			<span class="keyword">if</span> link <span class="keyword">not</span> <span class="keyword">in</span> seen:</div><div class="line">				seen.put(link)</div><div class="line">				link_queue.put(link)</div><div class="line">	<span class="keyword">else</span>:</div><div class="line">		<span class="keyword">break</span></div></pre></td></tr></table></figure>
+<p>以上就是一个简单的伪代码来爬取pornhub中视频资源的例子。当然， 这只是一个非常简单的例子，其实爬虫是一个非常复杂的项目，类似的就是搜索引擎需要爬取整站的数据，更是需要一整个团队来开发和维护。</p>
+<h3 id="二、-效率"><a href="#二、-效率" class="headerlink" title="二、  效率"></a>二、  效率</h3><p>如果，使用上述的代码来爬取PornHub的话，那么你是绝对无法在一天时间内完成500万的海量数据，更别说在短时间内爬取PornHub的所有数据。</p>
+<p>那么，问题出在哪？爬的网页太多太多了，而且上面的代码太慢太慢了。</p>
+<p>PornHub的全网有N个页面，那么分析下判重的时间复杂度将是 N * log(N)，因为每个网页都要遍历一遍，而使用Set来做判重，需要 log(N) 的复杂度。</p>
+<p>所以，我们需要一个成熟的判重方案。Bloom Filter。 它是一个空间效率很高的随机数据结构。<a href="http://blog.csdn.net/jiaomeng/article/details/1495500" target="_blank" rel="external">官方简介</a>：</p>
+<blockquote>
+<p>Bloom Filter是一种空间效率很高的随机数据结构，它利用位数组很简洁地表示一个集合，并能判断一个元素是否属于这个集合。Bloom Filter的这种高效是有一定代价的：在判断一个元素是否属于某个集合时，有可能会把不属于这个集合的元素误认为属于这个集合（false positive）。因此，Bloom Filter不适合那些“零错误”的应用场合。而在能容忍低错误率的应用场合下，Bloom Filter通过极少的错误换取了存储空间的极大节省。</p>
+</blockquote>
+<p>有兴趣可以详细学习下这个算法。</p>
+<p>简单的来说，它是一种利用Hash的方法来判重的。并且在使用固定的内存，不随url的数量增加而增长,以 O（1）的效率判断url是否已经在set中。但是仍然有极小的可能性会误判，所以对于“零错误”的系统不适用。但是对于爬虫，小概率的重复爬取也是可以接受的。</p>
+<p>那么，以上就是判重的最快方式了。</p>
+<p>当然，另一个瓶颈又会出现，如果你只有一台机器，那么不管你的带宽有多大你的机器下载网页的速度还是会有瓶颈。那么，只有加快这个速度，我们使用多台机器来跑。</p>
+<h3 id="三、-集群化爬取"><a href="#三、-集群化爬取" class="headerlink" title="三、  集群化爬取"></a>三、  集群化爬取</h3><p>集群化爬取，其实不难理解。也就是将你的爬虫任务分发到n台机器来处理，当然每台机器处理的任务不同，且不重复。</p>
+<p>那么，假设你有100台机器，怎么用Python实现一个分布式的爬取算法呢？</p>
+<p>Server -&gt; Client 。这种C/S 的模式，我相信大家也不陌生。那么分布式的系统，其实就是一台Server -&gt; n个Client 来处理。这里我们将Server定义为 Master机，多个Client定义为多个 Slave。所以基于开始的伪代码，我们可以将link_queue 放到Master上，其他的Slave都可以通过网络跟Master联通，每当一个Slave下载完成一个页面之后，就会将这个页面的结果告知Master，同时获取一个新的link 来爬取。同时 BloomFliter 也是放在Master的，用来针对Links进行去重。 其中Slave和Server联通的方式，就是通过Redis，这是一个可以远程操作的缓存数据库，提供了完善的队列管理。其次，Redis的队列中已经包含的去重的，当Push一个url 到Redis之后，某一个Slave Pop拿到数据，那么这个Url将只会在这个Slave进行处理。</p>
+<p>因此，我们可以用Python来实现。Slave的机器上安装Scrapy，Master上安装Redis和rq用作分布式队列。</p>
+<p>伪代码:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="string">"""</span></div><div class="line">Slave</div><div class="line">"""</div><div class="line">	</div><div class="line">url = link_from_master() <span class="comment"># 从Master机Get到最新的链接</span></div><div class="line">content = save(url) <span class="comment"># 请求并保存这个链接下的视频信息</span></div><div class="line">send_to_master(url) <span class="comment"># 将当前处理过的url Post给主机。</span></div><div class="line">	</div><div class="line"><span class="string">"""</span></div><div class="line">Master</div><div class="line">"""</div><div class="line">queue = Queue()</div><div class="line">bf = BloomFilter()</div><div class="line">	</div><div class="line">home_pages = <span class="string">"https://www.pornhub.com/"</span></div><div class="line">	</div><div class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</div><div class="line">    <span class="keyword">if</span> request == <span class="string">'GET'</span>:</div><div class="line">        <span class="keyword">if</span> distributed_queue.size()&gt;<span class="number">0</span>:</div><div class="line">            send(queue.get()) <span class="comment"># 将当前url push到Redis，从而让Slave获取到。</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            <span class="keyword">break</span></div><div class="line">    <span class="keyword">elif</span> request == <span class="string">'POST'</span>:</div><div class="line">        bf.put(request.url) <span class="comment">#将处理过的Url 保存到bf队列</span></div></pre></td></tr></table></figure>
+<p>轮子: <a href="https://github.com/rolando/scrapy-redis" target="_blank" rel="external">rolando/scrapy-redis</a></p>
+<h3 id="四、-后处理"><a href="#四、-后处理" class="headerlink" title="四、 后处理"></a>四、 后处理</h3><p>上面的路子，其实是很简单很简单的一部分。同样的，后续你还要进行其他的处理，比如：</p>
+<ul>
+<li>有效的存储</li>
+<li>有效的判重</li>
+<li>有效的信息提取</li>
+<li>及时更新</li>
+</ul>
+<p>所以，不要在意如何“入门”，只管上路就好了。</p>
+<h3 id="五、-更重要的一点"><a href="#五、-更重要的一点" class="headerlink" title="五、 更重要的一点"></a>五、 更重要的一点</h3><p> 长摁‘识别二维码’，一起进步</p>
+<p><img src="https://mmbiz.qlogo.cn/mmbiz_png/BAYrQMKkbTbS8e8ibKzUsdcO7Dx3ILTib4daQiaaywnBk1dBd2ZfsxlSKZ7KdwA8kyN1unwBH5BbKpg2SGYP60VrQ/640?wx_fmt=png" alt=""></p>
+<p>生活不止眼前的苟且，还有手下的代码、</p>
+<p>和嘴上的扯淡<br>——<br>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a></p>
+<p>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
+<hr>
+<h3 id="六、-如何找到一群学习Python的朋友圈"><a href="#六、-如何找到一群学习Python的朋友圈" class="headerlink" title="六、 如何找到一群学习Python的朋友圈"></a>六、 如何找到一群学习Python的朋友圈</h3><p>点击 <a href="http://t.xiaomiquan.com/7ey3rZv" target="_blank" rel="external">Join</a>，加入Python技术成长圈子，我们在这里等着你。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[最近心烦]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/%E6%9C%80%E8%BF%91%E5%BF%83%E4%BA%8B/</url>
+      <content type="html"><![CDATA[<p>不知道自己是将工作带到了生活还是生活带到了工作。。。<br><a id="more"></a></p>
+<blockquote>
+<p>最近事真的很多，也导致了自己事很多。 </p>
+<p>喜欢的人，自己变得约束力越来越多。这不是我要的。<br>我很想放放松松的恋爱。 最近对你一直很闹脾气，动不动就闹脾气。  我想我是该冷静冷静了。<br>让我们开开心心的恋爱下去吧。  一直。相爱。</p>
 </blockquote>
 ]]></content>
     </entry>
@@ -222,89 +329,10 @@ limitations under the License.
     </entry>
     
     <entry>
-      <title><![CDATA[Python爬虫如何入门？]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/%E7%88%AC%E8%99%AB%E5%A6%82%E4%BD%95%E5%85%A5%E9%97%A8%EF%BC%9F/</url>
-      <content type="html"><![CDATA[<p> Python爬虫如何入门？</p>
-<h4 id="源自公众号-DeveloperPython"><a href="#源自公众号-DeveloperPython" class="headerlink" title="源自公众号:DeveloperPython"></a>源自公众号:DeveloperPython</h4><h2 id="扯淡"><a href="#扯淡" class="headerlink" title="扯淡"></a>扯淡</h2><p>其实，“入门”最好的方式是以项目开始，这样实践起来你会被目标驱动。从而，不用一步一步慢慢的学习模块化的东西。</p>
-<p>其实，知识体系里面的每一个知识点类似于图里的点。边就是知识体系的依赖关系，那么整个图也就是一个有向无环图。因为学习A的经验可以帮助到你学习B。因此，入门的东西根本不用学习，因为入门点根本不存在。</p>
-<a id="more"></a>
-<p>同时，你需要学习的是如何去做一个大的项目，来亲身体会爬虫， 并一步步学习爬虫的知识点。</p>
-<p>那么，我总结下在其他平台上的相关知识点和自己的想法：</p>
-<ol>
-<li>爬虫的工作原理</li>
-<li>基本的Https爬虫工具：Scrapy</li>
-<li>分布式爬虫系统。也就是维护一个集群机器来高效的完成分布式队列。Github上也有一个现成的例子: <a href="https://github.com/nvie/rq" target="_blank" rel="external">nvie/rq</a></li>
-<li>rq和Scrapy的结合： <a href="https://github.com/rolando/scrapy-redis" target="_blank" rel="external">rolando/scrapy-redis</a></li>
-<li>后续处理: <a href="https://github.com/grangier/python-goose" target="_blank" rel="external">网页处理grangier/python-goose</a> 存储(Mongodb)</li>
-</ol>
-<p>以下，我将基于<a href="https://github.com/xiyouMc/WebHubBot" target="_blank" rel="external">xiyouMc/WebHubBot</a>的经验来讲：</p>
-<h3 id="一、-爬虫的怎么工作的"><a href="#一、-爬虫的怎么工作的" class="headerlink" title="一、  爬虫的怎么工作的"></a>一、  爬虫的怎么工作的</h3><p>爬虫的另一个意思其实就是🕷（Spider） ，互联“网”就是它的环境。简单的来说，也就是你需要用这个蜘蛛来把相关网站的所有角落(网页)都爬一边。</p>
-<p>那么，你可以选择一个自己感兴趣的平台，如知乎、淘宝等等的。</p>
-<p>我这里通过PornHub来讲解。</p>
-<p>比如，我们访问PornHub的首页，里面会出现很多链接。最初我们的目标是拿到该站中所有的视频标题、视频简介、视频链接或者其他有用信息。然后我们兴高采烈的将整个首页都爬下来，这里可以理解为你就是将整个页面完完整整的Copy了下来。</p>
-<p>然后，我们随便点击一个链接进入视频详情页，进入第二个页面之后，就会看到具体的视频标题、简介等等的。那么这只是一个视频信息，我们又是如何做到爬取整站的数据呢。这里可以动下脑子，一种是返回到首页去拿另一个链接，另一种则是基于第一步爬下来的首页来找下一个链接。这里，当然是第二种方案。同时我们要做去重，爬过的链接，就不要再去爬第二遍。</p>
-<p>所以，理论上如果后续的所有视频详情页都是从首页可达的话，那么我们就一定可以将所有网页都爬下来。</p>
-<p>以下是Python的伪代码实现:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line"><span class="keyword">from</span> Queue <span class="keyword">import</span> Queue</div><div class="line">home_page = <span class="string">'https://www.pornhub.com/'</span></div><div class="line">link_queue = Queue()</div><div class="line">seen = set()</div><div class="line">seen.insert(home_page)</div><div class="line">link_queue.put(home_page)</div><div class="line">	</div><div class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</div><div class="line">	<span class="keyword">if</span> link_queue.size() &gt; <span class="number">0</span>:</div><div class="line">		current_url = url_queue.get() <span class="comment">#拿到队列中第一个url</span></div><div class="line">		links = save(current_url)  <span class="comment">#保存这个页面的html，并返回当前页面的所有link</span></div><div class="line">		<span class="keyword">for</span> link <span class="keyword">in</span> links:</div><div class="line">			<span class="keyword">if</span> link <span class="keyword">not</span> <span class="keyword">in</span> seen:</div><div class="line">				seen.put(link)</div><div class="line">				link_queue.put(link)</div><div class="line">	<span class="keyword">else</span>:</div><div class="line">		<span class="keyword">break</span></div></pre></td></tr></table></figure>
-<p>以上就是一个简单的伪代码来爬取pornhub中视频资源的例子。当然， 这只是一个非常简单的例子，其实爬虫是一个非常复杂的项目，类似的就是搜索引擎需要爬取整站的数据，更是需要一整个团队来开发和维护。</p>
-<h3 id="二、-效率"><a href="#二、-效率" class="headerlink" title="二、  效率"></a>二、  效率</h3><p>如果，使用上述的代码来爬取PornHub的话，那么你是绝对无法在一天时间内完成500万的海量数据，更别说在短时间内爬取PornHub的所有数据。</p>
-<p>那么，问题出在哪？爬的网页太多太多了，而且上面的代码太慢太慢了。</p>
-<p>PornHub的全网有N个页面，那么分析下判重的时间复杂度将是 N * log(N)，因为每个网页都要遍历一遍，而使用Set来做判重，需要 log(N) 的复杂度。</p>
-<p>所以，我们需要一个成熟的判重方案。Bloom Filter。 它是一个空间效率很高的随机数据结构。<a href="http://blog.csdn.net/jiaomeng/article/details/1495500" target="_blank" rel="external">官方简介</a>：</p>
-<blockquote>
-<p>Bloom Filter是一种空间效率很高的随机数据结构，它利用位数组很简洁地表示一个集合，并能判断一个元素是否属于这个集合。Bloom Filter的这种高效是有一定代价的：在判断一个元素是否属于某个集合时，有可能会把不属于这个集合的元素误认为属于这个集合（false positive）。因此，Bloom Filter不适合那些“零错误”的应用场合。而在能容忍低错误率的应用场合下，Bloom Filter通过极少的错误换取了存储空间的极大节省。</p>
-</blockquote>
-<p>有兴趣可以详细学习下这个算法。</p>
-<p>简单的来说，它是一种利用Hash的方法来判重的。并且在使用固定的内存，不随url的数量增加而增长,以 O（1）的效率判断url是否已经在set中。但是仍然有极小的可能性会误判，所以对于“零错误”的系统不适用。但是对于爬虫，小概率的重复爬取也是可以接受的。</p>
-<p>那么，以上就是判重的最快方式了。</p>
-<p>当然，另一个瓶颈又会出现，如果你只有一台机器，那么不管你的带宽有多大你的机器下载网页的速度还是会有瓶颈。那么，只有加快这个速度，我们使用多台机器来跑。</p>
-<h3 id="三、-集群化爬取"><a href="#三、-集群化爬取" class="headerlink" title="三、  集群化爬取"></a>三、  集群化爬取</h3><p>集群化爬取，其实不难理解。也就是将你的爬虫任务分发到n台机器来处理，当然每台机器处理的任务不同，且不重复。</p>
-<p>那么，假设你有100台机器，怎么用Python实现一个分布式的爬取算法呢？</p>
-<p>Server -&gt; Client 。这种C/S 的模式，我相信大家也不陌生。那么分布式的系统，其实就是一台Server -&gt; n个Client 来处理。这里我们将Server定义为 Master机，多个Client定义为多个 Slave。所以基于开始的伪代码，我们可以将link_queue 放到Master上，其他的Slave都可以通过网络跟Master联通，每当一个Slave下载完成一个页面之后，就会将这个页面的结果告知Master，同时获取一个新的link 来爬取。同时 BloomFliter 也是放在Master的，用来针对Links进行去重。 其中Slave和Server联通的方式，就是通过Redis，这是一个可以远程操作的缓存数据库，提供了完善的队列管理。其次，Redis的队列中已经包含的去重的，当Push一个url 到Redis之后，某一个Slave Pop拿到数据，那么这个Url将只会在这个Slave进行处理。</p>
-<p>因此，我们可以用Python来实现。Slave的机器上安装Scrapy，Master上安装Redis和rq用作分布式队列。</p>
-<p>伪代码:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="string">"""</span></div><div class="line">Slave</div><div class="line">"""</div><div class="line">	</div><div class="line">url = link_from_master() <span class="comment"># 从Master机Get到最新的链接</span></div><div class="line">content = save(url) <span class="comment"># 请求并保存这个链接下的视频信息</span></div><div class="line">send_to_master(url) <span class="comment"># 将当前处理过的url Post给主机。</span></div><div class="line">	</div><div class="line"><span class="string">"""</span></div><div class="line">Master</div><div class="line">"""</div><div class="line">queue = Queue()</div><div class="line">bf = BloomFilter()</div><div class="line">	</div><div class="line">home_pages = <span class="string">"https://www.pornhub.com/"</span></div><div class="line">	</div><div class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</div><div class="line">    <span class="keyword">if</span> request == <span class="string">'GET'</span>:</div><div class="line">        <span class="keyword">if</span> distributed_queue.size()&gt;<span class="number">0</span>:</div><div class="line">            send(queue.get()) <span class="comment"># 将当前url push到Redis，从而让Slave获取到。</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            <span class="keyword">break</span></div><div class="line">    <span class="keyword">elif</span> request == <span class="string">'POST'</span>:</div><div class="line">        bf.put(request.url) <span class="comment">#将处理过的Url 保存到bf队列</span></div></pre></td></tr></table></figure>
-<p>轮子: <a href="https://github.com/rolando/scrapy-redis" target="_blank" rel="external">rolando/scrapy-redis</a></p>
-<h3 id="四、-后处理"><a href="#四、-后处理" class="headerlink" title="四、 后处理"></a>四、 后处理</h3><p>上面的路子，其实是很简单很简单的一部分。同样的，后续你还要进行其他的处理，比如：</p>
-<ul>
-<li>有效的存储</li>
-<li>有效的判重</li>
-<li>有效的信息提取</li>
-<li>及时更新</li>
-</ul>
-<p>所以，不要在意如何“入门”，只管上路就好了。</p>
-<h3 id="五、-更重要的一点"><a href="#五、-更重要的一点" class="headerlink" title="五、 更重要的一点"></a>五、 更重要的一点</h3><p> 长摁‘识别二维码’，一起进步</p>
-<p><img src="https://mmbiz.qlogo.cn/mmbiz_png/BAYrQMKkbTbS8e8ibKzUsdcO7Dx3ILTib4daQiaaywnBk1dBd2ZfsxlSKZ7KdwA8kyN1unwBH5BbKpg2SGYP60VrQ/640?wx_fmt=png" alt=""></p>
-<p>生活不止眼前的苟且，还有手下的代码、</p>
-<p>和嘴上的扯淡<br>——<br>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a></p>
-<p>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
-<hr>
-<h3 id="六、-如何找到一群学习Python的朋友圈"><a href="#六、-如何找到一群学习Python的朋友圈" class="headerlink" title="六、 如何找到一群学习Python的朋友圈"></a>六、 如何找到一群学习Python的朋友圈</h3><p>点击 <a href="http://t.xiaomiquan.com/7ey3rZv" target="_blank" rel="external">Join</a>，加入Python技术成长圈子，我们在这里等着你。</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[最近心烦]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/%E6%9C%80%E8%BF%91%E5%BF%83%E4%BA%8B/</url>
-      <content type="html"><![CDATA[<p>不知道自己是将工作带到了生活还是生活带到了工作。。。<br><a id="more"></a></p>
-<blockquote>
-<p>最近事真的很多，也导致了自己事很多。 </p>
-<p>喜欢的人，自己变得约束力越来越多。这不是我要的。<br>我很想放放松松的恋爱。 最近对你一直很闹脾气，动不动就闹脾气。  我想我是该冷静冷静了。<br>让我们开开心心的恋爱下去吧。  一直。相爱。</p>
-</blockquote>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[戒烟]]></title>
       <url>https://xiyoumc.github.com/2017/07/03/%E6%88%92%E7%83%9F/</url>
       <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/timg.jpeg?raw=true" alt=""><br>以后每天都会在这里记录，戒烟史！<br><a id="more"></a><br>GoGoGo</p>
 ]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Shell语言基本教程]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/linux_shell/</url>
-      <content type="html"></content>
     </entry>
     
     <entry>
@@ -480,80 +508,6 @@ limitations under the License.
     
     <entry>
       <title><![CDATA[Python新手引导第二篇]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/Python%E6%96%B0%E6%89%8B%E5%BC%95%E5%AF%BC%E7%AC%AC%E4%BA%8C%E7%AF%87/</url>
-      <content type="html"><![CDATA[<h1 id="Python新手引导-第二篇-你不知道的Python"><a href="#Python新手引导-第二篇-你不知道的Python" class="headerlink" title="Python新手引导 第二篇 你不知道的Python"></a>Python新手引导 第二篇 你不知道的Python</h1><blockquote>
-<p>###阅读本文需要4.66分钟</p>
-</blockquote>
-<a id="more"></a>
-<p>上一篇进行了简单的Python讲解，包括历史、多版本共存和安装。若有不明白的同学，可尽情在公众号上给我发消息。保证”第一时间”回复.</p>
-<ol>
-<li>Python解释器</li>
-<li>编写、运行第一个Python</li>
-<li>atom-runner</li>
-</ol>
-<h2 id="一、Python解释器"><a href="#一、Python解释器" class="headerlink" title="一、Python解释器"></a>一、Python解释器</h2><blockquote>
-<p>Python代码是以.py为扩展名的文本文件。要执行代码，就需要Python解释器去执行.py文件。</p>
-</blockquote>
-<p>以下将介绍多种Python解释器:</p>
-<h3 id="A、-CPython"><a href="#A、-CPython" class="headerlink" title="A、 CPython"></a>A、 CPython</h3><p>Python官方的解释器是：CPython.这个解释器是用C语言开发的，因此叫CPython。在终端执行 python 启动的就是CPython解释器。<br><img src="http://115.28.132.58:8080/docs/CPython.png" alt=""></p>
-<h3 id="B、-IPython"><a href="#B、-IPython" class="headerlink" title="B、 IPython"></a>B、 IPython</h3><p>Ipython是基于CPython的交互式解释器。执行 Python的能力和CPtython一样。<br>可以变量自动补全、自动缩进。与CPython不一样的是： CPython使用&gt;&gt;&gt;作为提示符，而IPython使用In[序号]:<br><img src="http://115.28.132.58:8080/docs/IPython.png" alt=""></p>
-<h3 id="C、-Pypy"><a href="#C、-Pypy" class="headerlink" title="C、 Pypy"></a>C、 Pypy</h3><p>Pypy是Python开发者为了更好的Hack Python创建的项目。</p>
-<p>用Python实现的Python</p>
-<h3 id="D、-Jython"><a href="#D、-Jython" class="headerlink" title="D、 Jython"></a>D、 Jython</h3><p>Jython是运行在Java平台上的Python解释器，可以直接把Python代码编译成Java字节码执行。<br>这个也是我之前在写一个Java项目的时候用到的解释器。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;!-- https://mvnrepository.com/artifact/jython/jython --&gt;</div><div class="line">&lt;dependency&gt;</div><div class="line">    &lt;groupId&gt;jython&lt;/groupId&gt;</div><div class="line">    &lt;artifactId&gt;jython&lt;/artifactId&gt;</div><div class="line">    &lt;version&gt;2.5.2&lt;/version&gt;</div><div class="line">&lt;/dependency&gt;</div></pre></td></tr></table></figure>
-<p>Java项目引入Jython之后，会将本机Python环境应用到本项目中。在Java和Python相互调用中起到了重要的作用。</p>
-<h2 id="二、编写、运行第一个Python程序"><a href="#二、编写、运行第一个Python程序" class="headerlink" title="二、编写、运行第一个Python程序"></a>二、编写、运行第一个Python程序</h2><blockquote>
-<p>当然在终端中，可以直接通过Python来启动CPython并进行编辑并运行，但这样的缺点就是没法保存，再次执行还必须得复制进行。所以在实际的应用场景中，我们使用文本编辑器来编写Python代码。</p>
-</blockquote>
-<p>以下推荐两款文本剪辑器：</p>
-<ul>
-<li>Atom，免费、可安装多种插件来更高效的编写代码。<br><img src="http://115.28.132.58:8080/docs/Atom_HelloWorld.png" alt=""></li>
-<li>NodePad++,免费、在Window上很实用的文本编辑器<br><img src="http://115.28.132.58:8080/docs/nodepad.jpeg" alt=""></li>
-</ul>
-<h4 id="编写并运行第一个Python程序"><a href="#编写并运行第一个Python程序" class="headerlink" title="编写并运行第一个Python程序"></a>编写并运行第一个Python程序</h4><ol>
-<li>安装好编辑器之后，打开编辑，新建文件，输入:<br><img src="http://115.28.132.58:8080/docs/PythonPrint.png" alt=""></li>
-<li>编辑Python文件后，将其保存为Hello.py并放到自己的开发目录如 ~/Dev 或者 C:/dev 都可以 </li>
-<li>通过cd 命令定位到文件的目录,并使用python命令来运行<br><img src="http://115.28.132.58:8080/docs/RunPython.png" alt=""></li>
-<li>如果当前文件夹没有Hello.py，会报错如下：<br><img src="http://115.28.132.58:8080/docs/RunPythonError.png" alt=""> </li>
-</ol>
-<h2 id="三、atom-runner插件"><a href="#三、atom-runner插件" class="headerlink" title="三、atom-runner插件"></a>三、atom-runner插件</h2><blockquote>
-<p>每一门语言的开始，相信大家都会去找到一个适合自己的编辑器，类似SublineText等等的。当然SublineText也可以运行Python，但是我个人比较推荐Atom。</p>
-</blockquote>
-<p><a href="https://github.com/lsegal/atom-runner" target="_blank" rel="external">atom-runner</a>Atom中的开源插件，可用来执行Python脚本。<br>直接在Atom settings-&gt;install 中搜索atom-runner,安装即可</p>
-<p><img src="http://115.28.132.58:8080/docs/atom-runner.png" alt=""></p>
-<blockquote>
-<p>该插件官方文档指明，可支持JavaScript、CoffeeScript、Ruby、Python、Go、Bash 和 PowerShell scripts.</p>
-<h4 id="可执行命令"><a href="#可执行命令" class="headerlink" title="可执行命令"></a>可执行命令</h4><ul>
-<li>Ctrl+R (Alt+R on Win/Linux)运行当前活动窗口</li>
-<li>Ctrl+Shift + R (Alt+Shif+R on Win/Linux)运行在活动窗口的选择文本</li>
-<li>Ctrul+Shift+C 杀掉当前正在运行的进程</li>
-<li>Escap 关闭正在运行的窗口</li>
-</ul>
-</blockquote>
-<p>运行结果如下<br><img src="http://115.28.132.58:8080/docs/HelloWorld.png" alt=""></p>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>本篇阅读完成之后，花上几分钟时间自行编写并运行下Python，熟悉下Python的环境。</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Python新手引导第二篇]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/Python%E6%96%B0%E6%89%8B%E5%BC%95%E5%AF%BC%E7%AC%AC%E4%B8%89%E7%AF%87/</url>
-      <content type="html"><![CDATA[<h1 id="Python新手引导-第三篇-Python基础"><a href="#Python新手引导-第三篇-Python基础" class="headerlink" title="Python新手引导 第三篇 Python基础"></a>Python新手引导 第三篇 Python基础</h1><blockquote>
-<p>###阅读本文需要4.66分钟</p>
-</blockquote>
-<a id="more"></a>
-<p>有其他计算机语言基础的同学，阅读本篇基础部分建议1到2分钟。</p>
-<ol>
-<li>基础类型和变量</li>
-<li>list 和 tuple</li>
-</ol>
-<h2 id="第一、基础类型和变量"><a href="#第一、基础类型和变量" class="headerlink" title="第一、基础类型和变量"></a>第一、基础类型和变量</h2><blockquote>
-</blockquote>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Python新手引导第二篇]]></title>
       <url>https://xiyoumc.github.com/2017/07/03/Python%E6%96%B0%E6%89%8B%E5%BC%95%E5%AF%BC%20%E7%AC%AC%E5%9B%9B%E7%AF%87/</url>
       <content type="html"><![CDATA[<h1 id="Python新手引导-第四篇"><a href="#Python新手引导-第四篇" class="headerlink" title="Python新手引导 第四篇"></a>Python新手引导 第四篇</h1><blockquote>
 <p>###阅读本文需要4.66分钟</p>
@@ -634,6 +588,80 @@ limitations under the License.
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">         <span class="number">1</span></div><div class="line">        <span class="number">1</span>   <span class="number">1</span></div><div class="line">      <span class="number">1</span>   <span class="number">2</span>   <span class="number">1</span></div><div class="line">    <span class="number">1</span>   <span class="number">3</span>   <span class="number">3</span>   <span class="number">1</span></div><div class="line">  <span class="number">1</span>   <span class="number">4</span>   <span class="number">6</span>   <span class="number">4</span>   <span class="number">1</span></div><div class="line"><span class="number">1</span>   <span class="number">5</span>   <span class="number">10</span>  <span class="number">10</span>  <span class="number">5</span>   <span class="number">1</span></div></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">yanghu</span><span class="params">(n)</span>:</span></div><div class="line">	L=[<span class="number">1</span>]</div><div class="line">	<span class="keyword">while</span> <span class="number">1</span>:</div><div class="line">		yeild L</div><div class="line">		L = [L[x] + L[x+<span class="number">1</span>] <span class="keyword">for</span> x <span class="keyword">in</span> range(len(L) <span class="number">-1</span>)]</div><div class="line">		L.insert(<span class="number">0</span>,<span class="number">1</span>)</div><div class="line">		L.append(<span class="number">1</span>)</div><div class="line">		<span class="keyword">if</span> len(L)&gt;n:</div><div class="line">			<span class="keyword">break</span></div><div class="line"><span class="keyword">for</span> n <span class="keyword">in</span> yanghu(<span class="number">10</span>):</div><div class="line">	<span class="keyword">print</span> n</div></pre></td></tr></table></figure>
 <h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>本篇用一些简单的例子来讲解了下基础知识。 多动手练练哦</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Python新手引导第二篇]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/Python%E6%96%B0%E6%89%8B%E5%BC%95%E5%AF%BC%E7%AC%AC%E4%B8%89%E7%AF%87/</url>
+      <content type="html"><![CDATA[<h1 id="Python新手引导-第三篇-Python基础"><a href="#Python新手引导-第三篇-Python基础" class="headerlink" title="Python新手引导 第三篇 Python基础"></a>Python新手引导 第三篇 Python基础</h1><blockquote>
+<p>###阅读本文需要4.66分钟</p>
+</blockquote>
+<a id="more"></a>
+<p>有其他计算机语言基础的同学，阅读本篇基础部分建议1到2分钟。</p>
+<ol>
+<li>基础类型和变量</li>
+<li>list 和 tuple</li>
+</ol>
+<h2 id="第一、基础类型和变量"><a href="#第一、基础类型和变量" class="headerlink" title="第一、基础类型和变量"></a>第一、基础类型和变量</h2><blockquote>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Python新手引导第二篇]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/Python%E6%96%B0%E6%89%8B%E5%BC%95%E5%AF%BC%E7%AC%AC%E4%BA%8C%E7%AF%87/</url>
+      <content type="html"><![CDATA[<h1 id="Python新手引导-第二篇-你不知道的Python"><a href="#Python新手引导-第二篇-你不知道的Python" class="headerlink" title="Python新手引导 第二篇 你不知道的Python"></a>Python新手引导 第二篇 你不知道的Python</h1><blockquote>
+<p>###阅读本文需要4.66分钟</p>
+</blockquote>
+<a id="more"></a>
+<p>上一篇进行了简单的Python讲解，包括历史、多版本共存和安装。若有不明白的同学，可尽情在公众号上给我发消息。保证”第一时间”回复.</p>
+<ol>
+<li>Python解释器</li>
+<li>编写、运行第一个Python</li>
+<li>atom-runner</li>
+</ol>
+<h2 id="一、Python解释器"><a href="#一、Python解释器" class="headerlink" title="一、Python解释器"></a>一、Python解释器</h2><blockquote>
+<p>Python代码是以.py为扩展名的文本文件。要执行代码，就需要Python解释器去执行.py文件。</p>
+</blockquote>
+<p>以下将介绍多种Python解释器:</p>
+<h3 id="A、-CPython"><a href="#A、-CPython" class="headerlink" title="A、 CPython"></a>A、 CPython</h3><p>Python官方的解释器是：CPython.这个解释器是用C语言开发的，因此叫CPython。在终端执行 python 启动的就是CPython解释器。<br><img src="http://115.28.132.58:8080/docs/CPython.png" alt=""></p>
+<h3 id="B、-IPython"><a href="#B、-IPython" class="headerlink" title="B、 IPython"></a>B、 IPython</h3><p>Ipython是基于CPython的交互式解释器。执行 Python的能力和CPtython一样。<br>可以变量自动补全、自动缩进。与CPython不一样的是： CPython使用&gt;&gt;&gt;作为提示符，而IPython使用In[序号]:<br><img src="http://115.28.132.58:8080/docs/IPython.png" alt=""></p>
+<h3 id="C、-Pypy"><a href="#C、-Pypy" class="headerlink" title="C、 Pypy"></a>C、 Pypy</h3><p>Pypy是Python开发者为了更好的Hack Python创建的项目。</p>
+<p>用Python实现的Python</p>
+<h3 id="D、-Jython"><a href="#D、-Jython" class="headerlink" title="D、 Jython"></a>D、 Jython</h3><p>Jython是运行在Java平台上的Python解释器，可以直接把Python代码编译成Java字节码执行。<br>这个也是我之前在写一个Java项目的时候用到的解释器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;!-- https://mvnrepository.com/artifact/jython/jython --&gt;</div><div class="line">&lt;dependency&gt;</div><div class="line">    &lt;groupId&gt;jython&lt;/groupId&gt;</div><div class="line">    &lt;artifactId&gt;jython&lt;/artifactId&gt;</div><div class="line">    &lt;version&gt;2.5.2&lt;/version&gt;</div><div class="line">&lt;/dependency&gt;</div></pre></td></tr></table></figure>
+<p>Java项目引入Jython之后，会将本机Python环境应用到本项目中。在Java和Python相互调用中起到了重要的作用。</p>
+<h2 id="二、编写、运行第一个Python程序"><a href="#二、编写、运行第一个Python程序" class="headerlink" title="二、编写、运行第一个Python程序"></a>二、编写、运行第一个Python程序</h2><blockquote>
+<p>当然在终端中，可以直接通过Python来启动CPython并进行编辑并运行，但这样的缺点就是没法保存，再次执行还必须得复制进行。所以在实际的应用场景中，我们使用文本编辑器来编写Python代码。</p>
+</blockquote>
+<p>以下推荐两款文本剪辑器：</p>
+<ul>
+<li>Atom，免费、可安装多种插件来更高效的编写代码。<br><img src="http://115.28.132.58:8080/docs/Atom_HelloWorld.png" alt=""></li>
+<li>NodePad++,免费、在Window上很实用的文本编辑器<br><img src="http://115.28.132.58:8080/docs/nodepad.jpeg" alt=""></li>
+</ul>
+<h4 id="编写并运行第一个Python程序"><a href="#编写并运行第一个Python程序" class="headerlink" title="编写并运行第一个Python程序"></a>编写并运行第一个Python程序</h4><ol>
+<li>安装好编辑器之后，打开编辑，新建文件，输入:<br><img src="http://115.28.132.58:8080/docs/PythonPrint.png" alt=""></li>
+<li>编辑Python文件后，将其保存为Hello.py并放到自己的开发目录如 ~/Dev 或者 C:/dev 都可以 </li>
+<li>通过cd 命令定位到文件的目录,并使用python命令来运行<br><img src="http://115.28.132.58:8080/docs/RunPython.png" alt=""></li>
+<li>如果当前文件夹没有Hello.py，会报错如下：<br><img src="http://115.28.132.58:8080/docs/RunPythonError.png" alt=""> </li>
+</ol>
+<h2 id="三、atom-runner插件"><a href="#三、atom-runner插件" class="headerlink" title="三、atom-runner插件"></a>三、atom-runner插件</h2><blockquote>
+<p>每一门语言的开始，相信大家都会去找到一个适合自己的编辑器，类似SublineText等等的。当然SublineText也可以运行Python，但是我个人比较推荐Atom。</p>
+</blockquote>
+<p><a href="https://github.com/lsegal/atom-runner" target="_blank" rel="external">atom-runner</a>Atom中的开源插件，可用来执行Python脚本。<br>直接在Atom settings-&gt;install 中搜索atom-runner,安装即可</p>
+<p><img src="http://115.28.132.58:8080/docs/atom-runner.png" alt=""></p>
+<blockquote>
+<p>该插件官方文档指明，可支持JavaScript、CoffeeScript、Ruby、Python、Go、Bash 和 PowerShell scripts.</p>
+<h4 id="可执行命令"><a href="#可执行命令" class="headerlink" title="可执行命令"></a>可执行命令</h4><ul>
+<li>Ctrl+R (Alt+R on Win/Linux)运行当前活动窗口</li>
+<li>Ctrl+Shift + R (Alt+Shif+R on Win/Linux)运行在活动窗口的选择文本</li>
+<li>Ctrul+Shift+C 杀掉当前正在运行的进程</li>
+<li>Escap 关闭正在运行的窗口</li>
+</ul>
+</blockquote>
+<p>运行结果如下<br><img src="http://115.28.132.58:8080/docs/HelloWorld.png" alt=""></p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>本篇阅读完成之后，花上几分钟时间自行编写并运行下Python，熟悉下Python的环境。</p>
 ]]></content>
     </entry>
     
@@ -739,52 +767,11 @@ limitations under the License.
     </entry>
     
     <entry>
-      <title><![CDATA[Tar包高优化解析]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/TarParse/</url>
-      <content type="html"><![CDATA[<h1 id="本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。"><a href="#本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。" class="headerlink" title="本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。"></a>本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。</h1><h3 id="一、首先讲一个tar包的文件结构。（懂得可以绕开此段）"><a href="#一、首先讲一个tar包的文件结构。（懂得可以绕开此段）" class="headerlink" title="一、首先讲一个tar包的文件结构。（懂得可以绕开此段）"></a>一、首先讲一个tar包的文件结构。（懂得可以绕开此段）</h3><pre><code>tar只是一个归档文件，并不进行压缩。
-</code></pre><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">　　<span class="keyword">struct</span> tar_header</div><div class="line">　　&#123;</div><div class="line">　　 <span class="keyword">char</span> name[<span class="number">100</span>];</div><div class="line">　　 <span class="keyword">char</span> mode[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> uid[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> gid[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> size[<span class="number">12</span>];</div><div class="line">　　 <span class="keyword">char</span> mtime[<span class="number">12</span>];</div><div class="line">　　 <span class="keyword">char</span> chksum[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> typeflag;</div><div class="line">　　 <span class="keyword">char</span> linkname[<span class="number">100</span>];</div><div class="line">　　 <span class="keyword">char</span> magic[<span class="number">6</span>];</div><div class="line">　　 <span class="keyword">char</span> version[<span class="number">2</span>];</div><div class="line">　　 <span class="keyword">char</span> uname[<span class="number">32</span>];</div><div class="line">　　 <span class="keyword">char</span> gname[<span class="number">32</span>];</div><div class="line">　　 <span class="keyword">char</span> devmajor[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> devminor[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> prefix[<span class="number">155</span>];</div><div class="line">　　 <span class="keyword">char</span> padding[<span class="number">12</span>];</div><div class="line">　　&#125;;</div></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>&gt;<br>　　以上是Tar中保存文件信息的数据结构，其后跟着的就是文件的内容。<br> size为文件大小的八进制字节表示，例如文件大小为90个字节，那么这里就是八进制的90，即为132。<br>　　其中，文件大小，修改时间，checksum都是存储的对应的八进制字符串，字符串最后一个字符为空格字符<br>　　checksum的计算方法为出去checksum字段其他所有的512-8共504个字节的ascii码相加的值再加上256(checksum当作八个空格，即8<em>0x20）<br>　　文件内容以512字节为一个block进行分割，最后一个block不足部分以0补齐<br>　　两个文件的tar包首先存放第一个文件的tar头结构，然后存储文件内容，接着存储第二个文件的tar头结构，然后存储文件内容<br>　　所有文件都存储完了以后，最后存放一个全零的tar结构<br>　　所有的tar文件大小应该都是512的倍数，一个空文件打包后为512</em>3字节，包括一个tar结构头，一个全零的block存储文件内容，一个全零的tar结构</p>
-<ul>
-<li>检测tar文件格式的方法：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">1、检测magic字段，即在0x101处检查字符串，是否为ustar。有时某些压缩软件将这个字段设置为空。如果magic字段为空，进入第2步。</div><div class="line">2、计算校验和，按照上面的方法计算校验和，如果校验和正确的话，那么这就是一个tar文件。</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>注意：在windows下面，不支持uid、uname等，有的甚至不支持magic，这样就比较麻烦了。</p>
-<h3 id="二、Java层普遍的“解压”方式"><a href="#二、Java层普遍的“解压”方式" class="headerlink" title="二、Java层普遍的“解压”方式"></a>二、Java层普遍的“解压”方式</h3><p>&gt;<br>     因为在jdk中提供了 FilterInputStream,因此我们可以通过继承该类，并构造一个TarEntry的模板，在子类中按每512个字节，将一个tar流分成包含N个512字节的TarEntry. 这样我们就可以将一个tar包通过TarInputStream和TarEntry解开到一个map集合中<entryname,data>.</entryname,data></p>
-<h3 id="三、内存优化的-“解压”方式"><a href="#三、内存优化的-“解压”方式" class="headerlink" title="三、内存优化的 “解压”方式"></a>三、内存优化的 “解压”方式</h3><p>&gt;<br>     由于每一个TarEntry都是一个固定大小字节的对象，那么我们可不可以直接读取这块内存，而不是将所有都常驻内存呢？<br>     答案当然是可以的。<br>    为了内存上的优化和效率上的提升，我们可以直接读取指定EntryNam的内存块。<br>    因为一个tar包基本的组成结构就是   entryName-&gt;data。我们可以拿到每一个EntryName和其对应的内存大小、偏移量，在读取的时候直接在TarInputStream中读取相应内存块。<br>   代码如下：</p>
-<ol>
-<li><p>一个简单维护TarEntry偏移量和字节大小的类McTarEntry。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">McTarEntry</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="keyword">private</span> <span class="keyword">long</span> offset;</div><div class="line"></div><div class="line">  <span class="keyword">private</span> <span class="keyword">int</span> size;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">private</span> <span class="title">McTarEntry</span><span class="params">(Builder builder)</span> </span>&#123;</div><div class="line">      offset = builder.offset;</div><div class="line">      size = builder.size;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">getOffset</span><span class="params">()</span> </span>&#123;</div><div class="line">      <span class="keyword">return</span> offset;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getSize</span><span class="params">()</span> </span>&#123;</div><div class="line">      <span class="keyword">return</span> size;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Builder</span> </span>&#123;</div><div class="line">      <span class="keyword">private</span> <span class="keyword">long</span> offset = <span class="number">0</span>;</div><div class="line">      <span class="keyword">private</span> <span class="keyword">int</span> size = <span class="number">0</span>;</div><div class="line"></div><div class="line">      <span class="function"><span class="keyword">public</span> Builder <span class="title">offset</span><span class="params">(<span class="keyword">long</span> offset)</span> </span>&#123;</div><div class="line">          <span class="keyword">this</span>.offset = offset;</div><div class="line">          <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      <span class="function"><span class="keyword">public</span> Builder <span class="title">size</span><span class="params">(<span class="keyword">int</span> size)</span> </span>&#123;</div><div class="line">          <span class="keyword">this</span>.size = size;</div><div class="line">          <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      <span class="function"><span class="keyword">public</span> H5TarEntry <span class="title">build</span><span class="params">()</span> </span>&#123;</div><div class="line">          <span class="keyword">return</span> <span class="keyword">new</span> McTarEntry(<span class="keyword">this</span>);</div><div class="line">      &#125;</div><div class="line"></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p>解析Tar包，将每个McTarEntry保存在map</p>
-  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">FileInputStream fis = <span class="keyword">new</span> FileInputStream(tarPath);</div><div class="line">BufferedInputStream bis = <span class="keyword">new</span> BufferedInputStream(fis);</div><div class="line">TarInputStream tis = <span class="keyword">new</span> TarInputStream(bis);</div><div class="line">TarEntry te = <span class="keyword">null</span>;</div><div class="line"><span class="keyword">while</span> ((te = tis.getNextEntry()) != <span class="keyword">null</span>) &#123;</div><div class="line">    String entryName = te.getName();</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (te.isDirectory() || TextUtils.isEmpty(entryName)) &#123;</div><div class="line">        <span class="keyword">continue</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    McTarEntry mcTarEntry = <span class="keyword">new</span> McTarEntry.Builder().offset(tis.getCurrentOffset())</div><div class="line">            .size((<span class="keyword">int</span>) te.getSize()).build();</div><div class="line"></div><div class="line">    tarEntryMap.put(entryName, h5TarEntry);</div><div class="line"></div><div class="line">&#125;</div><div class="line">tis.close();</div></pre></td></tr></table></figure>
-</li>
-<li><p>读取指定entryName的数据块</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">static</span> <span class="keyword">byte</span>[] get(String appId, String entryName) &#123;</div><div class="line">      <span class="keyword">try</span> &#123;</div><div class="line">          <span class="keyword">byte</span> buffer[] = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">2048</span>];</div><div class="line">          <span class="keyword">int</span> count;</div><div class="line">          ByteArrayOutputStream bos = <span class="keyword">new</span> ByteArrayOutputStream();</div><div class="line">          <span class="keyword">if</span> (!tarEntryMap.containsKey()) &#123;</div><div class="line">              <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">          &#125;</div><div class="line">          <span class="keyword">long</span> offset = tarEntryMap.get(entryName).getOffset();</div><div class="line">          <span class="keyword">int</span> entrySize = tarEntryMap.get(entryName).getSize();</div><div class="line">          FileInputStream fis = <span class="keyword">new</span> FileInputStream(tarPath);</div><div class="line">          BufferedInputStream bis = <span class="keyword">new</span> BufferedInputStream(fis);</div><div class="line">          TarInputStream tis = <span class="keyword">new</span> TarInputStream(bis);</div><div class="line">          H5Log.d(TAG, <span class="string">"entryName"</span> + entryName + <span class="string">" skip offset:"</span> + offset + <span class="string">" size"</span> + entrySize);</div><div class="line">          tis.skip(offset);</div><div class="line">          <span class="keyword">if</span> (buffer.length &gt; entrySize) &#123;</div><div class="line">              buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[entrySize];</div><div class="line">          &#125;</div><div class="line">          <span class="keyword">int</span> bufferSize = <span class="number">0</span>;</div><div class="line">          <span class="keyword">while</span> ((count = tis.read(buffer)) != -<span class="number">1</span>) &#123;</div><div class="line">              bos.write(buffer, <span class="number">0</span>, count);</div><div class="line">              bufferSize += count;</div><div class="line">                 <span class="comment">// 当前buffer加上已经读取的bufferSize如果超过entrySize那么我们就应该重新计算buffer进行最后一次读取。</span></div><div class="line">              <span class="keyword">if</span> ((bufferSize + buffer.length) &gt; entrySize) &#123;</div><div class="line">                  buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[entrySize % bufferSize];</div><div class="line">                  bufferSize = entrySize - entrySize % bufferSize;</div><div class="line">              &#125;</div><div class="line"></div><div class="line">              <span class="keyword">if</span> (buffer.length == entrySize || entrySize == bufferSize) &#123;</div><div class="line">                  <span class="keyword">break</span>;</div><div class="line">              &#125;</div><div class="line">          &#125;</div><div class="line">          tis.close();</div><div class="line">          <span class="keyword">byte</span>[] data = bos.toByteArray();</div><div class="line">          <span class="keyword">if</span> (data == <span class="keyword">null</span>) &#123;</div><div class="line">              <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">          &#125;</div><div class="line">          H5Log.d(TAG, <span class="string">"entryName:"</span> + entryName);</div><div class="line">          <span class="keyword">return</span> data;</div><div class="line">      &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">          H5Log.e(TAG, <span class="string">"exception :"</span> + e);</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
-<p>  这样就可以通过指定的entryName，根据其offset和 size 计算到这个entry在TarStream中固定内存块，从而拿到真正的数据。</p>
-</li>
-</ol>
-<h3 id="总结：两种读取方式的区别："><a href="#总结：两种读取方式的区别：" class="headerlink" title="总结：两种读取方式的区别："></a>总结：两种读取方式的区别：</h3><ul>
-<li>第一种<br>优点：减少了I/O操作。<br>缺点：耗费了内存。假如一个很大的资源在这个tar中，但是被使用的概率很低，这样耗费了内存从而不值得这么做。</li>
-<li>第二种<br>优点：节省了内存，提高了读取效率<br>缺点：增加了I/O操作，Tar资源可能存在被篡改的风险。</li>
-</ul>
-<p>Thanks.<br>  By MC.</p>
-]]></content>
-    </entry>
-    
-    <entry>
       <title></title>
       <url>https://xiyoumc.github.com/2017/07/03/Untitled/</url>
       <content type="html"><![CDATA[<p>   前段时间花了点功夫研究了下Django框架，也就是Python后端+Web端的开发框架，可以快速完成服务端的搭建.<br>借用 <code>Django</code> 官网的一句话 - “Django makes it easier to build better Web apps more quickly and with less code.”</p>
 <p>   然后这两天又抽空翻了下之前自己做的Hybrid，然后顺其自然的我使用Django框架和Hybrid框架做了个简单的 Demo,并将其放到了Github上。有兴趣的朋友可以共同探讨下。</p>
 <p>   地址在这: <a href="https://github.com/xiyouMc/HybridFramework" target="_blank" rel="external">https://github.com/xiyouMc/HybridFramework</a></p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[大姨夫]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/%E5%A4%A7%E5%A7%A8%E5%A4%AB/</url>
-      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/big.jpg?raw=true" alt=""><br>最近又开始胡思乱想，针对感情、爱情总是一段时间就害怕会分开。特么的都是自己作死。哈哈哈<br><a id="more"></a><br>有一种大姨夫的感觉，有一种小女人的心思，有一种想狠狠抱着你的想法。<br>这是病，得治。自己胡思乱想，想的多，多听听歌吧。<br>大家都很忙，过好自己，照顾好爱的人。</p>
 ]]></content>
     </entry>
     
@@ -800,6 +787,31 @@ limitations under the License.
 <h4 id="ubuntu下安装需要添加一个新的软件库，里面包含了libimobiledevice"><a href="#ubuntu下安装需要添加一个新的软件库，里面包含了libimobiledevice" class="headerlink" title="ubuntu下安装需要添加一个新的软件库，里面包含了libimobiledevice"></a>ubuntu下安装需要添加一个新的软件库，里面包含了libimobiledevice</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sudo add-apt-repository ppa:pmcenery/ppa</div><div class="line">sudo apt-get update</div><div class="line">apt-get install libimobiledevice-utils</div><div class="line">sudo apt-get install ideviceinstaller</div></pre></td></tr></table></figure>
 <p>这里面包含了很多命令，如下<br><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/idevice.png?raw=true" alt="zls"></p>
 <h3 id="如要安装一个ipa文件到手机上可以使用"><a href="#如要安装一个ipa文件到手机上可以使用" class="headerlink" title="如要安装一个ipa文件到手机上可以使用"></a>如要安装一个ipa文件到手机上可以使用</h3><p>ideviceinstaller -i 命令安装一个ipa文件到手机上，如果是企业签名的，非越狱机器也可以直接安装了</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Shell语言基本教程]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/linux_shell/</url>
+      <content type="html"></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[大姨夫]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/%E5%A4%A7%E5%A7%A8%E5%A4%AB/</url>
+      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/big.jpg?raw=true" alt=""><br>最近又开始胡思乱想，针对感情、爱情总是一段时间就害怕会分开。特么的都是自己作死。哈哈哈<br><a id="more"></a><br>有一种大姨夫的感觉，有一种小女人的心思，有一种想狠狠抱着你的想法。<br>这是病，得治。自己胡思乱想，想的多，多听听歌吧。<br>大家都很忙，过好自己，照顾好爱的人。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Charles破解教程，适用于所有版本]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/charles_break/</url>
+      <content type="html"><![CDATA[<h1 id="Charles-注册码"><a href="#Charles-注册码" class="headerlink" title="Charles 注册码"></a>Charles 注册码</h1><h3 id="1-Windows-用户"><a href="#1-Windows-用户" class="headerlink" title="1. Windows 用户"></a>1. Windows 用户</h3><p>RegName: ANONYMOUS@chinapyg.com<br>Reg_Key: 5fae99ec65736945ba<br>官方下载后可直接激活。神key.</p>
+<h3 id="2-Mac-用户"><a href="#2-Mac-用户" class="headerlink" title="2. Mac 用户"></a>2. Mac 用户</h3><p>方式一如果不行，方式二绝对可以。</p>
+<h4 id="1-方式一"><a href="#1-方式一" class="headerlink" title="1. 方式一"></a>1. 方式一</h4><p>账号：WaitsUn.com<br>密码：vapg-fold-dreg-inky</p>
+<h4 id="2-方式二"><a href="#2-方式二" class="headerlink" title="2. 方式二"></a>2. 方式二</h4><p>先安装Charles，然后在终端中执行下面的命令即可实现破解。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">charles=/Applications/Charles.app/Contents/Java/charles.jar</div><div class="line">dir=charleshack</div><div class="line">mkdir $dir</div><div class="line">cd $dir</div><div class="line">cat &gt;&gt; License.java &lt;&lt;EOF</div><div class="line">package com.xk72.charles;</div><div class="line">public final class License &#123;</div><div class="line">    public static boolean a() &#123; return true; &#125;</div><div class="line">    public static String b() &#123; return &quot;http://www.gfzj.us&quot;; &#125;</div><div class="line">    public static String a(String name, String key) &#123; return null; &#125;</div><div class="line">&#125;</div><div class="line">EOF</div><div class="line">javac -encoding UTF-8 License.java -d .&amp;&amp; jar -uvf $charles com/xk72/charles/License.class</div><div class="line">cd .. &amp;&amp; rm -rf $dir</div></pre></td></tr></table></figure>
+<a id="more"></a>
 ]]></content>
     </entry>
     
@@ -849,18 +861,6 @@ limitations under the License.
 <ul>
 <li>JSBridge.call(“hideTitlebar”)  —Hide Title bar</li>
 </ul>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Charles破解教程，适用于所有版本]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/charles_break/</url>
-      <content type="html"><![CDATA[<h1 id="Charles-注册码"><a href="#Charles-注册码" class="headerlink" title="Charles 注册码"></a>Charles 注册码</h1><h3 id="1-Windows-用户"><a href="#1-Windows-用户" class="headerlink" title="1. Windows 用户"></a>1. Windows 用户</h3><p>RegName: ANONYMOUS@chinapyg.com<br>Reg_Key: 5fae99ec65736945ba<br>官方下载后可直接激活。神key.</p>
-<h3 id="2-Mac-用户"><a href="#2-Mac-用户" class="headerlink" title="2. Mac 用户"></a>2. Mac 用户</h3><p>方式一如果不行，方式二绝对可以。</p>
-<h4 id="1-方式一"><a href="#1-方式一" class="headerlink" title="1. 方式一"></a>1. 方式一</h4><p>账号：WaitsUn.com<br>密码：vapg-fold-dreg-inky</p>
-<h4 id="2-方式二"><a href="#2-方式二" class="headerlink" title="2. 方式二"></a>2. 方式二</h4><p>先安装Charles，然后在终端中执行下面的命令即可实现破解。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">charles=/Applications/Charles.app/Contents/Java/charles.jar</div><div class="line">dir=charleshack</div><div class="line">mkdir $dir</div><div class="line">cd $dir</div><div class="line">cat &gt;&gt; License.java &lt;&lt;EOF</div><div class="line">package com.xk72.charles;</div><div class="line">public final class License &#123;</div><div class="line">    public static boolean a() &#123; return true; &#125;</div><div class="line">    public static String b() &#123; return &quot;http://www.gfzj.us&quot;; &#125;</div><div class="line">    public static String a(String name, String key) &#123; return null; &#125;</div><div class="line">&#125;</div><div class="line">EOF</div><div class="line">javac -encoding UTF-8 License.java -d .&amp;&amp; jar -uvf $charles com/xk72/charles/License.class</div><div class="line">cd .. &amp;&amp; rm -rf $dir</div></pre></td></tr></table></figure>
-<a id="more"></a>
 ]]></content>
     </entry>
     
@@ -929,6 +929,54 @@ limitations under the License.
 <li>So 让我们一起努力。有一天你会是我的妻子，我会是你的丈夫，你我会是孩子的父母。</li>
 </ul>
 </blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Github系列教程二 「加入Github」]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/Github%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%E4%BA%8C%20%E5%8A%A0%E5%85%A5Github/</url>
+      <content type="html"><![CDATA[<h3 id="本文同步在我的公众号-DeveloperPython"><a href="#本文同步在我的公众号-DeveloperPython" class="headerlink" title="本文同步在我的公众号: DeveloperPython"></a>本文同步在我的公众号: DeveloperPython</h3><p><img src="http://upload-images.jianshu.io/upload_images/4653472-1ff8d4743422cfaf?imageMogr2/auto-orient/strip" alt=""><br><a id="more"></a><br>相信昨天大家看过 <a href="http://mp.weixin.qq.com/s?__biz=MzU3ODAxNDcwNQ==&amp;mid=2247483866&amp;idx=1&amp;sn=9692ca0d4a25ee4675d073e9643b7e30&amp;chksm=fd7a9d44ca0d1452f0e7d55d412e5469a3d82fbb00153e7d9b99a33e0424d6eb47b54903b5ad&amp;scene=21#wechat_redirect" target="_blank" rel="external">Github系列教程一 「开门」</a>之后，已经对Github的简介和发展史有了一个详细的了解。</p>
+<p>那么多的不说，我继续更新。</p>
+<p>为了更好的使用Github，第一步去了解这个平台是重要的。</p>
+<p>因此这篇我将针对Github平台进行一个全面的讲解。</p>
+<h2 id="1、注册Github账号"><a href="#1、注册Github账号" class="headerlink" title="1、注册Github账号"></a>1、注册Github账号</h2><p>访问 <a href="https://github.com/官网。" target="_blank" rel="external">https://github.com/官网。</a></p>
+<p>首页就是一个注册Github的入口。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-5d3b14792b78caf5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>这里就很简单了，填写你的用户名、邮箱和密码。</p>
+<p>不过提醒下，这个用户名比较重要，这相当于是你在Github的ID。</p>
+<p>上一篇文章讲过Github可以搭建个人博客username.github.io。那么这个用户名就会在这里用到。</p>
+<p>所以建议填写一个代表自己的ID。</p>
+<p>比如我的xiyouMc，博客就是xiyouMc.github.io。</p>
+<h2 id="2、Github主面板"><a href="#2、Github主面板" class="headerlink" title="2、Github主面板"></a>2、Github主面板</h2><p>注册完成之后，就来到了Github的主面板。</p>
+<p>如果你是新注册的，那么不会像我这么丰富，不过玩上一段时间也就差不多类似了。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-f9ed3b8bfceb47f1?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>以下，我针对主要的两点进行讲解：</p>
+<p><strong>Github的工具栏</strong></p>
+<p>1、Logo<br>左上角这个Logo在Github每个页面都有，同时也是可以点击的。</p>
+<p>当你在Github里面打开了很多页面，然后想快速回到这个面板。直接点击左上角的Logo即可。</p>
+<p>2、搜索项目的入口<br>这里可以输入关键字，去搜索自己想要的项目。</p>
+<p>3、Pull requests(PR)<br>一个可查看自己贡献代码给其他人项目的面板。</p>
+<p>关于pr的含义，就是当自己针对别人的开源项目做了改动之后，就可以将这些改动pull requests 到对应开源者的项目中。</p>
+<p>4、Issues<br>这个你可以理解为Github上的聊天功能。</p>
+<p>用这个功能你可以很方便的给别人的项目提建议或者提Bug。同时你们也可以在里面进行沟通。</p>
+<p>5、Gist<br>如果你没有自己的开源项目，但是你有很不错的代码片段。就可以在Gist里面将自己优秀的代码片段进行提交。</p>
+<p>当然，你可以在Gist里面学习别人优秀的代码片段.<br><img src="http://upload-images.jianshu.io/upload_images/4653472-edf4803b2fbf547a?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><strong>动态栏</strong></p>
+<p>这里是你关注人的动态列表和你自己项目的状态记录。<br>所以在Github上多关注一些大牛，你会看到他们的动态，包括他们点赞的项目和创建的项目。这些项目也绝对是有水平的。</p>
+<h2 id="3、Github个人主页"><a href="#3、Github个人主页" class="headerlink" title="3、Github个人主页"></a>3、Github个人主页</h2><p>点击右上角的头像，会弹出下拉列表，在里面点击 Your profile。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-fd77f7f2c44fefef?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>进来之后，就进入了个人的主页。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-63d6baee40eaa391?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>你会看到我的简介里面养了条狗。<br>其中，几个重要的功能，我也都在上面标注出来了。</p>
+<h2 id="4、修改个人标签"><a href="#4、修改个人标签" class="headerlink" title="4、修改个人标签"></a>4、修改个人标签</h2><p>同样的，参考上面 Your profile。在那个下拉列表中，会有一个Settings，点击之后就会来到个人设置页面。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-c322da7781011eb4?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>这里面的内容，也都很清楚了。比如修改头像、修改用户名、简介等等的。</p>
+<p>不过到这里，我就讲个课外话。</p>
+<p>很多人都说Github是免费的，那他们怎么赢利的呢?</p>
+<p>我可以很明确的告诉你，Github有付费功能，而且有点贵。</p>
+<p>它的付费功能其实也很简单，就是一个创建私有仓库的权限。如果你买了的话，就可以创建私有的项目，当然私有的意思就是别人无法看到你的代码。</p>
+<p>具体价格，每个月大概7刀，折合人民币就是42块钱左右。所以如果不是非必须使用私有，还是建议别买这个。</p>
+<h2 id="5、创建项目"><a href="#5、创建项目" class="headerlink" title="5、创建项目"></a>5、创建项目</h2><p>点击 New repository，就进入了创建项目的页面。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-e6ecdc3e4b4c112d?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>填写你的项目名字、加上一句高大上的简介，选择Public，然后点击Create repository。就走出了开源的第一步。</p>
+<p>创建之后的项目面板大概是这样的：<br><img src="http://upload-images.jianshu.io/upload_images/4653472-38b3d9f4e6a939fc?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>因为这是一个已经成型的项目，所以说，如果你们是刚创建的一个项目，那么不会有这么丰富的内容。最多里面也就一个项目的说明文档Readme.md。当然这是需要使用 Markdown语法的，简称md,也同样是程序员必备的技能。</p>
+<h2 id="6、总结"><a href="#6、总结" class="headerlink" title="6、总结"></a>6、总结</h2><p>其实这篇文章写得相对简单点，如果你是一个已经使用Github一段时间的可能帮助不大。但是如果你刚接触或者没接触过Github，我相信这些基础知识对于你来讲还是有很大意义的。</p>
+<p>所以走出你的开源第一步，勇敢的将自己的项目提交到Github吧。</p>
+<hr>
+<p>扫描二维码，关注公众号</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-b61ffc02ee6e4db5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>生活不止眼前的苟且，还有手下的代码、<br>和嘴上的扯淡<br>——</p>
+<p>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a></p>
+<p>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
 ]]></content>
     </entry>
     
@@ -1022,54 +1070,6 @@ limitations under the License.
 <p> 打开第一个:</p>
 <p><img src="http://115.28.132.58:8080/docs/nqt_site.png" alt=""></p>
 <h2 id="0x04-总结"><a href="#0x04-总结" class="headerlink" title="0x04. 总结"></a>0x04. 总结</h2><p>如上面例子，我们正确的使用Google，不仅能帮我们快速找到所需要的文章、电影、各种种子、*V等等的，并且还能针对我们的渗透测试省时省力。</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Github系列教程二 「加入Github」]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/Github%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%E4%BA%8C%20%E5%8A%A0%E5%85%A5Github/</url>
-      <content type="html"><![CDATA[<h3 id="本文同步在我的公众号-DeveloperPython"><a href="#本文同步在我的公众号-DeveloperPython" class="headerlink" title="本文同步在我的公众号: DeveloperPython"></a>本文同步在我的公众号: DeveloperPython</h3><p><img src="http://upload-images.jianshu.io/upload_images/4653472-1ff8d4743422cfaf?imageMogr2/auto-orient/strip" alt=""><br><a id="more"></a><br>相信昨天大家看过 <a href="http://mp.weixin.qq.com/s?__biz=MzU3ODAxNDcwNQ==&amp;mid=2247483866&amp;idx=1&amp;sn=9692ca0d4a25ee4675d073e9643b7e30&amp;chksm=fd7a9d44ca0d1452f0e7d55d412e5469a3d82fbb00153e7d9b99a33e0424d6eb47b54903b5ad&amp;scene=21#wechat_redirect" target="_blank" rel="external">Github系列教程一 「开门」</a>之后，已经对Github的简介和发展史有了一个详细的了解。</p>
-<p>那么多的不说，我继续更新。</p>
-<p>为了更好的使用Github，第一步去了解这个平台是重要的。</p>
-<p>因此这篇我将针对Github平台进行一个全面的讲解。</p>
-<h2 id="1、注册Github账号"><a href="#1、注册Github账号" class="headerlink" title="1、注册Github账号"></a>1、注册Github账号</h2><p>访问 <a href="https://github.com/官网。" target="_blank" rel="external">https://github.com/官网。</a></p>
-<p>首页就是一个注册Github的入口。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-5d3b14792b78caf5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>这里就很简单了，填写你的用户名、邮箱和密码。</p>
-<p>不过提醒下，这个用户名比较重要，这相当于是你在Github的ID。</p>
-<p>上一篇文章讲过Github可以搭建个人博客username.github.io。那么这个用户名就会在这里用到。</p>
-<p>所以建议填写一个代表自己的ID。</p>
-<p>比如我的xiyouMc，博客就是xiyouMc.github.io。</p>
-<h2 id="2、Github主面板"><a href="#2、Github主面板" class="headerlink" title="2、Github主面板"></a>2、Github主面板</h2><p>注册完成之后，就来到了Github的主面板。</p>
-<p>如果你是新注册的，那么不会像我这么丰富，不过玩上一段时间也就差不多类似了。</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-f9ed3b8bfceb47f1?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>以下，我针对主要的两点进行讲解：</p>
-<p><strong>Github的工具栏</strong></p>
-<p>1、Logo<br>左上角这个Logo在Github每个页面都有，同时也是可以点击的。</p>
-<p>当你在Github里面打开了很多页面，然后想快速回到这个面板。直接点击左上角的Logo即可。</p>
-<p>2、搜索项目的入口<br>这里可以输入关键字，去搜索自己想要的项目。</p>
-<p>3、Pull requests(PR)<br>一个可查看自己贡献代码给其他人项目的面板。</p>
-<p>关于pr的含义，就是当自己针对别人的开源项目做了改动之后，就可以将这些改动pull requests 到对应开源者的项目中。</p>
-<p>4、Issues<br>这个你可以理解为Github上的聊天功能。</p>
-<p>用这个功能你可以很方便的给别人的项目提建议或者提Bug。同时你们也可以在里面进行沟通。</p>
-<p>5、Gist<br>如果你没有自己的开源项目，但是你有很不错的代码片段。就可以在Gist里面将自己优秀的代码片段进行提交。</p>
-<p>当然，你可以在Gist里面学习别人优秀的代码片段.<br><img src="http://upload-images.jianshu.io/upload_images/4653472-edf4803b2fbf547a?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><strong>动态栏</strong></p>
-<p>这里是你关注人的动态列表和你自己项目的状态记录。<br>所以在Github上多关注一些大牛，你会看到他们的动态，包括他们点赞的项目和创建的项目。这些项目也绝对是有水平的。</p>
-<h2 id="3、Github个人主页"><a href="#3、Github个人主页" class="headerlink" title="3、Github个人主页"></a>3、Github个人主页</h2><p>点击右上角的头像，会弹出下拉列表，在里面点击 Your profile。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-fd77f7f2c44fefef?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>进来之后，就进入了个人的主页。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-63d6baee40eaa391?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>你会看到我的简介里面养了条狗。<br>其中，几个重要的功能，我也都在上面标注出来了。</p>
-<h2 id="4、修改个人标签"><a href="#4、修改个人标签" class="headerlink" title="4、修改个人标签"></a>4、修改个人标签</h2><p>同样的，参考上面 Your profile。在那个下拉列表中，会有一个Settings，点击之后就会来到个人设置页面。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-c322da7781011eb4?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>这里面的内容，也都很清楚了。比如修改头像、修改用户名、简介等等的。</p>
-<p>不过到这里，我就讲个课外话。</p>
-<p>很多人都说Github是免费的，那他们怎么赢利的呢?</p>
-<p>我可以很明确的告诉你，Github有付费功能，而且有点贵。</p>
-<p>它的付费功能其实也很简单，就是一个创建私有仓库的权限。如果你买了的话，就可以创建私有的项目，当然私有的意思就是别人无法看到你的代码。</p>
-<p>具体价格，每个月大概7刀，折合人民币就是42块钱左右。所以如果不是非必须使用私有，还是建议别买这个。</p>
-<h2 id="5、创建项目"><a href="#5、创建项目" class="headerlink" title="5、创建项目"></a>5、创建项目</h2><p>点击 New repository，就进入了创建项目的页面。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-e6ecdc3e4b4c112d?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>填写你的项目名字、加上一句高大上的简介，选择Public，然后点击Create repository。就走出了开源的第一步。</p>
-<p>创建之后的项目面板大概是这样的：<br><img src="http://upload-images.jianshu.io/upload_images/4653472-38b3d9f4e6a939fc?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>因为这是一个已经成型的项目，所以说，如果你们是刚创建的一个项目，那么不会有这么丰富的内容。最多里面也就一个项目的说明文档Readme.md。当然这是需要使用 Markdown语法的，简称md,也同样是程序员必备的技能。</p>
-<h2 id="6、总结"><a href="#6、总结" class="headerlink" title="6、总结"></a>6、总结</h2><p>其实这篇文章写得相对简单点，如果你是一个已经使用Github一段时间的可能帮助不大。但是如果你刚接触或者没接触过Github，我相信这些基础知识对于你来讲还是有很大意义的。</p>
-<p>所以走出你的开源第一步，勇敢的将自己的项目提交到Github吧。</p>
-<hr>
-<p>扫描二维码，关注公众号</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-b61ffc02ee6e4db5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>生活不止眼前的苟且，还有手下的代码、<br>和嘴上的扯淡<br>——</p>
-<p>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a></p>
-<p>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
 ]]></content>
     </entry>
     
