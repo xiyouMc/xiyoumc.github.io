@@ -399,8 +399,6 @@
 <h4 id="2-方式二"><a href="#2-方式二" class="headerlink" title="2. 方式二"></a>2. 方式二</h4><p>先安装Charles，然后在终端中执行下面的命令即可实现破解。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">charles=/Applications/Charles.app/Contents/Java/charles.jar</div><div class="line">dir=charleshack</div><div class="line">mkdir $dir</div><div class="line">cd $dir</div><div class="line">cat &gt;&gt; License.java &lt;&lt;EOF</div><div class="line">package com.xk72.charles;</div><div class="line">public final class License &#123;</div><div class="line">    public static boolean a() &#123; return true; &#125;</div><div class="line">    public static String b() &#123; return &quot;http://www.gfzj.us&quot;; &#125;</div><div class="line">    public static String a(String name, String key) &#123; return null; &#125;</div><div class="line">&#125;</div><div class="line">EOF</div><div class="line">javac -encoding UTF-8 License.java -d .&amp;&amp; jar -uvf $charles com/xk72/charles/License.class</div><div class="line">cd .. &amp;&amp; rm -rf $dir</div></pre></td></tr></table></figure>
 <a id="more"></a>
-<hr>
-<p>本作品采用 <a href="http://mp.weixin.qq.com/mp/homepage?__biz=MzU3ODAxNDcwNQ==&amp;hid=1&amp;sn=db175801fdac2b98477552fe386fedc3#wechat_redirect" target="_blank" rel="external">DeveloperPython</a> 进行许可，欢迎转载，但转载请注明来自 DeveloperPython，并保持转载后文章内容的完整。本人保留所有版权相关权利。<br>本文链接：<a href="https://xiyoumc.github.com/2017/07/03/charles_break/">https://xiyoumc.github.com/2017/07/03/charles_break/</a></p>
 
       
     </div>
@@ -437,8 +435,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/03/Google Hacking --你真的会用Google吗？/" rel="next" title="Google Hacking --你真的会用Google吗？">
-                <i class="fa fa-chevron-left"></i> Google Hacking --你真的会用Google吗？
+              <a href="/2017/07/03/2000个Star的Github项目很牛逼？/" rel="next" title="2000个Star的Github项目很牛逼？">
+                <i class="fa fa-chevron-left"></i> 2000个Star的Github项目很牛逼？
               </a>
             
           </div>
@@ -730,6 +728,8 @@
   
 
 
+  
+
 
 
 
@@ -757,6 +757,9 @@
 
   
   <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
 
 
   
@@ -932,5 +935,8 @@ $(function() {
 }); 
 </script>
   
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
 </body>
 </html>
