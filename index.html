@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="zh-Hans">
+<html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -106,7 +106,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Muse',
+    scheme: 'Pisces',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
     motion: true,
@@ -253,7 +253,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://xiyoumc.github.com/2017/07/03/Sun/">
+    <link itemprop="mainEntityOfPage" href="https://xiyoumc.github.com/2017/07/03/TarParse/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="xiyouMc">
@@ -272,7 +272,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/07/03/Sun/" itemprop="url">You are My Sunshine.</a></h1>
+                <a class="post-title-link" href="/2017/07/03/TarParse/" itemprop="url">Tar包高优化解析</a></h1>
         
 
         <div class="post-meta">
@@ -307,8 +307,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/情感/" itemprop="url" rel="index">
-                    <span itemprop="name">情感</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -325,8 +325,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/07/03/Sun/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/03/Sun/" itemprop="commentCount"></span>
+                <a href="/2017/07/03/TarParse/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/03/TarParse/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -352,10 +352,160 @@
 
       
         
-          <p>我喜欢温暖、你恰好是太阳<br>
+          <h1 id="本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。"><a href="#本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。" class="headerlink" title="本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。"></a>本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。</h1><h3 id="一、首先讲一个tar包的文件结构。（懂得可以绕开此段）"><a href="#一、首先讲一个tar包的文件结构。（懂得可以绕开此段）" class="headerlink" title="一、首先讲一个tar包的文件结构。（懂得可以绕开此段）"></a>一、首先讲一个tar包的文件结构。（懂得可以绕开此段）</h3><pre><code>tar只是一个归档文件，并不进行压缩。
+</code></pre><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">　　<span class="keyword">struct</span> tar_header</div><div class="line">　　&#123;</div><div class="line">　　 <span class="keyword">char</span> name[<span class="number">100</span>];</div><div class="line">　　 <span class="keyword">char</span> mode[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> uid[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> gid[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> size[<span class="number">12</span>];</div><div class="line">　　 <span class="keyword">char</span> mtime[<span class="number">12</span>];</div><div class="line">　　 <span class="keyword">char</span> chksum[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> typeflag;</div><div class="line">　　 <span class="keyword">char</span> linkname[<span class="number">100</span>];</div><div class="line">　　 <span class="keyword">char</span> magic[<span class="number">6</span>];</div><div class="line">　　 <span class="keyword">char</span> version[<span class="number">2</span>];</div><div class="line">　　 <span class="keyword">char</span> uname[<span class="number">32</span>];</div><div class="line">　　 <span class="keyword">char</span> gname[<span class="number">32</span>];</div><div class="line">　　 <span class="keyword">char</span> devmajor[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> devminor[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> prefix[<span class="number">155</span>];</div><div class="line">　　 <span class="keyword">char</span> padding[<span class="number">12</span>];</div><div class="line">　　&#125;;</div></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/07/03/Sun/#more" rel="contents">
+            <a class="btn" href="/2017/07/03/TarParse/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://xiyoumc.github.com/2017/07/03/程序员都应该会的抓包工具-Charles/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiyouMc">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="XiyouMc">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/03/程序员都应该会的抓包工具-Charles/" itemprop="url">程序员都应该会的抓包工具--Charles</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-03T13:48:28+08:00">
+                2017-07-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python新手引导/" itemprop="url" rel="index">
+                    <span itemprop="name">Python新手引导</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/07/03/程序员都应该会的抓包工具-Charles/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/03/程序员都应该会的抓包工具-Charles/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="程序员都应该会的抓包工具-Charles"><a href="#程序员都应该会的抓包工具-Charles" class="headerlink" title="程序员都应该会的抓包工具-Charles"></a>程序员都应该会的抓包工具-Charles</h1><blockquote>
+<h3 id="阅读本文需要7-66分钟"><a href="#阅读本文需要7-66分钟" class="headerlink" title="阅读本文需要7.66分钟"></a>阅读本文需要7.66分钟</h3></blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/03/程序员都应该会的抓包工具-Charles/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -551,7 +701,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://xiyoumc.github.com/2017/07/03/程序员都应该会的抓包工具-Charles/">
+    <link itemprop="mainEntityOfPage" href="https://xiyoumc.github.com/2017/07/03/编写高质量的Pythonic/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="xiyouMc">
@@ -570,7 +720,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/07/03/程序员都应该会的抓包工具-Charles/" itemprop="url">程序员都应该会的抓包工具--Charles</a></h1>
+                <a class="post-title-link" href="/2017/07/03/编写高质量的Pythonic/" itemprop="url">编写高质量的Pythonic风格代码</a></h1>
         
 
         <div class="post-meta">
@@ -623,8 +773,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/07/03/程序员都应该会的抓包工具-Charles/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/03/程序员都应该会的抓包工具-Charles/" itemprop="commentCount"></span>
+                <a href="/2017/07/03/编写高质量的Pythonic/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/03/编写高质量的Pythonic/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -650,11 +800,166 @@
 
       
         
-          <h1 id="程序员都应该会的抓包工具-Charles"><a href="#程序员都应该会的抓包工具-Charles" class="headerlink" title="程序员都应该会的抓包工具-Charles"></a>程序员都应该会的抓包工具-Charles</h1><blockquote>
-<h3 id="阅读本文需要7-66分钟"><a href="#阅读本文需要7-66分钟" class="headerlink" title="阅读本文需要7.66分钟"></a>阅读本文需要7.66分钟</h3></blockquote>
+          
+            <h4 id="来自公众号-DeveloperPython"><a href="#来自公众号-DeveloperPython" class="headerlink" title="来自公众号: DeveloperPython"></a>来自公众号: DeveloperPython</h4><blockquote>
+<p>我知道有些新人肯定不了解Pythonic是什么，也许在某些论坛看到过这个词语。其实，它的意思很简单。这是Python的开发者用来表示代码风格的名词。它是在Python开发过程中指定的一种指南，一种习惯。宗旨是 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;!--more--&gt;</div><div class="line"></div><div class="line">### 1、不用害怕长变量名</div><div class="line"></div><div class="line">长一点的变量名，有时候是为了让程序更容易理解和阅读。并且，有的编辑器已经支持自动提示，所以不用太担心敲键盘太多的烦恼。</div><div class="line"></div><div class="line">比如: user_info 就是比 ui 的可读性高很多:</div><div class="line"></div><div class="line">user_info = &#123;&apos;name&apos;:&apos;xiyouMc&apos;,&apos;age&apos;:&apos;保密&apos;,&apos;address&apos;:&apos;Hangzhou&apos;&#125;</div><div class="line"></div><div class="line">### 2、避免使用容易混淆的名称</div><div class="line"></div><div class="line">尽量不要使用 ```内建``` 的函数名来表示其他含义的名称。比如 list、dict等。不要使用 o(字符O的小写，很容易被当做数字0)，1(字母 L 的小写，也容易和数字 1 混淆)</div><div class="line"></div><div class="line">其次，变量名最好和你要解决的问题联系起来。</div><div class="line"></div><div class="line">### 3、尽量不要使用大小写来区分不同的对象</div><div class="line"></div><div class="line">比如 b是一个树脂类型的变量，但 A 是 String 类型，虽然在编码过程中容易区分这两者的含义，但是没啥卵用，它并不会给其他阅读代码的人带来福利。反而，带来的呕吐的感觉。</div><div class="line"></div><div class="line">### 4、其次，最重要的一点是，多看源码，学习别人的风格</div><div class="line"></div><div class="line">Github 上有数不胜数的优秀代码，比如web框架里面有名的Flask、Requests，还有爬虫界的Scrapy，这些都是经典中的经典，并且都是比较好的理解pythonic代码风格精髓的例子。</div><div class="line"></div><div class="line">### 5、最后，你实在是懒得不想关注这些，只想写代码，那么。。。</div><div class="line"></div><div class="line">我推荐一个神器，在你写完代码之后，执行这个神器就可以看到检测代码风格后的结果。</div><div class="line"></div><div class="line">```PEP8```，全称，&quot;Python Enhancement Proposal #8&quot;，它列举除了很多对代码的布局、注释、命名的要求。</div><div class="line"></div><div class="line">pip install -U pep8 #来安装 pep8z</div><div class="line"></div><div class="line">然后用它来检测代码：</div><div class="line"></div><div class="line">```python</div><div class="line">➜ /Users/xiyoumc &gt;pep8 --first pornHubSpider.py</div><div class="line">pornHubSpider.py:1:1: E265 block comment should start with &apos;# &apos;</div><div class="line">pornHubSpider.py:19:43: E124 closing bracket does not match visual indentation</div><div class="line">pornHubSpider.py:22:16: E251 unexpected spaces around keyword / parameter equals</div><div class="line">pornHubSpider.py:53:5: E301 expected 1 blank line, found 0</div><div class="line">pornHubSpider.py:71:22: W503 line break before binary operator</div></pre></td></tr></table></figure></p>
+</blockquote>
+<p>同时，如果对pep8感兴趣的话，可以留言，我可以开个系列来讲解 PEP8里面的变量、函数、类、木块和包，这样就会更加容易的理解Pythonic风格。</p>
+<p>最后，如若我写的对大家有点帮助，那么关注公众号 <code>DeveloperPython</code>，你将会收到关于Python技术第一时间的推送</p>
+<hr>
+<p> 长摁‘识别二维码’，一起进步</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-20b8964865a3ae4f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>生活不止眼前的苟且，还有手下的代码、</p>
+<p>和嘴上的扯淡<br>——<br>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a></p>
+<p>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
+<hr>
+<p>点击 <a href="http://t.xiaomiquan.com/7ey3rZv" target="_blank" rel="external">Join</a>，加入Python技术成长圈子，我在这里等着你。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://xiyoumc.github.com/2017/07/03/最近心事/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiyouMc">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="XiyouMc">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/03/最近心事/" itemprop="url">最近心烦</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-03T13:48:28+08:00">
+                2017-07-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/情感/" itemprop="url" rel="index">
+                    <span itemprop="name">情感</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/07/03/最近心事/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/03/最近心事/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>不知道自己是将工作带到了生活还是生活带到了工作。。。<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/07/03/程序员都应该会的抓包工具-Charles/#more" rel="contents">
+            <a class="btn" href="/2017/07/03/最近心事/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -934,7 +1239,7 @@ limitations under the License.
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://xiyoumc.github.com/2017/07/03/编写高质量的Pythonic/">
+    <link itemprop="mainEntityOfPage" href="https://xiyoumc.github.com/2017/07/03/Lover/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="xiyouMc">
@@ -953,163 +1258,7 @@ limitations under the License.
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/07/03/编写高质量的Pythonic/" itemprop="url">编写高质量的Pythonic风格代码</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-03T13:48:28+08:00">
-                2017-07-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python新手引导/" itemprop="url" rel="index">
-                    <span itemprop="name">Python新手引导</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/07/03/编写高质量的Pythonic/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/03/编写高质量的Pythonic/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="来自公众号-DeveloperPython"><a href="#来自公众号-DeveloperPython" class="headerlink" title="来自公众号: DeveloperPython"></a>来自公众号: DeveloperPython</h4><blockquote>
-<p>我知道有些新人肯定不了解Pythonic是什么，也许在某些论坛看到过这个词语。其实，它的意思很简单。这是Python的开发者用来表示代码风格的名词。它是在Python开发过程中指定的一种指南，一种习惯。宗旨是 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;!--more--&gt;</div><div class="line"></div><div class="line">### 1、不用害怕长变量名</div><div class="line"></div><div class="line">长一点的变量名，有时候是为了让程序更容易理解和阅读。并且，有的编辑器已经支持自动提示，所以不用太担心敲键盘太多的烦恼。</div><div class="line"></div><div class="line">比如: user_info 就是比 ui 的可读性高很多:</div><div class="line"></div><div class="line">user_info = &#123;&apos;name&apos;:&apos;xiyouMc&apos;,&apos;age&apos;:&apos;保密&apos;,&apos;address&apos;:&apos;Hangzhou&apos;&#125;</div><div class="line"></div><div class="line">### 2、避免使用容易混淆的名称</div><div class="line"></div><div class="line">尽量不要使用 ```内建``` 的函数名来表示其他含义的名称。比如 list、dict等。不要使用 o(字符O的小写，很容易被当做数字0)，1(字母 L 的小写，也容易和数字 1 混淆)</div><div class="line"></div><div class="line">其次，变量名最好和你要解决的问题联系起来。</div><div class="line"></div><div class="line">### 3、尽量不要使用大小写来区分不同的对象</div><div class="line"></div><div class="line">比如 b是一个树脂类型的变量，但 A 是 String 类型，虽然在编码过程中容易区分这两者的含义，但是没啥卵用，它并不会给其他阅读代码的人带来福利。反而，带来的呕吐的感觉。</div><div class="line"></div><div class="line">### 4、其次，最重要的一点是，多看源码，学习别人的风格</div><div class="line"></div><div class="line">Github 上有数不胜数的优秀代码，比如web框架里面有名的Flask、Requests，还有爬虫界的Scrapy，这些都是经典中的经典，并且都是比较好的理解pythonic代码风格精髓的例子。</div><div class="line"></div><div class="line">### 5、最后，你实在是懒得不想关注这些，只想写代码，那么。。。</div><div class="line"></div><div class="line">我推荐一个神器，在你写完代码之后，执行这个神器就可以看到检测代码风格后的结果。</div><div class="line"></div><div class="line">```PEP8```，全称，&quot;Python Enhancement Proposal #8&quot;，它列举除了很多对代码的布局、注释、命名的要求。</div><div class="line"></div><div class="line">pip install -U pep8 #来安装 pep8z</div><div class="line"></div><div class="line">然后用它来检测代码：</div><div class="line"></div><div class="line">```python</div><div class="line">➜ /Users/xiyoumc &gt;pep8 --first pornHubSpider.py</div><div class="line">pornHubSpider.py:1:1: E265 block comment should start with &apos;# &apos;</div><div class="line">pornHubSpider.py:19:43: E124 closing bracket does not match visual indentation</div><div class="line">pornHubSpider.py:22:16: E251 unexpected spaces around keyword / parameter equals</div><div class="line">pornHubSpider.py:53:5: E301 expected 1 blank line, found 0</div><div class="line">pornHubSpider.py:71:22: W503 line break before binary operator</div></pre></td></tr></table></figure></p>
-</blockquote>
-<p>同时，如果对pep8感兴趣的话，可以留言，我可以开个系列来讲解 PEP8里面的变量、函数、类、木块和包，这样就会更加容易的理解Pythonic风格。</p>
-<p>最后，如若我写的对大家有点帮助，那么关注公众号 <code>DeveloperPython</code>，你将会收到关于Python技术第一时间的推送</p>
-<hr>
-<p> 长摁‘识别二维码’，一起进步</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-20b8964865a3ae4f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>生活不止眼前的苟且，还有手下的代码、</p>
-<p>和嘴上的扯淡<br>——<br>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a></p>
-<p>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
-<hr>
-<p>点击 <a href="http://t.xiaomiquan.com/7ey3rZv" target="_blank" rel="external">Join</a>，加入Python技术成长圈子，我在这里等着你。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://xiyoumc.github.com/2017/07/03/戒烟/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="xiyouMc">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="XiyouMc">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/03/戒烟/" itemprop="url">戒烟</a></h1>
+                <a class="post-title-link" href="/2017/07/03/Lover/" itemprop="url">爱情观</a></h1>
         
 
         <div class="post-meta">
@@ -1162,8 +1311,8 @@ limitations under the License.
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/07/03/戒烟/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/03/戒烟/" itemprop="commentCount"></span>
+                <a href="/2017/07/03/Lover/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/03/Lover/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1189,10 +1338,11 @@ limitations under the License.
 
       
         
-          <p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/timg.jpeg?raw=true" alt=""><br>以后每天都会在这里记录，戒烟史！<br>
+          <p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/shelizi.png?raw=true" alt="zls"></p>
+<p>诸心，皆为非心 心中无物、无心，便是真心<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/07/03/戒烟/#more" rel="contents">
+            <a class="btn" href="/2017/07/03/Lover/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1388,7 +1538,7 @@ limitations under the License.
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://xiyoumc.github.com/2017/07/03/大姨夫/">
+    <link itemprop="mainEntityOfPage" href="https://xiyoumc.github.com/2017/07/03/戒烟/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="xiyouMc">
@@ -1407,155 +1557,7 @@ limitations under the License.
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/07/03/大姨夫/" itemprop="url">大姨夫</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-03T13:48:28+08:00">
-                2017-07-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/情感/" itemprop="url" rel="index">
-                    <span itemprop="name">情感</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/07/03/大姨夫/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/03/大姨夫/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/big.jpg?raw=true" alt=""><br>最近又开始胡思乱想，针对感情、爱情总是一段时间就害怕会分开。特么的都是自己作死。哈哈哈<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/07/03/大姨夫/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://xiyoumc.github.com/2017/07/03/Lover/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="xiyouMc">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="XiyouMc">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/03/Lover/" itemprop="url">爱情观</a></h1>
+                <a class="post-title-link" href="/2017/07/03/戒烟/" itemprop="url">戒烟</a></h1>
         
 
         <div class="post-meta">
@@ -1608,8 +1610,8 @@ limitations under the License.
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/07/03/Lover/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/03/Lover/" itemprop="commentCount"></span>
+                <a href="/2017/07/03/戒烟/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/03/戒烟/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1635,11 +1637,10 @@ limitations under the License.
 
       
         
-          <p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/shelizi.png?raw=true" alt="zls"></p>
-<p>诸心，皆为非心 心中无物、无心，便是真心<br>
+          <p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/timg.jpeg?raw=true" alt=""><br>以后每天都会在这里记录，戒烟史！<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/07/03/Lover/#more" rel="contents">
+            <a class="btn" href="/2017/07/03/戒烟/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1954,7 +1955,7 @@ limitations under the License.
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
+    NexT.Pisces
   </a>
 </div>
 
@@ -2033,6 +2034,13 @@ limitations under the License.
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
 
   
     <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
