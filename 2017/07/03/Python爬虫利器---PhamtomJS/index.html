@@ -404,6 +404,9 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">capture</span><span class="params">(url, save_fn=<span class="string">"capture.png"</span>)</span>:</span></div><div class="line">    <span class="keyword">print</span> url</div><div class="line">    browser = webdriver.PhantomJS() <span class="comment"># Get local session of firefox</span></div><div class="line">    browser.set_window_size(<span class="number">1200</span>, <span class="number">900</span>)</div><div class="line">    browser.get(url) </div><div class="line">    browser.save_screenshot(save_fn)</div><div class="line">    browser.close()</div></pre></td></tr></table></figure>
 <p>print driver.find_element_by_tag_name(“div”).text<br>print driver.find_element_by_csss_selector(“#content”).text<br>print driver.find_element_by_id(“content”).text</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">find_element_by_tag_name(&quot;div&quot;)</div><div class="line">find_element_by_csss_selector(&quot;#content&quot;)</div><div class="line">find_element_by_id(&quot;content&quot;)</div><div class="line">等等的</div></pre></td></tr></table></figure>
+<hr>
+<p>本作品采用 <a href="http://mp.weixin.qq.com/mp/homepage?__biz=MzU3ODAxNDcwNQ==&amp;hid=1&amp;sn=db175801fdac2b98477552fe386fedc3#wechat_redirect" target="_blank" rel="external">DeveloperPython</a> 进行许可，欢迎转载，但转载请注明来自 DeveloperPython，并保持转载后文章内容的完整。本人保留所有版权相关权利。<br>本文链接：<a href="https://xiyoumc.github.com/2017/07/03/Python爬虫利器---PhamtomJS/">https://xiyoumc.github.com/2017/07/03/Python爬虫利器---PhamtomJS/</a></p>
+
       
     </div>
 
@@ -439,8 +442,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/03/编写高质量的Pythonic/" rel="next" title="编写高质量的Pythonic风格代码">
-                <i class="fa fa-chevron-left"></i> 编写高质量的Pythonic风格代码
+              <a href="/2017/07/03/框架简介/" rel="next" title="插件化框架简介">
+                <i class="fa fa-chevron-left"></i> 插件化框架简介
               </a>
             
           </div>
@@ -449,8 +452,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/07/03/2017上半年总结/" rel="prev" title="2017上半年个人总结">
-                2017上半年个人总结 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/07/03/Python新手引导 第三篇 Python基础/" rel="prev" title="Python新手引导第二篇">
+                Python新手引导第二篇 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
