@@ -285,9 +285,9 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/2017/07/03/Github系列教程一 开门/" itemprop="url">
+            <a class="post-title-link" href="/2017/07/03/Github系列教程二 加入Github/" itemprop="url">
               
-                <span itemprop="name">Github系列教程一  开门</span>
+                <span itemprop="name">Github系列教程二 「加入Github」</span>
               
             </a>
         
@@ -313,9 +313,9 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/2017/07/03/Github系列教程二 加入Github/" itemprop="url">
+            <a class="post-title-link" href="/2017/07/03/Github系列教程一 开门/" itemprop="url">
               
-                <span itemprop="name">Github系列教程二 「加入Github」</span>
+                <span itemprop="name">Github系列教程一  开门</span>
               
             </a>
         
@@ -657,7 +657,7 @@ function showTime(Counter) {
 				}
 				for (var i = 0; i < results.length; i++) {
 					var object = results[i];
-					var content = object.get('time') + ' ' + $(document.getElementById(url)).text();
+					var content =  $(document.getElementById(url)).text() + ' ' + object.get('time');
 					$(document.getElementById(url)).text(content);
 				}
 			},

@@ -412,8 +412,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/03/linux_shell/" rel="next" title="Shell语言基本教程">
-                <i class="fa fa-chevron-left"></i> Shell语言基本教程
+              <a href="/2017/07/03/戒烟/" rel="next" title="戒烟">
+                <i class="fa fa-chevron-left"></i> 戒烟
               </a>
             
           </div>
@@ -422,8 +422,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/07/03/大姨夫/" rel="prev" title="大姨夫">
-                大姨夫 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/07/03/Sun/" rel="prev" title="You are My Sunshine.">
+                You are My Sunshine. <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -791,7 +791,7 @@ function showTime(Counter) {
 				}
 				for (var i = 0; i < results.length; i++) {
 					var object = results[i];
-					var content = object.get('time') + ' ' + $(document.getElementById(url)).text();
+					var content =  $(document.getElementById(url)).text() + ' ' + object.get('time');
 					$(document.getElementById(url)).text(content);
 				}
 			},

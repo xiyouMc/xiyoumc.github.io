@@ -415,43 +415,6 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/2017/07/03/Home/" itemprop="url">
-              
-                <span itemprop="name">憧憬</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-07-03T13:48:27+08:00"
-              content="2017-07-03" >
-          07-03
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
             <a class="post-title-link" href="/2017/07/03/Google Hacking --你真的会用Google吗？/" itemprop="url">
               
                 <span itemprop="name">Google Hacking --你真的会用Google吗？</span>
@@ -489,9 +452,9 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/2017/07/03/Github系列教程二 加入Github/" itemprop="url">
+            <a class="post-title-link" href="/2017/07/03/Home/" itemprop="url">
               
-                <span itemprop="name">Github系列教程二 「加入Github」</span>
+                <span itemprop="name">憧憬</span>
               
             </a>
         
@@ -529,6 +492,43 @@
             <a class="post-title-link" href="/2017/07/03/Github系列教程一 开门/" itemprop="url">
               
                 <span itemprop="name">Github系列教程一  开门</span>
+              
+            </a>
+        
+      </h2>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2017-07-03T13:48:27+08:00"
+              content="2017-07-03" >
+          07-03
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
+
+    
+
+      
+      
+      
+
+      
+      
+
+      
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h2 class="post-title">
+        
+            <a class="post-title-link" href="/2017/07/03/Github系列教程二 加入Github/" itemprop="url">
+              
+                <span itemprop="name">Github系列教程二 「加入Github」</span>
               
             </a>
         
@@ -989,7 +989,7 @@ function showTime(Counter) {
 				}
 				for (var i = 0; i < results.length; i++) {
 					var object = results[i];
-					var content = object.get('time') + ' ' + $(document.getElementById(url)).text();
+					var content =  $(document.getElementById(url)).text() + ' ' + object.get('time');
 					$(document.getElementById(url)).text(content);
 				}
 			},

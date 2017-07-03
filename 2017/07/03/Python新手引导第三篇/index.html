@@ -442,7 +442,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/03/Python新手引导第二篇/" rel="next" title="Python新手引导第二篇">
+              <a href="/2017/07/03/Python新手引导 第四篇/" rel="next" title="Python新手引导第二篇">
                 <i class="fa fa-chevron-left"></i> Python新手引导第二篇
               </a>
             
@@ -452,7 +452,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/07/03/Python新手引导 第四篇/" rel="prev" title="Python新手引导第二篇">
+              <a href="/2017/07/03/Python新手引导 第三篇 Python基础/" rel="prev" title="Python新手引导第二篇">
                 Python新手引导第二篇 <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -846,7 +846,7 @@ function showTime(Counter) {
 				}
 				for (var i = 0; i < results.length; i++) {
 					var object = results[i];
-					var content = object.get('time') + ' ' + $(document.getElementById(url)).text();
+					var content =  $(document.getElementById(url)).text() + ' ' + object.get('time');
 					$(document.getElementById(url)).text(content);
 				}
 			},

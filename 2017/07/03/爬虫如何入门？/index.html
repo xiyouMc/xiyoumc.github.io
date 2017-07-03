@@ -492,8 +492,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/03/程序员都应该会的抓包工具-Charles/" rel="next" title="程序员都应该会的抓包工具--Charles">
-                <i class="fa fa-chevron-left"></i> 程序员都应该会的抓包工具--Charles
+              <a href="/2017/07/03/linux_shell/" rel="next" title="Shell语言基本教程">
+                <i class="fa fa-chevron-left"></i> Shell语言基本教程
               </a>
             
           </div>
@@ -502,8 +502,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/07/03/编写高质量的Pythonic/" rel="prev" title="编写高质量的Pythonic风格代码">
-                编写高质量的Pythonic风格代码 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/07/03/最近心事/" rel="prev" title="最近心烦">
+                最近心烦 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -896,7 +896,7 @@ function showTime(Counter) {
 				}
 				for (var i = 0; i < results.length; i++) {
 					var object = results[i];
-					var content = object.get('time') + ' ' + $(document.getElementById(url)).text();
+					var content =  $(document.getElementById(url)).text() + ' ' + object.get('time');
 					$(document.getElementById(url)).text(content);
 				}
 			},

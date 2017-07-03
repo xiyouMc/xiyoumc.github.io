@@ -473,8 +473,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/03/编写高质量的Pythonic/" rel="next" title="编写高质量的Pythonic风格代码">
-                <i class="fa fa-chevron-left"></i> 编写高质量的Pythonic风格代码
+              <a href="/2017/07/03/大姨夫/" rel="next" title="大姨夫">
+                <i class="fa fa-chevron-left"></i> 大姨夫
               </a>
             
           </div>
@@ -482,6 +482,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/03/Python新手引导第二篇/" rel="prev" title="Python新手引导第二篇">
+                Python新手引导第二篇 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -873,7 +877,7 @@ function showTime(Counter) {
 				}
 				for (var i = 0; i < results.length; i++) {
 					var object = results[i];
-					var content = object.get('time') + ' ' + $(document.getElementById(url)).text();
+					var content =  $(document.getElementById(url)).text() + ' ' + object.get('time');
 					$(document.getElementById(url)).text(content);
 				}
 			},

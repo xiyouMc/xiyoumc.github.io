@@ -425,8 +425,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/03/TarParse/" rel="next" title="Tar包高优化解析">
-                <i class="fa fa-chevron-left"></i> Tar包高优化解析
+              <a href="/2017/07/03/Lover/" rel="next" title="爱情观">
+                <i class="fa fa-chevron-left"></i> 爱情观
               </a>
             
           </div>
@@ -435,8 +435,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/07/03/Untitled/" rel="prev" title="">
-                 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/07/03/爬虫如何入门？/" rel="prev" title="Python爬虫如何入门？">
+                Python爬虫如何入门？ <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -804,7 +804,7 @@ function showTime(Counter) {
 				}
 				for (var i = 0; i < results.length; i++) {
 					var object = results[i];
-					var content = object.get('time') + ' ' + $(document.getElementById(url)).text();
+					var content =  $(document.getElementById(url)).text() + ' ' + object.get('time');
 					$(document.getElementById(url)).text(content);
 				}
 			},

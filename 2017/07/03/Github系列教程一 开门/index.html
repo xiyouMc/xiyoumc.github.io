@@ -520,8 +520,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/03/GithubTrending/" rel="next" title="小程序之Github开源社区">
-                <i class="fa fa-chevron-left"></i> 小程序之Github开源社区
+              <a href="/2017/07/03/Github系列教程二 加入Github/" rel="next" title="Github系列教程二 「加入Github」">
+                <i class="fa fa-chevron-left"></i> Github系列教程二 「加入Github」
               </a>
             
           </div>
@@ -530,8 +530,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/07/03/Github系列教程二 加入Github/" rel="prev" title="Github系列教程二 「加入Github」">
-                Github系列教程二 「加入Github」 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/07/03/Home/" rel="prev" title="憧憬">
+                憧憬 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -924,7 +924,7 @@ function showTime(Counter) {
 				}
 				for (var i = 0; i < results.length; i++) {
 					var object = results[i];
-					var content = object.get('time') + ' ' + $(document.getElementById(url)).text();
+					var content =  $(document.getElementById(url)).text() + ' ' + object.get('time');
 					$(document.getElementById(url)).text(content);
 				}
 			},
