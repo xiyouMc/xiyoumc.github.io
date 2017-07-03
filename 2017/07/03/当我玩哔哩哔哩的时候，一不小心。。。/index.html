@@ -472,8 +472,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/03/TarParse/" rel="next" title="Tar包高优化解析">
-                <i class="fa fa-chevron-left"></i> Tar包高优化解析
+              <a href="/2017/07/03/linux_shell/" rel="next" title="Shell语言基本教程">
+                <i class="fa fa-chevron-left"></i> Shell语言基本教程
               </a>
             
           </div>
@@ -482,8 +482,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/07/03/Python环境准备/" rel="prev" title="Python新手引导第一篇">
-                Python新手引导第一篇 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/07/03/最近心事/" rel="prev" title="最近心烦">
+                最近心烦 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -979,7 +979,7 @@
       var url = $(this).attr("id").trim();
       query.equalTo("url", url);
       query.find({
-        alert(results)
+        alert(results);
         success: function (results) {
           if (results.length == 0) {
             var content = '0 ' + $(document.getElementById(url)).text();
