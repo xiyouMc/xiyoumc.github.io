@@ -742,7 +742,6 @@
     var query = new AV.Query(Counter);
     query.equalTo("url", url);
     query.find({
-      alert(results)
       success: function (results) {
         if (results.length > 0) {
           var counter = results[0];
