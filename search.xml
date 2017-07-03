@@ -14,55 +14,64 @@
     </entry>
     
     <entry>
-      <title><![CDATA[编写高质量的Pythonic风格代码]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/%E7%BC%96%E5%86%99%E9%AB%98%E8%B4%A8%E9%87%8F%E7%9A%84Pythonic/</url>
-      <content type="html"><![CDATA[<h4 id="来自公众号-DeveloperPython"><a href="#来自公众号-DeveloperPython" class="headerlink" title="来自公众号: DeveloperPython"></a>来自公众号: DeveloperPython</h4><blockquote>
-<p>我知道有些新人肯定不了解Pythonic是什么，也许在某些论坛看到过这个词语。其实，它的意思很简单。这是Python的开发者用来表示代码风格的名词。它是在Python开发过程中指定的一种指南，一种习惯。宗旨是 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;!--more--&gt;</div><div class="line"></div><div class="line">### 1、不用害怕长变量名</div><div class="line"></div><div class="line">长一点的变量名，有时候是为了让程序更容易理解和阅读。并且，有的编辑器已经支持自动提示，所以不用太担心敲键盘太多的烦恼。</div><div class="line"></div><div class="line">比如: user_info 就是比 ui 的可读性高很多:</div><div class="line"></div><div class="line">user_info = &#123;&apos;name&apos;:&apos;xiyouMc&apos;,&apos;age&apos;:&apos;保密&apos;,&apos;address&apos;:&apos;Hangzhou&apos;&#125;</div><div class="line"></div><div class="line">### 2、避免使用容易混淆的名称</div><div class="line"></div><div class="line">尽量不要使用 ```内建``` 的函数名来表示其他含义的名称。比如 list、dict等。不要使用 o(字符O的小写，很容易被当做数字0)，1(字母 L 的小写，也容易和数字 1 混淆)</div><div class="line"></div><div class="line">其次，变量名最好和你要解决的问题联系起来。</div><div class="line"></div><div class="line">### 3、尽量不要使用大小写来区分不同的对象</div><div class="line"></div><div class="line">比如 b是一个树脂类型的变量，但 A 是 String 类型，虽然在编码过程中容易区分这两者的含义，但是没啥卵用，它并不会给其他阅读代码的人带来福利。反而，带来的呕吐的感觉。</div><div class="line"></div><div class="line">### 4、其次，最重要的一点是，多看源码，学习别人的风格</div><div class="line"></div><div class="line">Github 上有数不胜数的优秀代码，比如web框架里面有名的Flask、Requests，还有爬虫界的Scrapy，这些都是经典中的经典，并且都是比较好的理解pythonic代码风格精髓的例子。</div><div class="line"></div><div class="line">### 5、最后，你实在是懒得不想关注这些，只想写代码，那么。。。</div><div class="line"></div><div class="line">我推荐一个神器，在你写完代码之后，执行这个神器就可以看到检测代码风格后的结果。</div><div class="line"></div><div class="line">```PEP8```，全称，&quot;Python Enhancement Proposal #8&quot;，它列举除了很多对代码的布局、注释、命名的要求。</div><div class="line"></div><div class="line">pip install -U pep8 #来安装 pep8z</div><div class="line"></div><div class="line">然后用它来检测代码：</div><div class="line"></div><div class="line">```python</div><div class="line">➜ /Users/xiyoumc &gt;pep8 --first pornHubSpider.py</div><div class="line">pornHubSpider.py:1:1: E265 block comment should start with &apos;# &apos;</div><div class="line">pornHubSpider.py:19:43: E124 closing bracket does not match visual indentation</div><div class="line">pornHubSpider.py:22:16: E251 unexpected spaces around keyword / parameter equals</div><div class="line">pornHubSpider.py:53:5: E301 expected 1 blank line, found 0</div><div class="line">pornHubSpider.py:71:22: W503 line break before binary operator</div></pre></td></tr></table></figure></p>
+      <title><![CDATA[Python爬虫如何入门？]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/%E7%88%AC%E8%99%AB%E5%A6%82%E4%BD%95%E5%85%A5%E9%97%A8%EF%BC%9F/</url>
+      <content type="html"><![CDATA[<p> Python爬虫如何入门？</p>
+<h4 id="源自公众号-DeveloperPython"><a href="#源自公众号-DeveloperPython" class="headerlink" title="源自公众号:DeveloperPython"></a>源自公众号:DeveloperPython</h4><h2 id="扯淡"><a href="#扯淡" class="headerlink" title="扯淡"></a>扯淡</h2><p>其实，“入门”最好的方式是以项目开始，这样实践起来你会被目标驱动。从而，不用一步一步慢慢的学习模块化的东西。</p>
+<p>其实，知识体系里面的每一个知识点类似于图里的点。边就是知识体系的依赖关系，那么整个图也就是一个有向无环图。因为学习A的经验可以帮助到你学习B。因此，入门的东西根本不用学习，因为入门点根本不存在。</p>
+<a id="more"></a>
+<p>同时，你需要学习的是如何去做一个大的项目，来亲身体会爬虫， 并一步步学习爬虫的知识点。</p>
+<p>那么，我总结下在其他平台上的相关知识点和自己的想法：</p>
+<ol>
+<li>爬虫的工作原理</li>
+<li>基本的Https爬虫工具：Scrapy</li>
+<li>分布式爬虫系统。也就是维护一个集群机器来高效的完成分布式队列。Github上也有一个现成的例子: <a href="https://github.com/nvie/rq" target="_blank" rel="external">nvie/rq</a></li>
+<li>rq和Scrapy的结合： <a href="https://github.com/rolando/scrapy-redis" target="_blank" rel="external">rolando/scrapy-redis</a></li>
+<li>后续处理: <a href="https://github.com/grangier/python-goose" target="_blank" rel="external">网页处理grangier/python-goose</a> 存储(Mongodb)</li>
+</ol>
+<p>以下，我将基于<a href="https://github.com/xiyouMc/WebHubBot" target="_blank" rel="external">xiyouMc/WebHubBot</a>的经验来讲：</p>
+<h3 id="一、-爬虫的怎么工作的"><a href="#一、-爬虫的怎么工作的" class="headerlink" title="一、  爬虫的怎么工作的"></a>一、  爬虫的怎么工作的</h3><p>爬虫的另一个意思其实就是🕷（Spider） ，互联“网”就是它的环境。简单的来说，也就是你需要用这个蜘蛛来把相关网站的所有角落(网页)都爬一边。</p>
+<p>那么，你可以选择一个自己感兴趣的平台，如知乎、淘宝等等的。</p>
+<p>我这里通过PornHub来讲解。</p>
+<p>比如，我们访问PornHub的首页，里面会出现很多链接。最初我们的目标是拿到该站中所有的视频标题、视频简介、视频链接或者其他有用信息。然后我们兴高采烈的将整个首页都爬下来，这里可以理解为你就是将整个页面完完整整的Copy了下来。</p>
+<p>然后，我们随便点击一个链接进入视频详情页，进入第二个页面之后，就会看到具体的视频标题、简介等等的。那么这只是一个视频信息，我们又是如何做到爬取整站的数据呢。这里可以动下脑子，一种是返回到首页去拿另一个链接，另一种则是基于第一步爬下来的首页来找下一个链接。这里，当然是第二种方案。同时我们要做去重，爬过的链接，就不要再去爬第二遍。</p>
+<p>所以，理论上如果后续的所有视频详情页都是从首页可达的话，那么我们就一定可以将所有网页都爬下来。</p>
+<p>以下是Python的伪代码实现:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line"><span class="keyword">from</span> Queue <span class="keyword">import</span> Queue</div><div class="line">home_page = <span class="string">'https://www.pornhub.com/'</span></div><div class="line">link_queue = Queue()</div><div class="line">seen = set()</div><div class="line">seen.insert(home_page)</div><div class="line">link_queue.put(home_page)</div><div class="line">	</div><div class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</div><div class="line">	<span class="keyword">if</span> link_queue.size() &gt; <span class="number">0</span>:</div><div class="line">		current_url = url_queue.get() <span class="comment">#拿到队列中第一个url</span></div><div class="line">		links = save(current_url)  <span class="comment">#保存这个页面的html，并返回当前页面的所有link</span></div><div class="line">		<span class="keyword">for</span> link <span class="keyword">in</span> links:</div><div class="line">			<span class="keyword">if</span> link <span class="keyword">not</span> <span class="keyword">in</span> seen:</div><div class="line">				seen.put(link)</div><div class="line">				link_queue.put(link)</div><div class="line">	<span class="keyword">else</span>:</div><div class="line">		<span class="keyword">break</span></div></pre></td></tr></table></figure>
+<p>以上就是一个简单的伪代码来爬取pornhub中视频资源的例子。当然， 这只是一个非常简单的例子，其实爬虫是一个非常复杂的项目，类似的就是搜索引擎需要爬取整站的数据，更是需要一整个团队来开发和维护。</p>
+<h3 id="二、-效率"><a href="#二、-效率" class="headerlink" title="二、  效率"></a>二、  效率</h3><p>如果，使用上述的代码来爬取PornHub的话，那么你是绝对无法在一天时间内完成500万的海量数据，更别说在短时间内爬取PornHub的所有数据。</p>
+<p>那么，问题出在哪？爬的网页太多太多了，而且上面的代码太慢太慢了。</p>
+<p>PornHub的全网有N个页面，那么分析下判重的时间复杂度将是 N * log(N)，因为每个网页都要遍历一遍，而使用Set来做判重，需要 log(N) 的复杂度。</p>
+<p>所以，我们需要一个成熟的判重方案。Bloom Filter。 它是一个空间效率很高的随机数据结构。<a href="http://blog.csdn.net/jiaomeng/article/details/1495500" target="_blank" rel="external">官方简介</a>：</p>
+<blockquote>
+<p>Bloom Filter是一种空间效率很高的随机数据结构，它利用位数组很简洁地表示一个集合，并能判断一个元素是否属于这个集合。Bloom Filter的这种高效是有一定代价的：在判断一个元素是否属于某个集合时，有可能会把不属于这个集合的元素误认为属于这个集合（false positive）。因此，Bloom Filter不适合那些“零错误”的应用场合。而在能容忍低错误率的应用场合下，Bloom Filter通过极少的错误换取了存储空间的极大节省。</p>
 </blockquote>
-<p>同时，如果对pep8感兴趣的话，可以留言，我可以开个系列来讲解 PEP8里面的变量、函数、类、木块和包，这样就会更加容易的理解Pythonic风格。</p>
-<p>最后，如若我写的对大家有点帮助，那么关注公众号 <code>DeveloperPython</code>，你将会收到关于Python技术第一时间的推送</p>
-<hr>
-<p> 长摁‘识别二维码’，一起进步</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-20b8964865a3ae4f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>有兴趣可以详细学习下这个算法。</p>
+<p>简单的来说，它是一种利用Hash的方法来判重的。并且在使用固定的内存，不随url的数量增加而增长,以 O（1）的效率判断url是否已经在set中。但是仍然有极小的可能性会误判，所以对于“零错误”的系统不适用。但是对于爬虫，小概率的重复爬取也是可以接受的。</p>
+<p>那么，以上就是判重的最快方式了。</p>
+<p>当然，另一个瓶颈又会出现，如果你只有一台机器，那么不管你的带宽有多大你的机器下载网页的速度还是会有瓶颈。那么，只有加快这个速度，我们使用多台机器来跑。</p>
+<h3 id="三、-集群化爬取"><a href="#三、-集群化爬取" class="headerlink" title="三、  集群化爬取"></a>三、  集群化爬取</h3><p>集群化爬取，其实不难理解。也就是将你的爬虫任务分发到n台机器来处理，当然每台机器处理的任务不同，且不重复。</p>
+<p>那么，假设你有100台机器，怎么用Python实现一个分布式的爬取算法呢？</p>
+<p>Server -&gt; Client 。这种C/S 的模式，我相信大家也不陌生。那么分布式的系统，其实就是一台Server -&gt; n个Client 来处理。这里我们将Server定义为 Master机，多个Client定义为多个 Slave。所以基于开始的伪代码，我们可以将link_queue 放到Master上，其他的Slave都可以通过网络跟Master联通，每当一个Slave下载完成一个页面之后，就会将这个页面的结果告知Master，同时获取一个新的link 来爬取。同时 BloomFliter 也是放在Master的，用来针对Links进行去重。 其中Slave和Server联通的方式，就是通过Redis，这是一个可以远程操作的缓存数据库，提供了完善的队列管理。其次，Redis的队列中已经包含的去重的，当Push一个url 到Redis之后，某一个Slave Pop拿到数据，那么这个Url将只会在这个Slave进行处理。</p>
+<p>因此，我们可以用Python来实现。Slave的机器上安装Scrapy，Master上安装Redis和rq用作分布式队列。</p>
+<p>伪代码:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="string">"""</span></div><div class="line">Slave</div><div class="line">"""</div><div class="line">	</div><div class="line">url = link_from_master() <span class="comment"># 从Master机Get到最新的链接</span></div><div class="line">content = save(url) <span class="comment"># 请求并保存这个链接下的视频信息</span></div><div class="line">send_to_master(url) <span class="comment"># 将当前处理过的url Post给主机。</span></div><div class="line">	</div><div class="line"><span class="string">"""</span></div><div class="line">Master</div><div class="line">"""</div><div class="line">queue = Queue()</div><div class="line">bf = BloomFilter()</div><div class="line">	</div><div class="line">home_pages = <span class="string">"https://www.pornhub.com/"</span></div><div class="line">	</div><div class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</div><div class="line">    <span class="keyword">if</span> request == <span class="string">'GET'</span>:</div><div class="line">        <span class="keyword">if</span> distributed_queue.size()&gt;<span class="number">0</span>:</div><div class="line">            send(queue.get()) <span class="comment"># 将当前url push到Redis，从而让Slave获取到。</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            <span class="keyword">break</span></div><div class="line">    <span class="keyword">elif</span> request == <span class="string">'POST'</span>:</div><div class="line">        bf.put(request.url) <span class="comment">#将处理过的Url 保存到bf队列</span></div></pre></td></tr></table></figure>
+<p>轮子: <a href="https://github.com/rolando/scrapy-redis" target="_blank" rel="external">rolando/scrapy-redis</a></p>
+<h3 id="四、-后处理"><a href="#四、-后处理" class="headerlink" title="四、 后处理"></a>四、 后处理</h3><p>上面的路子，其实是很简单很简单的一部分。同样的，后续你还要进行其他的处理，比如：</p>
+<ul>
+<li>有效的存储</li>
+<li>有效的判重</li>
+<li>有效的信息提取</li>
+<li>及时更新</li>
+</ul>
+<p>所以，不要在意如何“入门”，只管上路就好了。</p>
+<h3 id="五、-更重要的一点"><a href="#五、-更重要的一点" class="headerlink" title="五、 更重要的一点"></a>五、 更重要的一点</h3><p> 长摁‘识别二维码’，一起进步</p>
+<p><img src="https://mmbiz.qlogo.cn/mmbiz_png/BAYrQMKkbTbS8e8ibKzUsdcO7Dx3ILTib4daQiaaywnBk1dBd2ZfsxlSKZ7KdwA8kyN1unwBH5BbKpg2SGYP60VrQ/640?wx_fmt=png" alt=""></p>
 <p>生活不止眼前的苟且，还有手下的代码、</p>
 <p>和嘴上的扯淡<br>——<br>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a></p>
 <p>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
 <hr>
-<p>点击 <a href="http://t.xiaomiquan.com/7ey3rZv" target="_blank" rel="external">Join</a>，加入Python技术成长圈子，我在这里等着你。</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Tar包高优化解析]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/TarParse/</url>
-      <content type="html"><![CDATA[<h1 id="本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。"><a href="#本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。" class="headerlink" title="本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。"></a>本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。</h1><h3 id="一、首先讲一个tar包的文件结构。（懂得可以绕开此段）"><a href="#一、首先讲一个tar包的文件结构。（懂得可以绕开此段）" class="headerlink" title="一、首先讲一个tar包的文件结构。（懂得可以绕开此段）"></a>一、首先讲一个tar包的文件结构。（懂得可以绕开此段）</h3><pre><code>tar只是一个归档文件，并不进行压缩。
-</code></pre><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">　　<span class="keyword">struct</span> tar_header</div><div class="line">　　&#123;</div><div class="line">　　 <span class="keyword">char</span> name[<span class="number">100</span>];</div><div class="line">　　 <span class="keyword">char</span> mode[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> uid[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> gid[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> size[<span class="number">12</span>];</div><div class="line">　　 <span class="keyword">char</span> mtime[<span class="number">12</span>];</div><div class="line">　　 <span class="keyword">char</span> chksum[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> typeflag;</div><div class="line">　　 <span class="keyword">char</span> linkname[<span class="number">100</span>];</div><div class="line">　　 <span class="keyword">char</span> magic[<span class="number">6</span>];</div><div class="line">　　 <span class="keyword">char</span> version[<span class="number">2</span>];</div><div class="line">　　 <span class="keyword">char</span> uname[<span class="number">32</span>];</div><div class="line">　　 <span class="keyword">char</span> gname[<span class="number">32</span>];</div><div class="line">　　 <span class="keyword">char</span> devmajor[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> devminor[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> prefix[<span class="number">155</span>];</div><div class="line">　　 <span class="keyword">char</span> padding[<span class="number">12</span>];</div><div class="line">　　&#125;;</div></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>&gt;<br>　　以上是Tar中保存文件信息的数据结构，其后跟着的就是文件的内容。<br> size为文件大小的八进制字节表示，例如文件大小为90个字节，那么这里就是八进制的90，即为132。<br>　　其中，文件大小，修改时间，checksum都是存储的对应的八进制字符串，字符串最后一个字符为空格字符<br>　　checksum的计算方法为出去checksum字段其他所有的512-8共504个字节的ascii码相加的值再加上256(checksum当作八个空格，即8<em>0x20）<br>　　文件内容以512字节为一个block进行分割，最后一个block不足部分以0补齐<br>　　两个文件的tar包首先存放第一个文件的tar头结构，然后存储文件内容，接着存储第二个文件的tar头结构，然后存储文件内容<br>　　所有文件都存储完了以后，最后存放一个全零的tar结构<br>　　所有的tar文件大小应该都是512的倍数，一个空文件打包后为512</em>3字节，包括一个tar结构头，一个全零的block存储文件内容，一个全零的tar结构</p>
-<ul>
-<li>检测tar文件格式的方法：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">1、检测magic字段，即在0x101处检查字符串，是否为ustar。有时某些压缩软件将这个字段设置为空。如果magic字段为空，进入第2步。</div><div class="line">2、计算校验和，按照上面的方法计算校验和，如果校验和正确的话，那么这就是一个tar文件。</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>注意：在windows下面，不支持uid、uname等，有的甚至不支持magic，这样就比较麻烦了。</p>
-<h3 id="二、Java层普遍的“解压”方式"><a href="#二、Java层普遍的“解压”方式" class="headerlink" title="二、Java层普遍的“解压”方式"></a>二、Java层普遍的“解压”方式</h3><p>&gt;<br>     因为在jdk中提供了 FilterInputStream,因此我们可以通过继承该类，并构造一个TarEntry的模板，在子类中按每512个字节，将一个tar流分成包含N个512字节的TarEntry. 这样我们就可以将一个tar包通过TarInputStream和TarEntry解开到一个map集合中<entryname,data>.</entryname,data></p>
-<h3 id="三、内存优化的-“解压”方式"><a href="#三、内存优化的-“解压”方式" class="headerlink" title="三、内存优化的 “解压”方式"></a>三、内存优化的 “解压”方式</h3><p>&gt;<br>     由于每一个TarEntry都是一个固定大小字节的对象，那么我们可不可以直接读取这块内存，而不是将所有都常驻内存呢？<br>     答案当然是可以的。<br>    为了内存上的优化和效率上的提升，我们可以直接读取指定EntryNam的内存块。<br>    因为一个tar包基本的组成结构就是   entryName-&gt;data。我们可以拿到每一个EntryName和其对应的内存大小、偏移量，在读取的时候直接在TarInputStream中读取相应内存块。<br>   代码如下：</p>
-<ol>
-<li><p>一个简单维护TarEntry偏移量和字节大小的类McTarEntry。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">McTarEntry</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="keyword">private</span> <span class="keyword">long</span> offset;</div><div class="line"></div><div class="line">  <span class="keyword">private</span> <span class="keyword">int</span> size;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">private</span> <span class="title">McTarEntry</span><span class="params">(Builder builder)</span> </span>&#123;</div><div class="line">      offset = builder.offset;</div><div class="line">      size = builder.size;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">getOffset</span><span class="params">()</span> </span>&#123;</div><div class="line">      <span class="keyword">return</span> offset;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getSize</span><span class="params">()</span> </span>&#123;</div><div class="line">      <span class="keyword">return</span> size;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Builder</span> </span>&#123;</div><div class="line">      <span class="keyword">private</span> <span class="keyword">long</span> offset = <span class="number">0</span>;</div><div class="line">      <span class="keyword">private</span> <span class="keyword">int</span> size = <span class="number">0</span>;</div><div class="line"></div><div class="line">      <span class="function"><span class="keyword">public</span> Builder <span class="title">offset</span><span class="params">(<span class="keyword">long</span> offset)</span> </span>&#123;</div><div class="line">          <span class="keyword">this</span>.offset = offset;</div><div class="line">          <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      <span class="function"><span class="keyword">public</span> Builder <span class="title">size</span><span class="params">(<span class="keyword">int</span> size)</span> </span>&#123;</div><div class="line">          <span class="keyword">this</span>.size = size;</div><div class="line">          <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      <span class="function"><span class="keyword">public</span> H5TarEntry <span class="title">build</span><span class="params">()</span> </span>&#123;</div><div class="line">          <span class="keyword">return</span> <span class="keyword">new</span> McTarEntry(<span class="keyword">this</span>);</div><div class="line">      &#125;</div><div class="line"></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p>解析Tar包，将每个McTarEntry保存在map</p>
-  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">FileInputStream fis = <span class="keyword">new</span> FileInputStream(tarPath);</div><div class="line">BufferedInputStream bis = <span class="keyword">new</span> BufferedInputStream(fis);</div><div class="line">TarInputStream tis = <span class="keyword">new</span> TarInputStream(bis);</div><div class="line">TarEntry te = <span class="keyword">null</span>;</div><div class="line"><span class="keyword">while</span> ((te = tis.getNextEntry()) != <span class="keyword">null</span>) &#123;</div><div class="line">    String entryName = te.getName();</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (te.isDirectory() || TextUtils.isEmpty(entryName)) &#123;</div><div class="line">        <span class="keyword">continue</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    McTarEntry mcTarEntry = <span class="keyword">new</span> McTarEntry.Builder().offset(tis.getCurrentOffset())</div><div class="line">            .size((<span class="keyword">int</span>) te.getSize()).build();</div><div class="line"></div><div class="line">    tarEntryMap.put(entryName, h5TarEntry);</div><div class="line"></div><div class="line">&#125;</div><div class="line">tis.close();</div></pre></td></tr></table></figure>
-</li>
-<li><p>读取指定entryName的数据块</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">static</span> <span class="keyword">byte</span>[] get(String appId, String entryName) &#123;</div><div class="line">      <span class="keyword">try</span> &#123;</div><div class="line">          <span class="keyword">byte</span> buffer[] = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">2048</span>];</div><div class="line">          <span class="keyword">int</span> count;</div><div class="line">          ByteArrayOutputStream bos = <span class="keyword">new</span> ByteArrayOutputStream();</div><div class="line">          <span class="keyword">if</span> (!tarEntryMap.containsKey()) &#123;</div><div class="line">              <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">          &#125;</div><div class="line">          <span class="keyword">long</span> offset = tarEntryMap.get(entryName).getOffset();</div><div class="line">          <span class="keyword">int</span> entrySize = tarEntryMap.get(entryName).getSize();</div><div class="line">          FileInputStream fis = <span class="keyword">new</span> FileInputStream(tarPath);</div><div class="line">          BufferedInputStream bis = <span class="keyword">new</span> BufferedInputStream(fis);</div><div class="line">          TarInputStream tis = <span class="keyword">new</span> TarInputStream(bis);</div><div class="line">          H5Log.d(TAG, <span class="string">"entryName"</span> + entryName + <span class="string">" skip offset:"</span> + offset + <span class="string">" size"</span> + entrySize);</div><div class="line">          tis.skip(offset);</div><div class="line">          <span class="keyword">if</span> (buffer.length &gt; entrySize) &#123;</div><div class="line">              buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[entrySize];</div><div class="line">          &#125;</div><div class="line">          <span class="keyword">int</span> bufferSize = <span class="number">0</span>;</div><div class="line">          <span class="keyword">while</span> ((count = tis.read(buffer)) != -<span class="number">1</span>) &#123;</div><div class="line">              bos.write(buffer, <span class="number">0</span>, count);</div><div class="line">              bufferSize += count;</div><div class="line">                 <span class="comment">// 当前buffer加上已经读取的bufferSize如果超过entrySize那么我们就应该重新计算buffer进行最后一次读取。</span></div><div class="line">              <span class="keyword">if</span> ((bufferSize + buffer.length) &gt; entrySize) &#123;</div><div class="line">                  buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[entrySize % bufferSize];</div><div class="line">                  bufferSize = entrySize - entrySize % bufferSize;</div><div class="line">              &#125;</div><div class="line"></div><div class="line">              <span class="keyword">if</span> (buffer.length == entrySize || entrySize == bufferSize) &#123;</div><div class="line">                  <span class="keyword">break</span>;</div><div class="line">              &#125;</div><div class="line">          &#125;</div><div class="line">          tis.close();</div><div class="line">          <span class="keyword">byte</span>[] data = bos.toByteArray();</div><div class="line">          <span class="keyword">if</span> (data == <span class="keyword">null</span>) &#123;</div><div class="line">              <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">          &#125;</div><div class="line">          H5Log.d(TAG, <span class="string">"entryName:"</span> + entryName);</div><div class="line">          <span class="keyword">return</span> data;</div><div class="line">      &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">          H5Log.e(TAG, <span class="string">"exception :"</span> + e);</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
-<p>  这样就可以通过指定的entryName，根据其offset和 size 计算到这个entry在TarStream中固定内存块，从而拿到真正的数据。</p>
-</li>
-</ol>
-<h3 id="总结：两种读取方式的区别："><a href="#总结：两种读取方式的区别：" class="headerlink" title="总结：两种读取方式的区别："></a>总结：两种读取方式的区别：</h3><ul>
-<li>第一种<br>优点：减少了I/O操作。<br>缺点：耗费了内存。假如一个很大的资源在这个tar中，但是被使用的概率很低，这样耗费了内存从而不值得这么做。</li>
-<li>第二种<br>优点：节省了内存，提高了读取效率<br>缺点：增加了I/O操作，Tar资源可能存在被篡改的风险。</li>
-</ul>
-<p>Thanks.<br>  By MC.</p>
+<h3 id="六、-如何找到一群学习Python的朋友圈"><a href="#六、-如何找到一群学习Python的朋友圈" class="headerlink" title="六、 如何找到一群学习Python的朋友圈"></a>六、 如何找到一群学习Python的朋友圈</h3><p>点击 <a href="http://t.xiaomiquan.com/7ey3rZv" target="_blank" rel="external">Join</a>，加入Python技术成长圈子，我们在这里等着你。</p>
 ]]></content>
     </entry>
     
@@ -132,79 +141,6 @@
 <h5 id="在对应接口上点击右键，出现菜单，其中我经常使用到的就是Compose、Repeat和RepeatAdvanced"><a href="#在对应接口上点击右键，出现菜单，其中我经常使用到的就是Compose、Repeat和RepeatAdvanced" class="headerlink" title="在对应接口上点击右键，出现菜单，其中我经常使用到的就是Compose、Repeat和RepeatAdvanced"></a>在对应接口上点击右键，出现菜单，其中我经常使用到的就是Compose、Repeat和RepeatAdvanced</h5><p><img src="http://blog.0x2048.com/docs/CharlesMenu.png" alt=""></p>
 <h5 id="Compose-可直接自定义对应的请求，并执行该请求。这个对我们抓包用处很大。我们可以从中得到该接口的必填参数等等的。"><a href="#Compose-可直接自定义对应的请求，并执行该请求。这个对我们抓包用处很大。我们可以从中得到该接口的必填参数等等的。" class="headerlink" title="Compose:可直接自定义对应的请求，并执行该请求。这个对我们抓包用处很大。我们可以从中得到该接口的必填参数等等的。"></a>Compose:可直接自定义对应的请求，并执行该请求。这个对我们抓包用处很大。我们可以从中得到该接口的必填参数等等的。</h5><h5 id="Repeat：很简单就是执行一次重复请求操作"><a href="#Repeat：很简单就是执行一次重复请求操作" class="headerlink" title="Repeat：很简单就是执行一次重复请求操作"></a>Repeat：很简单就是执行一次重复请求操作</h5><h5 id="Repeat-Advanved：重复请求的高级操作，可自定义重复的次数、每隔多少秒执行。这个功能对于我们的接口的压测是很有用的。"><a href="#Repeat-Advanved：重复请求的高级操作，可自定义重复的次数、每隔多少秒执行。这个功能对于我们的接口的压测是很有用的。" class="headerlink" title="Repeat Advanved：重复请求的高级操作，可自定义重复的次数、每隔多少秒执行。这个功能对于我们的接口的压测是很有用的。"></a>Repeat Advanved：重复请求的高级操作，可自定义重复的次数、每隔多少秒执行。这个功能对于我们的接口的压测是很有用的。</h5><h5 id="除了这几个我常用的功能，当然Charles还有更多更加实用的功能，如过滤、排序等等。还需要大家去自行使用，发现更多更好、并适用于自己的功能。"><a href="#除了这几个我常用的功能，当然Charles还有更多更加实用的功能，如过滤、排序等等。还需要大家去自行使用，发现更多更好、并适用于自己的功能。" class="headerlink" title="除了这几个我常用的功能，当然Charles还有更多更加实用的功能，如过滤、排序等等。还需要大家去自行使用，发现更多更好、并适用于自己的功能。"></a>除了这几个我常用的功能，当然Charles还有更多更加实用的功能，如过滤、排序等等。还需要大家去自行使用，发现更多更好、并适用于自己的功能。</h5><h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><blockquote>
 <p>抓包的用处其实很大，有时候可以用来调试我们的接口、有时候也可以用来做一些对工作有益的事，当然并”不建议”用来攻击别人的网络。</p>
-</blockquote>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Python爬虫如何入门？]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/%E7%88%AC%E8%99%AB%E5%A6%82%E4%BD%95%E5%85%A5%E9%97%A8%EF%BC%9F/</url>
-      <content type="html"><![CDATA[<p> Python爬虫如何入门？</p>
-<h4 id="源自公众号-DeveloperPython"><a href="#源自公众号-DeveloperPython" class="headerlink" title="源自公众号:DeveloperPython"></a>源自公众号:DeveloperPython</h4><h2 id="扯淡"><a href="#扯淡" class="headerlink" title="扯淡"></a>扯淡</h2><p>其实，“入门”最好的方式是以项目开始，这样实践起来你会被目标驱动。从而，不用一步一步慢慢的学习模块化的东西。</p>
-<p>其实，知识体系里面的每一个知识点类似于图里的点。边就是知识体系的依赖关系，那么整个图也就是一个有向无环图。因为学习A的经验可以帮助到你学习B。因此，入门的东西根本不用学习，因为入门点根本不存在。</p>
-<a id="more"></a>
-<p>同时，你需要学习的是如何去做一个大的项目，来亲身体会爬虫， 并一步步学习爬虫的知识点。</p>
-<p>那么，我总结下在其他平台上的相关知识点和自己的想法：</p>
-<ol>
-<li>爬虫的工作原理</li>
-<li>基本的Https爬虫工具：Scrapy</li>
-<li>分布式爬虫系统。也就是维护一个集群机器来高效的完成分布式队列。Github上也有一个现成的例子: <a href="https://github.com/nvie/rq" target="_blank" rel="external">nvie/rq</a></li>
-<li>rq和Scrapy的结合： <a href="https://github.com/rolando/scrapy-redis" target="_blank" rel="external">rolando/scrapy-redis</a></li>
-<li>后续处理: <a href="https://github.com/grangier/python-goose" target="_blank" rel="external">网页处理grangier/python-goose</a> 存储(Mongodb)</li>
-</ol>
-<p>以下，我将基于<a href="https://github.com/xiyouMc/WebHubBot" target="_blank" rel="external">xiyouMc/WebHubBot</a>的经验来讲：</p>
-<h3 id="一、-爬虫的怎么工作的"><a href="#一、-爬虫的怎么工作的" class="headerlink" title="一、  爬虫的怎么工作的"></a>一、  爬虫的怎么工作的</h3><p>爬虫的另一个意思其实就是🕷（Spider） ，互联“网”就是它的环境。简单的来说，也就是你需要用这个蜘蛛来把相关网站的所有角落(网页)都爬一边。</p>
-<p>那么，你可以选择一个自己感兴趣的平台，如知乎、淘宝等等的。</p>
-<p>我这里通过PornHub来讲解。</p>
-<p>比如，我们访问PornHub的首页，里面会出现很多链接。最初我们的目标是拿到该站中所有的视频标题、视频简介、视频链接或者其他有用信息。然后我们兴高采烈的将整个首页都爬下来，这里可以理解为你就是将整个页面完完整整的Copy了下来。</p>
-<p>然后，我们随便点击一个链接进入视频详情页，进入第二个页面之后，就会看到具体的视频标题、简介等等的。那么这只是一个视频信息，我们又是如何做到爬取整站的数据呢。这里可以动下脑子，一种是返回到首页去拿另一个链接，另一种则是基于第一步爬下来的首页来找下一个链接。这里，当然是第二种方案。同时我们要做去重，爬过的链接，就不要再去爬第二遍。</p>
-<p>所以，理论上如果后续的所有视频详情页都是从首页可达的话，那么我们就一定可以将所有网页都爬下来。</p>
-<p>以下是Python的伪代码实现:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line"><span class="keyword">from</span> Queue <span class="keyword">import</span> Queue</div><div class="line">home_page = <span class="string">'https://www.pornhub.com/'</span></div><div class="line">link_queue = Queue()</div><div class="line">seen = set()</div><div class="line">seen.insert(home_page)</div><div class="line">link_queue.put(home_page)</div><div class="line">	</div><div class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</div><div class="line">	<span class="keyword">if</span> link_queue.size() &gt; <span class="number">0</span>:</div><div class="line">		current_url = url_queue.get() <span class="comment">#拿到队列中第一个url</span></div><div class="line">		links = save(current_url)  <span class="comment">#保存这个页面的html，并返回当前页面的所有link</span></div><div class="line">		<span class="keyword">for</span> link <span class="keyword">in</span> links:</div><div class="line">			<span class="keyword">if</span> link <span class="keyword">not</span> <span class="keyword">in</span> seen:</div><div class="line">				seen.put(link)</div><div class="line">				link_queue.put(link)</div><div class="line">	<span class="keyword">else</span>:</div><div class="line">		<span class="keyword">break</span></div></pre></td></tr></table></figure>
-<p>以上就是一个简单的伪代码来爬取pornhub中视频资源的例子。当然， 这只是一个非常简单的例子，其实爬虫是一个非常复杂的项目，类似的就是搜索引擎需要爬取整站的数据，更是需要一整个团队来开发和维护。</p>
-<h3 id="二、-效率"><a href="#二、-效率" class="headerlink" title="二、  效率"></a>二、  效率</h3><p>如果，使用上述的代码来爬取PornHub的话，那么你是绝对无法在一天时间内完成500万的海量数据，更别说在短时间内爬取PornHub的所有数据。</p>
-<p>那么，问题出在哪？爬的网页太多太多了，而且上面的代码太慢太慢了。</p>
-<p>PornHub的全网有N个页面，那么分析下判重的时间复杂度将是 N * log(N)，因为每个网页都要遍历一遍，而使用Set来做判重，需要 log(N) 的复杂度。</p>
-<p>所以，我们需要一个成熟的判重方案。Bloom Filter。 它是一个空间效率很高的随机数据结构。<a href="http://blog.csdn.net/jiaomeng/article/details/1495500" target="_blank" rel="external">官方简介</a>：</p>
-<blockquote>
-<p>Bloom Filter是一种空间效率很高的随机数据结构，它利用位数组很简洁地表示一个集合，并能判断一个元素是否属于这个集合。Bloom Filter的这种高效是有一定代价的：在判断一个元素是否属于某个集合时，有可能会把不属于这个集合的元素误认为属于这个集合（false positive）。因此，Bloom Filter不适合那些“零错误”的应用场合。而在能容忍低错误率的应用场合下，Bloom Filter通过极少的错误换取了存储空间的极大节省。</p>
-</blockquote>
-<p>有兴趣可以详细学习下这个算法。</p>
-<p>简单的来说，它是一种利用Hash的方法来判重的。并且在使用固定的内存，不随url的数量增加而增长,以 O（1）的效率判断url是否已经在set中。但是仍然有极小的可能性会误判，所以对于“零错误”的系统不适用。但是对于爬虫，小概率的重复爬取也是可以接受的。</p>
-<p>那么，以上就是判重的最快方式了。</p>
-<p>当然，另一个瓶颈又会出现，如果你只有一台机器，那么不管你的带宽有多大你的机器下载网页的速度还是会有瓶颈。那么，只有加快这个速度，我们使用多台机器来跑。</p>
-<h3 id="三、-集群化爬取"><a href="#三、-集群化爬取" class="headerlink" title="三、  集群化爬取"></a>三、  集群化爬取</h3><p>集群化爬取，其实不难理解。也就是将你的爬虫任务分发到n台机器来处理，当然每台机器处理的任务不同，且不重复。</p>
-<p>那么，假设你有100台机器，怎么用Python实现一个分布式的爬取算法呢？</p>
-<p>Server -&gt; Client 。这种C/S 的模式，我相信大家也不陌生。那么分布式的系统，其实就是一台Server -&gt; n个Client 来处理。这里我们将Server定义为 Master机，多个Client定义为多个 Slave。所以基于开始的伪代码，我们可以将link_queue 放到Master上，其他的Slave都可以通过网络跟Master联通，每当一个Slave下载完成一个页面之后，就会将这个页面的结果告知Master，同时获取一个新的link 来爬取。同时 BloomFliter 也是放在Master的，用来针对Links进行去重。 其中Slave和Server联通的方式，就是通过Redis，这是一个可以远程操作的缓存数据库，提供了完善的队列管理。其次，Redis的队列中已经包含的去重的，当Push一个url 到Redis之后，某一个Slave Pop拿到数据，那么这个Url将只会在这个Slave进行处理。</p>
-<p>因此，我们可以用Python来实现。Slave的机器上安装Scrapy，Master上安装Redis和rq用作分布式队列。</p>
-<p>伪代码:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="string">"""</span></div><div class="line">Slave</div><div class="line">"""</div><div class="line">	</div><div class="line">url = link_from_master() <span class="comment"># 从Master机Get到最新的链接</span></div><div class="line">content = save(url) <span class="comment"># 请求并保存这个链接下的视频信息</span></div><div class="line">send_to_master(url) <span class="comment"># 将当前处理过的url Post给主机。</span></div><div class="line">	</div><div class="line"><span class="string">"""</span></div><div class="line">Master</div><div class="line">"""</div><div class="line">queue = Queue()</div><div class="line">bf = BloomFilter()</div><div class="line">	</div><div class="line">home_pages = <span class="string">"https://www.pornhub.com/"</span></div><div class="line">	</div><div class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</div><div class="line">    <span class="keyword">if</span> request == <span class="string">'GET'</span>:</div><div class="line">        <span class="keyword">if</span> distributed_queue.size()&gt;<span class="number">0</span>:</div><div class="line">            send(queue.get()) <span class="comment"># 将当前url push到Redis，从而让Slave获取到。</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            <span class="keyword">break</span></div><div class="line">    <span class="keyword">elif</span> request == <span class="string">'POST'</span>:</div><div class="line">        bf.put(request.url) <span class="comment">#将处理过的Url 保存到bf队列</span></div></pre></td></tr></table></figure>
-<p>轮子: <a href="https://github.com/rolando/scrapy-redis" target="_blank" rel="external">rolando/scrapy-redis</a></p>
-<h3 id="四、-后处理"><a href="#四、-后处理" class="headerlink" title="四、 后处理"></a>四、 后处理</h3><p>上面的路子，其实是很简单很简单的一部分。同样的，后续你还要进行其他的处理，比如：</p>
-<ul>
-<li>有效的存储</li>
-<li>有效的判重</li>
-<li>有效的信息提取</li>
-<li>及时更新</li>
-</ul>
-<p>所以，不要在意如何“入门”，只管上路就好了。</p>
-<h3 id="五、-更重要的一点"><a href="#五、-更重要的一点" class="headerlink" title="五、 更重要的一点"></a>五、 更重要的一点</h3><p> 长摁‘识别二维码’，一起进步</p>
-<p><img src="https://mmbiz.qlogo.cn/mmbiz_png/BAYrQMKkbTbS8e8ibKzUsdcO7Dx3ILTib4daQiaaywnBk1dBd2ZfsxlSKZ7KdwA8kyN1unwBH5BbKpg2SGYP60VrQ/640?wx_fmt=png" alt=""></p>
-<p>生活不止眼前的苟且，还有手下的代码、</p>
-<p>和嘴上的扯淡<br>——<br>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a></p>
-<p>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
-<hr>
-<h3 id="六、-如何找到一群学习Python的朋友圈"><a href="#六、-如何找到一群学习Python的朋友圈" class="headerlink" title="六、 如何找到一群学习Python的朋友圈"></a>六、 如何找到一群学习Python的朋友圈</h3><p>点击 <a href="http://t.xiaomiquan.com/7ey3rZv" target="_blank" rel="external">Join</a>，加入Python技术成长圈子，我们在这里等着你。</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[最近心烦]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/%E6%9C%80%E8%BF%91%E5%BF%83%E4%BA%8B/</url>
-      <content type="html"><![CDATA[<p>不知道自己是将工作带到了生活还是生活带到了工作。。。<br><a id="more"></a></p>
-<blockquote>
-<p>最近事真的很多，也导致了自己事很多。 </p>
-<p>喜欢的人，自己变得约束力越来越多。这不是我要的。<br>我很想放放松松的恋爱。 最近对你一直很闹脾气，动不动就闹脾气。  我想我是该冷静冷静了。<br>让我们开开心心的恋爱下去吧。  一直。相爱。</p>
 </blockquote>
 ]]></content>
     </entry>
@@ -329,9 +265,70 @@ limitations under the License.
     </entry>
     
     <entry>
+      <title><![CDATA[编写高质量的Pythonic风格代码]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/%E7%BC%96%E5%86%99%E9%AB%98%E8%B4%A8%E9%87%8F%E7%9A%84Pythonic/</url>
+      <content type="html"><![CDATA[<h4 id="来自公众号-DeveloperPython"><a href="#来自公众号-DeveloperPython" class="headerlink" title="来自公众号: DeveloperPython"></a>来自公众号: DeveloperPython</h4><blockquote>
+<p>我知道有些新人肯定不了解Pythonic是什么，也许在某些论坛看到过这个词语。其实，它的意思很简单。这是Python的开发者用来表示代码风格的名词。它是在Python开发过程中指定的一种指南，一种习惯。宗旨是 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;!--more--&gt;</div><div class="line"></div><div class="line">### 1、不用害怕长变量名</div><div class="line"></div><div class="line">长一点的变量名，有时候是为了让程序更容易理解和阅读。并且，有的编辑器已经支持自动提示，所以不用太担心敲键盘太多的烦恼。</div><div class="line"></div><div class="line">比如: user_info 就是比 ui 的可读性高很多:</div><div class="line"></div><div class="line">user_info = &#123;&apos;name&apos;:&apos;xiyouMc&apos;,&apos;age&apos;:&apos;保密&apos;,&apos;address&apos;:&apos;Hangzhou&apos;&#125;</div><div class="line"></div><div class="line">### 2、避免使用容易混淆的名称</div><div class="line"></div><div class="line">尽量不要使用 ```内建``` 的函数名来表示其他含义的名称。比如 list、dict等。不要使用 o(字符O的小写，很容易被当做数字0)，1(字母 L 的小写，也容易和数字 1 混淆)</div><div class="line"></div><div class="line">其次，变量名最好和你要解决的问题联系起来。</div><div class="line"></div><div class="line">### 3、尽量不要使用大小写来区分不同的对象</div><div class="line"></div><div class="line">比如 b是一个树脂类型的变量，但 A 是 String 类型，虽然在编码过程中容易区分这两者的含义，但是没啥卵用，它并不会给其他阅读代码的人带来福利。反而，带来的呕吐的感觉。</div><div class="line"></div><div class="line">### 4、其次，最重要的一点是，多看源码，学习别人的风格</div><div class="line"></div><div class="line">Github 上有数不胜数的优秀代码，比如web框架里面有名的Flask、Requests，还有爬虫界的Scrapy，这些都是经典中的经典，并且都是比较好的理解pythonic代码风格精髓的例子。</div><div class="line"></div><div class="line">### 5、最后，你实在是懒得不想关注这些，只想写代码，那么。。。</div><div class="line"></div><div class="line">我推荐一个神器，在你写完代码之后，执行这个神器就可以看到检测代码风格后的结果。</div><div class="line"></div><div class="line">```PEP8```，全称，&quot;Python Enhancement Proposal #8&quot;，它列举除了很多对代码的布局、注释、命名的要求。</div><div class="line"></div><div class="line">pip install -U pep8 #来安装 pep8z</div><div class="line"></div><div class="line">然后用它来检测代码：</div><div class="line"></div><div class="line">```python</div><div class="line">➜ /Users/xiyoumc &gt;pep8 --first pornHubSpider.py</div><div class="line">pornHubSpider.py:1:1: E265 block comment should start with &apos;# &apos;</div><div class="line">pornHubSpider.py:19:43: E124 closing bracket does not match visual indentation</div><div class="line">pornHubSpider.py:22:16: E251 unexpected spaces around keyword / parameter equals</div><div class="line">pornHubSpider.py:53:5: E301 expected 1 blank line, found 0</div><div class="line">pornHubSpider.py:71:22: W503 line break before binary operator</div></pre></td></tr></table></figure></p>
+</blockquote>
+<p>同时，如果对pep8感兴趣的话，可以留言，我可以开个系列来讲解 PEP8里面的变量、函数、类、木块和包，这样就会更加容易的理解Pythonic风格。</p>
+<p>最后，如若我写的对大家有点帮助，那么关注公众号 <code>DeveloperPython</code>，你将会收到关于Python技术第一时间的推送</p>
+<hr>
+<p> 长摁‘识别二维码’，一起进步</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-20b8964865a3ae4f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>生活不止眼前的苟且，还有手下的代码、</p>
+<p>和嘴上的扯淡<br>——<br>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a></p>
+<p>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
+<hr>
+<p>点击 <a href="http://t.xiaomiquan.com/7ey3rZv" target="_blank" rel="external">Join</a>，加入Python技术成长圈子，我在这里等着你。</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[戒烟]]></title>
       <url>https://xiyoumc.github.com/2017/07/03/%E6%88%92%E7%83%9F/</url>
       <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/timg.jpeg?raw=true" alt=""><br>以后每天都会在这里记录，戒烟史！<br><a id="more"></a><br>GoGoGo</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[当我玩哔哩哔哩的时候，一不小心。。。]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/%E5%BD%93%E6%88%91%E7%8E%A9%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E4%B8%80%E4%B8%8D%E5%B0%8F%E5%BF%83%E3%80%82%E3%80%82%E3%80%82/</url>
+      <content type="html"><![CDATA[<h2 id="一不小心用代码登陆了B站。。。并上传了。。视频"><a href="#一不小心用代码登陆了B站。。。并上传了。。视频" class="headerlink" title="一不小心用代码登陆了B站。。。并上传了。。视频"></a>一不小心用代码登陆了B站。。。并上传了。。视频</h2><blockquote>
+<p>阅读本文需要4.66分钟</p>
+</blockquote>
+<a id="more"></a>
+<p>你被标题吸引了吧。。。别急着关。。重头戏在后面</p>
+<p>最近当我玩B站的时候，一不小心用代码登录了它，并几乎无限制的上传视频。</p>
+<p>那么接下来，我来讲解如何通过Hack技术来模拟 哔哩哔哩 的登录，并完成我们的视频上传等操作。因此内容中略有“暴力”，若您感到不适，那还是也请看完它。</p>
+<p>按照以往的老套路，我们首先需要弄清楚它的登录逻辑，并通过我们的代码来实现登录操作，其次拿到所谓的 Cookie 或者 Token、Sign等校验字段来做其他的操作，以下将围绕 B站 一步步来讲解破解的思路:</p>
+<p>首先我们访问到 哔哩哔哩 的登录页面:</p>
+<p>  <img src="http://115.28.132.58:8080/docs/BiliLogin.png" alt=""></p>
+<p>当我们在未登录的状态下访问登录页面的时候，会发现验证码已经显示出来了。那么他们是怎么做到当我输入账号、密码并输入一个已经出来的验证码之后就能校验成功呢。这时候就得提前动动脑子，当然如果你是开发服务器的话，应该明白里面的道理。这里我简单的讲下，其实在访问这个登录页面的时候，B站 已经将一个唯一的标识和验证码绑定起来了（也就是后面说到的Cookie），并且在登录的时候将这个标识一并发送上去。也就是说：通过一个标识来绑定验证码和登录操作。</p>
+<p>那么接下来我们看看在第一次访问登录页面的时候，都有哪些可用的数据,打开 Charles 抓包工具(Charles抓包工具可在历史文章中找到)，重新访问登录页面.</p>
+<p>这是登录页面的Request数据:<br><img src="http://115.28.132.58:8080/docs/BLReq.png" alt=""><br>当然一眼看上去并没有什么可用数据。其实确实是没什么卵用的数据.那么我们来看看Response数据:<br><img src="http://115.28.132.58:8080/docs/BLRes.png" alt=""><br>一眼看上去是挺乱的。细看下它的Raw数据。其中包括了使用的Server、Set-Cookie等等的数据，还有登录页面的html文本. 那么其中最重要的数据也就是 Set-Cookie，这个Set-Cookie中的数据就是之前讲到的 用来和验证码绑定的唯一标示。那么我们来确认下，来看看验证码图片的包:<br><img src="http://115.28.132.58:8080/docs/BLCap.png" alt=""><br>快看，快看 验证码 Request 中的 Cookie，果然是上面登录页面的 Response 的 Set-Cookie。</p>
+<p>那么验证码就简单了，我们通过代码来访问 B站 的登录页面，并拿到Response的Set-Cookie，然后再将这个Set-Cookie放到下载验证码Request的Cookie中，就这样，我们的验证码搞定了，那是不是登录就很简单了，少年憋急。登录才是大头..</p>
+<p>来来来，基于上面的登录页面，我们在里面输入自己的账号，并完成登录来看看发的包都有哪些.</p>
+<p>登录操作之后的Request:<br><img src="http://115.28.132.58:8080/docs/BLDolog.png" alt=""><br>可以看出来这是一个 post 请求，当然 Cookie 和验证码的一样将之前保存下来的 Set-Cookie 传给Request的Cookie.</p>
+<p>post 参数如下:<br><img src="http://115.28.132.58:8080/docs/BLOnLogForm.png" alt=""><br>Orz,WTF，提交的密码加密了。那么我就需要来找一下它的加密算法了。其实网页端的加密并没有什么卵用。对我来说，就是随便翻翻代码的事（毕竟我很帅）。</p>
+<p>来来来，找啊找啊找加密。然后我们先试探性的搜索下请求的字段 ‘pwd’ 如下图:<br><img src="http://115.28.132.58:8080/docs/SeachPwd.png" alt=""><br>果然定位到了加密的位置，当然前端页面的加密大部分都是很容易找到的，只要你有耐心.<br><img src="http://115.28.132.58:8080/docs/BLEncPwd.png" alt=""><br>以上就是 B站 加密密码的算法。简单讲下就是：通过 /login?act=getkey 拿到一个数据(hash,key),并以key作为RSA算法的公钥来加密 (hash+明文密码),然后针对这个数据来一次base64即可</p>
+<p>python实现如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> rsa</div><div class="line">pub = rsa.PublicKey.load_pkcs1_openssl_pem(_key)</div><div class="line">_pwd = rsa.encrypt((_hash + psw).encode(),pub)</div><div class="line">_real_pwd = base64.b64encode(str(_pwd))</div></pre></td></tr></table></figure>
+<p>那么现在我们就需要把问题聚焦到 /login?act=getkey 这个接口上。那么我们再回到之前的抓包数据上，会发现果然有一个 getkey 的请求:<br><img src="http://115.28.132.58:8080/docs/BLGetKey.png" alt=""><br>同上，Cookie是最开始的Set-Cookie。<br><img src="http://115.28.132.58:8080/docs/BLGetKeyRes.png" alt=""><br>Response中也就同时拿到了我们需要的 hash 和 key.大功告成，所有请求和加密都被我们搞定。</p>
+<p>这时候我们再思考下登录脚本应该怎么判断是否登录成功呢，回头过来看下之前的登录操作的结果 也就是 上面的 dologin 接口.<br><img src="http://115.28.132.58:8080/docs/BLogLocation.png" alt=""><br>会发现如果你成功登录之后，在 dologin 接口上会有 302 重定向跳转，并最终跳转到 主页上。因此这时候我们就可以来写代码，模拟登录，并且在最后一步登录请求中判断当前请求历史的第一个状态码是不是 302 ，如果是302，说明我们的登录脚本是没问题的。同时，再拿到 dologin的Response中的Set-Cookie作为新的Cookie，因为这个Cookie才是真正验证通过的Cookie，当然它是存在有效期的。具体多少我还不清楚，一般有一个礼拜、一个月、甚至一年之久。之后我们用这个Cookie去做其他有意义的事情，是完全没问题的。</p>
+<p>其次就是上传视频接口，也是类似的方法，需要分析上传视频的接口数据。并将最终的Cookie携带到请求包中。其中需要注意的是B站的上传视频可简单的分为以下几个步骤：</p>
+<ol>
+<li>将视频以Chunk的方式，而且是options的请求方式上传到服务器。因此它是支持断点续传的。</li>
+<li>拿到options请求之后的视频id，再请求 add 接口将数据post上去即可</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>虽然这篇文章很短，但是当你真正坐下来分析的时候，将是一段非常枯燥的过程。需要的就是你的耐心。</p>
+<p>其次之所以写这篇文章，其实重点不是怎么去破解B站的登录，而是这些破解的逻辑是否可以提供给我们一些服务器架构的思路，抑或防范别人的破解。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[大姨夫]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/%E5%A4%A7%E5%A7%A8%E5%A4%AB/</url>
+      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/big.jpg?raw=true" alt=""><br>最近又开始胡思乱想，针对感情、爱情总是一段时间就害怕会分开。特么的都是自己作死。哈哈哈<br><a id="more"></a><br>有一种大姨夫的感觉，有一种小女人的心思，有一种想狠狠抱着你的想法。<br>这是病，得治。自己胡思乱想，想的多，多听听歌吧。<br>大家都很忙，过好自己，照顾好爱的人。</p>
 ]]></content>
     </entry>
     
@@ -732,37 +729,13 @@ limitations under the License.
     </entry>
     
     <entry>
-      <title><![CDATA[当我玩哔哩哔哩的时候，一不小心。。。]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/%E5%BD%93%E6%88%91%E7%8E%A9%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E4%B8%80%E4%B8%8D%E5%B0%8F%E5%BF%83%E3%80%82%E3%80%82%E3%80%82/</url>
-      <content type="html"><![CDATA[<h2 id="一不小心用代码登陆了B站。。。并上传了。。视频"><a href="#一不小心用代码登陆了B站。。。并上传了。。视频" class="headerlink" title="一不小心用代码登陆了B站。。。并上传了。。视频"></a>一不小心用代码登陆了B站。。。并上传了。。视频</h2><blockquote>
-<p>阅读本文需要4.66分钟</p>
+      <title><![CDATA[最近心烦]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/%E6%9C%80%E8%BF%91%E5%BF%83%E4%BA%8B/</url>
+      <content type="html"><![CDATA[<p>不知道自己是将工作带到了生活还是生活带到了工作。。。<br><a id="more"></a></p>
+<blockquote>
+<p>最近事真的很多，也导致了自己事很多。 </p>
+<p>喜欢的人，自己变得约束力越来越多。这不是我要的。<br>我很想放放松松的恋爱。 最近对你一直很闹脾气，动不动就闹脾气。  我想我是该冷静冷静了。<br>让我们开开心心的恋爱下去吧。  一直。相爱。</p>
 </blockquote>
-<a id="more"></a>
-<p>你被标题吸引了吧。。。别急着关。。重头戏在后面</p>
-<p>最近当我玩B站的时候，一不小心用代码登录了它，并几乎无限制的上传视频。</p>
-<p>那么接下来，我来讲解如何通过Hack技术来模拟 哔哩哔哩 的登录，并完成我们的视频上传等操作。因此内容中略有“暴力”，若您感到不适，那还是也请看完它。</p>
-<p>按照以往的老套路，我们首先需要弄清楚它的登录逻辑，并通过我们的代码来实现登录操作，其次拿到所谓的 Cookie 或者 Token、Sign等校验字段来做其他的操作，以下将围绕 B站 一步步来讲解破解的思路:</p>
-<p>首先我们访问到 哔哩哔哩 的登录页面:</p>
-<p>  <img src="http://115.28.132.58:8080/docs/BiliLogin.png" alt=""></p>
-<p>当我们在未登录的状态下访问登录页面的时候，会发现验证码已经显示出来了。那么他们是怎么做到当我输入账号、密码并输入一个已经出来的验证码之后就能校验成功呢。这时候就得提前动动脑子，当然如果你是开发服务器的话，应该明白里面的道理。这里我简单的讲下，其实在访问这个登录页面的时候，B站 已经将一个唯一的标识和验证码绑定起来了（也就是后面说到的Cookie），并且在登录的时候将这个标识一并发送上去。也就是说：通过一个标识来绑定验证码和登录操作。</p>
-<p>那么接下来我们看看在第一次访问登录页面的时候，都有哪些可用的数据,打开 Charles 抓包工具(Charles抓包工具可在历史文章中找到)，重新访问登录页面.</p>
-<p>这是登录页面的Request数据:<br><img src="http://115.28.132.58:8080/docs/BLReq.png" alt=""><br>当然一眼看上去并没有什么可用数据。其实确实是没什么卵用的数据.那么我们来看看Response数据:<br><img src="http://115.28.132.58:8080/docs/BLRes.png" alt=""><br>一眼看上去是挺乱的。细看下它的Raw数据。其中包括了使用的Server、Set-Cookie等等的数据，还有登录页面的html文本. 那么其中最重要的数据也就是 Set-Cookie，这个Set-Cookie中的数据就是之前讲到的 用来和验证码绑定的唯一标示。那么我们来确认下，来看看验证码图片的包:<br><img src="http://115.28.132.58:8080/docs/BLCap.png" alt=""><br>快看，快看 验证码 Request 中的 Cookie，果然是上面登录页面的 Response 的 Set-Cookie。</p>
-<p>那么验证码就简单了，我们通过代码来访问 B站 的登录页面，并拿到Response的Set-Cookie，然后再将这个Set-Cookie放到下载验证码Request的Cookie中，就这样，我们的验证码搞定了，那是不是登录就很简单了，少年憋急。登录才是大头..</p>
-<p>来来来，基于上面的登录页面，我们在里面输入自己的账号，并完成登录来看看发的包都有哪些.</p>
-<p>登录操作之后的Request:<br><img src="http://115.28.132.58:8080/docs/BLDolog.png" alt=""><br>可以看出来这是一个 post 请求，当然 Cookie 和验证码的一样将之前保存下来的 Set-Cookie 传给Request的Cookie.</p>
-<p>post 参数如下:<br><img src="http://115.28.132.58:8080/docs/BLOnLogForm.png" alt=""><br>Orz,WTF，提交的密码加密了。那么我就需要来找一下它的加密算法了。其实网页端的加密并没有什么卵用。对我来说，就是随便翻翻代码的事（毕竟我很帅）。</p>
-<p>来来来，找啊找啊找加密。然后我们先试探性的搜索下请求的字段 ‘pwd’ 如下图:<br><img src="http://115.28.132.58:8080/docs/SeachPwd.png" alt=""><br>果然定位到了加密的位置，当然前端页面的加密大部分都是很容易找到的，只要你有耐心.<br><img src="http://115.28.132.58:8080/docs/BLEncPwd.png" alt=""><br>以上就是 B站 加密密码的算法。简单讲下就是：通过 /login?act=getkey 拿到一个数据(hash,key),并以key作为RSA算法的公钥来加密 (hash+明文密码),然后针对这个数据来一次base64即可</p>
-<p>python实现如下:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> rsa</div><div class="line">pub = rsa.PublicKey.load_pkcs1_openssl_pem(_key)</div><div class="line">_pwd = rsa.encrypt((_hash + psw).encode(),pub)</div><div class="line">_real_pwd = base64.b64encode(str(_pwd))</div></pre></td></tr></table></figure>
-<p>那么现在我们就需要把问题聚焦到 /login?act=getkey 这个接口上。那么我们再回到之前的抓包数据上，会发现果然有一个 getkey 的请求:<br><img src="http://115.28.132.58:8080/docs/BLGetKey.png" alt=""><br>同上，Cookie是最开始的Set-Cookie。<br><img src="http://115.28.132.58:8080/docs/BLGetKeyRes.png" alt=""><br>Response中也就同时拿到了我们需要的 hash 和 key.大功告成，所有请求和加密都被我们搞定。</p>
-<p>这时候我们再思考下登录脚本应该怎么判断是否登录成功呢，回头过来看下之前的登录操作的结果 也就是 上面的 dologin 接口.<br><img src="http://115.28.132.58:8080/docs/BLogLocation.png" alt=""><br>会发现如果你成功登录之后，在 dologin 接口上会有 302 重定向跳转，并最终跳转到 主页上。因此这时候我们就可以来写代码，模拟登录，并且在最后一步登录请求中判断当前请求历史的第一个状态码是不是 302 ，如果是302，说明我们的登录脚本是没问题的。同时，再拿到 dologin的Response中的Set-Cookie作为新的Cookie，因为这个Cookie才是真正验证通过的Cookie，当然它是存在有效期的。具体多少我还不清楚，一般有一个礼拜、一个月、甚至一年之久。之后我们用这个Cookie去做其他有意义的事情，是完全没问题的。</p>
-<p>其次就是上传视频接口，也是类似的方法，需要分析上传视频的接口数据。并将最终的Cookie携带到请求包中。其中需要注意的是B站的上传视频可简单的分为以下几个步骤：</p>
-<ol>
-<li>将视频以Chunk的方式，而且是options的请求方式上传到服务器。因此它是支持断点续传的。</li>
-<li>拿到options请求之后的视频id，再请求 add 接口将数据post上去即可</li>
-</ol>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>虽然这篇文章很短，但是当你真正坐下来分析的时候，将是一段非常枯燥的过程。需要的就是你的耐心。</p>
-<p>其次之所以写这篇文章，其实重点不是怎么去破解B站的登录，而是这些破解的逻辑是否可以提供给我们一些服务器架构的思路，抑或防范别人的破解。</p>
 ]]></content>
     </entry>
     
@@ -773,6 +746,46 @@ limitations under the License.
 <p>   然后这两天又抽空翻了下之前自己做的Hybrid，然后顺其自然的我使用Django框架和Hybrid框架做了个简单的 Demo,并将其放到了Github上。有兴趣的朋友可以共同探讨下。</p>
 <p>   地址在这: <a href="https://github.com/xiyouMc/HybridFramework" target="_blank" rel="external">https://github.com/xiyouMc/HybridFramework</a></p>
 ]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Tar包高优化解析]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/TarParse/</url>
+      <content type="html"><![CDATA[<h1 id="本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。"><a href="#本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。" class="headerlink" title="本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。"></a>本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。</h1><h3 id="一、首先讲一个tar包的文件结构。（懂得可以绕开此段）"><a href="#一、首先讲一个tar包的文件结构。（懂得可以绕开此段）" class="headerlink" title="一、首先讲一个tar包的文件结构。（懂得可以绕开此段）"></a>一、首先讲一个tar包的文件结构。（懂得可以绕开此段）</h3><pre><code>tar只是一个归档文件，并不进行压缩。
+</code></pre><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">　　<span class="keyword">struct</span> tar_header</div><div class="line">　　&#123;</div><div class="line">　　 <span class="keyword">char</span> name[<span class="number">100</span>];</div><div class="line">　　 <span class="keyword">char</span> mode[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> uid[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> gid[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> size[<span class="number">12</span>];</div><div class="line">　　 <span class="keyword">char</span> mtime[<span class="number">12</span>];</div><div class="line">　　 <span class="keyword">char</span> chksum[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> typeflag;</div><div class="line">　　 <span class="keyword">char</span> linkname[<span class="number">100</span>];</div><div class="line">　　 <span class="keyword">char</span> magic[<span class="number">6</span>];</div><div class="line">　　 <span class="keyword">char</span> version[<span class="number">2</span>];</div><div class="line">　　 <span class="keyword">char</span> uname[<span class="number">32</span>];</div><div class="line">　　 <span class="keyword">char</span> gname[<span class="number">32</span>];</div><div class="line">　　 <span class="keyword">char</span> devmajor[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> devminor[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> prefix[<span class="number">155</span>];</div><div class="line">　　 <span class="keyword">char</span> padding[<span class="number">12</span>];</div><div class="line">　　&#125;;</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>&gt;<br>　　以上是Tar中保存文件信息的数据结构，其后跟着的就是文件的内容。<br> size为文件大小的八进制字节表示，例如文件大小为90个字节，那么这里就是八进制的90，即为132。<br>　　其中，文件大小，修改时间，checksum都是存储的对应的八进制字符串，字符串最后一个字符为空格字符<br>　　checksum的计算方法为出去checksum字段其他所有的512-8共504个字节的ascii码相加的值再加上256(checksum当作八个空格，即8<em>0x20）<br>　　文件内容以512字节为一个block进行分割，最后一个block不足部分以0补齐<br>　　两个文件的tar包首先存放第一个文件的tar头结构，然后存储文件内容，接着存储第二个文件的tar头结构，然后存储文件内容<br>　　所有文件都存储完了以后，最后存放一个全零的tar结构<br>　　所有的tar文件大小应该都是512的倍数，一个空文件打包后为512</em>3字节，包括一个tar结构头，一个全零的block存储文件内容，一个全零的tar结构</p>
+<ul>
+<li>检测tar文件格式的方法：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">1、检测magic字段，即在0x101处检查字符串，是否为ustar。有时某些压缩软件将这个字段设置为空。如果magic字段为空，进入第2步。</div><div class="line">2、计算校验和，按照上面的方法计算校验和，如果校验和正确的话，那么这就是一个tar文件。</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>注意：在windows下面，不支持uid、uname等，有的甚至不支持magic，这样就比较麻烦了。</p>
+<h3 id="二、Java层普遍的“解压”方式"><a href="#二、Java层普遍的“解压”方式" class="headerlink" title="二、Java层普遍的“解压”方式"></a>二、Java层普遍的“解压”方式</h3><p>&gt;<br>     因为在jdk中提供了 FilterInputStream,因此我们可以通过继承该类，并构造一个TarEntry的模板，在子类中按每512个字节，将一个tar流分成包含N个512字节的TarEntry. 这样我们就可以将一个tar包通过TarInputStream和TarEntry解开到一个map集合中<entryname,data>.</entryname,data></p>
+<h3 id="三、内存优化的-“解压”方式"><a href="#三、内存优化的-“解压”方式" class="headerlink" title="三、内存优化的 “解压”方式"></a>三、内存优化的 “解压”方式</h3><p>&gt;<br>     由于每一个TarEntry都是一个固定大小字节的对象，那么我们可不可以直接读取这块内存，而不是将所有都常驻内存呢？<br>     答案当然是可以的。<br>    为了内存上的优化和效率上的提升，我们可以直接读取指定EntryNam的内存块。<br>    因为一个tar包基本的组成结构就是   entryName-&gt;data。我们可以拿到每一个EntryName和其对应的内存大小、偏移量，在读取的时候直接在TarInputStream中读取相应内存块。<br>   代码如下：</p>
+<ol>
+<li><p>一个简单维护TarEntry偏移量和字节大小的类McTarEntry。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">McTarEntry</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="keyword">private</span> <span class="keyword">long</span> offset;</div><div class="line"></div><div class="line">  <span class="keyword">private</span> <span class="keyword">int</span> size;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">private</span> <span class="title">McTarEntry</span><span class="params">(Builder builder)</span> </span>&#123;</div><div class="line">      offset = builder.offset;</div><div class="line">      size = builder.size;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">getOffset</span><span class="params">()</span> </span>&#123;</div><div class="line">      <span class="keyword">return</span> offset;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getSize</span><span class="params">()</span> </span>&#123;</div><div class="line">      <span class="keyword">return</span> size;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Builder</span> </span>&#123;</div><div class="line">      <span class="keyword">private</span> <span class="keyword">long</span> offset = <span class="number">0</span>;</div><div class="line">      <span class="keyword">private</span> <span class="keyword">int</span> size = <span class="number">0</span>;</div><div class="line"></div><div class="line">      <span class="function"><span class="keyword">public</span> Builder <span class="title">offset</span><span class="params">(<span class="keyword">long</span> offset)</span> </span>&#123;</div><div class="line">          <span class="keyword">this</span>.offset = offset;</div><div class="line">          <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      <span class="function"><span class="keyword">public</span> Builder <span class="title">size</span><span class="params">(<span class="keyword">int</span> size)</span> </span>&#123;</div><div class="line">          <span class="keyword">this</span>.size = size;</div><div class="line">          <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      <span class="function"><span class="keyword">public</span> H5TarEntry <span class="title">build</span><span class="params">()</span> </span>&#123;</div><div class="line">          <span class="keyword">return</span> <span class="keyword">new</span> McTarEntry(<span class="keyword">this</span>);</div><div class="line">      &#125;</div><div class="line"></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>解析Tar包，将每个McTarEntry保存在map</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">FileInputStream fis = <span class="keyword">new</span> FileInputStream(tarPath);</div><div class="line">BufferedInputStream bis = <span class="keyword">new</span> BufferedInputStream(fis);</div><div class="line">TarInputStream tis = <span class="keyword">new</span> TarInputStream(bis);</div><div class="line">TarEntry te = <span class="keyword">null</span>;</div><div class="line"><span class="keyword">while</span> ((te = tis.getNextEntry()) != <span class="keyword">null</span>) &#123;</div><div class="line">    String entryName = te.getName();</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (te.isDirectory() || TextUtils.isEmpty(entryName)) &#123;</div><div class="line">        <span class="keyword">continue</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    McTarEntry mcTarEntry = <span class="keyword">new</span> McTarEntry.Builder().offset(tis.getCurrentOffset())</div><div class="line">            .size((<span class="keyword">int</span>) te.getSize()).build();</div><div class="line"></div><div class="line">    tarEntryMap.put(entryName, h5TarEntry);</div><div class="line"></div><div class="line">&#125;</div><div class="line">tis.close();</div></pre></td></tr></table></figure>
+</li>
+<li><p>读取指定entryName的数据块</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">static</span> <span class="keyword">byte</span>[] get(String appId, String entryName) &#123;</div><div class="line">      <span class="keyword">try</span> &#123;</div><div class="line">          <span class="keyword">byte</span> buffer[] = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">2048</span>];</div><div class="line">          <span class="keyword">int</span> count;</div><div class="line">          ByteArrayOutputStream bos = <span class="keyword">new</span> ByteArrayOutputStream();</div><div class="line">          <span class="keyword">if</span> (!tarEntryMap.containsKey()) &#123;</div><div class="line">              <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">          &#125;</div><div class="line">          <span class="keyword">long</span> offset = tarEntryMap.get(entryName).getOffset();</div><div class="line">          <span class="keyword">int</span> entrySize = tarEntryMap.get(entryName).getSize();</div><div class="line">          FileInputStream fis = <span class="keyword">new</span> FileInputStream(tarPath);</div><div class="line">          BufferedInputStream bis = <span class="keyword">new</span> BufferedInputStream(fis);</div><div class="line">          TarInputStream tis = <span class="keyword">new</span> TarInputStream(bis);</div><div class="line">          H5Log.d(TAG, <span class="string">"entryName"</span> + entryName + <span class="string">" skip offset:"</span> + offset + <span class="string">" size"</span> + entrySize);</div><div class="line">          tis.skip(offset);</div><div class="line">          <span class="keyword">if</span> (buffer.length &gt; entrySize) &#123;</div><div class="line">              buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[entrySize];</div><div class="line">          &#125;</div><div class="line">          <span class="keyword">int</span> bufferSize = <span class="number">0</span>;</div><div class="line">          <span class="keyword">while</span> ((count = tis.read(buffer)) != -<span class="number">1</span>) &#123;</div><div class="line">              bos.write(buffer, <span class="number">0</span>, count);</div><div class="line">              bufferSize += count;</div><div class="line">                 <span class="comment">// 当前buffer加上已经读取的bufferSize如果超过entrySize那么我们就应该重新计算buffer进行最后一次读取。</span></div><div class="line">              <span class="keyword">if</span> ((bufferSize + buffer.length) &gt; entrySize) &#123;</div><div class="line">                  buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[entrySize % bufferSize];</div><div class="line">                  bufferSize = entrySize - entrySize % bufferSize;</div><div class="line">              &#125;</div><div class="line"></div><div class="line">              <span class="keyword">if</span> (buffer.length == entrySize || entrySize == bufferSize) &#123;</div><div class="line">                  <span class="keyword">break</span>;</div><div class="line">              &#125;</div><div class="line">          &#125;</div><div class="line">          tis.close();</div><div class="line">          <span class="keyword">byte</span>[] data = bos.toByteArray();</div><div class="line">          <span class="keyword">if</span> (data == <span class="keyword">null</span>) &#123;</div><div class="line">              <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">          &#125;</div><div class="line">          H5Log.d(TAG, <span class="string">"entryName:"</span> + entryName);</div><div class="line">          <span class="keyword">return</span> data;</div><div class="line">      &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">          H5Log.e(TAG, <span class="string">"exception :"</span> + e);</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>  这样就可以通过指定的entryName，根据其offset和 size 计算到这个entry在TarStream中固定内存块，从而拿到真正的数据。</p>
+</li>
+</ol>
+<h3 id="总结：两种读取方式的区别："><a href="#总结：两种读取方式的区别：" class="headerlink" title="总结：两种读取方式的区别："></a>总结：两种读取方式的区别：</h3><ul>
+<li>第一种<br>优点：减少了I/O操作。<br>缺点：耗费了内存。假如一个很大的资源在这个tar中，但是被使用的概率很低，这样耗费了内存从而不值得这么做。</li>
+<li>第二种<br>优点：节省了内存，提高了读取效率<br>缺点：增加了I/O操作，Tar资源可能存在被篡改的风险。</li>
+</ul>
+<p>Thanks.<br>  By MC.</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Shell语言基本教程]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/linux_shell/</url>
+      <content type="html"></content>
     </entry>
     
     <entry>
@@ -787,31 +800,6 @@ limitations under the License.
 <h4 id="ubuntu下安装需要添加一个新的软件库，里面包含了libimobiledevice"><a href="#ubuntu下安装需要添加一个新的软件库，里面包含了libimobiledevice" class="headerlink" title="ubuntu下安装需要添加一个新的软件库，里面包含了libimobiledevice"></a>ubuntu下安装需要添加一个新的软件库，里面包含了libimobiledevice</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sudo add-apt-repository ppa:pmcenery/ppa</div><div class="line">sudo apt-get update</div><div class="line">apt-get install libimobiledevice-utils</div><div class="line">sudo apt-get install ideviceinstaller</div></pre></td></tr></table></figure>
 <p>这里面包含了很多命令，如下<br><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/idevice.png?raw=true" alt="zls"></p>
 <h3 id="如要安装一个ipa文件到手机上可以使用"><a href="#如要安装一个ipa文件到手机上可以使用" class="headerlink" title="如要安装一个ipa文件到手机上可以使用"></a>如要安装一个ipa文件到手机上可以使用</h3><p>ideviceinstaller -i 命令安装一个ipa文件到手机上，如果是企业签名的，非越狱机器也可以直接安装了</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Shell语言基本教程]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/linux_shell/</url>
-      <content type="html"></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[大姨夫]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/%E5%A4%A7%E5%A7%A8%E5%A4%AB/</url>
-      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/big.jpg?raw=true" alt=""><br>最近又开始胡思乱想，针对感情、爱情总是一段时间就害怕会分开。特么的都是自己作死。哈哈哈<br><a id="more"></a><br>有一种大姨夫的感觉，有一种小女人的心思，有一种想狠狠抱着你的想法。<br>这是病，得治。自己胡思乱想，想的多，多听听歌吧。<br>大家都很忙，过好自己，照顾好爱的人。</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Charles破解教程，适用于所有版本]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/charles_break/</url>
-      <content type="html"><![CDATA[<h1 id="Charles-注册码"><a href="#Charles-注册码" class="headerlink" title="Charles 注册码"></a>Charles 注册码</h1><h3 id="1-Windows-用户"><a href="#1-Windows-用户" class="headerlink" title="1. Windows 用户"></a>1. Windows 用户</h3><p>RegName: ANONYMOUS@chinapyg.com<br>Reg_Key: 5fae99ec65736945ba<br>官方下载后可直接激活。神key.</p>
-<h3 id="2-Mac-用户"><a href="#2-Mac-用户" class="headerlink" title="2. Mac 用户"></a>2. Mac 用户</h3><p>方式一如果不行，方式二绝对可以。</p>
-<h4 id="1-方式一"><a href="#1-方式一" class="headerlink" title="1. 方式一"></a>1. 方式一</h4><p>账号：WaitsUn.com<br>密码：vapg-fold-dreg-inky</p>
-<h4 id="2-方式二"><a href="#2-方式二" class="headerlink" title="2. 方式二"></a>2. 方式二</h4><p>先安装Charles，然后在终端中执行下面的命令即可实现破解。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">charles=/Applications/Charles.app/Contents/Java/charles.jar</div><div class="line">dir=charleshack</div><div class="line">mkdir $dir</div><div class="line">cd $dir</div><div class="line">cat &gt;&gt; License.java &lt;&lt;EOF</div><div class="line">package com.xk72.charles;</div><div class="line">public final class License &#123;</div><div class="line">    public static boolean a() &#123; return true; &#125;</div><div class="line">    public static String b() &#123; return &quot;http://www.gfzj.us&quot;; &#125;</div><div class="line">    public static String a(String name, String key) &#123; return null; &#125;</div><div class="line">&#125;</div><div class="line">EOF</div><div class="line">javac -encoding UTF-8 License.java -d .&amp;&amp; jar -uvf $charles com/xk72/charles/License.class</div><div class="line">cd .. &amp;&amp; rm -rf $dir</div></pre></td></tr></table></figure>
-<a id="more"></a>
 ]]></content>
     </entry>
     
@@ -861,6 +849,18 @@ limitations under the License.
 <ul>
 <li>JSBridge.call(“hideTitlebar”)  —Hide Title bar</li>
 </ul>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Charles破解教程，适用于所有版本]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/charles_break/</url>
+      <content type="html"><![CDATA[<h1 id="Charles-注册码"><a href="#Charles-注册码" class="headerlink" title="Charles 注册码"></a>Charles 注册码</h1><h3 id="1-Windows-用户"><a href="#1-Windows-用户" class="headerlink" title="1. Windows 用户"></a>1. Windows 用户</h3><p>RegName: ANONYMOUS@chinapyg.com<br>Reg_Key: 5fae99ec65736945ba<br>官方下载后可直接激活。神key.</p>
+<h3 id="2-Mac-用户"><a href="#2-Mac-用户" class="headerlink" title="2. Mac 用户"></a>2. Mac 用户</h3><p>方式一如果不行，方式二绝对可以。</p>
+<h4 id="1-方式一"><a href="#1-方式一" class="headerlink" title="1. 方式一"></a>1. 方式一</h4><p>账号：WaitsUn.com<br>密码：vapg-fold-dreg-inky</p>
+<h4 id="2-方式二"><a href="#2-方式二" class="headerlink" title="2. 方式二"></a>2. 方式二</h4><p>先安装Charles，然后在终端中执行下面的命令即可实现破解。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">charles=/Applications/Charles.app/Contents/Java/charles.jar</div><div class="line">dir=charleshack</div><div class="line">mkdir $dir</div><div class="line">cd $dir</div><div class="line">cat &gt;&gt; License.java &lt;&lt;EOF</div><div class="line">package com.xk72.charles;</div><div class="line">public final class License &#123;</div><div class="line">    public static boolean a() &#123; return true; &#125;</div><div class="line">    public static String b() &#123; return &quot;http://www.gfzj.us&quot;; &#125;</div><div class="line">    public static String a(String name, String key) &#123; return null; &#125;</div><div class="line">&#125;</div><div class="line">EOF</div><div class="line">javac -encoding UTF-8 License.java -d .&amp;&amp; jar -uvf $charles com/xk72/charles/License.class</div><div class="line">cd .. &amp;&amp; rm -rf $dir</div></pre></td></tr></table></figure>
+<a id="more"></a>
 ]]></content>
     </entry>
     
@@ -915,24 +915,6 @@ limitations under the License.
     </entry>
     
     <entry>
-      <title><![CDATA[憧憬]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/Home/</url>
-      <content type="html"><![CDATA[<blockquote>
-<p>时常在憧憬未来 、未来 家的样子</p>
-</blockquote>
-<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/home.jpg?raw=true" alt="zls"></p>
-<a id="more"></a>
-<blockquote>
-<ul>
-<li>一直都想有个家、有自己的妻儿</li>
-<li>有一个可以依靠、也可以安心的家</li>
-<li>So 让我们一起努力。有一天你会是我的妻子，我会是你的丈夫，你我会是孩子的父母。</li>
-</ul>
-</blockquote>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[Github系列教程二 「加入Github」]]></title>
       <url>https://xiyoumc.github.com/2017/07/03/Github%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%E4%BA%8C%20%E5%8A%A0%E5%85%A5Github/</url>
       <content type="html"><![CDATA[<h3 id="本文同步在我的公众号-DeveloperPython"><a href="#本文同步在我的公众号-DeveloperPython" class="headerlink" title="本文同步在我的公众号: DeveloperPython"></a>本文同步在我的公众号: DeveloperPython</h3><p><img src="http://upload-images.jianshu.io/upload_images/4653472-1ff8d4743422cfaf?imageMogr2/auto-orient/strip" alt=""><br><a id="more"></a><br>相信昨天大家看过 <a href="http://mp.weixin.qq.com/s?__biz=MzU3ODAxNDcwNQ==&amp;mid=2247483866&amp;idx=1&amp;sn=9692ca0d4a25ee4675d073e9643b7e30&amp;chksm=fd7a9d44ca0d1452f0e7d55d412e5469a3d82fbb00153e7d9b99a33e0424d6eb47b54903b5ad&amp;scene=21#wechat_redirect" target="_blank" rel="external">Github系列教程一 「开门」</a>之后，已经对Github的简介和发展史有了一个详细的了解。</p>
@@ -977,6 +959,112 @@ limitations under the License.
 <p>生活不止眼前的苟且，还有手下的代码、<br>和嘴上的扯淡<br>——</p>
 <p>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a></p>
 <p>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[憧憬]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/Home/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>时常在憧憬未来 、未来 家的样子</p>
+</blockquote>
+<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/home.jpg?raw=true" alt="zls"></p>
+<a id="more"></a>
+<blockquote>
+<ul>
+<li>一直都想有个家、有自己的妻儿</li>
+<li>有一个可以依靠、也可以安心的家</li>
+<li>So 让我们一起努力。有一天你会是我的妻子，我会是你的丈夫，你我会是孩子的父母。</li>
+</ul>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Github系列教程一  开门]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/Github%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%E4%B8%80%20%E5%BC%80%E9%97%A8/</url>
+      <content type="html"><![CDATA[<p><img src="http://upload-images.jianshu.io/upload_images/4653472-2bd1a717e57c76f3?imageMogr2/auto-orient/strip" alt=""></p>
+<p>这是一套Github的小白教程<br><a id="more"></a></p>
+<h3 id="本文来自我的公众号：DeveloperPython"><a href="#本文来自我的公众号：DeveloperPython" class="headerlink" title="本文来自我的公众号：DeveloperPython"></a>本文来自我的公众号：DeveloperPython</h3><p><img src="http://upload-images.jianshu.io/upload_images/4653472-2bd1a717e57c76f3?imageMogr2/auto-orient/strip" alt=""><br>对于Github,我相信很多人都不陌生，并且我也一直认为Github是程序员的必备，当然还有一个 StackOverFlow。</p>
+<p>但是在我周围、包括公号里面的读者，大部分都不怎么使用Github。</p>
+<p>因为上次我的项目被点赞到Github Trending之后（全球开源项目的热门），我发现很多点赞的国内开发者都是不怎么使用Github的。因为几乎看不到他们的代码提交记录，然而里面很多国外开发者的点赞，我再进入他们的主页，大部分开发者都是持续提交代码中。</p>
+<p>之后我也收到好多消息，希望我写一篇关于Github的教程或者如何上Trending。</p>
+<p>其实，我接触Github时间挺早的了，大概在上大学开始写代码的时候，就已经使用上了 Github。当时我也是只下载，不用的那种。大概在接触 Github 一年左右之后，我就开始深入使用。</p>
+<p>到目前为止，自己 Github 中的项目已经有了130多个。</p>
+<p><a href="https://www.github.com/xiyouMc/" target="_blank" rel="external">https://www.github.com/xiyouMc/</a> </p>
+<p>Github是一个开源、开放、免费的平台，它更多的是提供给我们学习和贡献的。</p>
+<p>所以我决定写一个系列来讲解如何去更好的使用Github，为了让国内的开发者能合理的使用Github。</p>
+<h2 id="01、什么是-Github"><a href="#01、什么是-Github" class="headerlink" title="01、什么是 Github"></a>01、什么是 Github</h2><p>Github其实是一家公司，坐落在旧金山。是由三个知名的开发者在08年创办的，具体是谁就不用讲了，讲了也记不住。</p>
+<p>这是它的 Logo:</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-a9a0ffeb0f3deb93?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>大概也就在08年4月多，正式上线。</p>
+<p><a href="https://www.github.com/" target="_blank" rel="external">https://www.github.com/</a> </p>
+<p>简单的来讲，Github是一个基于 Git 的版本托管平台。</p>
+<p>大概在13年的时候，Github 用户数量已经破300万，到目前为止我想也应该上千万了吧。</p>
+<p>因此它有一个很洋气的名字就是全球最大同性交友平台。GayHub。</p>
+<h2 id="02、Github、Gitlab-和-Git-的区别"><a href="#02、Github、Gitlab-和-Git-的区别" class="headerlink" title="02、Github、Gitlab 和 Git 的区别"></a>02、Github、Gitlab 和 Git 的区别</h2><p>这个问题，我相信很多人都分不清。</p>
+<p>有的人会把Git理解成Github。你会经常听到有人跟你讲：“你可以去Git上找下，看看有没有你想要的代码”。 如果这句话，是别人跟我讲的，那我绝对是一脸懵逼的。</p>
+<p>至于为什么，那么我就来详细讲下这三个的区别。</p>
+<p><strong>先说下Git</strong></p>
+<p>Git是一款免费、开源的分布式版本控制系统，他是由著名的Linux发明者 Linus Torvalds 开发的。</p>
+<p>所以说Git是一个版本的控制系统，而非一个平台。</p>
+<p>提到这个版本控制系统，大家可能会想到SVN，毕竟这是很多大学都让学生使用的东西。只不过Git是新时代的产物。</p>
+<p>如果在15年的时候，你告诉我你们在使用SVN，那么还情有可原。毕竟那时候很多大公司还在用SVN，比如支付宝。但到现在了，你还在使用SVN那么真的是太落伍了。</p>
+<p>所以不管是学习Github，或者从事编程行业，Git绝对算是必备技能。</p>
+<p><strong>接下来说Github</strong></p>
+<p>上面已经说过，Github 是基于Git的版本托管服务。所以Git对于Github来讲就是一个版本管理的工具。</p>
+<p>其次Github，还有更多的功能，毕竟它是一个平台。后面的文章中，我也会列举出重要的几个。</p>
+<p><strong>最后来讲讲Gitlab</strong></p>
+<p>这个东西呢，其实是<strong>企业内部</strong>的Github。</p>
+<p>因为Github毕竟是一个开源的、全球性的代码托管平台。</p>
+<p>对于企业来讲，他们更希望内部有个这样类似的Git代码托管服务。所以他们会选择Gitlab，这个开源的代码托管平台。</p>
+<p>而且Gitlab一直在更新版本，目前已经到了9.1版本。</p>
+<p><a href="https://github.com/gitlabhq/gitlabhq/" target="_blank" rel="external">https://github.com/gitlabhq/gitlabhq/</a></p>
+<p>从地址来看，你也会发现Gitlab是Github平台上的一个开源项目，这样也就不难理解这两个的区别了。</p>
+<h2 id="03、Github-的影响力"><a href="#03、Github-的影响力" class="headerlink" title="03、Github 的影响力"></a>03、Github 的影响力</h2><p>我可以这么说吧，只要你能想到的大公司，他们都会在Github上有一个组织来贡献内部的优秀代码和框架。</p>
+<p>比如：<br>Google: <a href="https://www.gihutb.com/google" target="_blank" rel="external">https://www.gihutb.com/google</a><br>Apple: <a href="https://www.github.com/apple/" target="_blank" rel="external">https://www.github.com/apple/</a><br>Facebook: <a href="https://www.github.com/facebook/" target="_blank" rel="external">https://www.github.com/facebook/</a><br>Alibaba: <a href="https://www.github.com/alibaba" target="_blank" rel="external">https://www.github.com/alibaba</a><br>….<br>还有全球顶级的项目，也同样在Github。<br>Linux: <a href="https://www.github.com/torvalds/linux" target="_blank" rel="external">https://www.github.com/torvalds/linux</a><br>Nodejs: <a href="https://www.github.com/nodejs/node" target="_blank" rel="external">https://www.github.com/nodejs/node</a><br>Weex: <a href="https://github.com/alibaba/weex" target="_blank" rel="external">https://github.com/alibaba/weex</a><br>等等的….<br>同样还有全球顶尖级的开发者。<br>Linux之父 Linus:<br><img src="http://upload-images.jianshu.io/upload_images/4653472-b3a42f0dacbef2cd?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>Android 之神 Jake:<br><img src="http://upload-images.jianshu.io/upload_images/4653472-e0d5bf0e4644d3cc?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>等等的，我就不一一列举了。</p>
+<p>只要是在编程届厉害的人物，都会出现在Github。</p>
+<p>并且很多牛逼的项目做开源，比如你某天听说了某个公司的xx框架开源了。那么它们绝对在Github上开源的。</p>
+<p>因此，Github已经是开源的代名词。</p>
+<h2 id="04、Github能做什么"><a href="#04、Github能做什么" class="headerlink" title="04、Github能做什么"></a>04、Github能做什么</h2><ul>
+<li><strong>优秀的开源项目</strong></li>
+</ul>
+<p>学好使用优秀的开源项目，是一个可以避免你在软件开发中重复造轮子的事情。</p>
+<p>确切的来讲，正是因为有个Github上优秀的开源项目，才促使了我们在软件开发中变得越来越容易、越来越快速。</p>
+<p>比如说：网络请求库、图片加载库。如果让你去自己实现，那么时间和资源是一个很大的成本。对于大公司，可能在人力和资源上是充沛的。但是对于大部分互联网来讲时间就是一切。</p>
+<p>所以在使用开源项目的同时，学习他们优秀的设计思想和实现方式，无疑是提升自我编程能力的好时机。</p>
+<p>同样的，如果你能拥有一个优秀的开源项目，那么绝对是一个很好的体验。</p>
+<p>比如说我开源的WebHubBot，当你看到自己的项目每天每时都有人在点赞，那种感觉真心是比朋友圈被点赞爽很多倍的！！！</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-b63084401d16c5a5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><img src="http://upload-images.jianshu.io/upload_images/4653472-a4be03a4fa7183b0?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<ul>
+<li><strong>多人协作</strong><br>其实多人协作对于Github来讲无疑是一个转折点。</li>
+</ul>
+<p>因为一个好的项目，绝非几个人就能搞定的，因此Github提供了很好的协作平台。</p>
+<p>当你把代码提交上去之后，你可以让其他人和你一同开发，或者说如果你的项目很好，全球的开发者都会给你的项目做贡献。</p>
+<p>以我为例，前段时间提交了一个很有意思的项目，之后就收到了好几个全球开发者代码贡献，如下：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-668e59895e243bdb?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>因此，多人协作真心是一个很爽、很棒的功能。</p>
+<ul>
+<li><strong>其次就是搭建个人网站</strong></li>
+</ul>
+<p>Github Pages是Github提供的一套完整的博客搭建环境。</p>
+<p>平时你会发现很多人的个人博客域名都是xxxx.github.io。这就是使用Github Pages来搭建的。使用方法很简单，也绝对是一个装逼利器。</p>
+<ul>
+<li><strong>个人简历</strong></li>
+</ul>
+<p>活跃的Github账号，是一个很好的个人简历。</p>
+<p>据我所知，目前很多猎头和公司的HR都很喜欢逛Github。</p>
+<p>并且很多国外的科技公司也都会通过Github来寻找优秀的人才。</p>
+<p>所以多用Github，会让你收到很多意外的惊喜。</p>
+<h2 id="05、加入Github"><a href="#05、加入Github" class="headerlink" title="05、加入Github"></a>05、加入Github</h2><p>相信大家读到这里，都迫不及待的想去使用Github了。</p>
+<p>那么事不宜迟，从现在开始，快去注册一个Github账号。 </p>
+<p>链接： <a href="https://www.github.com/" target="_blank" rel="external">https://www.github.com/</a> 。</p>
+<p>注册完成之后，先玩着，了解下整个平台的功能。</p>
+<p>同时也可以试着搜索下我的Github：<br>ID：xiyouMc<br><a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a> </p>
+<p>接下来，我还会继续连载Github一系列的文章。</p>
+<p>保证你们看完之后，会有不一样的收获。</p>
+<p>同时如果你目前在使用Git或者Github中，那么有问题的话，也同样可以给我留言，我会一一给你们解答。</p>
+<p>——<br>扫描二维码，关注公众号<br><img src="http://upload-images.jianshu.io/upload_images/4653472-1c1e06e2f58b0610?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>生活不止眼前的苟且，还有手下的代码、<br>和嘴上的扯淡<br>——<br>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a><br>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
 ]]></content>
     </entry>
     
@@ -1074,94 +1162,6 @@ limitations under the License.
     </entry>
     
     <entry>
-      <title><![CDATA[Github系列教程一  开门]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/Github%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%E4%B8%80%20%E5%BC%80%E9%97%A8/</url>
-      <content type="html"><![CDATA[<p><img src="http://upload-images.jianshu.io/upload_images/4653472-2bd1a717e57c76f3?imageMogr2/auto-orient/strip" alt=""></p>
-<p>这是一套Github的小白教程<br><a id="more"></a></p>
-<h3 id="本文来自我的公众号：DeveloperPython"><a href="#本文来自我的公众号：DeveloperPython" class="headerlink" title="本文来自我的公众号：DeveloperPython"></a>本文来自我的公众号：DeveloperPython</h3><p><img src="http://upload-images.jianshu.io/upload_images/4653472-2bd1a717e57c76f3?imageMogr2/auto-orient/strip" alt=""><br>对于Github,我相信很多人都不陌生，并且我也一直认为Github是程序员的必备，当然还有一个 StackOverFlow。</p>
-<p>但是在我周围、包括公号里面的读者，大部分都不怎么使用Github。</p>
-<p>因为上次我的项目被点赞到Github Trending之后（全球开源项目的热门），我发现很多点赞的国内开发者都是不怎么使用Github的。因为几乎看不到他们的代码提交记录，然而里面很多国外开发者的点赞，我再进入他们的主页，大部分开发者都是持续提交代码中。</p>
-<p>之后我也收到好多消息，希望我写一篇关于Github的教程或者如何上Trending。</p>
-<p>其实，我接触Github时间挺早的了，大概在上大学开始写代码的时候，就已经使用上了 Github。当时我也是只下载，不用的那种。大概在接触 Github 一年左右之后，我就开始深入使用。</p>
-<p>到目前为止，自己 Github 中的项目已经有了130多个。</p>
-<p><a href="https://www.github.com/xiyouMc/" target="_blank" rel="external">https://www.github.com/xiyouMc/</a> </p>
-<p>Github是一个开源、开放、免费的平台，它更多的是提供给我们学习和贡献的。</p>
-<p>所以我决定写一个系列来讲解如何去更好的使用Github，为了让国内的开发者能合理的使用Github。</p>
-<h2 id="01、什么是-Github"><a href="#01、什么是-Github" class="headerlink" title="01、什么是 Github"></a>01、什么是 Github</h2><p>Github其实是一家公司，坐落在旧金山。是由三个知名的开发者在08年创办的，具体是谁就不用讲了，讲了也记不住。</p>
-<p>这是它的 Logo:</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-a9a0ffeb0f3deb93?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>大概也就在08年4月多，正式上线。</p>
-<p><a href="https://www.github.com/" target="_blank" rel="external">https://www.github.com/</a> </p>
-<p>简单的来讲，Github是一个基于 Git 的版本托管平台。</p>
-<p>大概在13年的时候，Github 用户数量已经破300万，到目前为止我想也应该上千万了吧。</p>
-<p>因此它有一个很洋气的名字就是全球最大同性交友平台。GayHub。</p>
-<h2 id="02、Github、Gitlab-和-Git-的区别"><a href="#02、Github、Gitlab-和-Git-的区别" class="headerlink" title="02、Github、Gitlab 和 Git 的区别"></a>02、Github、Gitlab 和 Git 的区别</h2><p>这个问题，我相信很多人都分不清。</p>
-<p>有的人会把Git理解成Github。你会经常听到有人跟你讲：“你可以去Git上找下，看看有没有你想要的代码”。 如果这句话，是别人跟我讲的，那我绝对是一脸懵逼的。</p>
-<p>至于为什么，那么我就来详细讲下这三个的区别。</p>
-<p><strong>先说下Git</strong></p>
-<p>Git是一款免费、开源的分布式版本控制系统，他是由著名的Linux发明者 Linus Torvalds 开发的。</p>
-<p>所以说Git是一个版本的控制系统，而非一个平台。</p>
-<p>提到这个版本控制系统，大家可能会想到SVN，毕竟这是很多大学都让学生使用的东西。只不过Git是新时代的产物。</p>
-<p>如果在15年的时候，你告诉我你们在使用SVN，那么还情有可原。毕竟那时候很多大公司还在用SVN，比如支付宝。但到现在了，你还在使用SVN那么真的是太落伍了。</p>
-<p>所以不管是学习Github，或者从事编程行业，Git绝对算是必备技能。</p>
-<p><strong>接下来说Github</strong></p>
-<p>上面已经说过，Github 是基于Git的版本托管服务。所以Git对于Github来讲就是一个版本管理的工具。</p>
-<p>其次Github，还有更多的功能，毕竟它是一个平台。后面的文章中，我也会列举出重要的几个。</p>
-<p><strong>最后来讲讲Gitlab</strong></p>
-<p>这个东西呢，其实是<strong>企业内部</strong>的Github。</p>
-<p>因为Github毕竟是一个开源的、全球性的代码托管平台。</p>
-<p>对于企业来讲，他们更希望内部有个这样类似的Git代码托管服务。所以他们会选择Gitlab，这个开源的代码托管平台。</p>
-<p>而且Gitlab一直在更新版本，目前已经到了9.1版本。</p>
-<p><a href="https://github.com/gitlabhq/gitlabhq/" target="_blank" rel="external">https://github.com/gitlabhq/gitlabhq/</a></p>
-<p>从地址来看，你也会发现Gitlab是Github平台上的一个开源项目，这样也就不难理解这两个的区别了。</p>
-<h2 id="03、Github-的影响力"><a href="#03、Github-的影响力" class="headerlink" title="03、Github 的影响力"></a>03、Github 的影响力</h2><p>我可以这么说吧，只要你能想到的大公司，他们都会在Github上有一个组织来贡献内部的优秀代码和框架。</p>
-<p>比如：<br>Google: <a href="https://www.gihutb.com/google" target="_blank" rel="external">https://www.gihutb.com/google</a><br>Apple: <a href="https://www.github.com/apple/" target="_blank" rel="external">https://www.github.com/apple/</a><br>Facebook: <a href="https://www.github.com/facebook/" target="_blank" rel="external">https://www.github.com/facebook/</a><br>Alibaba: <a href="https://www.github.com/alibaba" target="_blank" rel="external">https://www.github.com/alibaba</a><br>….<br>还有全球顶级的项目，也同样在Github。<br>Linux: <a href="https://www.github.com/torvalds/linux" target="_blank" rel="external">https://www.github.com/torvalds/linux</a><br>Nodejs: <a href="https://www.github.com/nodejs/node" target="_blank" rel="external">https://www.github.com/nodejs/node</a><br>Weex: <a href="https://github.com/alibaba/weex" target="_blank" rel="external">https://github.com/alibaba/weex</a><br>等等的….<br>同样还有全球顶尖级的开发者。<br>Linux之父 Linus:<br><img src="http://upload-images.jianshu.io/upload_images/4653472-b3a42f0dacbef2cd?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>Android 之神 Jake:<br><img src="http://upload-images.jianshu.io/upload_images/4653472-e0d5bf0e4644d3cc?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>等等的，我就不一一列举了。</p>
-<p>只要是在编程届厉害的人物，都会出现在Github。</p>
-<p>并且很多牛逼的项目做开源，比如你某天听说了某个公司的xx框架开源了。那么它们绝对在Github上开源的。</p>
-<p>因此，Github已经是开源的代名词。</p>
-<h2 id="04、Github能做什么"><a href="#04、Github能做什么" class="headerlink" title="04、Github能做什么"></a>04、Github能做什么</h2><ul>
-<li><strong>优秀的开源项目</strong></li>
-</ul>
-<p>学好使用优秀的开源项目，是一个可以避免你在软件开发中重复造轮子的事情。</p>
-<p>确切的来讲，正是因为有个Github上优秀的开源项目，才促使了我们在软件开发中变得越来越容易、越来越快速。</p>
-<p>比如说：网络请求库、图片加载库。如果让你去自己实现，那么时间和资源是一个很大的成本。对于大公司，可能在人力和资源上是充沛的。但是对于大部分互联网来讲时间就是一切。</p>
-<p>所以在使用开源项目的同时，学习他们优秀的设计思想和实现方式，无疑是提升自我编程能力的好时机。</p>
-<p>同样的，如果你能拥有一个优秀的开源项目，那么绝对是一个很好的体验。</p>
-<p>比如说我开源的WebHubBot，当你看到自己的项目每天每时都有人在点赞，那种感觉真心是比朋友圈被点赞爽很多倍的！！！</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-b63084401d16c5a5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><img src="http://upload-images.jianshu.io/upload_images/4653472-a4be03a4fa7183b0?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<ul>
-<li><strong>多人协作</strong><br>其实多人协作对于Github来讲无疑是一个转折点。</li>
-</ul>
-<p>因为一个好的项目，绝非几个人就能搞定的，因此Github提供了很好的协作平台。</p>
-<p>当你把代码提交上去之后，你可以让其他人和你一同开发，或者说如果你的项目很好，全球的开发者都会给你的项目做贡献。</p>
-<p>以我为例，前段时间提交了一个很有意思的项目，之后就收到了好几个全球开发者代码贡献，如下：</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-668e59895e243bdb?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>因此，多人协作真心是一个很爽、很棒的功能。</p>
-<ul>
-<li><strong>其次就是搭建个人网站</strong></li>
-</ul>
-<p>Github Pages是Github提供的一套完整的博客搭建环境。</p>
-<p>平时你会发现很多人的个人博客域名都是xxxx.github.io。这就是使用Github Pages来搭建的。使用方法很简单，也绝对是一个装逼利器。</p>
-<ul>
-<li><strong>个人简历</strong></li>
-</ul>
-<p>活跃的Github账号，是一个很好的个人简历。</p>
-<p>据我所知，目前很多猎头和公司的HR都很喜欢逛Github。</p>
-<p>并且很多国外的科技公司也都会通过Github来寻找优秀的人才。</p>
-<p>所以多用Github，会让你收到很多意外的惊喜。</p>
-<h2 id="05、加入Github"><a href="#05、加入Github" class="headerlink" title="05、加入Github"></a>05、加入Github</h2><p>相信大家读到这里，都迫不及待的想去使用Github了。</p>
-<p>那么事不宜迟，从现在开始，快去注册一个Github账号。 </p>
-<p>链接： <a href="https://www.github.com/" target="_blank" rel="external">https://www.github.com/</a> 。</p>
-<p>注册完成之后，先玩着，了解下整个平台的功能。</p>
-<p>同时也可以试着搜索下我的Github：<br>ID：xiyouMc<br><a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a> </p>
-<p>接下来，我还会继续连载Github一系列的文章。</p>
-<p>保证你们看完之后，会有不一样的收获。</p>
-<p>同时如果你目前在使用Git或者Github中，那么有问题的话，也同样可以给我留言，我会一一给你们解答。</p>
-<p>——<br>扫描二维码，关注公众号<br><img src="http://upload-images.jianshu.io/upload_images/4653472-1c1e06e2f58b0610?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>生活不止眼前的苟且，还有手下的代码、<br>和嘴上的扯淡<br>——<br>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a><br>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[小程序之Github开源社区]]></title>
       <url>https://xiyoumc.github.com/2017/07/03/GithubTrending/</url>
       <content type="html"><![CDATA[<p><img src="http://upload-images.jianshu.io/upload_images/4653472-92c6e0096c11c841.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
@@ -1224,29 +1224,6 @@ limitations under the License.
 <h4 id="来自公众号-DeveloperPython"><a href="#来自公众号-DeveloperPython" class="headerlink" title="来自公众号 : DeveloperPython"></a>来自公众号 : DeveloperPython</h4><p><img src="http://upload-images.jianshu.io/upload_images/4653472-b61ffc02ee6e4db5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
 <hr>
 <p>行为艺术要持之以恒，iOS专用赞赏通道。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-2fa6f51658dee088?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Alison]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/Alison/</url>
-      <content type="html"><![CDATA[<blockquote>
-<p>Baby, You Complete Me.<br><a id="more"></a></p>
-<ul>
-<li>Hey there,sexy lady</li>
-<li>I`m loving what you do</li>
-<li>I`m thinking so are you</li>
-<li>You`re trying to dent it</li>
-<li>But I know I changed your mind</li>
-<li>And please don`t try to fight it</li>
-<li>Cause I know that you`ll be mine</li>
-<li>Be mine.</li>
-<li>I want you,baby</li>
-<li>Come get it,girl</li>
-<li>I need you,baby</li>
-<li>I`m on you,girl</li>
-</ul>
-</blockquote>
 ]]></content>
     </entry>
     
@@ -1325,6 +1302,29 @@ limitations under the License.
 <p>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
 <hr>
 <p>点击 <a href="http://t.xiaomiquan.com/7ey3rZv" target="_blank" rel="external">Join</a>，加入Python技术成长圈子，我在这里等着你。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Alison]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/Alison/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>Baby, You Complete Me.<br><a id="more"></a></p>
+<ul>
+<li>Hey there,sexy lady</li>
+<li>I`m loving what you do</li>
+<li>I`m thinking so are you</li>
+<li>You`re trying to dent it</li>
+<li>But I know I changed your mind</li>
+<li>And please don`t try to fight it</li>
+<li>Cause I know that you`ll be mine</li>
+<li>Be mine.</li>
+<li>I want you,baby</li>
+<li>Come get it,girl</li>
+<li>I need you,baby</li>
+<li>I`m on you,girl</li>
+</ul>
+</blockquote>
 ]]></content>
     </entry>
     
