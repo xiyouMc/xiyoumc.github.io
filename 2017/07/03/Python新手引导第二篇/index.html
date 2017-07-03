@@ -1,0 +1,1019 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Mark And Alison`s Home" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="https://avatars1.githubusercontent.com/u/8032883?v=3&s=460?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Python新手引导 第二篇 你不知道的Python
+###阅读本文需要4.66分钟">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python新手引导第二篇">
+<meta property="og:url" content="https://xiyoumc.github.com/2017/07/03/Python新手引导第二篇/index.html">
+<meta property="og:site_name" content="XiyouMc">
+<meta property="og:description" content="Python新手引导 第二篇 你不知道的Python
+###阅读本文需要4.66分钟">
+<meta property="og:image" content="http://115.28.132.58:8080/docs/CPython.png">
+<meta property="og:image" content="http://115.28.132.58:8080/docs/IPython.png">
+<meta property="og:image" content="http://115.28.132.58:8080/docs/Atom_HelloWorld.png">
+<meta property="og:image" content="http://115.28.132.58:8080/docs/nodepad.jpeg">
+<meta property="og:image" content="http://115.28.132.58:8080/docs/PythonPrint.png">
+<meta property="og:image" content="http://115.28.132.58:8080/docs/RunPython.png">
+<meta property="og:image" content="http://115.28.132.58:8080/docs/RunPythonError.png">
+<meta property="og:image" content="http://115.28.132.58:8080/docs/atom-runner.png">
+<meta property="og:image" content="http://115.28.132.58:8080/docs/HelloWorld.png">
+<meta property="og:updated_time" content="2017-07-03T05:48:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python新手引导第二篇">
+<meta name="twitter:description" content="Python新手引导 第二篇 你不知道的Python
+###阅读本文需要4.66分钟">
+<meta name="twitter:image" content="http://115.28.132.58:8080/docs/CPython.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://xiyoumc.github.com/2017/07/03/Python新手引导第二篇/"/>
+
+  <title> Python新手引导第二篇 | XiyouMc </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">XiyouMc</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Python新手引导第二篇
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-07-03T13:48:28+08:00" content="2017-07-03">
+              2017-07-03
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Python新手引导/" itemprop="url" rel="index">
+                    <span itemprop="name">Python新手引导</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <a href="/2017/07/03/Python新手引导第二篇/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/03/Python新手引导第二篇/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/2017/07/03/Python新手引导第二篇/" class="leancloud_visitors" data-flag-title="Python新手引导第二篇">
+                  阅读次数
+            </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Python新手引导-第二篇-你不知道的Python"><a href="#Python新手引导-第二篇-你不知道的Python" class="headerlink" title="Python新手引导 第二篇 你不知道的Python"></a>Python新手引导 第二篇 你不知道的Python</h1><blockquote>
+<p>###阅读本文需要4.66分钟</p>
+</blockquote>
+<a id="more"></a>
+<p>上一篇进行了简单的Python讲解，包括历史、多版本共存和安装。若有不明白的同学，可尽情在公众号上给我发消息。保证”第一时间”回复.</p>
+<ol>
+<li>Python解释器</li>
+<li>编写、运行第一个Python</li>
+<li>atom-runner</li>
+</ol>
+<h2 id="一、Python解释器"><a href="#一、Python解释器" class="headerlink" title="一、Python解释器"></a>一、Python解释器</h2><blockquote>
+<p>Python代码是以.py为扩展名的文本文件。要执行代码，就需要Python解释器去执行.py文件。</p>
+</blockquote>
+<p>以下将介绍多种Python解释器:</p>
+<h3 id="A、-CPython"><a href="#A、-CPython" class="headerlink" title="A、 CPython"></a>A、 CPython</h3><p>Python官方的解释器是：CPython.这个解释器是用C语言开发的，因此叫CPython。在终端执行 python 启动的就是CPython解释器。<br><img src="http://115.28.132.58:8080/docs/CPython.png" alt=""></p>
+<h3 id="B、-IPython"><a href="#B、-IPython" class="headerlink" title="B、 IPython"></a>B、 IPython</h3><p>Ipython是基于CPython的交互式解释器。执行 Python的能力和CPtython一样。<br>可以变量自动补全、自动缩进。与CPython不一样的是： CPython使用&gt;&gt;&gt;作为提示符，而IPython使用In[序号]:<br><img src="http://115.28.132.58:8080/docs/IPython.png" alt=""></p>
+<h3 id="C、-Pypy"><a href="#C、-Pypy" class="headerlink" title="C、 Pypy"></a>C、 Pypy</h3><p>Pypy是Python开发者为了更好的Hack Python创建的项目。</p>
+<p>用Python实现的Python</p>
+<h3 id="D、-Jython"><a href="#D、-Jython" class="headerlink" title="D、 Jython"></a>D、 Jython</h3><p>Jython是运行在Java平台上的Python解释器，可以直接把Python代码编译成Java字节码执行。<br>这个也是我之前在写一个Java项目的时候用到的解释器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;!-- https://mvnrepository.com/artifact/jython/jython --&gt;</div><div class="line">&lt;dependency&gt;</div><div class="line">    &lt;groupId&gt;jython&lt;/groupId&gt;</div><div class="line">    &lt;artifactId&gt;jython&lt;/artifactId&gt;</div><div class="line">    &lt;version&gt;2.5.2&lt;/version&gt;</div><div class="line">&lt;/dependency&gt;</div></pre></td></tr></table></figure>
+<p>Java项目引入Jython之后，会将本机Python环境应用到本项目中。在Java和Python相互调用中起到了重要的作用。</p>
+<h2 id="二、编写、运行第一个Python程序"><a href="#二、编写、运行第一个Python程序" class="headerlink" title="二、编写、运行第一个Python程序"></a>二、编写、运行第一个Python程序</h2><blockquote>
+<p>当然在终端中，可以直接通过Python来启动CPython并进行编辑并运行，但这样的缺点就是没法保存，再次执行还必须得复制进行。所以在实际的应用场景中，我们使用文本编辑器来编写Python代码。</p>
+</blockquote>
+<p>以下推荐两款文本剪辑器：</p>
+<ul>
+<li>Atom，免费、可安装多种插件来更高效的编写代码。<br><img src="http://115.28.132.58:8080/docs/Atom_HelloWorld.png" alt=""></li>
+<li>NodePad++,免费、在Window上很实用的文本编辑器<br><img src="http://115.28.132.58:8080/docs/nodepad.jpeg" alt=""></li>
+</ul>
+<h4 id="编写并运行第一个Python程序"><a href="#编写并运行第一个Python程序" class="headerlink" title="编写并运行第一个Python程序"></a>编写并运行第一个Python程序</h4><ol>
+<li>安装好编辑器之后，打开编辑，新建文件，输入:<br><img src="http://115.28.132.58:8080/docs/PythonPrint.png" alt=""></li>
+<li>编辑Python文件后，将其保存为Hello.py并放到自己的开发目录如 ~/Dev 或者 C:/dev 都可以 </li>
+<li>通过cd 命令定位到文件的目录,并使用python命令来运行<br><img src="http://115.28.132.58:8080/docs/RunPython.png" alt=""></li>
+<li>如果当前文件夹没有Hello.py，会报错如下：<br><img src="http://115.28.132.58:8080/docs/RunPythonError.png" alt=""> </li>
+</ol>
+<h2 id="三、atom-runner插件"><a href="#三、atom-runner插件" class="headerlink" title="三、atom-runner插件"></a>三、atom-runner插件</h2><blockquote>
+<p>每一门语言的开始，相信大家都会去找到一个适合自己的编辑器，类似SublineText等等的。当然SublineText也可以运行Python，但是我个人比较推荐Atom。</p>
+</blockquote>
+<p><a href="https://github.com/lsegal/atom-runner" target="_blank" rel="external">atom-runner</a>Atom中的开源插件，可用来执行Python脚本。<br>直接在Atom settings-&gt;install 中搜索atom-runner,安装即可</p>
+<p><img src="http://115.28.132.58:8080/docs/atom-runner.png" alt=""></p>
+<blockquote>
+<p>该插件官方文档指明，可支持JavaScript、CoffeeScript、Ruby、Python、Go、Bash 和 PowerShell scripts.</p>
+<h4 id="可执行命令"><a href="#可执行命令" class="headerlink" title="可执行命令"></a>可执行命令</h4><ul>
+<li>Ctrl+R (Alt+R on Win/Linux)运行当前活动窗口</li>
+<li>Ctrl+Shift + R (Alt+Shif+R on Win/Linux)运行在活动窗口的选择文本</li>
+<li>Ctrul+Shift+C 杀掉当前正在运行的进程</li>
+<li>Escap 关闭正在运行的窗口</li>
+</ul>
+</blockquote>
+<p>运行结果如下<br><img src="http://115.28.132.58:8080/docs/HelloWorld.png" alt=""></p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>本篇阅读完成之后，花上几分钟时间自行编写并运行下Python，熟悉下Python的环境。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/path/to/wechat.png" alt="xiyouMc WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/path/to/alipay.jpg" alt="xiyouMc Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/03/Python爬虫利器---PhamtomJS/" rel="next" title="Python爬虫利器---PhamtomJS">
+                <i class="fa fa-chevron-left"></i> Python爬虫利器---PhamtomJS
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/03/Python新手引导 第四篇/" rel="prev" title="Python新手引导第二篇">
+                Python新手引导第二篇 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+
+      
+<span id="/" class="leancloud_visitors" data-flag-title="">
+         阅读次数
+        </span>
+
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/07/03/Python新手引导第二篇/"
+           data-title="Python新手引导第二篇" data-url="https://xiyoumc.github.com/2017/07/03/Python新手引导第二篇/">
+      </div>
+    
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/8032883?v=3&s=460 xiyouMc"
+               alt="xiyouMc" />
+          <p class="site-author-name" itemprop="name">xiyouMc</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/xiyouMc" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python新手引导-第二篇-你不知道的Python"><span class="nav-number">1.</span> <span class="nav-text">Python新手引导 第二篇 你不知道的Python</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Python解释器"><span class="nav-number">1.1.</span> <span class="nav-text">一、Python解释器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#A、-CPython"><span class="nav-number">1.1.1.</span> <span class="nav-text">A、 CPython</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#B、-IPython"><span class="nav-number">1.1.2.</span> <span class="nav-text">B、 IPython</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C、-Pypy"><span class="nav-number">1.1.3.</span> <span class="nav-text">C、 Pypy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#D、-Jython"><span class="nav-number">1.1.4.</span> <span class="nav-text">D、 Jython</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、编写、运行第一个Python程序"><span class="nav-number">1.2.</span> <span class="nav-text">二、编写、运行第一个Python程序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#编写并运行第一个Python程序"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">编写并运行第一个Python程序</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、atom-runner插件"><span class="nav-number">1.3.</span> <span class="nav-text">三、atom-runner插件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#可执行命令"><span class="nav-number">1.3.0.1.</span> <span class="nav-text">可执行命令</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">1.4.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiyouMc</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  <span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+<span id="busuanzi_container_site_uv">
+  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+</span>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xiyoumc"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+<!-- custom analytics part create by xiamo -->
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+<script>
+  AV.initialize("0pk36yKP5OUYI9dqKuPbWwii-gzGzoHsz", "HHx7adxKEzQPo7wutBmFKXDC");
+</script>
+<script>
+  function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    $(".leancloud_visitors").each(function () {
+      var url = $(this).attr("id").trim();
+      query.equalTo("url", url);
+      query.find({
+        alert(results)
+        success: function (results) {
+          if (results.length == 0) {
+            var content = '0 ' + $(document.getElementById(url)).text();
+            $(document.getElementById(url)).text(content);
+            return;
+          }
+          for (var i = 0; i < results.length; i++) {
+            var object = results[i];
+            var content = object.get('time') + ' ' + $(document.getElementById(url)).text();
+            $(document.getElementById(url)).text(content);
+          }
+        },
+        error: function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        }
+      });
+
+    });
+  }
+
+  function addCount(Counter) {
+    var Counter = AV.Object.extend("Counter");
+    url = $(".leancloud_visitors").attr('id').trim();
+    title = $(".leancloud_visitors").attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+    query.equalTo("url", url);
+    query.find({
+      alert(results)
+      success: function (results) {
+        if (results.length > 0) {
+          var counter = results[0];
+          counter.fetchWhenSave(true);
+          counter.increment("time");
+          counter.save(null, {
+            success: function (counter) {
+              var content = counter.get('time') + ' ' + $(document.getElementById(url)).text();
+              $(document.getElementById(url)).text(content);
+            },
+            error: function (counter, error) {
+              alert(error.message)
+              console.log('Failed to save Visitor num, with error message: ' + error.message);
+            }
+          });
+        } else {
+          var newcounter = new Counter();
+          newcounter.set("title", title);
+          newcounter.set("url", url);
+          newcounter.set("time", 1);
+          newcounter.save(null, {
+            success: function (newcounter) {
+              console.log("newcounter.get('time')=" + newcounter.get('time'));
+              var content = newcounter.get('time') + ' ' + $(document.getElementById(url)).text();
+              $(document.getElementById(url)).text(content);
+            },
+            error: function (newcounter, error) {
+              console.log('Failed to create');
+            }
+          });
+        }
+      },
+      error: function (error) {
+        console.log('Error:' + error.code + " " + error.message);
+      }
+    });
+  }
+  $(function () {
+    var Counter = AV.Object.extend("Counter");
+    if ($('.leancloud_visitors').length == 1) {
+      addCount(Counter);
+    } else if ($('.post-title-link').length > 1) {
+      showTime(Counter);
+    }
+  });
+</script>
+
+
+  
+
+</body>
+</html>

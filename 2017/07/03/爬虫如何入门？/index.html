@@ -1,0 +1,1019 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Mark And Alison`s Home" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="https://avatars1.githubusercontent.com/u/8032883?v=3&s=460?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Python爬虫如何入门？
+源自公众号:DeveloperPython扯淡其实，“入门”最好的方式是以项目开始，这样实践起来你会被目标驱动。从而，不用一步一步慢慢的学习模块化的东西。
+其实，知识体系里面的每一个知识点类似于图里的点。边就是知识体系的依赖关系，那么整个图也就是一个有向无环图。因为学习A的经验可以帮助到你学习B。因此，入门的东西根本不用学习，因为入门点根本不存在。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python爬虫如何入门？">
+<meta property="og:url" content="https://xiyoumc.github.com/2017/07/03/爬虫如何入门？/index.html">
+<meta property="og:site_name" content="XiyouMc">
+<meta property="og:description" content="Python爬虫如何入门？
+源自公众号:DeveloperPython扯淡其实，“入门”最好的方式是以项目开始，这样实践起来你会被目标驱动。从而，不用一步一步慢慢的学习模块化的东西。
+其实，知识体系里面的每一个知识点类似于图里的点。边就是知识体系的依赖关系，那么整个图也就是一个有向无环图。因为学习A的经验可以帮助到你学习B。因此，入门的东西根本不用学习，因为入门点根本不存在。">
+<meta property="og:image" content="https://mmbiz.qlogo.cn/mmbiz_png/BAYrQMKkbTbS8e8ibKzUsdcO7Dx3ILTib4daQiaaywnBk1dBd2ZfsxlSKZ7KdwA8kyN1unwBH5BbKpg2SGYP60VrQ/640?wx_fmt=png">
+<meta property="og:updated_time" content="2017-07-03T05:48:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python爬虫如何入门？">
+<meta name="twitter:description" content="Python爬虫如何入门？
+源自公众号:DeveloperPython扯淡其实，“入门”最好的方式是以项目开始，这样实践起来你会被目标驱动。从而，不用一步一步慢慢的学习模块化的东西。
+其实，知识体系里面的每一个知识点类似于图里的点。边就是知识体系的依赖关系，那么整个图也就是一个有向无环图。因为学习A的经验可以帮助到你学习B。因此，入门的东西根本不用学习，因为入门点根本不存在。">
+<meta name="twitter:image" content="https://mmbiz.qlogo.cn/mmbiz_png/BAYrQMKkbTbS8e8ibKzUsdcO7Dx3ILTib4daQiaaywnBk1dBd2ZfsxlSKZ7KdwA8kyN1unwBH5BbKpg2SGYP60VrQ/640?wx_fmt=png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://xiyoumc.github.com/2017/07/03/爬虫如何入门？/"/>
+
+  <title> Python爬虫如何入门？ | XiyouMc </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">XiyouMc</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Python爬虫如何入门？
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-07-03T13:48:28+08:00" content="2017-07-03">
+              2017-07-03
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Python新手引导/" itemprop="url" rel="index">
+                    <span itemprop="name">Python新手引导</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <a href="/2017/07/03/爬虫如何入门？/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/03/爬虫如何入门？/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/2017/07/03/爬虫如何入门？/" class="leancloud_visitors" data-flag-title="Python爬虫如何入门？">
+                  阅读次数
+            </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p> Python爬虫如何入门？</p>
+<h4 id="源自公众号-DeveloperPython"><a href="#源自公众号-DeveloperPython" class="headerlink" title="源自公众号:DeveloperPython"></a>源自公众号:DeveloperPython</h4><h2 id="扯淡"><a href="#扯淡" class="headerlink" title="扯淡"></a>扯淡</h2><p>其实，“入门”最好的方式是以项目开始，这样实践起来你会被目标驱动。从而，不用一步一步慢慢的学习模块化的东西。</p>
+<p>其实，知识体系里面的每一个知识点类似于图里的点。边就是知识体系的依赖关系，那么整个图也就是一个有向无环图。因为学习A的经验可以帮助到你学习B。因此，入门的东西根本不用学习，因为入门点根本不存在。</p>
+<a id="more"></a>
+<p>同时，你需要学习的是如何去做一个大的项目，来亲身体会爬虫， 并一步步学习爬虫的知识点。</p>
+<p>那么，我总结下在其他平台上的相关知识点和自己的想法：</p>
+<ol>
+<li>爬虫的工作原理</li>
+<li>基本的Https爬虫工具：Scrapy</li>
+<li>分布式爬虫系统。也就是维护一个集群机器来高效的完成分布式队列。Github上也有一个现成的例子: <a href="https://github.com/nvie/rq" target="_blank" rel="external">nvie/rq</a></li>
+<li>rq和Scrapy的结合： <a href="https://github.com/rolando/scrapy-redis" target="_blank" rel="external">rolando/scrapy-redis</a></li>
+<li>后续处理: <a href="https://github.com/grangier/python-goose" target="_blank" rel="external">网页处理grangier/python-goose</a> 存储(Mongodb)</li>
+</ol>
+<p>以下，我将基于<a href="https://github.com/xiyouMc/WebHubBot" target="_blank" rel="external">xiyouMc/WebHubBot</a>的经验来讲：</p>
+<h3 id="一、-爬虫的怎么工作的"><a href="#一、-爬虫的怎么工作的" class="headerlink" title="一、  爬虫的怎么工作的"></a>一、  爬虫的怎么工作的</h3><p>爬虫的另一个意思其实就是🕷（Spider） ，互联“网”就是它的环境。简单的来说，也就是你需要用这个蜘蛛来把相关网站的所有角落(网页)都爬一边。</p>
+<p>那么，你可以选择一个自己感兴趣的平台，如知乎、淘宝等等的。</p>
+<p>我这里通过PornHub来讲解。</p>
+<p>比如，我们访问PornHub的首页，里面会出现很多链接。最初我们的目标是拿到该站中所有的视频标题、视频简介、视频链接或者其他有用信息。然后我们兴高采烈的将整个首页都爬下来，这里可以理解为你就是将整个页面完完整整的Copy了下来。</p>
+<p>然后，我们随便点击一个链接进入视频详情页，进入第二个页面之后，就会看到具体的视频标题、简介等等的。那么这只是一个视频信息，我们又是如何做到爬取整站的数据呢。这里可以动下脑子，一种是返回到首页去拿另一个链接，另一种则是基于第一步爬下来的首页来找下一个链接。这里，当然是第二种方案。同时我们要做去重，爬过的链接，就不要再去爬第二遍。</p>
+<p>所以，理论上如果后续的所有视频详情页都是从首页可达的话，那么我们就一定可以将所有网页都爬下来。</p>
+<p>以下是Python的伪代码实现:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line"><span class="keyword">from</span> Queue <span class="keyword">import</span> Queue</div><div class="line">home_page = <span class="string">'https://www.pornhub.com/'</span></div><div class="line">link_queue = Queue()</div><div class="line">seen = set()</div><div class="line">seen.insert(home_page)</div><div class="line">link_queue.put(home_page)</div><div class="line">	</div><div class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</div><div class="line">	<span class="keyword">if</span> link_queue.size() &gt; <span class="number">0</span>:</div><div class="line">		current_url = url_queue.get() <span class="comment">#拿到队列中第一个url</span></div><div class="line">		links = save(current_url)  <span class="comment">#保存这个页面的html，并返回当前页面的所有link</span></div><div class="line">		<span class="keyword">for</span> link <span class="keyword">in</span> links:</div><div class="line">			<span class="keyword">if</span> link <span class="keyword">not</span> <span class="keyword">in</span> seen:</div><div class="line">				seen.put(link)</div><div class="line">				link_queue.put(link)</div><div class="line">	<span class="keyword">else</span>:</div><div class="line">		<span class="keyword">break</span></div></pre></td></tr></table></figure>
+<p>以上就是一个简单的伪代码来爬取pornhub中视频资源的例子。当然， 这只是一个非常简单的例子，其实爬虫是一个非常复杂的项目，类似的就是搜索引擎需要爬取整站的数据，更是需要一整个团队来开发和维护。</p>
+<h3 id="二、-效率"><a href="#二、-效率" class="headerlink" title="二、  效率"></a>二、  效率</h3><p>如果，使用上述的代码来爬取PornHub的话，那么你是绝对无法在一天时间内完成500万的海量数据，更别说在短时间内爬取PornHub的所有数据。</p>
+<p>那么，问题出在哪？爬的网页太多太多了，而且上面的代码太慢太慢了。</p>
+<p>PornHub的全网有N个页面，那么分析下判重的时间复杂度将是 N * log(N)，因为每个网页都要遍历一遍，而使用Set来做判重，需要 log(N) 的复杂度。</p>
+<p>所以，我们需要一个成熟的判重方案。Bloom Filter。 它是一个空间效率很高的随机数据结构。<a href="http://blog.csdn.net/jiaomeng/article/details/1495500" target="_blank" rel="external">官方简介</a>：</p>
+<blockquote>
+<p>Bloom Filter是一种空间效率很高的随机数据结构，它利用位数组很简洁地表示一个集合，并能判断一个元素是否属于这个集合。Bloom Filter的这种高效是有一定代价的：在判断一个元素是否属于某个集合时，有可能会把不属于这个集合的元素误认为属于这个集合（false positive）。因此，Bloom Filter不适合那些“零错误”的应用场合。而在能容忍低错误率的应用场合下，Bloom Filter通过极少的错误换取了存储空间的极大节省。</p>
+</blockquote>
+<p>有兴趣可以详细学习下这个算法。</p>
+<p>简单的来说，它是一种利用Hash的方法来判重的。并且在使用固定的内存，不随url的数量增加而增长,以 O（1）的效率判断url是否已经在set中。但是仍然有极小的可能性会误判，所以对于“零错误”的系统不适用。但是对于爬虫，小概率的重复爬取也是可以接受的。</p>
+<p>那么，以上就是判重的最快方式了。</p>
+<p>当然，另一个瓶颈又会出现，如果你只有一台机器，那么不管你的带宽有多大你的机器下载网页的速度还是会有瓶颈。那么，只有加快这个速度，我们使用多台机器来跑。</p>
+<h3 id="三、-集群化爬取"><a href="#三、-集群化爬取" class="headerlink" title="三、  集群化爬取"></a>三、  集群化爬取</h3><p>集群化爬取，其实不难理解。也就是将你的爬虫任务分发到n台机器来处理，当然每台机器处理的任务不同，且不重复。</p>
+<p>那么，假设你有100台机器，怎么用Python实现一个分布式的爬取算法呢？</p>
+<p>Server -&gt; Client 。这种C/S 的模式，我相信大家也不陌生。那么分布式的系统，其实就是一台Server -&gt; n个Client 来处理。这里我们将Server定义为 Master机，多个Client定义为多个 Slave。所以基于开始的伪代码，我们可以将link_queue 放到Master上，其他的Slave都可以通过网络跟Master联通，每当一个Slave下载完成一个页面之后，就会将这个页面的结果告知Master，同时获取一个新的link 来爬取。同时 BloomFliter 也是放在Master的，用来针对Links进行去重。 其中Slave和Server联通的方式，就是通过Redis，这是一个可以远程操作的缓存数据库，提供了完善的队列管理。其次，Redis的队列中已经包含的去重的，当Push一个url 到Redis之后，某一个Slave Pop拿到数据，那么这个Url将只会在这个Slave进行处理。</p>
+<p>因此，我们可以用Python来实现。Slave的机器上安装Scrapy，Master上安装Redis和rq用作分布式队列。</p>
+<p>伪代码:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="string">"""</span></div><div class="line">Slave</div><div class="line">"""</div><div class="line">	</div><div class="line">url = link_from_master() <span class="comment"># 从Master机Get到最新的链接</span></div><div class="line">content = save(url) <span class="comment"># 请求并保存这个链接下的视频信息</span></div><div class="line">send_to_master(url) <span class="comment"># 将当前处理过的url Post给主机。</span></div><div class="line">	</div><div class="line"><span class="string">"""</span></div><div class="line">Master</div><div class="line">"""</div><div class="line">queue = Queue()</div><div class="line">bf = BloomFilter()</div><div class="line">	</div><div class="line">home_pages = <span class="string">"https://www.pornhub.com/"</span></div><div class="line">	</div><div class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</div><div class="line">    <span class="keyword">if</span> request == <span class="string">'GET'</span>:</div><div class="line">        <span class="keyword">if</span> distributed_queue.size()&gt;<span class="number">0</span>:</div><div class="line">            send(queue.get()) <span class="comment"># 将当前url push到Redis，从而让Slave获取到。</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            <span class="keyword">break</span></div><div class="line">    <span class="keyword">elif</span> request == <span class="string">'POST'</span>:</div><div class="line">        bf.put(request.url) <span class="comment">#将处理过的Url 保存到bf队列</span></div></pre></td></tr></table></figure>
+<p>轮子: <a href="https://github.com/rolando/scrapy-redis" target="_blank" rel="external">rolando/scrapy-redis</a></p>
+<h3 id="四、-后处理"><a href="#四、-后处理" class="headerlink" title="四、 后处理"></a>四、 后处理</h3><p>上面的路子，其实是很简单很简单的一部分。同样的，后续你还要进行其他的处理，比如：</p>
+<ul>
+<li>有效的存储</li>
+<li>有效的判重</li>
+<li>有效的信息提取</li>
+<li>及时更新</li>
+</ul>
+<p>所以，不要在意如何“入门”，只管上路就好了。</p>
+<h3 id="五、-更重要的一点"><a href="#五、-更重要的一点" class="headerlink" title="五、 更重要的一点"></a>五、 更重要的一点</h3><p> 长摁‘识别二维码’，一起进步</p>
+<p><img src="https://mmbiz.qlogo.cn/mmbiz_png/BAYrQMKkbTbS8e8ibKzUsdcO7Dx3ILTib4daQiaaywnBk1dBd2ZfsxlSKZ7KdwA8kyN1unwBH5BbKpg2SGYP60VrQ/640?wx_fmt=png" alt=""></p>
+<p>生活不止眼前的苟且，还有手下的代码、</p>
+<p>和嘴上的扯淡<br>——<br>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a></p>
+<p>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
+<hr>
+<h3 id="六、-如何找到一群学习Python的朋友圈"><a href="#六、-如何找到一群学习Python的朋友圈" class="headerlink" title="六、 如何找到一群学习Python的朋友圈"></a>六、 如何找到一群学习Python的朋友圈</h3><p>点击 <a href="http://t.xiaomiquan.com/7ey3rZv" target="_blank" rel="external">Join</a>，加入Python技术成长圈子，我们在这里等着你。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/path/to/wechat.png" alt="xiyouMc WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/path/to/alipay.jpg" alt="xiyouMc Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/03/编写高质量的Pythonic/" rel="next" title="编写高质量的Pythonic风格代码">
+                <i class="fa fa-chevron-left"></i> 编写高质量的Pythonic风格代码
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/03/程序员都应该会的抓包工具-Charles/" rel="prev" title="程序员都应该会的抓包工具--Charles">
+                程序员都应该会的抓包工具--Charles <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+
+      
+<span id="/" class="leancloud_visitors" data-flag-title="">
+         阅读次数
+        </span>
+
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/07/03/爬虫如何入门？/"
+           data-title="Python爬虫如何入门？" data-url="https://xiyoumc.github.com/2017/07/03/爬虫如何入门？/">
+      </div>
+    
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/8032883?v=3&s=460 xiyouMc"
+               alt="xiyouMc" />
+          <p class="site-author-name" itemprop="name">xiyouMc</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/xiyouMc" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#源自公众号-DeveloperPython"><span class="nav-number">1.</span> <span class="nav-text">源自公众号:DeveloperPython</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扯淡"><span class="nav-number"></span> <span class="nav-text">扯淡</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、-爬虫的怎么工作的"><span class="nav-number"></span> <span class="nav-text">一、  爬虫的怎么工作的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、-效率"><span class="nav-number"></span> <span class="nav-text">二、  效率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、-集群化爬取"><span class="nav-number"></span> <span class="nav-text">三、  集群化爬取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、-后处理"><span class="nav-number"></span> <span class="nav-text">四、 后处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、-更重要的一点"><span class="nav-number"></span> <span class="nav-text">五、 更重要的一点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、-如何找到一群学习Python的朋友圈"><span class="nav-number"></span> <span class="nav-text">六、 如何找到一群学习Python的朋友圈</span></a></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiyouMc</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  <span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+<span id="busuanzi_container_site_uv">
+  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+</span>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xiyoumc"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+<!-- custom analytics part create by xiamo -->
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+<script>
+  AV.initialize("0pk36yKP5OUYI9dqKuPbWwii-gzGzoHsz", "HHx7adxKEzQPo7wutBmFKXDC");
+</script>
+<script>
+  function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    $(".leancloud_visitors").each(function () {
+      var url = $(this).attr("id").trim();
+      query.equalTo("url", url);
+      query.find({
+        alert(results)
+        success: function (results) {
+          if (results.length == 0) {
+            var content = '0 ' + $(document.getElementById(url)).text();
+            $(document.getElementById(url)).text(content);
+            return;
+          }
+          for (var i = 0; i < results.length; i++) {
+            var object = results[i];
+            var content = object.get('time') + ' ' + $(document.getElementById(url)).text();
+            $(document.getElementById(url)).text(content);
+          }
+        },
+        error: function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        }
+      });
+
+    });
+  }
+
+  function addCount(Counter) {
+    var Counter = AV.Object.extend("Counter");
+    url = $(".leancloud_visitors").attr('id').trim();
+    title = $(".leancloud_visitors").attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+    query.equalTo("url", url);
+    query.find({
+      alert(results)
+      success: function (results) {
+        if (results.length > 0) {
+          var counter = results[0];
+          counter.fetchWhenSave(true);
+          counter.increment("time");
+          counter.save(null, {
+            success: function (counter) {
+              var content = counter.get('time') + ' ' + $(document.getElementById(url)).text();
+              $(document.getElementById(url)).text(content);
+            },
+            error: function (counter, error) {
+              alert(error.message)
+              console.log('Failed to save Visitor num, with error message: ' + error.message);
+            }
+          });
+        } else {
+          var newcounter = new Counter();
+          newcounter.set("title", title);
+          newcounter.set("url", url);
+          newcounter.set("time", 1);
+          newcounter.save(null, {
+            success: function (newcounter) {
+              console.log("newcounter.get('time')=" + newcounter.get('time'));
+              var content = newcounter.get('time') + ' ' + $(document.getElementById(url)).text();
+              $(document.getElementById(url)).text(content);
+            },
+            error: function (newcounter, error) {
+              console.log('Failed to create');
+            }
+          });
+        }
+      },
+      error: function (error) {
+        console.log('Error:' + error.code + " " + error.message);
+      }
+    });
+  }
+  $(function () {
+    var Counter = AV.Object.extend("Counter");
+    if ($('.leancloud_visitors').length == 1) {
+      addCount(Counter);
+    } else if ($('.post-title-link').length > 1) {
+      showTime(Counter);
+    }
+  });
+</script>
+
+
+  
+
+</body>
+</html>

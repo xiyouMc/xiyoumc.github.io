@@ -1,0 +1,1027 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Mark And Alison`s Home" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="https://avatars1.githubusercontent.com/u/8032883?v=3&s=460?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="01、初衷大概上上周我花了周末两天的时间编写了一款小程序并顺利提交审核。
+也就在前两天我的小程序 「Github开源社区」 历经了两周的审核，终于。。。。。。成功发布了，并且绑定到了公众号。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="小程序之Github开源社区">
+<meta property="og:url" content="https://xiyoumc.github.com/2017/07/03/GithubTrending/index.html">
+<meta property="og:site_name" content="XiyouMc">
+<meta property="og:description" content="01、初衷大概上上周我花了周末两天的时间编写了一款小程序并顺利提交审核。
+也就在前两天我的小程序 「Github开源社区」 历经了两周的审核，终于。。。。。。成功发布了，并且绑定到了公众号。">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4653472-92c6e0096c11c841.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4653472-5db25e9b492954ec.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4653472-4bab8d746061c759.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4653472-90ad79d09f150843.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4653472-3ba1bce01266f9f2?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4653472-e142717e120e467a?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4653472-b61ffc02ee6e4db5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4653472-2fa6f51658dee088?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-07-03T05:48:27.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="小程序之Github开源社区">
+<meta name="twitter:description" content="01、初衷大概上上周我花了周末两天的时间编写了一款小程序并顺利提交审核。
+也就在前两天我的小程序 「Github开源社区」 历经了两周的审核，终于。。。。。。成功发布了，并且绑定到了公众号。">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/4653472-92c6e0096c11c841.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://xiyoumc.github.com/2017/07/03/GithubTrending/"/>
+
+  <title> 小程序之Github开源社区 | XiyouMc </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">XiyouMc</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                小程序之Github开源社区
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-07-03T13:48:27+08:00" content="2017-07-03">
+              2017-07-03
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/小程序/" itemprop="url" rel="index">
+                    <span itemprop="name">小程序</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <a href="/2017/07/03/GithubTrending/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/03/GithubTrending/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/2017/07/03/GithubTrending/" class="leancloud_visitors" data-flag-title="小程序之Github开源社区">
+                  阅读次数
+            </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://upload-images.jianshu.io/upload_images/4653472-92c6e0096c11c841.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h2 id="01、初衷"><a href="#01、初衷" class="headerlink" title="01、初衷"></a>01、初衷</h2><p>大概上上周我花了周末两天的时间编写了一款小程序并顺利提交审核。</p>
+<p>也就在前两天我的小程序 「Github开源社区」 历经了两周的审核，终于。。。。。。成功发布了，并且绑定到了公众号。 </p>
+<a id="more"></a>
+<p>以下是这两天时间的数据分析报表。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-5db25e9b492954ec.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>（实时访问次数 pv）</p>
+<p>粗略的分析下：实时访问次数波动很明显，当然这也是正常的。高流量基本保持在早上十点到中午。晚上还会出现个别熬夜的程序员在看代码。总体呈下降趋势。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-4bab8d746061c759.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>(访问来源、访问时长、访问深度)</p>
+<p>粗略的分析下：</p>
+<p>访问来源主要来自会话，其次来自扫小程序码。</p>
+<p>访问时长最高点在 11-20 秒，当然还有大量用户超过1分多钟在使用小程序。</p>
+<p>其次，访问深度（访问了多少个页面），大部分只访问了一个页面，最深页面在5个页面的深度。</p>
+<p>——————划重点———–</p>
+<p>那么，为什么我会选择去编写一个关于 <strong>程序员 </strong>的小程序呢？</p>
+<p>首先，我是程序员。其次，也是因为前段时间我一直在更新关于Github的教程。因此，为了方便自己，同时方便读者和开发者，我选择开发了一款关于Github的小程序。 </p>
+<h2 id="02、小程序的功能"><a href="#02、小程序的功能" class="headerlink" title="02、小程序的功能"></a>02、小程序的功能</h2><p>「Github开源社区」目前的功能很简单，包括每日开源趋势、模糊搜索想要的代码、查看具体的代码文档以及仓库的信息。</p>
+<p>用微信扫一扫下方，可体验小程序。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-90ad79d09f150843.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>效果图<br><img src="http://upload-images.jianshu.io/upload_images/4653472-3ba1bce01266f9f2?imageMogr2/auto-orient/strip" alt=""><br>(启动小程序，默认展示当天最热开源项目,并支持查看文档)</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-e142717e120e467a?imageMogr2/auto-orient/strip" alt=""><br>(支持搜索代码)</p>
+<p><strong>后续将支持的功能</strong></p>
+<p>代码查看<br>登录Github账号，实现点赞等<br>社区<br>。。。</p>
+<h2 id="03、开发过程"><a href="#03、开发过程" class="headerlink" title="03、开发过程"></a>03、开发过程</h2><p>虽说这是一款工具性的小程序，但确切的说是一款C/S的软件。C端也就是集成进微信的小程序，S端的话就是我编写并部署在阿里云的服务端。</p>
+<p>C端包含了wxml、wxss、json、js还有其他配置属性。</p>
+<p>S端的话我就直接用Python + web.py构建的，同时基于Github Api开发。</p>
+<p>开发流程看似简单，但对于我这个前端半调子来讲，确实在开发C端遇到很多问题。当然，解决方法也就是Google + 大神。</p>
+<h2 id="04、如何开发一款自己的小程序"><a href="#04、如何开发一款自己的小程序" class="headerlink" title="04、如何开发一款自己的小程序"></a>04、如何开发一款自己的小程序</h2><p><strong>一个idea</strong></p>
+<p>这个idea很重要，因为自己的想法将会推动自己去实践并完成。如果没有一个自己的idea，那么与其说学技术，倒不如说你是在说服自己拥有多一点的技能。</p>
+<p>所以，idea很重要。</p>
+<p>如果一开始我并没有想好要去做什么小程序，然后就上手去学习如何开发，我猜可能在后面的学习过程中我将会很难坚持。因为那样是枯燥无味的，我并不知道自己用这个技术能做点什么。</p>
+<p>其次，Github开源社区的idea我在开发前一个礼拜都有了。外加晚上熬夜到一两点，加上周末，大概花了两三天时间就出来了。</p>
+<p>所以，在学习开发小程序之前，先想好自己要做什么。接下来，再动手去了解、学习这个技术，并运用起来。</p>
+<p><strong>需要了解的技术点</strong></p>
+<p>虽说小程序有一套自己的开发语言，但是，框架中主要的还是Page的生命周期和App的管理。其次，就是css的一些知识点。</p>
+<p>所以，一开始你可以去小程序的官网着重了解Page生命周期和App的管理。其次，熟悉下小程序的那几个重要的组件，其中包括View、button等等的。</p>
+<p>官网：<br><a href="https://mp.weixin.qq.com/debug/wxadoc/dev/component/" target="_blank" rel="external">https://mp.weixin.qq.com/debug/wxadoc/dev/component/</a></p>
+<p>接下来，你需要学习css的东西，这个其实不复杂，去w3c上面将css的关键知识点过一遍。了解前端的页面是如何布局的。</p>
+<p><strong>上手</strong></p>
+<ul>
+<li>IDE搭建<br>微信团队针对小程序专门出了一款开发工具。这里我直接上链接:<br><a href="https://mp.weixin.qq.com/debug/wxadoc/dev/devtools/download.html" target="_blank" rel="external">https://mp.weixin.qq.com/debug/wxadoc/dev/devtools/download.html</a></li>
+<li>项目结构</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">js ---------- JavaScript文件</div><div class="line"></div><div class="line">json -------- 项目配置文件，负责窗口颜色等等</div><div class="line"></div><div class="line">wxml ------- 类似HTML文件</div><div class="line"></div><div class="line">wxss ------- 类似CSS文件</div></pre></td></tr></table></figure>
+<p>在根目录通过App来命名这四种文件，也就是程序的入口。<br>App.js</p>
+<p>这个文件是必须要有的。其中主要写的内容也就是上面提到过管理App生命周期的。<br>App.json</p>
+<p>这个也是必须要有的。其中包含了整个小程序的全局配置。<br>App.wxss</p>
+<p>有点类似于css的，进行布局用的。当然，这也是全局的。<br>App.wxml</p>
+<p>这个可选，是用来布局小程序的界面的。有点类似于html。<br>关于具体的文档，链接在这。<br><a href="https://mp.weixin.qq.com/debug/wxadoc/dev/component/" target="_blank" rel="external">https://mp.weixin.qq.com/debug/wxadoc/dev/component/</a><br>如果有需要详细的讲解，那么可以留言，我考虑后续更新一系列的小程序开发教程。</p>
+<h2 id="05、个人开发经验"><a href="#05、个人开发经验" class="headerlink" title="05、个人开发经验"></a>05、个人开发经验</h2><p>虽说在不早之前，微信开放了个人小程序的开发资格。不过，你还是不能随心所欲的开发小程序。</p>
+<p>你能随心所欲开发的功能也大概只有工具类的。假设，你要是想开发一个社区类的小程序，那么你得要有诸多的证件。所以，在上手小程序之前，你需要看看小程序的开发规约，确保自己的idea是否需要各种证件。</p>
+<p>其次，小程序的兼容性，目前Github开源社区在 iOS 9.3.2 上出现 SDK Exception 。还没找到合理的解决方案。</p>
+<p>审核时间较长。你能做的就是等待。</p>
+<p>开发工具有时候响应很慢，同样的你只有等待，毕竟目前开发工具并没有到1.0版本。</p>
+<p>等等的坑。。。</p>
+<p>目前动态化的开发模式越来越火了，包括JSBridge、Weex、React等等的。所以，作为非前端的你是否也需要学习下前端的知识点呢？</p>
+<h4 id="来自公众号-DeveloperPython"><a href="#来自公众号-DeveloperPython" class="headerlink" title="来自公众号 : DeveloperPython"></a>来自公众号 : DeveloperPython</h4><p><img src="http://upload-images.jianshu.io/upload_images/4653472-b61ffc02ee6e4db5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<hr>
+<p>行为艺术要持之以恒，iOS专用赞赏通道。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-2fa6f51658dee088?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/path/to/wechat.png" alt="xiyouMc WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/path/to/alipay.jpg" alt="xiyouMc Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/03/Alison/" rel="next" title="Alison">
+                <i class="fa fa-chevron-left"></i> Alison
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/03/Github系列教程一 开门/" rel="prev" title="Github系列教程一  开门">
+                Github系列教程一  开门 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+
+      
+<span id="/" class="leancloud_visitors" data-flag-title="">
+         阅读次数
+        </span>
+
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/07/03/GithubTrending/"
+           data-title="小程序之Github开源社区" data-url="https://xiyoumc.github.com/2017/07/03/GithubTrending/">
+      </div>
+    
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/8032883?v=3&s=460 xiyouMc"
+               alt="xiyouMc" />
+          <p class="site-author-name" itemprop="name">xiyouMc</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/xiyouMc" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#01、初衷"><span class="nav-number">1.</span> <span class="nav-text">01、初衷</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#02、小程序的功能"><span class="nav-number">2.</span> <span class="nav-text">02、小程序的功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#03、开发过程"><span class="nav-number">3.</span> <span class="nav-text">03、开发过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#04、如何开发一款自己的小程序"><span class="nav-number">4.</span> <span class="nav-text">04、如何开发一款自己的小程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#05、个人开发经验"><span class="nav-number">5.</span> <span class="nav-text">05、个人开发经验</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#来自公众号-DeveloperPython"><span class="nav-number">5.0.1.</span> <span class="nav-text">来自公众号 : DeveloperPython</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiyouMc</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  <span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+<span id="busuanzi_container_site_uv">
+  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+</span>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xiyoumc"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+<!-- custom analytics part create by xiamo -->
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+<script>
+  AV.initialize("0pk36yKP5OUYI9dqKuPbWwii-gzGzoHsz", "HHx7adxKEzQPo7wutBmFKXDC");
+</script>
+<script>
+  function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    $(".leancloud_visitors").each(function () {
+      var url = $(this).attr("id").trim();
+      query.equalTo("url", url);
+      query.find({
+        alert(results)
+        success: function (results) {
+          if (results.length == 0) {
+            var content = '0 ' + $(document.getElementById(url)).text();
+            $(document.getElementById(url)).text(content);
+            return;
+          }
+          for (var i = 0; i < results.length; i++) {
+            var object = results[i];
+            var content = object.get('time') + ' ' + $(document.getElementById(url)).text();
+            $(document.getElementById(url)).text(content);
+          }
+        },
+        error: function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        }
+      });
+
+    });
+  }
+
+  function addCount(Counter) {
+    var Counter = AV.Object.extend("Counter");
+    url = $(".leancloud_visitors").attr('id').trim();
+    title = $(".leancloud_visitors").attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+    query.equalTo("url", url);
+    query.find({
+      alert(results)
+      success: function (results) {
+        if (results.length > 0) {
+          var counter = results[0];
+          counter.fetchWhenSave(true);
+          counter.increment("time");
+          counter.save(null, {
+            success: function (counter) {
+              var content = counter.get('time') + ' ' + $(document.getElementById(url)).text();
+              $(document.getElementById(url)).text(content);
+            },
+            error: function (counter, error) {
+              alert(error.message)
+              console.log('Failed to save Visitor num, with error message: ' + error.message);
+            }
+          });
+        } else {
+          var newcounter = new Counter();
+          newcounter.set("title", title);
+          newcounter.set("url", url);
+          newcounter.set("time", 1);
+          newcounter.save(null, {
+            success: function (newcounter) {
+              console.log("newcounter.get('time')=" + newcounter.get('time'));
+              var content = newcounter.get('time') + ' ' + $(document.getElementById(url)).text();
+              $(document.getElementById(url)).text(content);
+            },
+            error: function (newcounter, error) {
+              console.log('Failed to create');
+            }
+          });
+        }
+      },
+      error: function (error) {
+        console.log('Error:' + error.code + " " + error.message);
+      }
+    });
+  }
+  $(function () {
+    var Counter = AV.Object.extend("Counter");
+    if ($('.leancloud_visitors').length == 1) {
+      addCount(Counter);
+    } else if ($('.post-title-link').length > 1) {
+      showTime(Counter);
+    }
+  });
+</script>
+
+
+  
+
+</body>
+</html>
