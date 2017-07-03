@@ -103,64 +103,13 @@
     </entry>
     
     <entry>
-      <title><![CDATA[Python爬虫如何入门？]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/%E7%88%AC%E8%99%AB%E5%A6%82%E4%BD%95%E5%85%A5%E9%97%A8%EF%BC%9F/</url>
-      <content type="html"><![CDATA[<p> Python爬虫如何入门？</p>
-<h4 id="源自公众号-DeveloperPython"><a href="#源自公众号-DeveloperPython" class="headerlink" title="源自公众号:DeveloperPython"></a>源自公众号:DeveloperPython</h4><h2 id="扯淡"><a href="#扯淡" class="headerlink" title="扯淡"></a>扯淡</h2><p>其实，“入门”最好的方式是以项目开始，这样实践起来你会被目标驱动。从而，不用一步一步慢慢的学习模块化的东西。</p>
-<p>其实，知识体系里面的每一个知识点类似于图里的点。边就是知识体系的依赖关系，那么整个图也就是一个有向无环图。因为学习A的经验可以帮助到你学习B。因此，入门的东西根本不用学习，因为入门点根本不存在。</p>
-<a id="more"></a>
-<p>同时，你需要学习的是如何去做一个大的项目，来亲身体会爬虫， 并一步步学习爬虫的知识点。</p>
-<p>那么，我总结下在其他平台上的相关知识点和自己的想法：</p>
-<ol>
-<li>爬虫的工作原理</li>
-<li>基本的Https爬虫工具：Scrapy</li>
-<li>分布式爬虫系统。也就是维护一个集群机器来高效的完成分布式队列。Github上也有一个现成的例子: <a href="https://github.com/nvie/rq" target="_blank" rel="external">nvie/rq</a></li>
-<li>rq和Scrapy的结合： <a href="https://github.com/rolando/scrapy-redis" target="_blank" rel="external">rolando/scrapy-redis</a></li>
-<li>后续处理: <a href="https://github.com/grangier/python-goose" target="_blank" rel="external">网页处理grangier/python-goose</a> 存储(Mongodb)</li>
-</ol>
-<p>以下，我将基于<a href="https://github.com/xiyouMc/WebHubBot" target="_blank" rel="external">xiyouMc/WebHubBot</a>的经验来讲：</p>
-<h3 id="一、-爬虫的怎么工作的"><a href="#一、-爬虫的怎么工作的" class="headerlink" title="一、  爬虫的怎么工作的"></a>一、  爬虫的怎么工作的</h3><p>爬虫的另一个意思其实就是🕷（Spider） ，互联“网”就是它的环境。简单的来说，也就是你需要用这个蜘蛛来把相关网站的所有角落(网页)都爬一边。</p>
-<p>那么，你可以选择一个自己感兴趣的平台，如知乎、淘宝等等的。</p>
-<p>我这里通过PornHub来讲解。</p>
-<p>比如，我们访问PornHub的首页，里面会出现很多链接。最初我们的目标是拿到该站中所有的视频标题、视频简介、视频链接或者其他有用信息。然后我们兴高采烈的将整个首页都爬下来，这里可以理解为你就是将整个页面完完整整的Copy了下来。</p>
-<p>然后，我们随便点击一个链接进入视频详情页，进入第二个页面之后，就会看到具体的视频标题、简介等等的。那么这只是一个视频信息，我们又是如何做到爬取整站的数据呢。这里可以动下脑子，一种是返回到首页去拿另一个链接，另一种则是基于第一步爬下来的首页来找下一个链接。这里，当然是第二种方案。同时我们要做去重，爬过的链接，就不要再去爬第二遍。</p>
-<p>所以，理论上如果后续的所有视频详情页都是从首页可达的话，那么我们就一定可以将所有网页都爬下来。</p>
-<p>以下是Python的伪代码实现:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line"><span class="keyword">from</span> Queue <span class="keyword">import</span> Queue</div><div class="line">home_page = <span class="string">'https://www.pornhub.com/'</span></div><div class="line">link_queue = Queue()</div><div class="line">seen = set()</div><div class="line">seen.insert(home_page)</div><div class="line">link_queue.put(home_page)</div><div class="line">	</div><div class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</div><div class="line">	<span class="keyword">if</span> link_queue.size() &gt; <span class="number">0</span>:</div><div class="line">		current_url = url_queue.get() <span class="comment">#拿到队列中第一个url</span></div><div class="line">		links = save(current_url)  <span class="comment">#保存这个页面的html，并返回当前页面的所有link</span></div><div class="line">		<span class="keyword">for</span> link <span class="keyword">in</span> links:</div><div class="line">			<span class="keyword">if</span> link <span class="keyword">not</span> <span class="keyword">in</span> seen:</div><div class="line">				seen.put(link)</div><div class="line">				link_queue.put(link)</div><div class="line">	<span class="keyword">else</span>:</div><div class="line">		<span class="keyword">break</span></div></pre></td></tr></table></figure>
-<p>以上就是一个简单的伪代码来爬取pornhub中视频资源的例子。当然， 这只是一个非常简单的例子，其实爬虫是一个非常复杂的项目，类似的就是搜索引擎需要爬取整站的数据，更是需要一整个团队来开发和维护。</p>
-<h3 id="二、-效率"><a href="#二、-效率" class="headerlink" title="二、  效率"></a>二、  效率</h3><p>如果，使用上述的代码来爬取PornHub的话，那么你是绝对无法在一天时间内完成500万的海量数据，更别说在短时间内爬取PornHub的所有数据。</p>
-<p>那么，问题出在哪？爬的网页太多太多了，而且上面的代码太慢太慢了。</p>
-<p>PornHub的全网有N个页面，那么分析下判重的时间复杂度将是 N * log(N)，因为每个网页都要遍历一遍，而使用Set来做判重，需要 log(N) 的复杂度。</p>
-<p>所以，我们需要一个成熟的判重方案。Bloom Filter。 它是一个空间效率很高的随机数据结构。<a href="http://blog.csdn.net/jiaomeng/article/details/1495500" target="_blank" rel="external">官方简介</a>：</p>
+      <title><![CDATA[最近心烦]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/%E6%9C%80%E8%BF%91%E5%BF%83%E4%BA%8B/</url>
+      <content type="html"><![CDATA[<p>不知道自己是将工作带到了生活还是生活带到了工作。。。<br><a id="more"></a></p>
 <blockquote>
-<p>Bloom Filter是一种空间效率很高的随机数据结构，它利用位数组很简洁地表示一个集合，并能判断一个元素是否属于这个集合。Bloom Filter的这种高效是有一定代价的：在判断一个元素是否属于某个集合时，有可能会把不属于这个集合的元素误认为属于这个集合（false positive）。因此，Bloom Filter不适合那些“零错误”的应用场合。而在能容忍低错误率的应用场合下，Bloom Filter通过极少的错误换取了存储空间的极大节省。</p>
+<p>最近事真的很多，也导致了自己事很多。 </p>
+<p>喜欢的人，自己变得约束力越来越多。这不是我要的。<br>我很想放放松松的恋爱。 最近对你一直很闹脾气，动不动就闹脾气。  我想我是该冷静冷静了。<br>让我们开开心心的恋爱下去吧。  一直。相爱。</p>
 </blockquote>
-<p>有兴趣可以详细学习下这个算法。</p>
-<p>简单的来说，它是一种利用Hash的方法来判重的。并且在使用固定的内存，不随url的数量增加而增长,以 O（1）的效率判断url是否已经在set中。但是仍然有极小的可能性会误判，所以对于“零错误”的系统不适用。但是对于爬虫，小概率的重复爬取也是可以接受的。</p>
-<p>那么，以上就是判重的最快方式了。</p>
-<p>当然，另一个瓶颈又会出现，如果你只有一台机器，那么不管你的带宽有多大你的机器下载网页的速度还是会有瓶颈。那么，只有加快这个速度，我们使用多台机器来跑。</p>
-<h3 id="三、-集群化爬取"><a href="#三、-集群化爬取" class="headerlink" title="三、  集群化爬取"></a>三、  集群化爬取</h3><p>集群化爬取，其实不难理解。也就是将你的爬虫任务分发到n台机器来处理，当然每台机器处理的任务不同，且不重复。</p>
-<p>那么，假设你有100台机器，怎么用Python实现一个分布式的爬取算法呢？</p>
-<p>Server -&gt; Client 。这种C/S 的模式，我相信大家也不陌生。那么分布式的系统，其实就是一台Server -&gt; n个Client 来处理。这里我们将Server定义为 Master机，多个Client定义为多个 Slave。所以基于开始的伪代码，我们可以将link_queue 放到Master上，其他的Slave都可以通过网络跟Master联通，每当一个Slave下载完成一个页面之后，就会将这个页面的结果告知Master，同时获取一个新的link 来爬取。同时 BloomFliter 也是放在Master的，用来针对Links进行去重。 其中Slave和Server联通的方式，就是通过Redis，这是一个可以远程操作的缓存数据库，提供了完善的队列管理。其次，Redis的队列中已经包含的去重的，当Push一个url 到Redis之后，某一个Slave Pop拿到数据，那么这个Url将只会在这个Slave进行处理。</p>
-<p>因此，我们可以用Python来实现。Slave的机器上安装Scrapy，Master上安装Redis和rq用作分布式队列。</p>
-<p>伪代码:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="string">"""</span></div><div class="line">Slave</div><div class="line">"""</div><div class="line">	</div><div class="line">url = link_from_master() <span class="comment"># 从Master机Get到最新的链接</span></div><div class="line">content = save(url) <span class="comment"># 请求并保存这个链接下的视频信息</span></div><div class="line">send_to_master(url) <span class="comment"># 将当前处理过的url Post给主机。</span></div><div class="line">	</div><div class="line"><span class="string">"""</span></div><div class="line">Master</div><div class="line">"""</div><div class="line">queue = Queue()</div><div class="line">bf = BloomFilter()</div><div class="line">	</div><div class="line">home_pages = <span class="string">"https://www.pornhub.com/"</span></div><div class="line">	</div><div class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</div><div class="line">    <span class="keyword">if</span> request == <span class="string">'GET'</span>:</div><div class="line">        <span class="keyword">if</span> distributed_queue.size()&gt;<span class="number">0</span>:</div><div class="line">            send(queue.get()) <span class="comment"># 将当前url push到Redis，从而让Slave获取到。</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            <span class="keyword">break</span></div><div class="line">    <span class="keyword">elif</span> request == <span class="string">'POST'</span>:</div><div class="line">        bf.put(request.url) <span class="comment">#将处理过的Url 保存到bf队列</span></div></pre></td></tr></table></figure>
-<p>轮子: <a href="https://github.com/rolando/scrapy-redis" target="_blank" rel="external">rolando/scrapy-redis</a></p>
-<h3 id="四、-后处理"><a href="#四、-后处理" class="headerlink" title="四、 后处理"></a>四、 后处理</h3><p>上面的路子，其实是很简单很简单的一部分。同样的，后续你还要进行其他的处理，比如：</p>
-<ul>
-<li>有效的存储</li>
-<li>有效的判重</li>
-<li>有效的信息提取</li>
-<li>及时更新</li>
-</ul>
-<p>所以，不要在意如何“入门”，只管上路就好了。</p>
-<h3 id="五、-更重要的一点"><a href="#五、-更重要的一点" class="headerlink" title="五、 更重要的一点"></a>五、 更重要的一点</h3><p> 长摁‘识别二维码’，一起进步</p>
-<p><img src="https://mmbiz.qlogo.cn/mmbiz_png/BAYrQMKkbTbS8e8ibKzUsdcO7Dx3ILTib4daQiaaywnBk1dBd2ZfsxlSKZ7KdwA8kyN1unwBH5BbKpg2SGYP60VrQ/640?wx_fmt=png" alt=""></p>
-<p>生活不止眼前的苟且，还有手下的代码、</p>
-<p>和嘴上的扯淡<br>——<br>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a></p>
-<p>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
-<hr>
-<h3 id="六、-如何找到一群学习Python的朋友圈"><a href="#六、-如何找到一群学习Python的朋友圈" class="headerlink" title="六、 如何找到一群学习Python的朋友圈"></a>六、 如何找到一群学习Python的朋友圈</h3><p>点击 <a href="http://t.xiaomiquan.com/7ey3rZv" target="_blank" rel="external">Join</a>，加入Python技术成长圈子，我们在这里等着你。</p>
 ]]></content>
     </entry>
     
@@ -284,13 +233,64 @@ limitations under the License.
     </entry>
     
     <entry>
-      <title><![CDATA[最近心烦]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/%E6%9C%80%E8%BF%91%E5%BF%83%E4%BA%8B/</url>
-      <content type="html"><![CDATA[<p>不知道自己是将工作带到了生活还是生活带到了工作。。。<br><a id="more"></a></p>
+      <title><![CDATA[Python爬虫如何入门？]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/%E7%88%AC%E8%99%AB%E5%A6%82%E4%BD%95%E5%85%A5%E9%97%A8%EF%BC%9F/</url>
+      <content type="html"><![CDATA[<p> Python爬虫如何入门？</p>
+<h4 id="源自公众号-DeveloperPython"><a href="#源自公众号-DeveloperPython" class="headerlink" title="源自公众号:DeveloperPython"></a>源自公众号:DeveloperPython</h4><h2 id="扯淡"><a href="#扯淡" class="headerlink" title="扯淡"></a>扯淡</h2><p>其实，“入门”最好的方式是以项目开始，这样实践起来你会被目标驱动。从而，不用一步一步慢慢的学习模块化的东西。</p>
+<p>其实，知识体系里面的每一个知识点类似于图里的点。边就是知识体系的依赖关系，那么整个图也就是一个有向无环图。因为学习A的经验可以帮助到你学习B。因此，入门的东西根本不用学习，因为入门点根本不存在。</p>
+<a id="more"></a>
+<p>同时，你需要学习的是如何去做一个大的项目，来亲身体会爬虫， 并一步步学习爬虫的知识点。</p>
+<p>那么，我总结下在其他平台上的相关知识点和自己的想法：</p>
+<ol>
+<li>爬虫的工作原理</li>
+<li>基本的Https爬虫工具：Scrapy</li>
+<li>分布式爬虫系统。也就是维护一个集群机器来高效的完成分布式队列。Github上也有一个现成的例子: <a href="https://github.com/nvie/rq" target="_blank" rel="external">nvie/rq</a></li>
+<li>rq和Scrapy的结合： <a href="https://github.com/rolando/scrapy-redis" target="_blank" rel="external">rolando/scrapy-redis</a></li>
+<li>后续处理: <a href="https://github.com/grangier/python-goose" target="_blank" rel="external">网页处理grangier/python-goose</a> 存储(Mongodb)</li>
+</ol>
+<p>以下，我将基于<a href="https://github.com/xiyouMc/WebHubBot" target="_blank" rel="external">xiyouMc/WebHubBot</a>的经验来讲：</p>
+<h3 id="一、-爬虫的怎么工作的"><a href="#一、-爬虫的怎么工作的" class="headerlink" title="一、  爬虫的怎么工作的"></a>一、  爬虫的怎么工作的</h3><p>爬虫的另一个意思其实就是🕷（Spider） ，互联“网”就是它的环境。简单的来说，也就是你需要用这个蜘蛛来把相关网站的所有角落(网页)都爬一边。</p>
+<p>那么，你可以选择一个自己感兴趣的平台，如知乎、淘宝等等的。</p>
+<p>我这里通过PornHub来讲解。</p>
+<p>比如，我们访问PornHub的首页，里面会出现很多链接。最初我们的目标是拿到该站中所有的视频标题、视频简介、视频链接或者其他有用信息。然后我们兴高采烈的将整个首页都爬下来，这里可以理解为你就是将整个页面完完整整的Copy了下来。</p>
+<p>然后，我们随便点击一个链接进入视频详情页，进入第二个页面之后，就会看到具体的视频标题、简介等等的。那么这只是一个视频信息，我们又是如何做到爬取整站的数据呢。这里可以动下脑子，一种是返回到首页去拿另一个链接，另一种则是基于第一步爬下来的首页来找下一个链接。这里，当然是第二种方案。同时我们要做去重，爬过的链接，就不要再去爬第二遍。</p>
+<p>所以，理论上如果后续的所有视频详情页都是从首页可达的话，那么我们就一定可以将所有网页都爬下来。</p>
+<p>以下是Python的伪代码实现:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line"><span class="keyword">from</span> Queue <span class="keyword">import</span> Queue</div><div class="line">home_page = <span class="string">'https://www.pornhub.com/'</span></div><div class="line">link_queue = Queue()</div><div class="line">seen = set()</div><div class="line">seen.insert(home_page)</div><div class="line">link_queue.put(home_page)</div><div class="line">	</div><div class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</div><div class="line">	<span class="keyword">if</span> link_queue.size() &gt; <span class="number">0</span>:</div><div class="line">		current_url = url_queue.get() <span class="comment">#拿到队列中第一个url</span></div><div class="line">		links = save(current_url)  <span class="comment">#保存这个页面的html，并返回当前页面的所有link</span></div><div class="line">		<span class="keyword">for</span> link <span class="keyword">in</span> links:</div><div class="line">			<span class="keyword">if</span> link <span class="keyword">not</span> <span class="keyword">in</span> seen:</div><div class="line">				seen.put(link)</div><div class="line">				link_queue.put(link)</div><div class="line">	<span class="keyword">else</span>:</div><div class="line">		<span class="keyword">break</span></div></pre></td></tr></table></figure>
+<p>以上就是一个简单的伪代码来爬取pornhub中视频资源的例子。当然， 这只是一个非常简单的例子，其实爬虫是一个非常复杂的项目，类似的就是搜索引擎需要爬取整站的数据，更是需要一整个团队来开发和维护。</p>
+<h3 id="二、-效率"><a href="#二、-效率" class="headerlink" title="二、  效率"></a>二、  效率</h3><p>如果，使用上述的代码来爬取PornHub的话，那么你是绝对无法在一天时间内完成500万的海量数据，更别说在短时间内爬取PornHub的所有数据。</p>
+<p>那么，问题出在哪？爬的网页太多太多了，而且上面的代码太慢太慢了。</p>
+<p>PornHub的全网有N个页面，那么分析下判重的时间复杂度将是 N * log(N)，因为每个网页都要遍历一遍，而使用Set来做判重，需要 log(N) 的复杂度。</p>
+<p>所以，我们需要一个成熟的判重方案。Bloom Filter。 它是一个空间效率很高的随机数据结构。<a href="http://blog.csdn.net/jiaomeng/article/details/1495500" target="_blank" rel="external">官方简介</a>：</p>
 <blockquote>
-<p>最近事真的很多，也导致了自己事很多。 </p>
-<p>喜欢的人，自己变得约束力越来越多。这不是我要的。<br>我很想放放松松的恋爱。 最近对你一直很闹脾气，动不动就闹脾气。  我想我是该冷静冷静了。<br>让我们开开心心的恋爱下去吧。  一直。相爱。</p>
+<p>Bloom Filter是一种空间效率很高的随机数据结构，它利用位数组很简洁地表示一个集合，并能判断一个元素是否属于这个集合。Bloom Filter的这种高效是有一定代价的：在判断一个元素是否属于某个集合时，有可能会把不属于这个集合的元素误认为属于这个集合（false positive）。因此，Bloom Filter不适合那些“零错误”的应用场合。而在能容忍低错误率的应用场合下，Bloom Filter通过极少的错误换取了存储空间的极大节省。</p>
 </blockquote>
+<p>有兴趣可以详细学习下这个算法。</p>
+<p>简单的来说，它是一种利用Hash的方法来判重的。并且在使用固定的内存，不随url的数量增加而增长,以 O（1）的效率判断url是否已经在set中。但是仍然有极小的可能性会误判，所以对于“零错误”的系统不适用。但是对于爬虫，小概率的重复爬取也是可以接受的。</p>
+<p>那么，以上就是判重的最快方式了。</p>
+<p>当然，另一个瓶颈又会出现，如果你只有一台机器，那么不管你的带宽有多大你的机器下载网页的速度还是会有瓶颈。那么，只有加快这个速度，我们使用多台机器来跑。</p>
+<h3 id="三、-集群化爬取"><a href="#三、-集群化爬取" class="headerlink" title="三、  集群化爬取"></a>三、  集群化爬取</h3><p>集群化爬取，其实不难理解。也就是将你的爬虫任务分发到n台机器来处理，当然每台机器处理的任务不同，且不重复。</p>
+<p>那么，假设你有100台机器，怎么用Python实现一个分布式的爬取算法呢？</p>
+<p>Server -&gt; Client 。这种C/S 的模式，我相信大家也不陌生。那么分布式的系统，其实就是一台Server -&gt; n个Client 来处理。这里我们将Server定义为 Master机，多个Client定义为多个 Slave。所以基于开始的伪代码，我们可以将link_queue 放到Master上，其他的Slave都可以通过网络跟Master联通，每当一个Slave下载完成一个页面之后，就会将这个页面的结果告知Master，同时获取一个新的link 来爬取。同时 BloomFliter 也是放在Master的，用来针对Links进行去重。 其中Slave和Server联通的方式，就是通过Redis，这是一个可以远程操作的缓存数据库，提供了完善的队列管理。其次，Redis的队列中已经包含的去重的，当Push一个url 到Redis之后，某一个Slave Pop拿到数据，那么这个Url将只会在这个Slave进行处理。</p>
+<p>因此，我们可以用Python来实现。Slave的机器上安装Scrapy，Master上安装Redis和rq用作分布式队列。</p>
+<p>伪代码:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="string">"""</span></div><div class="line">Slave</div><div class="line">"""</div><div class="line">	</div><div class="line">url = link_from_master() <span class="comment"># 从Master机Get到最新的链接</span></div><div class="line">content = save(url) <span class="comment"># 请求并保存这个链接下的视频信息</span></div><div class="line">send_to_master(url) <span class="comment"># 将当前处理过的url Post给主机。</span></div><div class="line">	</div><div class="line"><span class="string">"""</span></div><div class="line">Master</div><div class="line">"""</div><div class="line">queue = Queue()</div><div class="line">bf = BloomFilter()</div><div class="line">	</div><div class="line">home_pages = <span class="string">"https://www.pornhub.com/"</span></div><div class="line">	</div><div class="line"><span class="keyword">while</span>(<span class="keyword">True</span>):</div><div class="line">    <span class="keyword">if</span> request == <span class="string">'GET'</span>:</div><div class="line">        <span class="keyword">if</span> distributed_queue.size()&gt;<span class="number">0</span>:</div><div class="line">            send(queue.get()) <span class="comment"># 将当前url push到Redis，从而让Slave获取到。</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            <span class="keyword">break</span></div><div class="line">    <span class="keyword">elif</span> request == <span class="string">'POST'</span>:</div><div class="line">        bf.put(request.url) <span class="comment">#将处理过的Url 保存到bf队列</span></div></pre></td></tr></table></figure>
+<p>轮子: <a href="https://github.com/rolando/scrapy-redis" target="_blank" rel="external">rolando/scrapy-redis</a></p>
+<h3 id="四、-后处理"><a href="#四、-后处理" class="headerlink" title="四、 后处理"></a>四、 后处理</h3><p>上面的路子，其实是很简单很简单的一部分。同样的，后续你还要进行其他的处理，比如：</p>
+<ul>
+<li>有效的存储</li>
+<li>有效的判重</li>
+<li>有效的信息提取</li>
+<li>及时更新</li>
+</ul>
+<p>所以，不要在意如何“入门”，只管上路就好了。</p>
+<h3 id="五、-更重要的一点"><a href="#五、-更重要的一点" class="headerlink" title="五、 更重要的一点"></a>五、 更重要的一点</h3><p> 长摁‘识别二维码’，一起进步</p>
+<p><img src="https://mmbiz.qlogo.cn/mmbiz_png/BAYrQMKkbTbS8e8ibKzUsdcO7Dx3ILTib4daQiaaywnBk1dBd2ZfsxlSKZ7KdwA8kyN1unwBH5BbKpg2SGYP60VrQ/640?wx_fmt=png" alt=""></p>
+<p>生活不止眼前的苟且，还有手下的代码、</p>
+<p>和嘴上的扯淡<br>——<br>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a></p>
+<p>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
+<hr>
+<h3 id="六、-如何找到一群学习Python的朋友圈"><a href="#六、-如何找到一群学习Python的朋友圈" class="headerlink" title="六、 如何找到一群学习Python的朋友圈"></a>六、 如何找到一群学习Python的朋友圈</h3><p>点击 <a href="http://t.xiaomiquan.com/7ey3rZv" target="_blank" rel="external">Join</a>，加入Python技术成长圈子，我们在这里等着你。</p>
 ]]></content>
     </entry>
     
@@ -298,6 +298,41 @@ limitations under the License.
       <title><![CDATA[戒烟]]></title>
       <url>https://xiyoumc.github.com/2017/07/03/%E6%88%92%E7%83%9F/</url>
       <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/timg.jpeg?raw=true" alt=""><br>以后每天都会在这里记录，戒烟史！<br><a id="more"></a><br>GoGoGo</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[当我玩哔哩哔哩的时候，一不小心。。。]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/%E5%BD%93%E6%88%91%E7%8E%A9%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E4%B8%80%E4%B8%8D%E5%B0%8F%E5%BF%83%E3%80%82%E3%80%82%E3%80%82/</url>
+      <content type="html"><![CDATA[<h2 id="一不小心用代码登陆了B站。。。并上传了。。视频"><a href="#一不小心用代码登陆了B站。。。并上传了。。视频" class="headerlink" title="一不小心用代码登陆了B站。。。并上传了。。视频"></a>一不小心用代码登陆了B站。。。并上传了。。视频</h2><blockquote>
+<p>阅读本文需要4.66分钟</p>
+</blockquote>
+<a id="more"></a>
+<p>你被标题吸引了吧。。。别急着关。。重头戏在后面</p>
+<p>最近当我玩B站的时候，一不小心用代码登录了它，并几乎无限制的上传视频。</p>
+<p>那么接下来，我来讲解如何通过Hack技术来模拟 哔哩哔哩 的登录，并完成我们的视频上传等操作。因此内容中略有“暴力”，若您感到不适，那还是也请看完它。</p>
+<p>按照以往的老套路，我们首先需要弄清楚它的登录逻辑，并通过我们的代码来实现登录操作，其次拿到所谓的 Cookie 或者 Token、Sign等校验字段来做其他的操作，以下将围绕 B站 一步步来讲解破解的思路:</p>
+<p>首先我们访问到 哔哩哔哩 的登录页面:</p>
+<p>  <img src="http://115.28.132.58:8080/docs/BiliLogin.png" alt=""></p>
+<p>当我们在未登录的状态下访问登录页面的时候，会发现验证码已经显示出来了。那么他们是怎么做到当我输入账号、密码并输入一个已经出来的验证码之后就能校验成功呢。这时候就得提前动动脑子，当然如果你是开发服务器的话，应该明白里面的道理。这里我简单的讲下，其实在访问这个登录页面的时候，B站 已经将一个唯一的标识和验证码绑定起来了（也就是后面说到的Cookie），并且在登录的时候将这个标识一并发送上去。也就是说：通过一个标识来绑定验证码和登录操作。</p>
+<p>那么接下来我们看看在第一次访问登录页面的时候，都有哪些可用的数据,打开 Charles 抓包工具(Charles抓包工具可在历史文章中找到)，重新访问登录页面.</p>
+<p>这是登录页面的Request数据:<br><img src="http://115.28.132.58:8080/docs/BLReq.png" alt=""><br>当然一眼看上去并没有什么可用数据。其实确实是没什么卵用的数据.那么我们来看看Response数据:<br><img src="http://115.28.132.58:8080/docs/BLRes.png" alt=""><br>一眼看上去是挺乱的。细看下它的Raw数据。其中包括了使用的Server、Set-Cookie等等的数据，还有登录页面的html文本. 那么其中最重要的数据也就是 Set-Cookie，这个Set-Cookie中的数据就是之前讲到的 用来和验证码绑定的唯一标示。那么我们来确认下，来看看验证码图片的包:<br><img src="http://115.28.132.58:8080/docs/BLCap.png" alt=""><br>快看，快看 验证码 Request 中的 Cookie，果然是上面登录页面的 Response 的 Set-Cookie。</p>
+<p>那么验证码就简单了，我们通过代码来访问 B站 的登录页面，并拿到Response的Set-Cookie，然后再将这个Set-Cookie放到下载验证码Request的Cookie中，就这样，我们的验证码搞定了，那是不是登录就很简单了，少年憋急。登录才是大头..</p>
+<p>来来来，基于上面的登录页面，我们在里面输入自己的账号，并完成登录来看看发的包都有哪些.</p>
+<p>登录操作之后的Request:<br><img src="http://115.28.132.58:8080/docs/BLDolog.png" alt=""><br>可以看出来这是一个 post 请求，当然 Cookie 和验证码的一样将之前保存下来的 Set-Cookie 传给Request的Cookie.</p>
+<p>post 参数如下:<br><img src="http://115.28.132.58:8080/docs/BLOnLogForm.png" alt=""><br>Orz,WTF，提交的密码加密了。那么我就需要来找一下它的加密算法了。其实网页端的加密并没有什么卵用。对我来说，就是随便翻翻代码的事（毕竟我很帅）。</p>
+<p>来来来，找啊找啊找加密。然后我们先试探性的搜索下请求的字段 ‘pwd’ 如下图:<br><img src="http://115.28.132.58:8080/docs/SeachPwd.png" alt=""><br>果然定位到了加密的位置，当然前端页面的加密大部分都是很容易找到的，只要你有耐心.<br><img src="http://115.28.132.58:8080/docs/BLEncPwd.png" alt=""><br>以上就是 B站 加密密码的算法。简单讲下就是：通过 /login?act=getkey 拿到一个数据(hash,key),并以key作为RSA算法的公钥来加密 (hash+明文密码),然后针对这个数据来一次base64即可</p>
+<p>python实现如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> rsa</div><div class="line">pub = rsa.PublicKey.load_pkcs1_openssl_pem(_key)</div><div class="line">_pwd = rsa.encrypt((_hash + psw).encode(),pub)</div><div class="line">_real_pwd = base64.b64encode(str(_pwd))</div></pre></td></tr></table></figure>
+<p>那么现在我们就需要把问题聚焦到 /login?act=getkey 这个接口上。那么我们再回到之前的抓包数据上，会发现果然有一个 getkey 的请求:<br><img src="http://115.28.132.58:8080/docs/BLGetKey.png" alt=""><br>同上，Cookie是最开始的Set-Cookie。<br><img src="http://115.28.132.58:8080/docs/BLGetKeyRes.png" alt=""><br>Response中也就同时拿到了我们需要的 hash 和 key.大功告成，所有请求和加密都被我们搞定。</p>
+<p>这时候我们再思考下登录脚本应该怎么判断是否登录成功呢，回头过来看下之前的登录操作的结果 也就是 上面的 dologin 接口.<br><img src="http://115.28.132.58:8080/docs/BLogLocation.png" alt=""><br>会发现如果你成功登录之后，在 dologin 接口上会有 302 重定向跳转，并最终跳转到 主页上。因此这时候我们就可以来写代码，模拟登录，并且在最后一步登录请求中判断当前请求历史的第一个状态码是不是 302 ，如果是302，说明我们的登录脚本是没问题的。同时，再拿到 dologin的Response中的Set-Cookie作为新的Cookie，因为这个Cookie才是真正验证通过的Cookie，当然它是存在有效期的。具体多少我还不清楚，一般有一个礼拜、一个月、甚至一年之久。之后我们用这个Cookie去做其他有意义的事情，是完全没问题的。</p>
+<p>其次就是上传视频接口，也是类似的方法，需要分析上传视频的接口数据。并将最终的Cookie携带到请求包中。其中需要注意的是B站的上传视频可简单的分为以下几个步骤：</p>
+<ol>
+<li>将视频以Chunk的方式，而且是options的请求方式上传到服务器。因此它是支持断点续传的。</li>
+<li>拿到options请求之后的视频id，再请求 add 接口将数据post上去即可</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>虽然这篇文章很短，但是当你真正坐下来分析的时候，将是一段非常枯燥的过程。需要的就是你的耐心。</p>
+<p>其次之所以写这篇文章，其实重点不是怎么去破解B站的登录，而是这些破解的逻辑是否可以提供给我们一些服务器架构的思路，抑或防范别人的破解。</p>
 ]]></content>
     </entry>
     
@@ -334,41 +369,6 @@ limitations under the License.
 <li><p>古人说“相敬如宾”，虽是老生常谈，却是能够维系长久爱情的真正智慧。如果想避免吵架、误解，或者是想消融不断的期待、要求，在遇到诸如此类的问题时，不妨以尊重的心态，心悦诚服、欢欢喜喜、平平静静去面对、解决，心中的纠结，其实在当下都能即得化解。爱情里的关系，并不是在互相执着、纠缠和占有，而是互相的贡献、成长和学习。能够互相关怀、照顾、包容，去彼此计较、相互猜疑，多沟通，并相互信赖，才能成为菩萨伴侣。</p>
 </li>
 </ul>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[当我玩哔哩哔哩的时候，一不小心。。。]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/%E5%BD%93%E6%88%91%E7%8E%A9%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E4%B8%80%E4%B8%8D%E5%B0%8F%E5%BF%83%E3%80%82%E3%80%82%E3%80%82/</url>
-      <content type="html"><![CDATA[<h2 id="一不小心用代码登陆了B站。。。并上传了。。视频"><a href="#一不小心用代码登陆了B站。。。并上传了。。视频" class="headerlink" title="一不小心用代码登陆了B站。。。并上传了。。视频"></a>一不小心用代码登陆了B站。。。并上传了。。视频</h2><blockquote>
-<p>阅读本文需要4.66分钟</p>
-</blockquote>
-<a id="more"></a>
-<p>你被标题吸引了吧。。。别急着关。。重头戏在后面</p>
-<p>最近当我玩B站的时候，一不小心用代码登录了它，并几乎无限制的上传视频。</p>
-<p>那么接下来，我来讲解如何通过Hack技术来模拟 哔哩哔哩 的登录，并完成我们的视频上传等操作。因此内容中略有“暴力”，若您感到不适，那还是也请看完它。</p>
-<p>按照以往的老套路，我们首先需要弄清楚它的登录逻辑，并通过我们的代码来实现登录操作，其次拿到所谓的 Cookie 或者 Token、Sign等校验字段来做其他的操作，以下将围绕 B站 一步步来讲解破解的思路:</p>
-<p>首先我们访问到 哔哩哔哩 的登录页面:</p>
-<p>  <img src="http://115.28.132.58:8080/docs/BiliLogin.png" alt=""></p>
-<p>当我们在未登录的状态下访问登录页面的时候，会发现验证码已经显示出来了。那么他们是怎么做到当我输入账号、密码并输入一个已经出来的验证码之后就能校验成功呢。这时候就得提前动动脑子，当然如果你是开发服务器的话，应该明白里面的道理。这里我简单的讲下，其实在访问这个登录页面的时候，B站 已经将一个唯一的标识和验证码绑定起来了（也就是后面说到的Cookie），并且在登录的时候将这个标识一并发送上去。也就是说：通过一个标识来绑定验证码和登录操作。</p>
-<p>那么接下来我们看看在第一次访问登录页面的时候，都有哪些可用的数据,打开 Charles 抓包工具(Charles抓包工具可在历史文章中找到)，重新访问登录页面.</p>
-<p>这是登录页面的Request数据:<br><img src="http://115.28.132.58:8080/docs/BLReq.png" alt=""><br>当然一眼看上去并没有什么可用数据。其实确实是没什么卵用的数据.那么我们来看看Response数据:<br><img src="http://115.28.132.58:8080/docs/BLRes.png" alt=""><br>一眼看上去是挺乱的。细看下它的Raw数据。其中包括了使用的Server、Set-Cookie等等的数据，还有登录页面的html文本. 那么其中最重要的数据也就是 Set-Cookie，这个Set-Cookie中的数据就是之前讲到的 用来和验证码绑定的唯一标示。那么我们来确认下，来看看验证码图片的包:<br><img src="http://115.28.132.58:8080/docs/BLCap.png" alt=""><br>快看，快看 验证码 Request 中的 Cookie，果然是上面登录页面的 Response 的 Set-Cookie。</p>
-<p>那么验证码就简单了，我们通过代码来访问 B站 的登录页面，并拿到Response的Set-Cookie，然后再将这个Set-Cookie放到下载验证码Request的Cookie中，就这样，我们的验证码搞定了，那是不是登录就很简单了，少年憋急。登录才是大头..</p>
-<p>来来来，基于上面的登录页面，我们在里面输入自己的账号，并完成登录来看看发的包都有哪些.</p>
-<p>登录操作之后的Request:<br><img src="http://115.28.132.58:8080/docs/BLDolog.png" alt=""><br>可以看出来这是一个 post 请求，当然 Cookie 和验证码的一样将之前保存下来的 Set-Cookie 传给Request的Cookie.</p>
-<p>post 参数如下:<br><img src="http://115.28.132.58:8080/docs/BLOnLogForm.png" alt=""><br>Orz,WTF，提交的密码加密了。那么我就需要来找一下它的加密算法了。其实网页端的加密并没有什么卵用。对我来说，就是随便翻翻代码的事（毕竟我很帅）。</p>
-<p>来来来，找啊找啊找加密。然后我们先试探性的搜索下请求的字段 ‘pwd’ 如下图:<br><img src="http://115.28.132.58:8080/docs/SeachPwd.png" alt=""><br>果然定位到了加密的位置，当然前端页面的加密大部分都是很容易找到的，只要你有耐心.<br><img src="http://115.28.132.58:8080/docs/BLEncPwd.png" alt=""><br>以上就是 B站 加密密码的算法。简单讲下就是：通过 /login?act=getkey 拿到一个数据(hash,key),并以key作为RSA算法的公钥来加密 (hash+明文密码),然后针对这个数据来一次base64即可</p>
-<p>python实现如下:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> rsa</div><div class="line">pub = rsa.PublicKey.load_pkcs1_openssl_pem(_key)</div><div class="line">_pwd = rsa.encrypt((_hash + psw).encode(),pub)</div><div class="line">_real_pwd = base64.b64encode(str(_pwd))</div></pre></td></tr></table></figure>
-<p>那么现在我们就需要把问题聚焦到 /login?act=getkey 这个接口上。那么我们再回到之前的抓包数据上，会发现果然有一个 getkey 的请求:<br><img src="http://115.28.132.58:8080/docs/BLGetKey.png" alt=""><br>同上，Cookie是最开始的Set-Cookie。<br><img src="http://115.28.132.58:8080/docs/BLGetKeyRes.png" alt=""><br>Response中也就同时拿到了我们需要的 hash 和 key.大功告成，所有请求和加密都被我们搞定。</p>
-<p>这时候我们再思考下登录脚本应该怎么判断是否登录成功呢，回头过来看下之前的登录操作的结果 也就是 上面的 dologin 接口.<br><img src="http://115.28.132.58:8080/docs/BLogLocation.png" alt=""><br>会发现如果你成功登录之后，在 dologin 接口上会有 302 重定向跳转，并最终跳转到 主页上。因此这时候我们就可以来写代码，模拟登录，并且在最后一步登录请求中判断当前请求历史的第一个状态码是不是 302 ，如果是302，说明我们的登录脚本是没问题的。同时，再拿到 dologin的Response中的Set-Cookie作为新的Cookie，因为这个Cookie才是真正验证通过的Cookie，当然它是存在有效期的。具体多少我还不清楚，一般有一个礼拜、一个月、甚至一年之久。之后我们用这个Cookie去做其他有意义的事情，是完全没问题的。</p>
-<p>其次就是上传视频接口，也是类似的方法，需要分析上传视频的接口数据。并将最终的Cookie携带到请求包中。其中需要注意的是B站的上传视频可简单的分为以下几个步骤：</p>
-<ol>
-<li>将视频以Chunk的方式，而且是options的请求方式上传到服务器。因此它是支持断点续传的。</li>
-<li>拿到options请求之后的视频id，再请求 add 接口将数据post上去即可</li>
-</ol>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>虽然这篇文章很短，但是当你真正坐下来分析的时候，将是一段非常枯燥的过程。需要的就是你的耐心。</p>
-<p>其次之所以写这篇文章，其实重点不是怎么去破解B站的登录，而是这些破解的逻辑是否可以提供给我们一些服务器架构的思路，抑或防范别人的破解。</p>
 ]]></content>
     </entry>
     
@@ -509,6 +509,23 @@ limitations under the License.
     
     <entry>
       <title><![CDATA[Python新手引导第二篇]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/Python%E6%96%B0%E6%89%8B%E5%BC%95%E5%AF%BC%E7%AC%AC%E4%B8%89%E7%AF%87/</url>
+      <content type="html"><![CDATA[<h1 id="Python新手引导-第三篇-Python基础"><a href="#Python新手引导-第三篇-Python基础" class="headerlink" title="Python新手引导 第三篇 Python基础"></a>Python新手引导 第三篇 Python基础</h1><blockquote>
+<p>###阅读本文需要4.66分钟</p>
+</blockquote>
+<a id="more"></a>
+<p>有其他计算机语言基础的同学，阅读本篇基础部分建议1到2分钟。</p>
+<ol>
+<li>基础类型和变量</li>
+<li>list 和 tuple</li>
+</ol>
+<h2 id="第一、基础类型和变量"><a href="#第一、基础类型和变量" class="headerlink" title="第一、基础类型和变量"></a>第一、基础类型和变量</h2><blockquote>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Python新手引导第二篇]]></title>
       <url>https://xiyoumc.github.com/2017/07/03/Python%E6%96%B0%E6%89%8B%E5%BC%95%E5%AF%BC%20%E7%AC%AC%E5%9B%9B%E7%AF%87/</url>
       <content type="html"><![CDATA[<h1 id="Python新手引导-第四篇"><a href="#Python新手引导-第四篇" class="headerlink" title="Python新手引导 第四篇"></a>Python新手引导 第四篇</h1><blockquote>
 <p>###阅读本文需要4.66分钟</p>
@@ -594,23 +611,6 @@ limitations under the License.
     
     <entry>
       <title><![CDATA[Python新手引导第二篇]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/Python%E6%96%B0%E6%89%8B%E5%BC%95%E5%AF%BC%E7%AC%AC%E4%B8%89%E7%AF%87/</url>
-      <content type="html"><![CDATA[<h1 id="Python新手引导-第三篇-Python基础"><a href="#Python新手引导-第三篇-Python基础" class="headerlink" title="Python新手引导 第三篇 Python基础"></a>Python新手引导 第三篇 Python基础</h1><blockquote>
-<p>###阅读本文需要4.66分钟</p>
-</blockquote>
-<a id="more"></a>
-<p>有其他计算机语言基础的同学，阅读本篇基础部分建议1到2分钟。</p>
-<ol>
-<li>基础类型和变量</li>
-<li>list 和 tuple</li>
-</ol>
-<h2 id="第一、基础类型和变量"><a href="#第一、基础类型和变量" class="headerlink" title="第一、基础类型和变量"></a>第一、基础类型和变量</h2><blockquote>
-</blockquote>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Python新手引导第二篇]]></title>
       <url>https://xiyoumc.github.com/2017/07/03/Python%E6%96%B0%E6%89%8B%E5%BC%95%E5%AF%BC%E7%AC%AC%E4%BA%8C%E7%AF%87/</url>
       <content type="html"><![CDATA[<h1 id="Python新手引导-第二篇-你不知道的Python"><a href="#Python新手引导-第二篇-你不知道的Python" class="headerlink" title="Python新手引导 第二篇 你不知道的Python"></a>Python新手引导 第二篇 你不知道的Python</h1><blockquote>
 <p>###阅读本文需要4.66分钟</p>
@@ -689,22 +689,6 @@ limitations under the License.
     </entry>
     
     <entry>
-      <title></title>
-      <url>https://xiyoumc.github.com/2017/07/03/Untitled/</url>
-      <content type="html"><![CDATA[<p>   前段时间花了点功夫研究了下Django框架，也就是Python后端+Web端的开发框架，可以快速完成服务端的搭建.<br>借用 <code>Django</code> 官网的一句话 - “Django makes it easier to build better Web apps more quickly and with less code.”</p>
-<p>   然后这两天又抽空翻了下之前自己做的Hybrid，然后顺其自然的我使用Django框架和Hybrid框架做了个简单的 Demo,并将其放到了Github上。有兴趣的朋友可以共同探讨下。</p>
-<p>   地址在这: <a href="https://github.com/xiyouMc/HybridFramework" target="_blank" rel="external">https://github.com/xiyouMc/HybridFramework</a></p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[大姨夫]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/%E5%A4%A7%E5%A7%A8%E5%A4%AB/</url>
-      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/big.jpg?raw=true" alt=""><br>最近又开始胡思乱想，针对感情、爱情总是一段时间就害怕会分开。特么的都是自己作死。哈哈哈<br><a id="more"></a><br>有一种大姨夫的感觉，有一种小女人的心思，有一种想狠狠抱着你的想法。<br>这是病，得治。自己胡思乱想，想的多，多听听歌吧。<br>大家都很忙，过好自己，照顾好爱的人。</p>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[Python新手引导第一篇]]></title>
       <url>https://xiyoumc.github.com/2017/07/03/Python%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87/</url>
       <content type="html"><![CDATA[<h1 id="Python新手引导-第一篇"><a href="#Python新手引导-第一篇" class="headerlink" title="Python新手引导 第一篇"></a>Python新手引导 第一篇</h1><blockquote>
@@ -749,6 +733,12 @@ limitations under the License.
     </entry>
     
     <entry>
+      <title><![CDATA[Shell语言基本教程]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/linux_shell/</url>
+      <content type="html"></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Tar包高优化解析]]></title>
       <url>https://xiyoumc.github.com/2017/07/03/TarParse/</url>
       <content type="html"><![CDATA[<h1 id="本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。"><a href="#本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。" class="headerlink" title="本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。"></a>本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。</h1><h3 id="一、首先讲一个tar包的文件结构。（懂得可以绕开此段）"><a href="#一、首先讲一个tar包的文件结构。（懂得可以绕开此段）" class="headerlink" title="一、首先讲一个tar包的文件结构。（懂得可以绕开此段）"></a>一、首先讲一个tar包的文件结构。（懂得可以绕开此段）</h3><pre><code>tar只是一个归档文件，并不进行压缩。
@@ -783,9 +773,19 @@ limitations under the License.
     </entry>
     
     <entry>
-      <title><![CDATA[Shell语言基本教程]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/linux_shell/</url>
-      <content type="html"></content>
+      <title></title>
+      <url>https://xiyoumc.github.com/2017/07/03/Untitled/</url>
+      <content type="html"><![CDATA[<p>   前段时间花了点功夫研究了下Django框架，也就是Python后端+Web端的开发框架，可以快速完成服务端的搭建.<br>借用 <code>Django</code> 官网的一句话 - “Django makes it easier to build better Web apps more quickly and with less code.”</p>
+<p>   然后这两天又抽空翻了下之前自己做的Hybrid，然后顺其自然的我使用Django框架和Hybrid框架做了个简单的 Demo,并将其放到了Github上。有兴趣的朋友可以共同探讨下。</p>
+<p>   地址在这: <a href="https://github.com/xiyouMc/HybridFramework" target="_blank" rel="external">https://github.com/xiyouMc/HybridFramework</a></p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[大姨夫]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/%E5%A4%A7%E5%A7%A8%E5%A4%AB/</url>
+      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/big.jpg?raw=true" alt=""><br>最近又开始胡思乱想，针对感情、爱情总是一段时间就害怕会分开。特么的都是自己作死。哈哈哈<br><a id="more"></a><br>有一种大姨夫的感觉，有一种小女人的心思，有一种想狠狠抱着你的想法。<br>这是病，得治。自己胡思乱想，想的多，多听听歌吧。<br>大家都很忙，过好自己，照顾好爱的人。</p>
+]]></content>
     </entry>
     
     <entry>
@@ -800,18 +800,6 @@ limitations under the License.
 <h4 id="ubuntu下安装需要添加一个新的软件库，里面包含了libimobiledevice"><a href="#ubuntu下安装需要添加一个新的软件库，里面包含了libimobiledevice" class="headerlink" title="ubuntu下安装需要添加一个新的软件库，里面包含了libimobiledevice"></a>ubuntu下安装需要添加一个新的软件库，里面包含了libimobiledevice</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sudo add-apt-repository ppa:pmcenery/ppa</div><div class="line">sudo apt-get update</div><div class="line">apt-get install libimobiledevice-utils</div><div class="line">sudo apt-get install ideviceinstaller</div></pre></td></tr></table></figure>
 <p>这里面包含了很多命令，如下<br><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/idevice.png?raw=true" alt="zls"></p>
 <h3 id="如要安装一个ipa文件到手机上可以使用"><a href="#如要安装一个ipa文件到手机上可以使用" class="headerlink" title="如要安装一个ipa文件到手机上可以使用"></a>如要安装一个ipa文件到手机上可以使用</h3><p>ideviceinstaller -i 命令安装一个ipa文件到手机上，如果是企业签名的，非越狱机器也可以直接安装了</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Charles破解教程，适用于所有版本]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/charles_break/</url>
-      <content type="html"><![CDATA[<h1 id="Charles-注册码"><a href="#Charles-注册码" class="headerlink" title="Charles 注册码"></a>Charles 注册码</h1><h3 id="1-Windows-用户"><a href="#1-Windows-用户" class="headerlink" title="1. Windows 用户"></a>1. Windows 用户</h3><p>RegName: ANONYMOUS@chinapyg.com<br>Reg_Key: 5fae99ec65736945ba<br>官方下载后可直接激活。神key.</p>
-<h3 id="2-Mac-用户"><a href="#2-Mac-用户" class="headerlink" title="2. Mac 用户"></a>2. Mac 用户</h3><p>方式一如果不行，方式二绝对可以。</p>
-<h4 id="1-方式一"><a href="#1-方式一" class="headerlink" title="1. 方式一"></a>1. 方式一</h4><p>账号：WaitsUn.com<br>密码：vapg-fold-dreg-inky</p>
-<h4 id="2-方式二"><a href="#2-方式二" class="headerlink" title="2. 方式二"></a>2. 方式二</h4><p>先安装Charles，然后在终端中执行下面的命令即可实现破解。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">charles=/Applications/Charles.app/Contents/Java/charles.jar</div><div class="line">dir=charleshack</div><div class="line">mkdir $dir</div><div class="line">cd $dir</div><div class="line">cat &gt;&gt; License.java &lt;&lt;EOF</div><div class="line">package com.xk72.charles;</div><div class="line">public final class License &#123;</div><div class="line">    public static boolean a() &#123; return true; &#125;</div><div class="line">    public static String b() &#123; return &quot;http://www.gfzj.us&quot;; &#125;</div><div class="line">    public static String a(String name, String key) &#123; return null; &#125;</div><div class="line">&#125;</div><div class="line">EOF</div><div class="line">javac -encoding UTF-8 License.java -d .&amp;&amp; jar -uvf $charles com/xk72/charles/License.class</div><div class="line">cd .. &amp;&amp; rm -rf $dir</div></pre></td></tr></table></figure>
-<a id="more"></a>
 ]]></content>
     </entry>
     
@@ -865,80 +853,55 @@ limitations under the License.
     </entry>
     
     <entry>
-      <title><![CDATA[2000个Star的Github项目很牛逼？]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/2000%E4%B8%AAStar%E7%9A%84Github%E9%A1%B9%E7%9B%AE%E5%BE%88%E7%89%9B%E9%80%BC%EF%BC%9F/</url>
-      <content type="html"><![CDATA[<p><img src="https://mmbiz.qlogo.cn/mmbiz_gif/BAYrQMKkbTZ2ARlAibc3HVXYdrwge4UtpMHubJFog2pgGnWJhTicnRox8mXpEyjCfhmp4vtq4qAwbPW87OpUcocw/0?wx_fmt=gif" alt=""></p>
-<blockquote>
-<p>首先，说明下，这篇文章是基于我的开源项目WebHubBot来讲的。不清楚的可以看<a href="https://github.com/xiyouMc/WebHubBot" target="_blank" rel="external">XiyouMc/WebHubBot</a>。<br><a id="more"></a></p>
+      <title><![CDATA[Charles破解教程，适用于所有版本]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/charles_break/</url>
+      <content type="html"><![CDATA[<h1 id="Charles-注册码"><a href="#Charles-注册码" class="headerlink" title="Charles 注册码"></a>Charles 注册码</h1><h3 id="1-Windows-用户"><a href="#1-Windows-用户" class="headerlink" title="1. Windows 用户"></a>1. Windows 用户</h3><p>RegName: ANONYMOUS@chinapyg.com<br>Reg_Key: 5fae99ec65736945ba<br>官方下载后可直接激活。神key.</p>
+<h3 id="2-Mac-用户"><a href="#2-Mac-用户" class="headerlink" title="2. Mac 用户"></a>2. Mac 用户</h3><p>方式一如果不行，方式二绝对可以。</p>
+<h4 id="1-方式一"><a href="#1-方式一" class="headerlink" title="1. 方式一"></a>1. 方式一</h4><p>账号：WaitsUn.com<br>密码：vapg-fold-dreg-inky</p>
+<h4 id="2-方式二"><a href="#2-方式二" class="headerlink" title="2. 方式二"></a>2. 方式二</h4><p>先安装Charles，然后在终端中执行下面的命令即可实现破解。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">charles=/Applications/Charles.app/Contents/Java/charles.jar</div><div class="line">dir=charleshack</div><div class="line">mkdir $dir</div><div class="line">cd $dir</div><div class="line">cat &gt;&gt; License.java &lt;&lt;EOF</div><div class="line">package com.xk72.charles;</div><div class="line">public final class License &#123;</div><div class="line">    public static boolean a() &#123; return true; &#125;</div><div class="line">    public static String b() &#123; return &quot;http://www.gfzj.us&quot;; &#125;</div><div class="line">    public static String a(String name, String key) &#123; return null; &#125;</div><div class="line">&#125;</div><div class="line">EOF</div><div class="line">javac -encoding UTF-8 License.java -d .&amp;&amp; jar -uvf $charles com/xk72/charles/License.class</div><div class="line">cd .. &amp;&amp; rm -rf $dir</div></pre></td></tr></table></figure>
+<a id="more"></a>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Alison]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/Alison/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>Baby, You Complete Me.<br><a id="more"></a></p>
+<ul>
+<li>Hey there,sexy lady</li>
+<li>I`m loving what you do</li>
+<li>I`m thinking so are you</li>
+<li>You`re trying to dent it</li>
+<li>But I know I changed your mind</li>
+<li>And please don`t try to fight it</li>
+<li>Cause I know that you`ll be mine</li>
+<li>Be mine.</li>
+<li>I want you,baby</li>
+<li>Come get it,girl</li>
+<li>I need you,baby</li>
+<li>I`m on you,girl</li>
+</ul>
 </blockquote>
-<p>这篇文章，其实我很早都想写了。也算是对整个项目的总结，其次也是给那些问WebHubBot技术的人一个答复。</p>
-<p>说实话，这个项目的技术很普通。普通到什么程度呢？我可以很清楚的告诉你，这个项目就用了屈指可数的几个技术点：Http协议、Html、Python、MongoDB 和 Scrapy。就这么几个技术，对于一般的程序员来讲，真心不是什么牛逼点。</p>
-<p>那么接下来，我主要从为什么会火和具体的技术点来扯下。</p>
-<h3 id="1、为什么这个项目会火呢？"><a href="#1、为什么这个项目会火呢？" class="headerlink" title="1、为什么这个项目会火呢？"></a>1、为什么这个项目会火呢？</h3><p>在我看来，它能火起来真的是运气。</p>
-<p>如果真的要我说出个所以然，那么我觉得就因为这两点它才会火起来。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[憧憬]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/Home/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>时常在憧憬未来 、未来 家的样子</p>
+</blockquote>
+<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/home.jpg?raw=true" alt="zls"></p>
+<a id="more"></a>
+<blockquote>
 <ul>
-<li>第一点，因为项目爬的网站是有诱惑力的。</li>
+<li>一直都想有个家、有自己的妻儿</li>
+<li>有一个可以依靠、也可以安心的家</li>
+<li>So 让我们一起努力。有一天你会是我的妻子，我会是你的丈夫，你我会是孩子的父母。</li>
 </ul>
-<p>其实，大家可以在Github上搜索下此类网站的爬虫。你会搜索到很多类似的爬虫。但是他们的Star反而都是几十个，甚至没有。</p>
-<ul>
-<li>第二点，我有一份精简、清晰的英文文档。</li>
-</ul>
-<p><img src="https://mmbiz.qlogo.cn/mmbiz_png/BAYrQMKkbTZ2ARlAibc3HVXYdrwge4UtpdiaiagLgggxdHn1Vt6j8kFcfGPee7KXcDKl92eoVadVSBOchKb2dFgGA/0?wx_fmt=png" alt=""></p>
-<p>其中，我很清晰的从项目简介、项目环境、启动前配置、启动方式、截图、数据库说明等的这几个方面进行简单描述。而且我觉得这些就够了。</p>
-<p>最重要的一点，就是这篇英文文档写的很简单，都是简单词汇。</p>
-<h4 id="2、牛逼的技术？"><a href="#2、牛逼的技术？" class="headerlink" title="2、牛逼的技术？"></a>2、牛逼的技术？</h4><p>其实，在这个社会，同一个行业并没有牛逼一说，反而牛逼的是不同行业的。就比如，会造飞机的就是牛逼。所以，这个项目的技术点在整个互联网的圈子并没有牛逼到哪去。</p>
-<p>为什么这么说呢 ？</p>
-<ul>
-<li><strong>Http协议</strong></li>
-</ul>
-<p>一套应用层的协议，官话是超文本传输协议。为什么提这个呢，是因为要去爬一个网站，你首先需要弄清楚，在什么样的请求下才能响应正常、又是怎么拿到网页数据的。这样，你才有去写爬虫请求的能力。</p>
-<p><img src="https://mmbiz.qlogo.cn/mmbiz_jpg/BAYrQMKkbTZ2ARlAibc3HVXYdrwge4UtpgLgmGJQE4xMvfiaJsU5hspojqNwes5gcsicrKd4ZMtvBloIrngdJCxLQ/0?wx_fmt=jpeg" alt=""></p>
-<p>我这里推荐一个学习的地址：<br><a href="http://www.cnblogs.com/ranyonsue/p/5984001.html" target="_blank" rel="external">http://www.cnblogs.com/ranyonsue/p/5984001.html</a></p>
-<ul>
-<li><strong>Html页面</strong></li>
-</ul>
-<p>写爬虫不需要你有多么牛逼的前端经验。就像我，从未写过前端页面，但是前端那些标签，我几乎都能看懂。</p>
-<p>不过对于爬虫来讲，可能Xpath语法的会重要一点。Xpath是什么呢？<br>Xpath是XML路径语言。它是为了确定XML文档中某部分位置的语言。众所周知，Html其中也是使用XML语言。因此，简单的来说，我们可以通过Xpath来定位到Html页面中某个控件的位置。</p>
-<p>比如，就Baidu.com的首页来讲，我们通过Xpath来拿到 “百度一下” 按钮的位置。</p>
-<p><img src="https://mmbiz.qlogo.cn/mmbiz_png/BAYrQMKkbTZ2ARlAibc3HVXYdrwge4UtpnZiaquBbDVFvAeYts2H5GvIXYXuN9OndX7lwtzllFvXoQHXHWcrEB7A/0?wx_fmt=png" alt=""></p>
-<p>那么， “百度一下” 的XPath路径将是 //input[@class=”bg s_btn”] ，这个路径也就会定位到这个控件的位置。</p>
-<p>接下来就简单了，我们可以拿到这个控件之后去做Click操作。这样的话，就用代码完成了百度一下的功能。</p>
-<p>同样的，推荐教程附上：<br><a href="http://www.w3school.com.cn/xpath/index.asp" target="_blank" rel="external">http://www.w3school.com.cn/xpath/index.asp</a></p>
-<ul>
-<li><strong>Python + Scrapy</strong></li>
-</ul>
-<p>Python算是爬虫中的利器了，如果你不会Python。那么其他语言同样可以实现爬虫。但是，工作量将是Python的n倍。</p>
-<p>Python更适合做爬虫。之所以这么讲，是因为它的框架很多，开放的依赖库很多，其次就是工作效率高，Java要用100行来实现的一个小工具，Python也许只要10行。就是这么牛逼。所以，你不上手更待何时。</p>
-<p>这里，送上我的福利，PythonDev小密圈，适合老司机更适合新手。<br><img src="https://mmbiz.qlogo.cn/mmbiz_png/BAYrQMKkbTZ2ARlAibc3HVXYdrwge4UtpbIZR2vzK4jFPcNWZVldXHuA98SxyBM0WII3vvzpfIRqKKkGGaYIrew/0?wx_fmt=png" alt=""></p>
-<p>其次，Scrapy框架。这个框架呢，其实很难评价。因为你要是用不好的话，会出现杀鸡焉用牛刀的笑话。</p>
-<p>Scrapy是一套及其灵活的框架。为什么说它灵活呢？</p>
-<p>首先它的parse -&gt; yield item -&gt; pipeline流程已经是所有爬虫的固有模式，其中解析函数可以自己来实现，怎么处理网页自己决定。pipeline可以自己写，爬到的数据怎么处理也是自己可以决定的。</p>
-<p>其次，就是底层操作的修改，包括代理中间件、下载中间件之类的，这些也都可以通过middleware来实现。甚至，目前已经有很多开源的中间件已经实现绝大部分的爬虫需求。</p>
-<p>奉上Scrapy教程:<br><a href="http://scrapy-chs.readthedocs.io/zh_CN/0.24/intro/tutorial.html" target="_blank" rel="external">http://scrapy-chs.readthedocs.io/zh_CN/0.24/intro/tutorial.html</a></p>
-<p>最后，来简单的说一个针对新手的爬虫框架，Beautiful Soup。<br>这个，我也没接触过。但是，我知道它是真的很简单。首先，它不需要多少代码就可以写出一个完整的爬虫应用程序；其次，是因为我家属，做Android的司机，第一次玩BS也是非常快的就上手了。</p>
-<p>所以，Beautiful Soup，这个框架绝对是新手必备的。</p>
-<ul>
-<li><strong>MongoDB</strong></li>
-</ul>
-<p>持久化、非关系型数据库。多用于分布式系统。</p>
-<p>之所以，WebHubBot会选择用MongoDB。重要的一点是Python可以直接将对象转化为JSON，并且pymongo可以直接将JSON数据插入到MongoDB，这不是很方便嘛，且减少了我来写SQL的很多时间，何乐而不为呢。</p>
-<p>当然，MongoDB存储数据的格式不是JSON，而是一个非常类似于JSON的BSON数据。</p>
-<p>其次，Python中使用到的是pymongo。使用pip安装下就好了。</p>
-<p>同时MongoDB的安装方式和教程，也很简单。</p>
-<p>教程链接：<br><a href="http://www.runoob.com/mongodb/mongodb-tutorial.html" target="_blank" rel="external">http://www.runoob.com/mongodb/mongodb-tutorial.html</a></p>
-<p>最后推荐几个MongoDB的可视化工具。<br>RoboMongo : <a href="https://robomongo.org/" target="_blank" rel="external">https://robomongo.org/</a><br>Toad：<a href="http://www.toadworld.com/products/toad-for-oracle" target="_blank" rel="external">http://www.toadworld.com/products/toad-for-oracle</a></p>
-<p>第一个，Windows系统多数使用。第二，Mac多数。<br>Linux的大神，就用命令好了。</p>
-<h4 id="3、总结"><a href="#3、总结" class="headerlink" title="3、总结"></a>3、总结</h4><p>项目中的技术点其实都是基础。我并没有资格说这个项目有多牛逼。在我看来，它就是基础知识堆积起来的而已。</p>
-<p>所以，学好基础才是王道，其次要把技术玩起来。</p>
-<p>努力成为一个有想法的全栈工程师。</p>
-<hr>
-<p>长摁‘识别二维码’，一起进步</p>
-<p><img src="https://mmbiz.qlogo.cn/mmbiz_png/BAYrQMKkbTbS8e8ibKzUsdcO7Dx3ILTib4daQiaaywnBk1dBd2ZfsxlSKZ7KdwA8kyN1unwBH5BbKpg2SGYP60VrQ/640?wx_fmt=png" alt=""></p>
-<p>生活不止眼前的苟且，还有手下的代码、</p>
-<p>和嘴上的扯淡<br>——<br>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a></p>
-<p>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
-<hr>
-<p>点击 <a href="http://t.xiaomiquan.com/7ey3rZv" target="_blank" rel="external">Join</a>，加入Python技术成长圈子，我在这里等着你。</p>
+</blockquote>
 ]]></content>
     </entry>
     
@@ -1036,20 +999,90 @@ limitations under the License.
     </entry>
     
     <entry>
-      <title><![CDATA[憧憬]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/Home/</url>
-      <content type="html"><![CDATA[<blockquote>
-<p>时常在憧憬未来 、未来 家的样子</p>
-</blockquote>
-<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/home.jpg?raw=true" alt="zls"></p>
-<a id="more"></a>
-<blockquote>
-<ul>
-<li>一直都想有个家、有自己的妻儿</li>
-<li>有一个可以依靠、也可以安心的家</li>
-<li>So 让我们一起努力。有一天你会是我的妻子，我会是你的丈夫，你我会是孩子的父母。</li>
+      <title><![CDATA[Github系列教程一  开门]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/Github%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%E4%B8%80%20%E5%BC%80%E9%97%A8/</url>
+      <content type="html"><![CDATA[<p><img src="http://upload-images.jianshu.io/upload_images/4653472-2bd1a717e57c76f3?imageMogr2/auto-orient/strip" alt=""></p>
+<p>这是一套Github的小白教程<br><a id="more"></a></p>
+<h3 id="本文来自我的公众号：DeveloperPython"><a href="#本文来自我的公众号：DeveloperPython" class="headerlink" title="本文来自我的公众号：DeveloperPython"></a>本文来自我的公众号：DeveloperPython</h3><p><img src="http://upload-images.jianshu.io/upload_images/4653472-2bd1a717e57c76f3?imageMogr2/auto-orient/strip" alt=""><br>对于Github,我相信很多人都不陌生，并且我也一直认为Github是程序员的必备，当然还有一个 StackOverFlow。</p>
+<p>但是在我周围、包括公号里面的读者，大部分都不怎么使用Github。</p>
+<p>因为上次我的项目被点赞到Github Trending之后（全球开源项目的热门），我发现很多点赞的国内开发者都是不怎么使用Github的。因为几乎看不到他们的代码提交记录，然而里面很多国外开发者的点赞，我再进入他们的主页，大部分开发者都是持续提交代码中。</p>
+<p>之后我也收到好多消息，希望我写一篇关于Github的教程或者如何上Trending。</p>
+<p>其实，我接触Github时间挺早的了，大概在上大学开始写代码的时候，就已经使用上了 Github。当时我也是只下载，不用的那种。大概在接触 Github 一年左右之后，我就开始深入使用。</p>
+<p>到目前为止，自己 Github 中的项目已经有了130多个。</p>
+<p><a href="https://www.github.com/xiyouMc/" target="_blank" rel="external">https://www.github.com/xiyouMc/</a> </p>
+<p>Github是一个开源、开放、免费的平台，它更多的是提供给我们学习和贡献的。</p>
+<p>所以我决定写一个系列来讲解如何去更好的使用Github，为了让国内的开发者能合理的使用Github。</p>
+<h2 id="01、什么是-Github"><a href="#01、什么是-Github" class="headerlink" title="01、什么是 Github"></a>01、什么是 Github</h2><p>Github其实是一家公司，坐落在旧金山。是由三个知名的开发者在08年创办的，具体是谁就不用讲了，讲了也记不住。</p>
+<p>这是它的 Logo:</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-a9a0ffeb0f3deb93?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>大概也就在08年4月多，正式上线。</p>
+<p><a href="https://www.github.com/" target="_blank" rel="external">https://www.github.com/</a> </p>
+<p>简单的来讲，Github是一个基于 Git 的版本托管平台。</p>
+<p>大概在13年的时候，Github 用户数量已经破300万，到目前为止我想也应该上千万了吧。</p>
+<p>因此它有一个很洋气的名字就是全球最大同性交友平台。GayHub。</p>
+<h2 id="02、Github、Gitlab-和-Git-的区别"><a href="#02、Github、Gitlab-和-Git-的区别" class="headerlink" title="02、Github、Gitlab 和 Git 的区别"></a>02、Github、Gitlab 和 Git 的区别</h2><p>这个问题，我相信很多人都分不清。</p>
+<p>有的人会把Git理解成Github。你会经常听到有人跟你讲：“你可以去Git上找下，看看有没有你想要的代码”。 如果这句话，是别人跟我讲的，那我绝对是一脸懵逼的。</p>
+<p>至于为什么，那么我就来详细讲下这三个的区别。</p>
+<p><strong>先说下Git</strong></p>
+<p>Git是一款免费、开源的分布式版本控制系统，他是由著名的Linux发明者 Linus Torvalds 开发的。</p>
+<p>所以说Git是一个版本的控制系统，而非一个平台。</p>
+<p>提到这个版本控制系统，大家可能会想到SVN，毕竟这是很多大学都让学生使用的东西。只不过Git是新时代的产物。</p>
+<p>如果在15年的时候，你告诉我你们在使用SVN，那么还情有可原。毕竟那时候很多大公司还在用SVN，比如支付宝。但到现在了，你还在使用SVN那么真的是太落伍了。</p>
+<p>所以不管是学习Github，或者从事编程行业，Git绝对算是必备技能。</p>
+<p><strong>接下来说Github</strong></p>
+<p>上面已经说过，Github 是基于Git的版本托管服务。所以Git对于Github来讲就是一个版本管理的工具。</p>
+<p>其次Github，还有更多的功能，毕竟它是一个平台。后面的文章中，我也会列举出重要的几个。</p>
+<p><strong>最后来讲讲Gitlab</strong></p>
+<p>这个东西呢，其实是<strong>企业内部</strong>的Github。</p>
+<p>因为Github毕竟是一个开源的、全球性的代码托管平台。</p>
+<p>对于企业来讲，他们更希望内部有个这样类似的Git代码托管服务。所以他们会选择Gitlab，这个开源的代码托管平台。</p>
+<p>而且Gitlab一直在更新版本，目前已经到了9.1版本。</p>
+<p><a href="https://github.com/gitlabhq/gitlabhq/" target="_blank" rel="external">https://github.com/gitlabhq/gitlabhq/</a></p>
+<p>从地址来看，你也会发现Gitlab是Github平台上的一个开源项目，这样也就不难理解这两个的区别了。</p>
+<h2 id="03、Github-的影响力"><a href="#03、Github-的影响力" class="headerlink" title="03、Github 的影响力"></a>03、Github 的影响力</h2><p>我可以这么说吧，只要你能想到的大公司，他们都会在Github上有一个组织来贡献内部的优秀代码和框架。</p>
+<p>比如：<br>Google: <a href="https://www.gihutb.com/google" target="_blank" rel="external">https://www.gihutb.com/google</a><br>Apple: <a href="https://www.github.com/apple/" target="_blank" rel="external">https://www.github.com/apple/</a><br>Facebook: <a href="https://www.github.com/facebook/" target="_blank" rel="external">https://www.github.com/facebook/</a><br>Alibaba: <a href="https://www.github.com/alibaba" target="_blank" rel="external">https://www.github.com/alibaba</a><br>….<br>还有全球顶级的项目，也同样在Github。<br>Linux: <a href="https://www.github.com/torvalds/linux" target="_blank" rel="external">https://www.github.com/torvalds/linux</a><br>Nodejs: <a href="https://www.github.com/nodejs/node" target="_blank" rel="external">https://www.github.com/nodejs/node</a><br>Weex: <a href="https://github.com/alibaba/weex" target="_blank" rel="external">https://github.com/alibaba/weex</a><br>等等的….<br>同样还有全球顶尖级的开发者。<br>Linux之父 Linus:<br><img src="http://upload-images.jianshu.io/upload_images/4653472-b3a42f0dacbef2cd?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>Android 之神 Jake:<br><img src="http://upload-images.jianshu.io/upload_images/4653472-e0d5bf0e4644d3cc?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>等等的，我就不一一列举了。</p>
+<p>只要是在编程届厉害的人物，都会出现在Github。</p>
+<p>并且很多牛逼的项目做开源，比如你某天听说了某个公司的xx框架开源了。那么它们绝对在Github上开源的。</p>
+<p>因此，Github已经是开源的代名词。</p>
+<h2 id="04、Github能做什么"><a href="#04、Github能做什么" class="headerlink" title="04、Github能做什么"></a>04、Github能做什么</h2><ul>
+<li><strong>优秀的开源项目</strong></li>
 </ul>
-</blockquote>
+<p>学好使用优秀的开源项目，是一个可以避免你在软件开发中重复造轮子的事情。</p>
+<p>确切的来讲，正是因为有个Github上优秀的开源项目，才促使了我们在软件开发中变得越来越容易、越来越快速。</p>
+<p>比如说：网络请求库、图片加载库。如果让你去自己实现，那么时间和资源是一个很大的成本。对于大公司，可能在人力和资源上是充沛的。但是对于大部分互联网来讲时间就是一切。</p>
+<p>所以在使用开源项目的同时，学习他们优秀的设计思想和实现方式，无疑是提升自我编程能力的好时机。</p>
+<p>同样的，如果你能拥有一个优秀的开源项目，那么绝对是一个很好的体验。</p>
+<p>比如说我开源的WebHubBot，当你看到自己的项目每天每时都有人在点赞，那种感觉真心是比朋友圈被点赞爽很多倍的！！！</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-b63084401d16c5a5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><img src="http://upload-images.jianshu.io/upload_images/4653472-a4be03a4fa7183b0?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<ul>
+<li><strong>多人协作</strong><br>其实多人协作对于Github来讲无疑是一个转折点。</li>
+</ul>
+<p>因为一个好的项目，绝非几个人就能搞定的，因此Github提供了很好的协作平台。</p>
+<p>当你把代码提交上去之后，你可以让其他人和你一同开发，或者说如果你的项目很好，全球的开发者都会给你的项目做贡献。</p>
+<p>以我为例，前段时间提交了一个很有意思的项目，之后就收到了好几个全球开发者代码贡献，如下：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-668e59895e243bdb?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>因此，多人协作真心是一个很爽、很棒的功能。</p>
+<ul>
+<li><strong>其次就是搭建个人网站</strong></li>
+</ul>
+<p>Github Pages是Github提供的一套完整的博客搭建环境。</p>
+<p>平时你会发现很多人的个人博客域名都是xxxx.github.io。这就是使用Github Pages来搭建的。使用方法很简单，也绝对是一个装逼利器。</p>
+<ul>
+<li><strong>个人简历</strong></li>
+</ul>
+<p>活跃的Github账号，是一个很好的个人简历。</p>
+<p>据我所知，目前很多猎头和公司的HR都很喜欢逛Github。</p>
+<p>并且很多国外的科技公司也都会通过Github来寻找优秀的人才。</p>
+<p>所以多用Github，会让你收到很多意外的惊喜。</p>
+<h2 id="05、加入Github"><a href="#05、加入Github" class="headerlink" title="05、加入Github"></a>05、加入Github</h2><p>相信大家读到这里，都迫不及待的想去使用Github了。</p>
+<p>那么事不宜迟，从现在开始，快去注册一个Github账号。 </p>
+<p>链接： <a href="https://www.github.com/" target="_blank" rel="external">https://www.github.com/</a> 。</p>
+<p>注册完成之后，先玩着，了解下整个平台的功能。</p>
+<p>同时也可以试着搜索下我的Github：<br>ID：xiyouMc<br><a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a> </p>
+<p>接下来，我还会继续连载Github一系列的文章。</p>
+<p>保证你们看完之后，会有不一样的收获。</p>
+<p>同时如果你目前在使用Git或者Github中，那么有问题的话，也同样可以给我留言，我会一一给你们解答。</p>
+<p>——<br>扫描二维码，关注公众号<br><img src="http://upload-images.jianshu.io/upload_images/4653472-1c1e06e2f58b0610?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>生活不止眼前的苟且，还有手下的代码、<br>和嘴上的扯淡<br>——<br>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a><br>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
 ]]></content>
     </entry>
     
@@ -1168,117 +1201,6 @@ limitations under the License.
     </entry>
     
     <entry>
-      <title><![CDATA[Github系列教程一  开门]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/Github%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%E4%B8%80%20%E5%BC%80%E9%97%A8/</url>
-      <content type="html"><![CDATA[<p><img src="http://upload-images.jianshu.io/upload_images/4653472-2bd1a717e57c76f3?imageMogr2/auto-orient/strip" alt=""></p>
-<p>这是一套Github的小白教程<br><a id="more"></a></p>
-<h3 id="本文来自我的公众号：DeveloperPython"><a href="#本文来自我的公众号：DeveloperPython" class="headerlink" title="本文来自我的公众号：DeveloperPython"></a>本文来自我的公众号：DeveloperPython</h3><p><img src="http://upload-images.jianshu.io/upload_images/4653472-2bd1a717e57c76f3?imageMogr2/auto-orient/strip" alt=""><br>对于Github,我相信很多人都不陌生，并且我也一直认为Github是程序员的必备，当然还有一个 StackOverFlow。</p>
-<p>但是在我周围、包括公号里面的读者，大部分都不怎么使用Github。</p>
-<p>因为上次我的项目被点赞到Github Trending之后（全球开源项目的热门），我发现很多点赞的国内开发者都是不怎么使用Github的。因为几乎看不到他们的代码提交记录，然而里面很多国外开发者的点赞，我再进入他们的主页，大部分开发者都是持续提交代码中。</p>
-<p>之后我也收到好多消息，希望我写一篇关于Github的教程或者如何上Trending。</p>
-<p>其实，我接触Github时间挺早的了，大概在上大学开始写代码的时候，就已经使用上了 Github。当时我也是只下载，不用的那种。大概在接触 Github 一年左右之后，我就开始深入使用。</p>
-<p>到目前为止，自己 Github 中的项目已经有了130多个。</p>
-<p><a href="https://www.github.com/xiyouMc/" target="_blank" rel="external">https://www.github.com/xiyouMc/</a> </p>
-<p>Github是一个开源、开放、免费的平台，它更多的是提供给我们学习和贡献的。</p>
-<p>所以我决定写一个系列来讲解如何去更好的使用Github，为了让国内的开发者能合理的使用Github。</p>
-<h2 id="01、什么是-Github"><a href="#01、什么是-Github" class="headerlink" title="01、什么是 Github"></a>01、什么是 Github</h2><p>Github其实是一家公司，坐落在旧金山。是由三个知名的开发者在08年创办的，具体是谁就不用讲了，讲了也记不住。</p>
-<p>这是它的 Logo:</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-a9a0ffeb0f3deb93?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>大概也就在08年4月多，正式上线。</p>
-<p><a href="https://www.github.com/" target="_blank" rel="external">https://www.github.com/</a> </p>
-<p>简单的来讲，Github是一个基于 Git 的版本托管平台。</p>
-<p>大概在13年的时候，Github 用户数量已经破300万，到目前为止我想也应该上千万了吧。</p>
-<p>因此它有一个很洋气的名字就是全球最大同性交友平台。GayHub。</p>
-<h2 id="02、Github、Gitlab-和-Git-的区别"><a href="#02、Github、Gitlab-和-Git-的区别" class="headerlink" title="02、Github、Gitlab 和 Git 的区别"></a>02、Github、Gitlab 和 Git 的区别</h2><p>这个问题，我相信很多人都分不清。</p>
-<p>有的人会把Git理解成Github。你会经常听到有人跟你讲：“你可以去Git上找下，看看有没有你想要的代码”。 如果这句话，是别人跟我讲的，那我绝对是一脸懵逼的。</p>
-<p>至于为什么，那么我就来详细讲下这三个的区别。</p>
-<p><strong>先说下Git</strong></p>
-<p>Git是一款免费、开源的分布式版本控制系统，他是由著名的Linux发明者 Linus Torvalds 开发的。</p>
-<p>所以说Git是一个版本的控制系统，而非一个平台。</p>
-<p>提到这个版本控制系统，大家可能会想到SVN，毕竟这是很多大学都让学生使用的东西。只不过Git是新时代的产物。</p>
-<p>如果在15年的时候，你告诉我你们在使用SVN，那么还情有可原。毕竟那时候很多大公司还在用SVN，比如支付宝。但到现在了，你还在使用SVN那么真的是太落伍了。</p>
-<p>所以不管是学习Github，或者从事编程行业，Git绝对算是必备技能。</p>
-<p><strong>接下来说Github</strong></p>
-<p>上面已经说过，Github 是基于Git的版本托管服务。所以Git对于Github来讲就是一个版本管理的工具。</p>
-<p>其次Github，还有更多的功能，毕竟它是一个平台。后面的文章中，我也会列举出重要的几个。</p>
-<p><strong>最后来讲讲Gitlab</strong></p>
-<p>这个东西呢，其实是<strong>企业内部</strong>的Github。</p>
-<p>因为Github毕竟是一个开源的、全球性的代码托管平台。</p>
-<p>对于企业来讲，他们更希望内部有个这样类似的Git代码托管服务。所以他们会选择Gitlab，这个开源的代码托管平台。</p>
-<p>而且Gitlab一直在更新版本，目前已经到了9.1版本。</p>
-<p><a href="https://github.com/gitlabhq/gitlabhq/" target="_blank" rel="external">https://github.com/gitlabhq/gitlabhq/</a></p>
-<p>从地址来看，你也会发现Gitlab是Github平台上的一个开源项目，这样也就不难理解这两个的区别了。</p>
-<h2 id="03、Github-的影响力"><a href="#03、Github-的影响力" class="headerlink" title="03、Github 的影响力"></a>03、Github 的影响力</h2><p>我可以这么说吧，只要你能想到的大公司，他们都会在Github上有一个组织来贡献内部的优秀代码和框架。</p>
-<p>比如：<br>Google: <a href="https://www.gihutb.com/google" target="_blank" rel="external">https://www.gihutb.com/google</a><br>Apple: <a href="https://www.github.com/apple/" target="_blank" rel="external">https://www.github.com/apple/</a><br>Facebook: <a href="https://www.github.com/facebook/" target="_blank" rel="external">https://www.github.com/facebook/</a><br>Alibaba: <a href="https://www.github.com/alibaba" target="_blank" rel="external">https://www.github.com/alibaba</a><br>….<br>还有全球顶级的项目，也同样在Github。<br>Linux: <a href="https://www.github.com/torvalds/linux" target="_blank" rel="external">https://www.github.com/torvalds/linux</a><br>Nodejs: <a href="https://www.github.com/nodejs/node" target="_blank" rel="external">https://www.github.com/nodejs/node</a><br>Weex: <a href="https://github.com/alibaba/weex" target="_blank" rel="external">https://github.com/alibaba/weex</a><br>等等的….<br>同样还有全球顶尖级的开发者。<br>Linux之父 Linus:<br><img src="http://upload-images.jianshu.io/upload_images/4653472-b3a42f0dacbef2cd?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>Android 之神 Jake:<br><img src="http://upload-images.jianshu.io/upload_images/4653472-e0d5bf0e4644d3cc?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>等等的，我就不一一列举了。</p>
-<p>只要是在编程届厉害的人物，都会出现在Github。</p>
-<p>并且很多牛逼的项目做开源，比如你某天听说了某个公司的xx框架开源了。那么它们绝对在Github上开源的。</p>
-<p>因此，Github已经是开源的代名词。</p>
-<h2 id="04、Github能做什么"><a href="#04、Github能做什么" class="headerlink" title="04、Github能做什么"></a>04、Github能做什么</h2><ul>
-<li><strong>优秀的开源项目</strong></li>
-</ul>
-<p>学好使用优秀的开源项目，是一个可以避免你在软件开发中重复造轮子的事情。</p>
-<p>确切的来讲，正是因为有个Github上优秀的开源项目，才促使了我们在软件开发中变得越来越容易、越来越快速。</p>
-<p>比如说：网络请求库、图片加载库。如果让你去自己实现，那么时间和资源是一个很大的成本。对于大公司，可能在人力和资源上是充沛的。但是对于大部分互联网来讲时间就是一切。</p>
-<p>所以在使用开源项目的同时，学习他们优秀的设计思想和实现方式，无疑是提升自我编程能力的好时机。</p>
-<p>同样的，如果你能拥有一个优秀的开源项目，那么绝对是一个很好的体验。</p>
-<p>比如说我开源的WebHubBot，当你看到自己的项目每天每时都有人在点赞，那种感觉真心是比朋友圈被点赞爽很多倍的！！！</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-b63084401d16c5a5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><img src="http://upload-images.jianshu.io/upload_images/4653472-a4be03a4fa7183b0?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<ul>
-<li><strong>多人协作</strong><br>其实多人协作对于Github来讲无疑是一个转折点。</li>
-</ul>
-<p>因为一个好的项目，绝非几个人就能搞定的，因此Github提供了很好的协作平台。</p>
-<p>当你把代码提交上去之后，你可以让其他人和你一同开发，或者说如果你的项目很好，全球的开发者都会给你的项目做贡献。</p>
-<p>以我为例，前段时间提交了一个很有意思的项目，之后就收到了好几个全球开发者代码贡献，如下：</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-668e59895e243bdb?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>因此，多人协作真心是一个很爽、很棒的功能。</p>
-<ul>
-<li><strong>其次就是搭建个人网站</strong></li>
-</ul>
-<p>Github Pages是Github提供的一套完整的博客搭建环境。</p>
-<p>平时你会发现很多人的个人博客域名都是xxxx.github.io。这就是使用Github Pages来搭建的。使用方法很简单，也绝对是一个装逼利器。</p>
-<ul>
-<li><strong>个人简历</strong></li>
-</ul>
-<p>活跃的Github账号，是一个很好的个人简历。</p>
-<p>据我所知，目前很多猎头和公司的HR都很喜欢逛Github。</p>
-<p>并且很多国外的科技公司也都会通过Github来寻找优秀的人才。</p>
-<p>所以多用Github，会让你收到很多意外的惊喜。</p>
-<h2 id="05、加入Github"><a href="#05、加入Github" class="headerlink" title="05、加入Github"></a>05、加入Github</h2><p>相信大家读到这里，都迫不及待的想去使用Github了。</p>
-<p>那么事不宜迟，从现在开始，快去注册一个Github账号。 </p>
-<p>链接： <a href="https://www.github.com/" target="_blank" rel="external">https://www.github.com/</a> 。</p>
-<p>注册完成之后，先玩着，了解下整个平台的功能。</p>
-<p>同时也可以试着搜索下我的Github：<br>ID：xiyouMc<br><a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a> </p>
-<p>接下来，我还会继续连载Github一系列的文章。</p>
-<p>保证你们看完之后，会有不一样的收获。</p>
-<p>同时如果你目前在使用Git或者Github中，那么有问题的话，也同样可以给我留言，我会一一给你们解答。</p>
-<p>——<br>扫描二维码，关注公众号<br><img src="http://upload-images.jianshu.io/upload_images/4653472-1c1e06e2f58b0610?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>生活不止眼前的苟且，还有手下的代码、<br>和嘴上的扯淡<br>——<br>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a><br>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Alison]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/Alison/</url>
-      <content type="html"><![CDATA[<blockquote>
-<p>Baby, You Complete Me.<br><a id="more"></a></p>
-<ul>
-<li>Hey there,sexy lady</li>
-<li>I`m loving what you do</li>
-<li>I`m thinking so are you</li>
-<li>You`re trying to dent it</li>
-<li>But I know I changed your mind</li>
-<li>And please don`t try to fight it</li>
-<li>Cause I know that you`ll be mine</li>
-<li>Be mine.</li>
-<li>I want you,baby</li>
-<li>Come get it,girl</li>
-<li>I need you,baby</li>
-<li>I`m on you,girl</li>
-</ul>
-</blockquote>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[2016年度总结]]></title>
       <url>https://xiyoumc.github.com/2017/07/03/2016%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/</url>
       <content type="html"><![CDATA[<h1 id="2016年度总结"><a href="#2016年度总结" class="headerlink" title="2016年度总结"></a>2016年度总结</h1><blockquote>
@@ -1325,6 +1247,84 @@ limitations under the License.
 </blockquote>
 </li>
 </ul>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[2000个Star的Github项目很牛逼？]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/2000%E4%B8%AAStar%E7%9A%84Github%E9%A1%B9%E7%9B%AE%E5%BE%88%E7%89%9B%E9%80%BC%EF%BC%9F/</url>
+      <content type="html"><![CDATA[<p><img src="https://mmbiz.qlogo.cn/mmbiz_gif/BAYrQMKkbTZ2ARlAibc3HVXYdrwge4UtpMHubJFog2pgGnWJhTicnRox8mXpEyjCfhmp4vtq4qAwbPW87OpUcocw/0?wx_fmt=gif" alt=""></p>
+<blockquote>
+<p>首先，说明下，这篇文章是基于我的开源项目WebHubBot来讲的。不清楚的可以看<a href="https://github.com/xiyouMc/WebHubBot" target="_blank" rel="external">XiyouMc/WebHubBot</a>。<br><a id="more"></a></p>
+</blockquote>
+<p>这篇文章，其实我很早都想写了。也算是对整个项目的总结，其次也是给那些问WebHubBot技术的人一个答复。</p>
+<p>说实话，这个项目的技术很普通。普通到什么程度呢？我可以很清楚的告诉你，这个项目就用了屈指可数的几个技术点：Http协议、Html、Python、MongoDB 和 Scrapy。就这么几个技术，对于一般的程序员来讲，真心不是什么牛逼点。</p>
+<p>那么接下来，我主要从为什么会火和具体的技术点来扯下。</p>
+<h3 id="1、为什么这个项目会火呢？"><a href="#1、为什么这个项目会火呢？" class="headerlink" title="1、为什么这个项目会火呢？"></a>1、为什么这个项目会火呢？</h3><p>在我看来，它能火起来真的是运气。</p>
+<p>如果真的要我说出个所以然，那么我觉得就因为这两点它才会火起来。</p>
+<ul>
+<li>第一点，因为项目爬的网站是有诱惑力的。</li>
+</ul>
+<p>其实，大家可以在Github上搜索下此类网站的爬虫。你会搜索到很多类似的爬虫。但是他们的Star反而都是几十个，甚至没有。</p>
+<ul>
+<li>第二点，我有一份精简、清晰的英文文档。</li>
+</ul>
+<p><img src="https://mmbiz.qlogo.cn/mmbiz_png/BAYrQMKkbTZ2ARlAibc3HVXYdrwge4UtpdiaiagLgggxdHn1Vt6j8kFcfGPee7KXcDKl92eoVadVSBOchKb2dFgGA/0?wx_fmt=png" alt=""></p>
+<p>其中，我很清晰的从项目简介、项目环境、启动前配置、启动方式、截图、数据库说明等的这几个方面进行简单描述。而且我觉得这些就够了。</p>
+<p>最重要的一点，就是这篇英文文档写的很简单，都是简单词汇。</p>
+<h4 id="2、牛逼的技术？"><a href="#2、牛逼的技术？" class="headerlink" title="2、牛逼的技术？"></a>2、牛逼的技术？</h4><p>其实，在这个社会，同一个行业并没有牛逼一说，反而牛逼的是不同行业的。就比如，会造飞机的就是牛逼。所以，这个项目的技术点在整个互联网的圈子并没有牛逼到哪去。</p>
+<p>为什么这么说呢 ？</p>
+<ul>
+<li><strong>Http协议</strong></li>
+</ul>
+<p>一套应用层的协议，官话是超文本传输协议。为什么提这个呢，是因为要去爬一个网站，你首先需要弄清楚，在什么样的请求下才能响应正常、又是怎么拿到网页数据的。这样，你才有去写爬虫请求的能力。</p>
+<p><img src="https://mmbiz.qlogo.cn/mmbiz_jpg/BAYrQMKkbTZ2ARlAibc3HVXYdrwge4UtpgLgmGJQE4xMvfiaJsU5hspojqNwes5gcsicrKd4ZMtvBloIrngdJCxLQ/0?wx_fmt=jpeg" alt=""></p>
+<p>我这里推荐一个学习的地址：<br><a href="http://www.cnblogs.com/ranyonsue/p/5984001.html" target="_blank" rel="external">http://www.cnblogs.com/ranyonsue/p/5984001.html</a></p>
+<ul>
+<li><strong>Html页面</strong></li>
+</ul>
+<p>写爬虫不需要你有多么牛逼的前端经验。就像我，从未写过前端页面，但是前端那些标签，我几乎都能看懂。</p>
+<p>不过对于爬虫来讲，可能Xpath语法的会重要一点。Xpath是什么呢？<br>Xpath是XML路径语言。它是为了确定XML文档中某部分位置的语言。众所周知，Html其中也是使用XML语言。因此，简单的来说，我们可以通过Xpath来定位到Html页面中某个控件的位置。</p>
+<p>比如，就Baidu.com的首页来讲，我们通过Xpath来拿到 “百度一下” 按钮的位置。</p>
+<p><img src="https://mmbiz.qlogo.cn/mmbiz_png/BAYrQMKkbTZ2ARlAibc3HVXYdrwge4UtpnZiaquBbDVFvAeYts2H5GvIXYXuN9OndX7lwtzllFvXoQHXHWcrEB7A/0?wx_fmt=png" alt=""></p>
+<p>那么， “百度一下” 的XPath路径将是 //input[@class=”bg s_btn”] ，这个路径也就会定位到这个控件的位置。</p>
+<p>接下来就简单了，我们可以拿到这个控件之后去做Click操作。这样的话，就用代码完成了百度一下的功能。</p>
+<p>同样的，推荐教程附上：<br><a href="http://www.w3school.com.cn/xpath/index.asp" target="_blank" rel="external">http://www.w3school.com.cn/xpath/index.asp</a></p>
+<ul>
+<li><strong>Python + Scrapy</strong></li>
+</ul>
+<p>Python算是爬虫中的利器了，如果你不会Python。那么其他语言同样可以实现爬虫。但是，工作量将是Python的n倍。</p>
+<p>Python更适合做爬虫。之所以这么讲，是因为它的框架很多，开放的依赖库很多，其次就是工作效率高，Java要用100行来实现的一个小工具，Python也许只要10行。就是这么牛逼。所以，你不上手更待何时。</p>
+<p>这里，送上我的福利，PythonDev小密圈，适合老司机更适合新手。<br><img src="https://mmbiz.qlogo.cn/mmbiz_png/BAYrQMKkbTZ2ARlAibc3HVXYdrwge4UtpbIZR2vzK4jFPcNWZVldXHuA98SxyBM0WII3vvzpfIRqKKkGGaYIrew/0?wx_fmt=png" alt=""></p>
+<p>其次，Scrapy框架。这个框架呢，其实很难评价。因为你要是用不好的话，会出现杀鸡焉用牛刀的笑话。</p>
+<p>Scrapy是一套及其灵活的框架。为什么说它灵活呢？</p>
+<p>首先它的parse -&gt; yield item -&gt; pipeline流程已经是所有爬虫的固有模式，其中解析函数可以自己来实现，怎么处理网页自己决定。pipeline可以自己写，爬到的数据怎么处理也是自己可以决定的。</p>
+<p>其次，就是底层操作的修改，包括代理中间件、下载中间件之类的，这些也都可以通过middleware来实现。甚至，目前已经有很多开源的中间件已经实现绝大部分的爬虫需求。</p>
+<p>奉上Scrapy教程:<br><a href="http://scrapy-chs.readthedocs.io/zh_CN/0.24/intro/tutorial.html" target="_blank" rel="external">http://scrapy-chs.readthedocs.io/zh_CN/0.24/intro/tutorial.html</a></p>
+<p>最后，来简单的说一个针对新手的爬虫框架，Beautiful Soup。<br>这个，我也没接触过。但是，我知道它是真的很简单。首先，它不需要多少代码就可以写出一个完整的爬虫应用程序；其次，是因为我家属，做Android的司机，第一次玩BS也是非常快的就上手了。</p>
+<p>所以，Beautiful Soup，这个框架绝对是新手必备的。</p>
+<ul>
+<li><strong>MongoDB</strong></li>
+</ul>
+<p>持久化、非关系型数据库。多用于分布式系统。</p>
+<p>之所以，WebHubBot会选择用MongoDB。重要的一点是Python可以直接将对象转化为JSON，并且pymongo可以直接将JSON数据插入到MongoDB，这不是很方便嘛，且减少了我来写SQL的很多时间，何乐而不为呢。</p>
+<p>当然，MongoDB存储数据的格式不是JSON，而是一个非常类似于JSON的BSON数据。</p>
+<p>其次，Python中使用到的是pymongo。使用pip安装下就好了。</p>
+<p>同时MongoDB的安装方式和教程，也很简单。</p>
+<p>教程链接：<br><a href="http://www.runoob.com/mongodb/mongodb-tutorial.html" target="_blank" rel="external">http://www.runoob.com/mongodb/mongodb-tutorial.html</a></p>
+<p>最后推荐几个MongoDB的可视化工具。<br>RoboMongo : <a href="https://robomongo.org/" target="_blank" rel="external">https://robomongo.org/</a><br>Toad：<a href="http://www.toadworld.com/products/toad-for-oracle" target="_blank" rel="external">http://www.toadworld.com/products/toad-for-oracle</a></p>
+<p>第一个，Windows系统多数使用。第二，Mac多数。<br>Linux的大神，就用命令好了。</p>
+<h4 id="3、总结"><a href="#3、总结" class="headerlink" title="3、总结"></a>3、总结</h4><p>项目中的技术点其实都是基础。我并没有资格说这个项目有多牛逼。在我看来，它就是基础知识堆积起来的而已。</p>
+<p>所以，学好基础才是王道，其次要把技术玩起来。</p>
+<p>努力成为一个有想法的全栈工程师。</p>
+<hr>
+<p>长摁‘识别二维码’，一起进步</p>
+<p><img src="https://mmbiz.qlogo.cn/mmbiz_png/BAYrQMKkbTbS8e8ibKzUsdcO7Dx3ILTib4daQiaaywnBk1dBd2ZfsxlSKZ7KdwA8kyN1unwBH5BbKpg2SGYP60VrQ/640?wx_fmt=png" alt=""></p>
+<p>生活不止眼前的苟且，还有手下的代码、</p>
+<p>和嘴上的扯淡<br>——<br>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a></p>
+<p>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
+<hr>
+<p>点击 <a href="http://t.xiaomiquan.com/7ey3rZv" target="_blank" rel="external">Join</a>，加入Python技术成长圈子，我在这里等着你。</p>
 ]]></content>
     </entry>
     
