@@ -475,14 +475,18 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/07/03/Google Hacking --你真的会用Google吗？/" rel="next" title="Google Hacking --你真的会用Google吗？">
+                <i class="fa fa-chevron-left"></i> Google Hacking --你真的会用Google吗？
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/07/03/Alison/" rel="prev" title="Alison">
-                Alison <i class="fa fa-chevron-right"></i>
+              <a href="/2017/07/03/hybrid调试指南/" rel="prev" title="Hybrid调试指南">
+                Hybrid调试指南 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -1024,7 +1028,7 @@
           var newcounter = new Counter();
           newcounter.set("title", title);
           newcounter.set("url", url);
-          newcounter.set("time", "1");
+          newcounter.set("time", 1);
           newcounter.save(null, {
             success: function (newcounter) {
               console.log("newcounter.get('time')=" + newcounter.get('time'));
