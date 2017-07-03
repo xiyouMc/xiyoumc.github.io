@@ -744,7 +744,6 @@
       var url = $(this).attr("id").trim();
       query.equalTo("url", url);
       query.find({
-        alert(results);
         success: function (results) {
           if (results.length == 0) {
             var content = '0 ' + $(document.getElementById(url)).text();

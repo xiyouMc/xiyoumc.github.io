@@ -283,7 +283,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://xiyoumc.github.com/2017/07/03/Sun/">
+    <link itemprop="mainEntityOfPage" href="https://xiyoumc.github.com/2017/07/03/TarParse/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="xiyouMc">
@@ -302,7 +302,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/07/03/Sun/" itemprop="url">You are My Sunshine.</a></h1>
+                <a class="post-title-link" href="/2017/07/03/TarParse/" itemprop="url">Tar包高优化解析</a></h1>
         
 
         <div class="post-meta">
@@ -337,8 +337,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/情感/" itemprop="url" rel="index">
-                    <span itemprop="name">情感</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -355,8 +355,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/07/03/Sun/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/03/Sun/" itemprop="commentCount"></span>
+                <a href="/2017/07/03/TarParse/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/03/TarParse/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -364,7 +364,7 @@
 
           
           
-             <span id="/2017/07/03/Sun/" class="leancloud_visitors" data-flag-title="You are My Sunshine.">
+             <span id="/2017/07/03/TarParse/" class="leancloud_visitors" data-flag-title="Tar包高优化解析">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -393,10 +393,11 @@
 
       
         
-          <p>我喜欢温暖、你恰好是太阳<br>
+          <h1 id="本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。"><a href="#本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。" class="headerlink" title="本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。"></a>本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。</h1><h3 id="一、首先讲一个tar包的文件结构。（懂得可以绕开此段）"><a href="#一、首先讲一个tar包的文件结构。（懂得可以绕开此段）" class="headerlink" title="一、首先讲一个tar包的文件结构。（懂得可以绕开此段）"></a>一、首先讲一个tar包的文件结构。（懂得可以绕开此段）</h3><pre><code>tar只是一个归档文件，并不进行压缩。
+</code></pre><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">　　<span class="keyword">struct</span> tar_header</div><div class="line">　　&#123;</div><div class="line">　　 <span class="keyword">char</span> name[<span class="number">100</span>];</div><div class="line">　　 <span class="keyword">char</span> mode[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> uid[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> gid[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> size[<span class="number">12</span>];</div><div class="line">　　 <span class="keyword">char</span> mtime[<span class="number">12</span>];</div><div class="line">　　 <span class="keyword">char</span> chksum[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> typeflag;</div><div class="line">　　 <span class="keyword">char</span> linkname[<span class="number">100</span>];</div><div class="line">　　 <span class="keyword">char</span> magic[<span class="number">6</span>];</div><div class="line">　　 <span class="keyword">char</span> version[<span class="number">2</span>];</div><div class="line">　　 <span class="keyword">char</span> uname[<span class="number">32</span>];</div><div class="line">　　 <span class="keyword">char</span> gname[<span class="number">32</span>];</div><div class="line">　　 <span class="keyword">char</span> devmajor[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> devminor[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> prefix[<span class="number">155</span>];</div><div class="line">　　 <span class="keyword">char</span> padding[<span class="number">12</span>];</div><div class="line">　　&#125;;</div></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/07/03/Sun/#more" rel="contents">
+            <a class="btn" href="/2017/07/03/TarParse/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1227,6 +1228,165 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://xiyoumc.github.com/2017/07/03/戒烟/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiyouMc">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars1.githubusercontent.com/u/8032883?v=3&s=460">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="XiyouMc">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/03/戒烟/" itemprop="url">戒烟</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-03T13:48:28+08:00">
+                2017-07-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/散文/" itemprop="url" rel="index">
+                    <span itemprop="name">散文</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/07/03/戒烟/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/03/戒烟/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/07/03/戒烟/" class="leancloud_visitors" data-flag-title="戒烟">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/timg.jpeg?raw=true" alt=""><br>以后每天都会在这里记录，戒烟史！<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/03/戒烟/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://xiyoumc.github.com/2017/07/03/当我玩哔哩哔哩的时候，一不小心。。。/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1388,7 +1548,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://xiyoumc.github.com/2017/07/03/linux_shell/">
+    <link itemprop="mainEntityOfPage" href="https://xiyoumc.github.com/2017/07/03/Python新手引导 第三篇 Python基础/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="xiyouMc">
@@ -1407,168 +1567,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/07/03/linux_shell/" itemprop="url">Shell语言基本教程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-03T13:48:28+08:00">
-                2017-07-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/技术/" itemprop="url" rel="index">
-                    <span itemprop="name">技术</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/07/03/linux_shell/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/03/linux_shell/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2017/07/03/linux_shell/" class="leancloud_visitors" data-flag-title="Shell语言基本教程">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-          
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/07/03/linux_shell/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://xiyoumc.github.com/2017/07/03/Python新手引导第三篇/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="xiyouMc">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://avatars1.githubusercontent.com/u/8032883?v=3&s=460">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="XiyouMc">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/03/Python新手引导第三篇/" itemprop="url">Python新手引导第二篇</a></h1>
+                <a class="post-title-link" href="/2017/07/03/Python新手引导 第三篇 Python基础/" itemprop="url">Python新手引导第二篇</a></h1>
         
 
         <div class="post-meta">
@@ -1621,8 +1620,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/07/03/Python新手引导第三篇/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/03/Python新手引导第三篇/" itemprop="commentCount"></span>
+                <a href="/2017/07/03/Python新手引导 第三篇 Python基础/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/03/Python新手引导 第三篇 Python基础/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1630,7 +1629,7 @@
 
           
           
-             <span id="/2017/07/03/Python新手引导第三篇/" class="leancloud_visitors" data-flag-title="Python新手引导第二篇">
+             <span id="/2017/07/03/Python新手引导 第三篇 Python基础/" class="leancloud_visitors" data-flag-title="Python新手引导第二篇">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1659,12 +1658,12 @@
 
       
         
-          <h1 id="Python新手引导-第三篇-Python基础"><a href="#Python新手引导-第三篇-Python基础" class="headerlink" title="Python新手引导 第三篇 Python基础"></a>Python新手引导 第三篇 Python基础</h1><blockquote>
+          <h1 id="Python新手引导-第三篇-Python基础和字符编码"><a href="#Python新手引导-第三篇-Python基础和字符编码" class="headerlink" title="Python新手引导 第三篇-Python基础和字符编码"></a>Python新手引导 第三篇-Python基础和字符编码</h1><blockquote>
 <p>###阅读本文需要4.66分钟</p>
 </blockquote>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/07/03/Python新手引导第三篇/#more" rel="contents">
+            <a class="btn" href="/2017/07/03/Python新手引导 第三篇 Python基础/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -2290,7 +2289,6 @@
       var url = $(this).attr("id").trim();
       query.equalTo("url", url);
       query.find({
-        alert(results);
         success: function (results) {
           if (results.length == 0) {
             var content = '0 ' + $(document.getElementById(url)).text();

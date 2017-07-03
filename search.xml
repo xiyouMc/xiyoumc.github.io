@@ -4,12 +4,36 @@
   
     
     <entry>
-      <title><![CDATA[You are My Sunshine.]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/Sun/</url>
-      <content type="html"><![CDATA[<p>我喜欢温暖、你恰好是太阳<br><a id="more"></a></p>
-<blockquote>
-<p>时间流逝<br>忙碌的项目开发，无数的接口，无数的调试<br>Github也好久没更新<br>不过。。。<br>不过。。。最开心 幸福的事是拥有了你<br>我喜欢温暖、你恰好是太阳</p>
-</blockquote>
+      <title><![CDATA[Tar包高优化解析]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/TarParse/</url>
+      <content type="html"><![CDATA[<h1 id="本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。"><a href="#本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。" class="headerlink" title="本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。"></a>本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。</h1><h3 id="一、首先讲一个tar包的文件结构。（懂得可以绕开此段）"><a href="#一、首先讲一个tar包的文件结构。（懂得可以绕开此段）" class="headerlink" title="一、首先讲一个tar包的文件结构。（懂得可以绕开此段）"></a>一、首先讲一个tar包的文件结构。（懂得可以绕开此段）</h3><pre><code>tar只是一个归档文件，并不进行压缩。
+</code></pre><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">　　<span class="keyword">struct</span> tar_header</div><div class="line">　　&#123;</div><div class="line">　　 <span class="keyword">char</span> name[<span class="number">100</span>];</div><div class="line">　　 <span class="keyword">char</span> mode[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> uid[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> gid[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> size[<span class="number">12</span>];</div><div class="line">　　 <span class="keyword">char</span> mtime[<span class="number">12</span>];</div><div class="line">　　 <span class="keyword">char</span> chksum[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> typeflag;</div><div class="line">　　 <span class="keyword">char</span> linkname[<span class="number">100</span>];</div><div class="line">　　 <span class="keyword">char</span> magic[<span class="number">6</span>];</div><div class="line">　　 <span class="keyword">char</span> version[<span class="number">2</span>];</div><div class="line">　　 <span class="keyword">char</span> uname[<span class="number">32</span>];</div><div class="line">　　 <span class="keyword">char</span> gname[<span class="number">32</span>];</div><div class="line">　　 <span class="keyword">char</span> devmajor[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> devminor[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> prefix[<span class="number">155</span>];</div><div class="line">　　 <span class="keyword">char</span> padding[<span class="number">12</span>];</div><div class="line">　　&#125;;</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>&gt;<br>　　以上是Tar中保存文件信息的数据结构，其后跟着的就是文件的内容。<br> size为文件大小的八进制字节表示，例如文件大小为90个字节，那么这里就是八进制的90，即为132。<br>　　其中，文件大小，修改时间，checksum都是存储的对应的八进制字符串，字符串最后一个字符为空格字符<br>　　checksum的计算方法为出去checksum字段其他所有的512-8共504个字节的ascii码相加的值再加上256(checksum当作八个空格，即8<em>0x20）<br>　　文件内容以512字节为一个block进行分割，最后一个block不足部分以0补齐<br>　　两个文件的tar包首先存放第一个文件的tar头结构，然后存储文件内容，接着存储第二个文件的tar头结构，然后存储文件内容<br>　　所有文件都存储完了以后，最后存放一个全零的tar结构<br>　　所有的tar文件大小应该都是512的倍数，一个空文件打包后为512</em>3字节，包括一个tar结构头，一个全零的block存储文件内容，一个全零的tar结构</p>
+<ul>
+<li>检测tar文件格式的方法：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">1、检测magic字段，即在0x101处检查字符串，是否为ustar。有时某些压缩软件将这个字段设置为空。如果magic字段为空，进入第2步。</div><div class="line">2、计算校验和，按照上面的方法计算校验和，如果校验和正确的话，那么这就是一个tar文件。</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>注意：在windows下面，不支持uid、uname等，有的甚至不支持magic，这样就比较麻烦了。</p>
+<h3 id="二、Java层普遍的“解压”方式"><a href="#二、Java层普遍的“解压”方式" class="headerlink" title="二、Java层普遍的“解压”方式"></a>二、Java层普遍的“解压”方式</h3><p>&gt;<br>     因为在jdk中提供了 FilterInputStream,因此我们可以通过继承该类，并构造一个TarEntry的模板，在子类中按每512个字节，将一个tar流分成包含N个512字节的TarEntry. 这样我们就可以将一个tar包通过TarInputStream和TarEntry解开到一个map集合中<entryname,data>.</entryname,data></p>
+<h3 id="三、内存优化的-“解压”方式"><a href="#三、内存优化的-“解压”方式" class="headerlink" title="三、内存优化的 “解压”方式"></a>三、内存优化的 “解压”方式</h3><p>&gt;<br>     由于每一个TarEntry都是一个固定大小字节的对象，那么我们可不可以直接读取这块内存，而不是将所有都常驻内存呢？<br>     答案当然是可以的。<br>    为了内存上的优化和效率上的提升，我们可以直接读取指定EntryNam的内存块。<br>    因为一个tar包基本的组成结构就是   entryName-&gt;data。我们可以拿到每一个EntryName和其对应的内存大小、偏移量，在读取的时候直接在TarInputStream中读取相应内存块。<br>   代码如下：</p>
+<ol>
+<li><p>一个简单维护TarEntry偏移量和字节大小的类McTarEntry。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">McTarEntry</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="keyword">private</span> <span class="keyword">long</span> offset;</div><div class="line"></div><div class="line">  <span class="keyword">private</span> <span class="keyword">int</span> size;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">private</span> <span class="title">McTarEntry</span><span class="params">(Builder builder)</span> </span>&#123;</div><div class="line">      offset = builder.offset;</div><div class="line">      size = builder.size;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">getOffset</span><span class="params">()</span> </span>&#123;</div><div class="line">      <span class="keyword">return</span> offset;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getSize</span><span class="params">()</span> </span>&#123;</div><div class="line">      <span class="keyword">return</span> size;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Builder</span> </span>&#123;</div><div class="line">      <span class="keyword">private</span> <span class="keyword">long</span> offset = <span class="number">0</span>;</div><div class="line">      <span class="keyword">private</span> <span class="keyword">int</span> size = <span class="number">0</span>;</div><div class="line"></div><div class="line">      <span class="function"><span class="keyword">public</span> Builder <span class="title">offset</span><span class="params">(<span class="keyword">long</span> offset)</span> </span>&#123;</div><div class="line">          <span class="keyword">this</span>.offset = offset;</div><div class="line">          <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      <span class="function"><span class="keyword">public</span> Builder <span class="title">size</span><span class="params">(<span class="keyword">int</span> size)</span> </span>&#123;</div><div class="line">          <span class="keyword">this</span>.size = size;</div><div class="line">          <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      <span class="function"><span class="keyword">public</span> H5TarEntry <span class="title">build</span><span class="params">()</span> </span>&#123;</div><div class="line">          <span class="keyword">return</span> <span class="keyword">new</span> McTarEntry(<span class="keyword">this</span>);</div><div class="line">      &#125;</div><div class="line"></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>解析Tar包，将每个McTarEntry保存在map</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">FileInputStream fis = <span class="keyword">new</span> FileInputStream(tarPath);</div><div class="line">BufferedInputStream bis = <span class="keyword">new</span> BufferedInputStream(fis);</div><div class="line">TarInputStream tis = <span class="keyword">new</span> TarInputStream(bis);</div><div class="line">TarEntry te = <span class="keyword">null</span>;</div><div class="line"><span class="keyword">while</span> ((te = tis.getNextEntry()) != <span class="keyword">null</span>) &#123;</div><div class="line">    String entryName = te.getName();</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (te.isDirectory() || TextUtils.isEmpty(entryName)) &#123;</div><div class="line">        <span class="keyword">continue</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    McTarEntry mcTarEntry = <span class="keyword">new</span> McTarEntry.Builder().offset(tis.getCurrentOffset())</div><div class="line">            .size((<span class="keyword">int</span>) te.getSize()).build();</div><div class="line"></div><div class="line">    tarEntryMap.put(entryName, h5TarEntry);</div><div class="line"></div><div class="line">&#125;</div><div class="line">tis.close();</div></pre></td></tr></table></figure>
+</li>
+<li><p>读取指定entryName的数据块</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">static</span> <span class="keyword">byte</span>[] get(String appId, String entryName) &#123;</div><div class="line">      <span class="keyword">try</span> &#123;</div><div class="line">          <span class="keyword">byte</span> buffer[] = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">2048</span>];</div><div class="line">          <span class="keyword">int</span> count;</div><div class="line">          ByteArrayOutputStream bos = <span class="keyword">new</span> ByteArrayOutputStream();</div><div class="line">          <span class="keyword">if</span> (!tarEntryMap.containsKey()) &#123;</div><div class="line">              <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">          &#125;</div><div class="line">          <span class="keyword">long</span> offset = tarEntryMap.get(entryName).getOffset();</div><div class="line">          <span class="keyword">int</span> entrySize = tarEntryMap.get(entryName).getSize();</div><div class="line">          FileInputStream fis = <span class="keyword">new</span> FileInputStream(tarPath);</div><div class="line">          BufferedInputStream bis = <span class="keyword">new</span> BufferedInputStream(fis);</div><div class="line">          TarInputStream tis = <span class="keyword">new</span> TarInputStream(bis);</div><div class="line">          H5Log.d(TAG, <span class="string">"entryName"</span> + entryName + <span class="string">" skip offset:"</span> + offset + <span class="string">" size"</span> + entrySize);</div><div class="line">          tis.skip(offset);</div><div class="line">          <span class="keyword">if</span> (buffer.length &gt; entrySize) &#123;</div><div class="line">              buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[entrySize];</div><div class="line">          &#125;</div><div class="line">          <span class="keyword">int</span> bufferSize = <span class="number">0</span>;</div><div class="line">          <span class="keyword">while</span> ((count = tis.read(buffer)) != -<span class="number">1</span>) &#123;</div><div class="line">              bos.write(buffer, <span class="number">0</span>, count);</div><div class="line">              bufferSize += count;</div><div class="line">                 <span class="comment">// 当前buffer加上已经读取的bufferSize如果超过entrySize那么我们就应该重新计算buffer进行最后一次读取。</span></div><div class="line">              <span class="keyword">if</span> ((bufferSize + buffer.length) &gt; entrySize) &#123;</div><div class="line">                  buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[entrySize % bufferSize];</div><div class="line">                  bufferSize = entrySize - entrySize % bufferSize;</div><div class="line">              &#125;</div><div class="line"></div><div class="line">              <span class="keyword">if</span> (buffer.length == entrySize || entrySize == bufferSize) &#123;</div><div class="line">                  <span class="keyword">break</span>;</div><div class="line">              &#125;</div><div class="line">          &#125;</div><div class="line">          tis.close();</div><div class="line">          <span class="keyword">byte</span>[] data = bos.toByteArray();</div><div class="line">          <span class="keyword">if</span> (data == <span class="keyword">null</span>) &#123;</div><div class="line">              <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">          &#125;</div><div class="line">          H5Log.d(TAG, <span class="string">"entryName:"</span> + entryName);</div><div class="line">          <span class="keyword">return</span> data;</div><div class="line">      &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">          H5Log.e(TAG, <span class="string">"exception :"</span> + e);</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>  这样就可以通过指定的entryName，根据其offset和 size 计算到这个entry在TarStream中固定内存块，从而拿到真正的数据。</p>
+</li>
+</ol>
+<h3 id="总结：两种读取方式的区别："><a href="#总结：两种读取方式的区别：" class="headerlink" title="总结：两种读取方式的区别："></a>总结：两种读取方式的区别：</h3><ul>
+<li>第一种<br>优点：减少了I/O操作。<br>缺点：耗费了内存。假如一个很大的资源在这个tar中，但是被使用的概率很低，这样耗费了内存从而不值得这么做。</li>
+<li>第二种<br>优点：节省了内存，提高了读取效率<br>缺点：增加了I/O操作，Tar资源可能存在被篡改的风险。</li>
+</ul>
+<p>Thanks.<br>  By MC.</p>
 ]]></content>
     </entry>
     
@@ -295,6 +319,13 @@ limitations under the License.
     </entry>
     
     <entry>
+      <title><![CDATA[戒烟]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/%E6%88%92%E7%83%9F/</url>
+      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/timg.jpeg?raw=true" alt=""><br>以后每天都会在这里记录，戒烟史！<br><a id="more"></a><br>GoGoGo</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[当我玩哔哩哔哩的时候，一不小心。。。]]></title>
       <url>https://xiyoumc.github.com/2017/07/03/%E5%BD%93%E6%88%91%E7%8E%A9%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E4%B8%80%E4%B8%8D%E5%B0%8F%E5%BF%83%E3%80%82%E3%80%82%E3%80%82/</url>
       <content type="html"><![CDATA[<h2 id="一不小心用代码登陆了B站。。。并上传了。。视频"><a href="#一不小心用代码登陆了B站。。。并上传了。。视频" class="headerlink" title="一不小心用代码登陆了B站。。。并上传了。。视频"></a>一不小心用代码登陆了B站。。。并上传了。。视频</h2><blockquote>
@@ -326,65 +357,6 @@ limitations under the License.
 </ol>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>虽然这篇文章很短，但是当你真正坐下来分析的时候，将是一段非常枯燥的过程。需要的就是你的耐心。</p>
 <p>其次之所以写这篇文章，其实重点不是怎么去破解B站的登录，而是这些破解的逻辑是否可以提供给我们一些服务器架构的思路，抑或防范别人的破解。</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Shell语言基本教程]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/linux_shell/</url>
-      <content type="html"></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Python新手引导第二篇]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/Python%E6%96%B0%E6%89%8B%E5%BC%95%E5%AF%BC%E7%AC%AC%E4%B8%89%E7%AF%87/</url>
-      <content type="html"><![CDATA[<h1 id="Python新手引导-第三篇-Python基础"><a href="#Python新手引导-第三篇-Python基础" class="headerlink" title="Python新手引导 第三篇 Python基础"></a>Python新手引导 第三篇 Python基础</h1><blockquote>
-<p>###阅读本文需要4.66分钟</p>
-</blockquote>
-<a id="more"></a>
-<p>有其他计算机语言基础的同学，阅读本篇基础部分建议1到2分钟。</p>
-<ol>
-<li>基础类型和变量</li>
-<li>list 和 tuple</li>
-</ol>
-<h2 id="第一、基础类型和变量"><a href="#第一、基础类型和变量" class="headerlink" title="第一、基础类型和变量"></a>第一、基础类型和变量</h2><blockquote>
-</blockquote>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[爱情观]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/Lover/</url>
-      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/shelizi.png?raw=true" alt="zls"></p>
-<p>诸心，皆为非心 心中无物、无心，便是真心<br><a id="more"></a></p>
-<ul>
-<li>佛教劝人学习放下万缘，不要执着感情，却不是要人无情，因为，人本来就是有情众生，只要把爱情的聚散当成因缘变化来看，明白“缘散则散，缘聚则聚”的道理，爱、恨便能在这一念之间转变、释怀。只要是人，就不可能没有感情，佛教称众生为“有情”，就是因为“有爱”的缘故。人活在世界上，除了饮食的养分，还需要精神的滋润，而感情就是最好的精神滋润剂，因此，感情和生命可说是息息相关的。感情虽然带给人很多温暖，却也充满痛苦；相爱的人，感情浓烈，如胶似漆分不开，一旦爱过了头，或失去了爱，就变成了苦；也有人以为只要不动情，就不会为爱所苦，这恐怕是一厢情愿的想法，既然情爱和生命息息相关，无论是否定它，或硬生生地把它切断，既不合乎佛法的因果，也不合乎人情的道理。佛教虽然劝人学习放下万缘，不要执着感情，却不是要人无情，因为，人本来就是有情众生。</li>
-</ul>
-<ul>
-<li>遇上触礁的爱情<blockquote>
-<p>然而，男女间的感情，往往非自己的期待所能控制。假如有一天，你的女朋友或是男朋友突然跟你说：“对不起！我已经遇到更适合的人，请你以后不要再来找我。”你会不会觉得晴天霹雳？觉得自己被背叛、被抛弃了？失恋的人，常常悲观地觉得生不如死：“连我最爱的人都不要我了，我还活下去做什么？” 有时候甚至还会骂说：“哼！你不要我，我本来就不想要你了。”或是“真是有眼无珠。”<br>有人为情轻生，结束自己的生命；有人为情杀人，抱着“你让我这样痛苦，我也不让你快活”；或是“我得不到你，天下人也甭想得到你”的偏激心理，而把对方杀了，甚至有的在杀了对方之后，自己也跟着自杀。大多数的人都知道，爱情是双向的，既然如此，如果对方不爱你，就不要苦苦追求不舍，应该知趣地离开，可是，有些人偏偏就是死心眼，非卿不娶，非君不嫁，不但为对方带来困扰，也让自己陷入困境。话虽这么说，毕竟人非草木，谁能无情？一般的人，仍常常为情所苦，可见得要放下感情，其实是件很不容易的事。</p>
-</blockquote>
-</li>
-</ul>
-<ul>
-<li><p>以因缘观化解爱恨* </p>
-<blockquote>
-<p>因爱而生怨、生恨是很不幸的，从佛法的观点来看，这些都是愚痴的行为，因为真正的爱情要双方你情我愿，有因有缘才能成就，不是自己想要就要。假使对方已经明白拒绝你的感情，自己却还想尽办法，想把对方追回来；就好像赌输的人一样，心中不服气，老是想翻本，钱输光了就想办法再借，也因而愈陷愈深，不可自拔，既然知道无法挽回，就不要再陷下去了，应该赶快撤退，就算是以此为戒，至少学到经验，也就够了，这样就是对自己慈悲。慈悲不仅是照顾别人，事实上，也是在保护自己。当爱情受到挫折时，应试着化解自己心中的愤怒、不平。佛法当中“空”的观念，是最能够助人摆脱痛苦的。只要把爱情的聚散当成因缘变化来看，明白“缘散则散，缘聚则聚”的道理，爱、恨便能在这一念之间转变、释怀。</p>
-</blockquote>
-</li>
-<li><p>陷入痛苦的爱情</p>
-<blockquote>
-<p>为什么爱情要俘虏人呢？很多情侣往往会说：“我爱你爱得要死！”或是喜欢说：“我是你的一半，你是我的一半！” 明明是不同的两个人，却彼此互相要求对方，成为自己的一部分，这种“爱”，都希望既要俘虏对方的人，也要俘虏对方的心；控制他的行动，还要控制他的心。所谓“俘虏”，其实就是占有，就是把自我价值扩展到他人身上。男女间的爱，本来就是一种互相的占有。你想占有他，他也想占有你，因为都想占有，所以就分不开了，这样的“爱”，到头来，却只让对方更想逃走。<br>此外，很多人谈恋爱，其实是想找个依靠，也就是找“靠山”的心态。我要靠我的男朋友、我要靠我的女朋友、我要靠我的丈夫、我要靠我的太太，刚开始，依赖一下、靠一靠，可能觉得很温馨。可是，靠久了，对方可能就会想：“怎么老是要靠我？我好累喔！” 偶尔靠一靠是甜蜜的，但老是靠着，就会成了对方的麻烦和负担。即使在爱情的两人世界中，每个人都还是独立的自我，不管是男的还是女的，每个人都怕别人变成自己的负担，如果不能够独立，只想要依靠或是指望另一半，就会成了对方的包袱。</p>
-</blockquote>
-</li>
-<li><p>以尊重的心态经营爱情</p>
-<blockquote>
-<p>真正的爱情应该是无私的付出，但是多半的爱情还是以占有、控制为出发点，这和人的不安全感有关，因此，要求情人对你做到全心的奉献，恐怕是很困难的事。也因如此，甜蜜的爱情，却往往是最痛苦的。期待、要求，希望得到对方“真心”的对待和付出，可是，这种心是“真心”吗？《金刚经》中有一段话：“如来说诸心，皆为非心，是名为心。”“诸心”，是指每一个众生的种种心理活动现象，这些都是虚妄的，从佛法的观点来看，只要有心，就都不是真心，要“心无所住”，心中无物、无心，那才是“真心”。所以说，占有心、依靠心、期待心，都不叫“真心”，而是“烦恼心”。</p>
-</blockquote>
-</li>
-<li><p>古人说“相敬如宾”，虽是老生常谈，却是能够维系长久爱情的真正智慧。如果想避免吵架、误解，或者是想消融不断的期待、要求，在遇到诸如此类的问题时，不妨以尊重的心态，心悦诚服、欢欢喜喜、平平静静去面对、解决，心中的纠结，其实在当下都能即得化解。爱情里的关系，并不是在互相执着、纠缠和占有，而是互相的贡献、成长和学习。能够互相关怀、照顾、包容，去彼此计较、相互猜疑，多沟通，并相互信赖，才能成为菩萨伴侣。</p>
-</li>
-</ul>
 ]]></content>
     </entry>
     
@@ -520,6 +492,59 @@ limitations under the License.
 <p>当然如果tuple中包含list那么这个list是可变的,因此tuple中保存的只是list的指针，如：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a = (&apos;A&apos;,[&apos;B&apos;,&apos;C&apos;])</div><div class="line">a[1][1] = &apos;D&apos;</div><div class="line">(&apos;A&apos;,[&apos;D&apos;,&apos;C&apos;])</div></pre></td></tr></table></figure>
 <h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>本篇主要讲了计算机的基础知识–编码，看过这篇文章之后，以后遇到乱码的问题，相信你不用再百度了。 其次就是Python中常用到的基础类型和集合，玩一玩吧…少年</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[爱情观]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/Lover/</url>
+      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/shelizi.png?raw=true" alt="zls"></p>
+<p>诸心，皆为非心 心中无物、无心，便是真心<br><a id="more"></a></p>
+<ul>
+<li>佛教劝人学习放下万缘，不要执着感情，却不是要人无情，因为，人本来就是有情众生，只要把爱情的聚散当成因缘变化来看，明白“缘散则散，缘聚则聚”的道理，爱、恨便能在这一念之间转变、释怀。只要是人，就不可能没有感情，佛教称众生为“有情”，就是因为“有爱”的缘故。人活在世界上，除了饮食的养分，还需要精神的滋润，而感情就是最好的精神滋润剂，因此，感情和生命可说是息息相关的。感情虽然带给人很多温暖，却也充满痛苦；相爱的人，感情浓烈，如胶似漆分不开，一旦爱过了头，或失去了爱，就变成了苦；也有人以为只要不动情，就不会为爱所苦，这恐怕是一厢情愿的想法，既然情爱和生命息息相关，无论是否定它，或硬生生地把它切断，既不合乎佛法的因果，也不合乎人情的道理。佛教虽然劝人学习放下万缘，不要执着感情，却不是要人无情，因为，人本来就是有情众生。</li>
+</ul>
+<ul>
+<li>遇上触礁的爱情<blockquote>
+<p>然而，男女间的感情，往往非自己的期待所能控制。假如有一天，你的女朋友或是男朋友突然跟你说：“对不起！我已经遇到更适合的人，请你以后不要再来找我。”你会不会觉得晴天霹雳？觉得自己被背叛、被抛弃了？失恋的人，常常悲观地觉得生不如死：“连我最爱的人都不要我了，我还活下去做什么？” 有时候甚至还会骂说：“哼！你不要我，我本来就不想要你了。”或是“真是有眼无珠。”<br>有人为情轻生，结束自己的生命；有人为情杀人，抱着“你让我这样痛苦，我也不让你快活”；或是“我得不到你，天下人也甭想得到你”的偏激心理，而把对方杀了，甚至有的在杀了对方之后，自己也跟着自杀。大多数的人都知道，爱情是双向的，既然如此，如果对方不爱你，就不要苦苦追求不舍，应该知趣地离开，可是，有些人偏偏就是死心眼，非卿不娶，非君不嫁，不但为对方带来困扰，也让自己陷入困境。话虽这么说，毕竟人非草木，谁能无情？一般的人，仍常常为情所苦，可见得要放下感情，其实是件很不容易的事。</p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li><p>以因缘观化解爱恨* </p>
+<blockquote>
+<p>因爱而生怨、生恨是很不幸的，从佛法的观点来看，这些都是愚痴的行为，因为真正的爱情要双方你情我愿，有因有缘才能成就，不是自己想要就要。假使对方已经明白拒绝你的感情，自己却还想尽办法，想把对方追回来；就好像赌输的人一样，心中不服气，老是想翻本，钱输光了就想办法再借，也因而愈陷愈深，不可自拔，既然知道无法挽回，就不要再陷下去了，应该赶快撤退，就算是以此为戒，至少学到经验，也就够了，这样就是对自己慈悲。慈悲不仅是照顾别人，事实上，也是在保护自己。当爱情受到挫折时，应试着化解自己心中的愤怒、不平。佛法当中“空”的观念，是最能够助人摆脱痛苦的。只要把爱情的聚散当成因缘变化来看，明白“缘散则散，缘聚则聚”的道理，爱、恨便能在这一念之间转变、释怀。</p>
+</blockquote>
+</li>
+<li><p>陷入痛苦的爱情</p>
+<blockquote>
+<p>为什么爱情要俘虏人呢？很多情侣往往会说：“我爱你爱得要死！”或是喜欢说：“我是你的一半，你是我的一半！” 明明是不同的两个人，却彼此互相要求对方，成为自己的一部分，这种“爱”，都希望既要俘虏对方的人，也要俘虏对方的心；控制他的行动，还要控制他的心。所谓“俘虏”，其实就是占有，就是把自我价值扩展到他人身上。男女间的爱，本来就是一种互相的占有。你想占有他，他也想占有你，因为都想占有，所以就分不开了，这样的“爱”，到头来，却只让对方更想逃走。<br>此外，很多人谈恋爱，其实是想找个依靠，也就是找“靠山”的心态。我要靠我的男朋友、我要靠我的女朋友、我要靠我的丈夫、我要靠我的太太，刚开始，依赖一下、靠一靠，可能觉得很温馨。可是，靠久了，对方可能就会想：“怎么老是要靠我？我好累喔！” 偶尔靠一靠是甜蜜的，但老是靠着，就会成了对方的麻烦和负担。即使在爱情的两人世界中，每个人都还是独立的自我，不管是男的还是女的，每个人都怕别人变成自己的负担，如果不能够独立，只想要依靠或是指望另一半，就会成了对方的包袱。</p>
+</blockquote>
+</li>
+<li><p>以尊重的心态经营爱情</p>
+<blockquote>
+<p>真正的爱情应该是无私的付出，但是多半的爱情还是以占有、控制为出发点，这和人的不安全感有关，因此，要求情人对你做到全心的奉献，恐怕是很困难的事。也因如此，甜蜜的爱情，却往往是最痛苦的。期待、要求，希望得到对方“真心”的对待和付出，可是，这种心是“真心”吗？《金刚经》中有一段话：“如来说诸心，皆为非心，是名为心。”“诸心”，是指每一个众生的种种心理活动现象，这些都是虚妄的，从佛法的观点来看，只要有心，就都不是真心，要“心无所住”，心中无物、无心，那才是“真心”。所以说，占有心、依靠心、期待心，都不叫“真心”，而是“烦恼心”。</p>
+</blockquote>
+</li>
+<li><p>古人说“相敬如宾”，虽是老生常谈，却是能够维系长久爱情的真正智慧。如果想避免吵架、误解，或者是想消融不断的期待、要求，在遇到诸如此类的问题时，不妨以尊重的心态，心悦诚服、欢欢喜喜、平平静静去面对、解决，心中的纠结，其实在当下都能即得化解。爱情里的关系，并不是在互相执着、纠缠和占有，而是互相的贡献、成长和学习。能够互相关怀、照顾、包容，去彼此计较、相互猜疑，多沟通，并相互信赖，才能成为菩萨伴侣。</p>
+</li>
+</ul>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Python新手引导第二篇]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/Python%E6%96%B0%E6%89%8B%E5%BC%95%E5%AF%BC%E7%AC%AC%E4%B8%89%E7%AF%87/</url>
+      <content type="html"><![CDATA[<h1 id="Python新手引导-第三篇-Python基础"><a href="#Python新手引导-第三篇-Python基础" class="headerlink" title="Python新手引导 第三篇 Python基础"></a>Python新手引导 第三篇 Python基础</h1><blockquote>
+<p>###阅读本文需要4.66分钟</p>
+</blockquote>
+<a id="more"></a>
+<p>有其他计算机语言基础的同学，阅读本篇基础部分建议1到2分钟。</p>
+<ol>
+<li>基础类型和变量</li>
+<li>list 和 tuple</li>
+</ol>
+<h2 id="第一、基础类型和变量"><a href="#第一、基础类型和变量" class="headerlink" title="第一、基础类型和变量"></a>第一、基础类型和变量</h2><blockquote>
+</blockquote>
 ]]></content>
     </entry>
     
@@ -688,6 +713,31 @@ limitations under the License.
     </entry>
     
     <entry>
+      <title><![CDATA[You are My Sunshine.]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/Sun/</url>
+      <content type="html"><![CDATA[<p>我喜欢温暖、你恰好是太阳<br><a id="more"></a></p>
+<blockquote>
+<p>时间流逝<br>忙碌的项目开发，无数的接口，无数的调试<br>Github也好久没更新<br>不过。。。<br>不过。。。最开心 幸福的事是拥有了你<br>我喜欢温暖、你恰好是太阳</p>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Shell语言基本教程]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/linux_shell/</url>
+      <content type="html"></content>
+    </entry>
+    
+    <entry>
+      <title></title>
+      <url>https://xiyoumc.github.com/2017/07/03/Untitled/</url>
+      <content type="html"><![CDATA[<p>   前段时间花了点功夫研究了下Django框架，也就是Python后端+Web端的开发框架，可以快速完成服务端的搭建.<br>借用 <code>Django</code> 官网的一句话 - “Django makes it easier to build better Web apps more quickly and with less code.”</p>
+<p>   然后这两天又抽空翻了下之前自己做的Hybrid，然后顺其自然的我使用Django框架和Hybrid框架做了个简单的 Demo,并将其放到了Github上。有兴趣的朋友可以共同探讨下。</p>
+<p>   地址在这: <a href="https://github.com/xiyouMc/HybridFramework" target="_blank" rel="external">https://github.com/xiyouMc/HybridFramework</a></p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Python新手引导第一篇]]></title>
       <url>https://xiyoumc.github.com/2017/07/03/Python%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87/</url>
       <content type="html"><![CDATA[<h1 id="Python新手引导-第一篇"><a href="#Python新手引导-第一篇" class="headerlink" title="Python新手引导 第一篇"></a>Python新手引导 第一篇</h1><blockquote>
@@ -732,6 +782,13 @@ limitations under the License.
     </entry>
     
     <entry>
+      <title><![CDATA[大姨夫]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/%E5%A4%A7%E5%A7%A8%E5%A4%AB/</url>
+      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/big.jpg?raw=true" alt=""><br>最近又开始胡思乱想，针对感情、爱情总是一段时间就害怕会分开。特么的都是自己作死。哈哈哈<br><a id="more"></a><br>有一种大姨夫的感觉，有一种小女人的心思，有一种想狠狠抱着你的想法。<br>这是病，得治。自己胡思乱想，想的多，多听听歌吧。<br>大家都很忙，过好自己，照顾好爱的人。</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Mac、Linux安装libimobiledevice]]></title>
       <url>https://xiyoumc.github.com/2017/07/03/libimobiledevice/</url>
       <content type="html"><![CDATA[<h3 id="linux连接iOS设备并且安装ipa应用"><a href="#linux连接iOS设备并且安装ipa应用" class="headerlink" title="linux连接iOS设备并且安装ipa应用"></a>linux连接iOS设备并且安装ipa应用</h3><p>Android有个adb命令，可以很方便的做一些事情，比如直接安装应用。但是因为苹果比较封闭，没有直接的命令可以使用。但是有大牛做出了这样的东西–libimobiledevice<br><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/idevice.png?raw=true" alt="zls"><br><a id="more"></a></p>
@@ -743,75 +800,6 @@ limitations under the License.
 <h4 id="ubuntu下安装需要添加一个新的软件库，里面包含了libimobiledevice"><a href="#ubuntu下安装需要添加一个新的软件库，里面包含了libimobiledevice" class="headerlink" title="ubuntu下安装需要添加一个新的软件库，里面包含了libimobiledevice"></a>ubuntu下安装需要添加一个新的软件库，里面包含了libimobiledevice</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sudo add-apt-repository ppa:pmcenery/ppa</div><div class="line">sudo apt-get update</div><div class="line">apt-get install libimobiledevice-utils</div><div class="line">sudo apt-get install ideviceinstaller</div></pre></td></tr></table></figure>
 <p>这里面包含了很多命令，如下<br><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/idevice.png?raw=true" alt="zls"></p>
 <h3 id="如要安装一个ipa文件到手机上可以使用"><a href="#如要安装一个ipa文件到手机上可以使用" class="headerlink" title="如要安装一个ipa文件到手机上可以使用"></a>如要安装一个ipa文件到手机上可以使用</h3><p>ideviceinstaller -i 命令安装一个ipa文件到手机上，如果是企业签名的，非越狱机器也可以直接安装了</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title></title>
-      <url>https://xiyoumc.github.com/2017/07/03/Untitled/</url>
-      <content type="html"><![CDATA[<p>   前段时间花了点功夫研究了下Django框架，也就是Python后端+Web端的开发框架，可以快速完成服务端的搭建.<br>借用 <code>Django</code> 官网的一句话 - “Django makes it easier to build better Web apps more quickly and with less code.”</p>
-<p>   然后这两天又抽空翻了下之前自己做的Hybrid，然后顺其自然的我使用Django框架和Hybrid框架做了个简单的 Demo,并将其放到了Github上。有兴趣的朋友可以共同探讨下。</p>
-<p>   地址在这: <a href="https://github.com/xiyouMc/HybridFramework" target="_blank" rel="external">https://github.com/xiyouMc/HybridFramework</a></p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Tar包高优化解析]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/TarParse/</url>
-      <content type="html"><![CDATA[<h1 id="本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。"><a href="#本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。" class="headerlink" title="本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。"></a>本文将介绍一个针对Tar包解析时的优化方案，旨在优化内存、提高效率。</h1><h3 id="一、首先讲一个tar包的文件结构。（懂得可以绕开此段）"><a href="#一、首先讲一个tar包的文件结构。（懂得可以绕开此段）" class="headerlink" title="一、首先讲一个tar包的文件结构。（懂得可以绕开此段）"></a>一、首先讲一个tar包的文件结构。（懂得可以绕开此段）</h3><pre><code>tar只是一个归档文件，并不进行压缩。
-</code></pre><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">　　<span class="keyword">struct</span> tar_header</div><div class="line">　　&#123;</div><div class="line">　　 <span class="keyword">char</span> name[<span class="number">100</span>];</div><div class="line">　　 <span class="keyword">char</span> mode[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> uid[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> gid[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> size[<span class="number">12</span>];</div><div class="line">　　 <span class="keyword">char</span> mtime[<span class="number">12</span>];</div><div class="line">　　 <span class="keyword">char</span> chksum[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> typeflag;</div><div class="line">　　 <span class="keyword">char</span> linkname[<span class="number">100</span>];</div><div class="line">　　 <span class="keyword">char</span> magic[<span class="number">6</span>];</div><div class="line">　　 <span class="keyword">char</span> version[<span class="number">2</span>];</div><div class="line">　　 <span class="keyword">char</span> uname[<span class="number">32</span>];</div><div class="line">　　 <span class="keyword">char</span> gname[<span class="number">32</span>];</div><div class="line">　　 <span class="keyword">char</span> devmajor[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> devminor[<span class="number">8</span>];</div><div class="line">　　 <span class="keyword">char</span> prefix[<span class="number">155</span>];</div><div class="line">　　 <span class="keyword">char</span> padding[<span class="number">12</span>];</div><div class="line">　　&#125;;</div></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>&gt;<br>　　以上是Tar中保存文件信息的数据结构，其后跟着的就是文件的内容。<br> size为文件大小的八进制字节表示，例如文件大小为90个字节，那么这里就是八进制的90，即为132。<br>　　其中，文件大小，修改时间，checksum都是存储的对应的八进制字符串，字符串最后一个字符为空格字符<br>　　checksum的计算方法为出去checksum字段其他所有的512-8共504个字节的ascii码相加的值再加上256(checksum当作八个空格，即8<em>0x20）<br>　　文件内容以512字节为一个block进行分割，最后一个block不足部分以0补齐<br>　　两个文件的tar包首先存放第一个文件的tar头结构，然后存储文件内容，接着存储第二个文件的tar头结构，然后存储文件内容<br>　　所有文件都存储完了以后，最后存放一个全零的tar结构<br>　　所有的tar文件大小应该都是512的倍数，一个空文件打包后为512</em>3字节，包括一个tar结构头，一个全零的block存储文件内容，一个全零的tar结构</p>
-<ul>
-<li>检测tar文件格式的方法：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">1、检测magic字段，即在0x101处检查字符串，是否为ustar。有时某些压缩软件将这个字段设置为空。如果magic字段为空，进入第2步。</div><div class="line">2、计算校验和，按照上面的方法计算校验和，如果校验和正确的话，那么这就是一个tar文件。</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>注意：在windows下面，不支持uid、uname等，有的甚至不支持magic，这样就比较麻烦了。</p>
-<h3 id="二、Java层普遍的“解压”方式"><a href="#二、Java层普遍的“解压”方式" class="headerlink" title="二、Java层普遍的“解压”方式"></a>二、Java层普遍的“解压”方式</h3><p>&gt;<br>     因为在jdk中提供了 FilterInputStream,因此我们可以通过继承该类，并构造一个TarEntry的模板，在子类中按每512个字节，将一个tar流分成包含N个512字节的TarEntry. 这样我们就可以将一个tar包通过TarInputStream和TarEntry解开到一个map集合中<entryname,data>.</entryname,data></p>
-<h3 id="三、内存优化的-“解压”方式"><a href="#三、内存优化的-“解压”方式" class="headerlink" title="三、内存优化的 “解压”方式"></a>三、内存优化的 “解压”方式</h3><p>&gt;<br>     由于每一个TarEntry都是一个固定大小字节的对象，那么我们可不可以直接读取这块内存，而不是将所有都常驻内存呢？<br>     答案当然是可以的。<br>    为了内存上的优化和效率上的提升，我们可以直接读取指定EntryNam的内存块。<br>    因为一个tar包基本的组成结构就是   entryName-&gt;data。我们可以拿到每一个EntryName和其对应的内存大小、偏移量，在读取的时候直接在TarInputStream中读取相应内存块。<br>   代码如下：</p>
-<ol>
-<li><p>一个简单维护TarEntry偏移量和字节大小的类McTarEntry。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">McTarEntry</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="keyword">private</span> <span class="keyword">long</span> offset;</div><div class="line"></div><div class="line">  <span class="keyword">private</span> <span class="keyword">int</span> size;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">private</span> <span class="title">McTarEntry</span><span class="params">(Builder builder)</span> </span>&#123;</div><div class="line">      offset = builder.offset;</div><div class="line">      size = builder.size;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">getOffset</span><span class="params">()</span> </span>&#123;</div><div class="line">      <span class="keyword">return</span> offset;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getSize</span><span class="params">()</span> </span>&#123;</div><div class="line">      <span class="keyword">return</span> size;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Builder</span> </span>&#123;</div><div class="line">      <span class="keyword">private</span> <span class="keyword">long</span> offset = <span class="number">0</span>;</div><div class="line">      <span class="keyword">private</span> <span class="keyword">int</span> size = <span class="number">0</span>;</div><div class="line"></div><div class="line">      <span class="function"><span class="keyword">public</span> Builder <span class="title">offset</span><span class="params">(<span class="keyword">long</span> offset)</span> </span>&#123;</div><div class="line">          <span class="keyword">this</span>.offset = offset;</div><div class="line">          <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      <span class="function"><span class="keyword">public</span> Builder <span class="title">size</span><span class="params">(<span class="keyword">int</span> size)</span> </span>&#123;</div><div class="line">          <span class="keyword">this</span>.size = size;</div><div class="line">          <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      <span class="function"><span class="keyword">public</span> H5TarEntry <span class="title">build</span><span class="params">()</span> </span>&#123;</div><div class="line">          <span class="keyword">return</span> <span class="keyword">new</span> McTarEntry(<span class="keyword">this</span>);</div><div class="line">      &#125;</div><div class="line"></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p>解析Tar包，将每个McTarEntry保存在map</p>
-  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">FileInputStream fis = <span class="keyword">new</span> FileInputStream(tarPath);</div><div class="line">BufferedInputStream bis = <span class="keyword">new</span> BufferedInputStream(fis);</div><div class="line">TarInputStream tis = <span class="keyword">new</span> TarInputStream(bis);</div><div class="line">TarEntry te = <span class="keyword">null</span>;</div><div class="line"><span class="keyword">while</span> ((te = tis.getNextEntry()) != <span class="keyword">null</span>) &#123;</div><div class="line">    String entryName = te.getName();</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (te.isDirectory() || TextUtils.isEmpty(entryName)) &#123;</div><div class="line">        <span class="keyword">continue</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    McTarEntry mcTarEntry = <span class="keyword">new</span> McTarEntry.Builder().offset(tis.getCurrentOffset())</div><div class="line">            .size((<span class="keyword">int</span>) te.getSize()).build();</div><div class="line"></div><div class="line">    tarEntryMap.put(entryName, h5TarEntry);</div><div class="line"></div><div class="line">&#125;</div><div class="line">tis.close();</div></pre></td></tr></table></figure>
-</li>
-<li><p>读取指定entryName的数据块</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">static</span> <span class="keyword">byte</span>[] get(String appId, String entryName) &#123;</div><div class="line">      <span class="keyword">try</span> &#123;</div><div class="line">          <span class="keyword">byte</span> buffer[] = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">2048</span>];</div><div class="line">          <span class="keyword">int</span> count;</div><div class="line">          ByteArrayOutputStream bos = <span class="keyword">new</span> ByteArrayOutputStream();</div><div class="line">          <span class="keyword">if</span> (!tarEntryMap.containsKey()) &#123;</div><div class="line">              <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">          &#125;</div><div class="line">          <span class="keyword">long</span> offset = tarEntryMap.get(entryName).getOffset();</div><div class="line">          <span class="keyword">int</span> entrySize = tarEntryMap.get(entryName).getSize();</div><div class="line">          FileInputStream fis = <span class="keyword">new</span> FileInputStream(tarPath);</div><div class="line">          BufferedInputStream bis = <span class="keyword">new</span> BufferedInputStream(fis);</div><div class="line">          TarInputStream tis = <span class="keyword">new</span> TarInputStream(bis);</div><div class="line">          H5Log.d(TAG, <span class="string">"entryName"</span> + entryName + <span class="string">" skip offset:"</span> + offset + <span class="string">" size"</span> + entrySize);</div><div class="line">          tis.skip(offset);</div><div class="line">          <span class="keyword">if</span> (buffer.length &gt; entrySize) &#123;</div><div class="line">              buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[entrySize];</div><div class="line">          &#125;</div><div class="line">          <span class="keyword">int</span> bufferSize = <span class="number">0</span>;</div><div class="line">          <span class="keyword">while</span> ((count = tis.read(buffer)) != -<span class="number">1</span>) &#123;</div><div class="line">              bos.write(buffer, <span class="number">0</span>, count);</div><div class="line">              bufferSize += count;</div><div class="line">                 <span class="comment">// 当前buffer加上已经读取的bufferSize如果超过entrySize那么我们就应该重新计算buffer进行最后一次读取。</span></div><div class="line">              <span class="keyword">if</span> ((bufferSize + buffer.length) &gt; entrySize) &#123;</div><div class="line">                  buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[entrySize % bufferSize];</div><div class="line">                  bufferSize = entrySize - entrySize % bufferSize;</div><div class="line">              &#125;</div><div class="line"></div><div class="line">              <span class="keyword">if</span> (buffer.length == entrySize || entrySize == bufferSize) &#123;</div><div class="line">                  <span class="keyword">break</span>;</div><div class="line">              &#125;</div><div class="line">          &#125;</div><div class="line">          tis.close();</div><div class="line">          <span class="keyword">byte</span>[] data = bos.toByteArray();</div><div class="line">          <span class="keyword">if</span> (data == <span class="keyword">null</span>) &#123;</div><div class="line">              <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">          &#125;</div><div class="line">          H5Log.d(TAG, <span class="string">"entryName:"</span> + entryName);</div><div class="line">          <span class="keyword">return</span> data;</div><div class="line">      &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">          H5Log.e(TAG, <span class="string">"exception :"</span> + e);</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
-<p>  这样就可以通过指定的entryName，根据其offset和 size 计算到这个entry在TarStream中固定内存块，从而拿到真正的数据。</p>
-</li>
-</ol>
-<h3 id="总结：两种读取方式的区别："><a href="#总结：两种读取方式的区别：" class="headerlink" title="总结：两种读取方式的区别："></a>总结：两种读取方式的区别：</h3><ul>
-<li>第一种<br>优点：减少了I/O操作。<br>缺点：耗费了内存。假如一个很大的资源在这个tar中，但是被使用的概率很低，这样耗费了内存从而不值得这么做。</li>
-<li>第二种<br>优点：节省了内存，提高了读取效率<br>缺点：增加了I/O操作，Tar资源可能存在被篡改的风险。</li>
-</ul>
-<p>Thanks.<br>  By MC.</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[戒烟]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/%E6%88%92%E7%83%9F/</url>
-      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/timg.jpeg?raw=true" alt=""><br>以后每天都会在这里记录，戒烟史！<br><a id="more"></a><br>GoGoGo</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[大姨夫]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/%E5%A4%A7%E5%A7%A8%E5%A4%AB/</url>
-      <content type="html"><![CDATA[<p><img src="https://github.com/xiyouMc/xiyoumc.github.io/blob/master/images/big.jpg?raw=true" alt=""><br>最近又开始胡思乱想，针对感情、爱情总是一段时间就害怕会分开。特么的都是自己作死。哈哈哈<br><a id="more"></a><br>有一种大姨夫的感觉，有一种小女人的心思，有一种想狠狠抱着你的想法。<br>这是病，得治。自己胡思乱想，想的多，多听听歌吧。<br>大家都很忙，过好自己，照顾好爱的人。</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Charles破解教程，适用于所有版本]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/charles_break/</url>
-      <content type="html"><![CDATA[<h1 id="Charles-注册码"><a href="#Charles-注册码" class="headerlink" title="Charles 注册码"></a>Charles 注册码</h1><h3 id="1-Windows-用户"><a href="#1-Windows-用户" class="headerlink" title="1. Windows 用户"></a>1. Windows 用户</h3><p>RegName: ANONYMOUS@chinapyg.com<br>Reg_Key: 5fae99ec65736945ba<br>官方下载后可直接激活。神key.</p>
-<h3 id="2-Mac-用户"><a href="#2-Mac-用户" class="headerlink" title="2. Mac 用户"></a>2. Mac 用户</h3><p>方式一如果不行，方式二绝对可以。</p>
-<h4 id="1-方式一"><a href="#1-方式一" class="headerlink" title="1. 方式一"></a>1. 方式一</h4><p>账号：WaitsUn.com<br>密码：vapg-fold-dreg-inky</p>
-<h4 id="2-方式二"><a href="#2-方式二" class="headerlink" title="2. 方式二"></a>2. 方式二</h4><p>先安装Charles，然后在终端中执行下面的命令即可实现破解。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">charles=/Applications/Charles.app/Contents/Java/charles.jar</div><div class="line">dir=charleshack</div><div class="line">mkdir $dir</div><div class="line">cd $dir</div><div class="line">cat &gt;&gt; License.java &lt;&lt;EOF</div><div class="line">package com.xk72.charles;</div><div class="line">public final class License &#123;</div><div class="line">    public static boolean a() &#123; return true; &#125;</div><div class="line">    public static String b() &#123; return &quot;http://www.gfzj.us&quot;; &#125;</div><div class="line">    public static String a(String name, String key) &#123; return null; &#125;</div><div class="line">&#125;</div><div class="line">EOF</div><div class="line">javac -encoding UTF-8 License.java -d .&amp;&amp; jar -uvf $charles com/xk72/charles/License.class</div><div class="line">cd .. &amp;&amp; rm -rf $dir</div></pre></td></tr></table></figure>
-<a id="more"></a>
 ]]></content>
     </entry>
     
@@ -861,6 +849,18 @@ limitations under the License.
 <ul>
 <li>JSBridge.call(“hideTitlebar”)  —Hide Title bar</li>
 </ul>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Charles破解教程，适用于所有版本]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/charles_break/</url>
+      <content type="html"><![CDATA[<h1 id="Charles-注册码"><a href="#Charles-注册码" class="headerlink" title="Charles 注册码"></a>Charles 注册码</h1><h3 id="1-Windows-用户"><a href="#1-Windows-用户" class="headerlink" title="1. Windows 用户"></a>1. Windows 用户</h3><p>RegName: ANONYMOUS@chinapyg.com<br>Reg_Key: 5fae99ec65736945ba<br>官方下载后可直接激活。神key.</p>
+<h3 id="2-Mac-用户"><a href="#2-Mac-用户" class="headerlink" title="2. Mac 用户"></a>2. Mac 用户</h3><p>方式一如果不行，方式二绝对可以。</p>
+<h4 id="1-方式一"><a href="#1-方式一" class="headerlink" title="1. 方式一"></a>1. 方式一</h4><p>账号：WaitsUn.com<br>密码：vapg-fold-dreg-inky</p>
+<h4 id="2-方式二"><a href="#2-方式二" class="headerlink" title="2. 方式二"></a>2. 方式二</h4><p>先安装Charles，然后在终端中执行下面的命令即可实现破解。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">charles=/Applications/Charles.app/Contents/Java/charles.jar</div><div class="line">dir=charleshack</div><div class="line">mkdir $dir</div><div class="line">cd $dir</div><div class="line">cat &gt;&gt; License.java &lt;&lt;EOF</div><div class="line">package com.xk72.charles;</div><div class="line">public final class License &#123;</div><div class="line">    public static boolean a() &#123; return true; &#125;</div><div class="line">    public static String b() &#123; return &quot;http://www.gfzj.us&quot;; &#125;</div><div class="line">    public static String a(String name, String key) &#123; return null; &#125;</div><div class="line">&#125;</div><div class="line">EOF</div><div class="line">javac -encoding UTF-8 License.java -d .&amp;&amp; jar -uvf $charles com/xk72/charles/License.class</div><div class="line">cd .. &amp;&amp; rm -rf $dir</div></pre></td></tr></table></figure>
+<a id="more"></a>
 ]]></content>
     </entry>
     
@@ -915,50 +915,68 @@ limitations under the License.
     </entry>
     
     <entry>
-      <title><![CDATA[Github系列教程二 「加入Github」]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/Github%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%E4%BA%8C%20%E5%8A%A0%E5%85%A5Github/</url>
-      <content type="html"><![CDATA[<h3 id="本文同步在我的公众号-DeveloperPython"><a href="#本文同步在我的公众号-DeveloperPython" class="headerlink" title="本文同步在我的公众号: DeveloperPython"></a>本文同步在我的公众号: DeveloperPython</h3><p><img src="http://upload-images.jianshu.io/upload_images/4653472-1ff8d4743422cfaf?imageMogr2/auto-orient/strip" alt=""><br><a id="more"></a><br>相信昨天大家看过 <a href="http://mp.weixin.qq.com/s?__biz=MzU3ODAxNDcwNQ==&amp;mid=2247483866&amp;idx=1&amp;sn=9692ca0d4a25ee4675d073e9643b7e30&amp;chksm=fd7a9d44ca0d1452f0e7d55d412e5469a3d82fbb00153e7d9b99a33e0424d6eb47b54903b5ad&amp;scene=21#wechat_redirect" target="_blank" rel="external">Github系列教程一 「开门」</a>之后，已经对Github的简介和发展史有了一个详细的了解。</p>
-<p>那么多的不说，我继续更新。</p>
-<p>为了更好的使用Github，第一步去了解这个平台是重要的。</p>
-<p>因此这篇我将针对Github平台进行一个全面的讲解。</p>
-<h2 id="1、注册Github账号"><a href="#1、注册Github账号" class="headerlink" title="1、注册Github账号"></a>1、注册Github账号</h2><p>访问 <a href="https://github.com/官网。" target="_blank" rel="external">https://github.com/官网。</a></p>
-<p>首页就是一个注册Github的入口。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-5d3b14792b78caf5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>这里就很简单了，填写你的用户名、邮箱和密码。</p>
-<p>不过提醒下，这个用户名比较重要，这相当于是你在Github的ID。</p>
-<p>上一篇文章讲过Github可以搭建个人博客username.github.io。那么这个用户名就会在这里用到。</p>
-<p>所以建议填写一个代表自己的ID。</p>
-<p>比如我的xiyouMc，博客就是xiyouMc.github.io。</p>
-<h2 id="2、Github主面板"><a href="#2、Github主面板" class="headerlink" title="2、Github主面板"></a>2、Github主面板</h2><p>注册完成之后，就来到了Github的主面板。</p>
-<p>如果你是新注册的，那么不会像我这么丰富，不过玩上一段时间也就差不多类似了。</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-f9ed3b8bfceb47f1?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>以下，我针对主要的两点进行讲解：</p>
-<p><strong>Github的工具栏</strong></p>
-<p>1、Logo<br>左上角这个Logo在Github每个页面都有，同时也是可以点击的。</p>
-<p>当你在Github里面打开了很多页面，然后想快速回到这个面板。直接点击左上角的Logo即可。</p>
-<p>2、搜索项目的入口<br>这里可以输入关键字，去搜索自己想要的项目。</p>
-<p>3、Pull requests(PR)<br>一个可查看自己贡献代码给其他人项目的面板。</p>
-<p>关于pr的含义，就是当自己针对别人的开源项目做了改动之后，就可以将这些改动pull requests 到对应开源者的项目中。</p>
-<p>4、Issues<br>这个你可以理解为Github上的聊天功能。</p>
-<p>用这个功能你可以很方便的给别人的项目提建议或者提Bug。同时你们也可以在里面进行沟通。</p>
-<p>5、Gist<br>如果你没有自己的开源项目，但是你有很不错的代码片段。就可以在Gist里面将自己优秀的代码片段进行提交。</p>
-<p>当然，你可以在Gist里面学习别人优秀的代码片段.<br><img src="http://upload-images.jianshu.io/upload_images/4653472-edf4803b2fbf547a?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><strong>动态栏</strong></p>
-<p>这里是你关注人的动态列表和你自己项目的状态记录。<br>所以在Github上多关注一些大牛，你会看到他们的动态，包括他们点赞的项目和创建的项目。这些项目也绝对是有水平的。</p>
-<h2 id="3、Github个人主页"><a href="#3、Github个人主页" class="headerlink" title="3、Github个人主页"></a>3、Github个人主页</h2><p>点击右上角的头像，会弹出下拉列表，在里面点击 Your profile。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-fd77f7f2c44fefef?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>进来之后，就进入了个人的主页。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-63d6baee40eaa391?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>你会看到我的简介里面养了条狗。<br>其中，几个重要的功能，我也都在上面标注出来了。</p>
-<h2 id="4、修改个人标签"><a href="#4、修改个人标签" class="headerlink" title="4、修改个人标签"></a>4、修改个人标签</h2><p>同样的，参考上面 Your profile。在那个下拉列表中，会有一个Settings，点击之后就会来到个人设置页面。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-c322da7781011eb4?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>这里面的内容，也都很清楚了。比如修改头像、修改用户名、简介等等的。</p>
-<p>不过到这里，我就讲个课外话。</p>
-<p>很多人都说Github是免费的，那他们怎么赢利的呢?</p>
-<p>我可以很明确的告诉你，Github有付费功能，而且有点贵。</p>
-<p>它的付费功能其实也很简单，就是一个创建私有仓库的权限。如果你买了的话，就可以创建私有的项目，当然私有的意思就是别人无法看到你的代码。</p>
-<p>具体价格，每个月大概7刀，折合人民币就是42块钱左右。所以如果不是非必须使用私有，还是建议别买这个。</p>
-<h2 id="5、创建项目"><a href="#5、创建项目" class="headerlink" title="5、创建项目"></a>5、创建项目</h2><p>点击 New repository，就进入了创建项目的页面。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-e6ecdc3e4b4c112d?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>填写你的项目名字、加上一句高大上的简介，选择Public，然后点击Create repository。就走出了开源的第一步。</p>
-<p>创建之后的项目面板大概是这样的：<br><img src="http://upload-images.jianshu.io/upload_images/4653472-38b3d9f4e6a939fc?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>因为这是一个已经成型的项目，所以说，如果你们是刚创建的一个项目，那么不会有这么丰富的内容。最多里面也就一个项目的说明文档Readme.md。当然这是需要使用 Markdown语法的，简称md,也同样是程序员必备的技能。</p>
-<h2 id="6、总结"><a href="#6、总结" class="headerlink" title="6、总结"></a>6、总结</h2><p>其实这篇文章写得相对简单点，如果你是一个已经使用Github一段时间的可能帮助不大。但是如果你刚接触或者没接触过Github，我相信这些基础知识对于你来讲还是有很大意义的。</p>
-<p>所以走出你的开源第一步，勇敢的将自己的项目提交到Github吧。</p>
+      <title><![CDATA[小程序之Github开源社区]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/GithubTrending/</url>
+      <content type="html"><![CDATA[<p><img src="http://upload-images.jianshu.io/upload_images/4653472-92c6e0096c11c841.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h2 id="01、初衷"><a href="#01、初衷" class="headerlink" title="01、初衷"></a>01、初衷</h2><p>大概上上周我花了周末两天的时间编写了一款小程序并顺利提交审核。</p>
+<p>也就在前两天我的小程序 「Github开源社区」 历经了两周的审核，终于。。。。。。成功发布了，并且绑定到了公众号。 </p>
+<a id="more"></a>
+<p>以下是这两天时间的数据分析报表。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-5db25e9b492954ec.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>（实时访问次数 pv）</p>
+<p>粗略的分析下：实时访问次数波动很明显，当然这也是正常的。高流量基本保持在早上十点到中午。晚上还会出现个别熬夜的程序员在看代码。总体呈下降趋势。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-4bab8d746061c759.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>(访问来源、访问时长、访问深度)</p>
+<p>粗略的分析下：</p>
+<p>访问来源主要来自会话，其次来自扫小程序码。</p>
+<p>访问时长最高点在 11-20 秒，当然还有大量用户超过1分多钟在使用小程序。</p>
+<p>其次，访问深度（访问了多少个页面），大部分只访问了一个页面，最深页面在5个页面的深度。</p>
+<p>——————划重点———–</p>
+<p>那么，为什么我会选择去编写一个关于 <strong>程序员 </strong>的小程序呢？</p>
+<p>首先，我是程序员。其次，也是因为前段时间我一直在更新关于Github的教程。因此，为了方便自己，同时方便读者和开发者，我选择开发了一款关于Github的小程序。 </p>
+<h2 id="02、小程序的功能"><a href="#02、小程序的功能" class="headerlink" title="02、小程序的功能"></a>02、小程序的功能</h2><p>「Github开源社区」目前的功能很简单，包括每日开源趋势、模糊搜索想要的代码、查看具体的代码文档以及仓库的信息。</p>
+<p>用微信扫一扫下方，可体验小程序。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-90ad79d09f150843.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>效果图<br><img src="http://upload-images.jianshu.io/upload_images/4653472-3ba1bce01266f9f2?imageMogr2/auto-orient/strip" alt=""><br>(启动小程序，默认展示当天最热开源项目,并支持查看文档)</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-e142717e120e467a?imageMogr2/auto-orient/strip" alt=""><br>(支持搜索代码)</p>
+<p><strong>后续将支持的功能</strong></p>
+<p>代码查看<br>登录Github账号，实现点赞等<br>社区<br>。。。</p>
+<h2 id="03、开发过程"><a href="#03、开发过程" class="headerlink" title="03、开发过程"></a>03、开发过程</h2><p>虽说这是一款工具性的小程序，但确切的说是一款C/S的软件。C端也就是集成进微信的小程序，S端的话就是我编写并部署在阿里云的服务端。</p>
+<p>C端包含了wxml、wxss、json、js还有其他配置属性。</p>
+<p>S端的话我就直接用Python + web.py构建的，同时基于Github Api开发。</p>
+<p>开发流程看似简单，但对于我这个前端半调子来讲，确实在开发C端遇到很多问题。当然，解决方法也就是Google + 大神。</p>
+<h2 id="04、如何开发一款自己的小程序"><a href="#04、如何开发一款自己的小程序" class="headerlink" title="04、如何开发一款自己的小程序"></a>04、如何开发一款自己的小程序</h2><p><strong>一个idea</strong></p>
+<p>这个idea很重要，因为自己的想法将会推动自己去实践并完成。如果没有一个自己的idea，那么与其说学技术，倒不如说你是在说服自己拥有多一点的技能。</p>
+<p>所以，idea很重要。</p>
+<p>如果一开始我并没有想好要去做什么小程序，然后就上手去学习如何开发，我猜可能在后面的学习过程中我将会很难坚持。因为那样是枯燥无味的，我并不知道自己用这个技术能做点什么。</p>
+<p>其次，Github开源社区的idea我在开发前一个礼拜都有了。外加晚上熬夜到一两点，加上周末，大概花了两三天时间就出来了。</p>
+<p>所以，在学习开发小程序之前，先想好自己要做什么。接下来，再动手去了解、学习这个技术，并运用起来。</p>
+<p><strong>需要了解的技术点</strong></p>
+<p>虽说小程序有一套自己的开发语言，但是，框架中主要的还是Page的生命周期和App的管理。其次，就是css的一些知识点。</p>
+<p>所以，一开始你可以去小程序的官网着重了解Page生命周期和App的管理。其次，熟悉下小程序的那几个重要的组件，其中包括View、button等等的。</p>
+<p>官网：<br><a href="https://mp.weixin.qq.com/debug/wxadoc/dev/component/" target="_blank" rel="external">https://mp.weixin.qq.com/debug/wxadoc/dev/component/</a></p>
+<p>接下来，你需要学习css的东西，这个其实不复杂，去w3c上面将css的关键知识点过一遍。了解前端的页面是如何布局的。</p>
+<p><strong>上手</strong></p>
+<ul>
+<li>IDE搭建<br>微信团队针对小程序专门出了一款开发工具。这里我直接上链接:<br><a href="https://mp.weixin.qq.com/debug/wxadoc/dev/devtools/download.html" target="_blank" rel="external">https://mp.weixin.qq.com/debug/wxadoc/dev/devtools/download.html</a></li>
+<li>项目结构</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">js ---------- JavaScript文件</div><div class="line"></div><div class="line">json -------- 项目配置文件，负责窗口颜色等等</div><div class="line"></div><div class="line">wxml ------- 类似HTML文件</div><div class="line"></div><div class="line">wxss ------- 类似CSS文件</div></pre></td></tr></table></figure>
+<p>在根目录通过App来命名这四种文件，也就是程序的入口。<br>App.js</p>
+<p>这个文件是必须要有的。其中主要写的内容也就是上面提到过管理App生命周期的。<br>App.json</p>
+<p>这个也是必须要有的。其中包含了整个小程序的全局配置。<br>App.wxss</p>
+<p>有点类似于css的，进行布局用的。当然，这也是全局的。<br>App.wxml</p>
+<p>这个可选，是用来布局小程序的界面的。有点类似于html。<br>关于具体的文档，链接在这。<br><a href="https://mp.weixin.qq.com/debug/wxadoc/dev/component/" target="_blank" rel="external">https://mp.weixin.qq.com/debug/wxadoc/dev/component/</a><br>如果有需要详细的讲解，那么可以留言，我考虑后续更新一系列的小程序开发教程。</p>
+<h2 id="05、个人开发经验"><a href="#05、个人开发经验" class="headerlink" title="05、个人开发经验"></a>05、个人开发经验</h2><p>虽说在不早之前，微信开放了个人小程序的开发资格。不过，你还是不能随心所欲的开发小程序。</p>
+<p>你能随心所欲开发的功能也大概只有工具类的。假设，你要是想开发一个社区类的小程序，那么你得要有诸多的证件。所以，在上手小程序之前，你需要看看小程序的开发规约，确保自己的idea是否需要各种证件。</p>
+<p>其次，小程序的兼容性，目前Github开源社区在 iOS 9.3.2 上出现 SDK Exception 。还没找到合理的解决方案。</p>
+<p>审核时间较长。你能做的就是等待。</p>
+<p>开发工具有时候响应很慢，同样的你只有等待，毕竟目前开发工具并没有到1.0版本。</p>
+<p>等等的坑。。。</p>
+<p>目前动态化的开发模式越来越火了，包括JSBridge、Weex、React等等的。所以，作为非前端的你是否也需要学习下前端的知识点呢？</p>
+<h4 id="来自公众号-DeveloperPython"><a href="#来自公众号-DeveloperPython" class="headerlink" title="来自公众号 : DeveloperPython"></a>来自公众号 : DeveloperPython</h4><p><img src="http://upload-images.jianshu.io/upload_images/4653472-b61ffc02ee6e4db5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
 <hr>
-<p>扫描二维码，关注公众号</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-b61ffc02ee6e4db5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>生活不止眼前的苟且，还有手下的代码、<br>和嘴上的扯淡<br>——</p>
-<p>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a></p>
-<p>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
+<p>行为艺术要持之以恒，iOS专用赞赏通道。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-2fa6f51658dee088?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
 ]]></content>
     </entry>
     
@@ -977,94 +995,6 @@ limitations under the License.
 <li>So 让我们一起努力。有一天你会是我的妻子，我会是你的丈夫，你我会是孩子的父母。</li>
 </ul>
 </blockquote>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Github系列教程一  开门]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/Github%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%E4%B8%80%20%E5%BC%80%E9%97%A8/</url>
-      <content type="html"><![CDATA[<p><img src="http://upload-images.jianshu.io/upload_images/4653472-2bd1a717e57c76f3?imageMogr2/auto-orient/strip" alt=""></p>
-<p>这是一套Github的小白教程<br><a id="more"></a></p>
-<h3 id="本文来自我的公众号：DeveloperPython"><a href="#本文来自我的公众号：DeveloperPython" class="headerlink" title="本文来自我的公众号：DeveloperPython"></a>本文来自我的公众号：DeveloperPython</h3><p><img src="http://upload-images.jianshu.io/upload_images/4653472-2bd1a717e57c76f3?imageMogr2/auto-orient/strip" alt=""><br>对于Github,我相信很多人都不陌生，并且我也一直认为Github是程序员的必备，当然还有一个 StackOverFlow。</p>
-<p>但是在我周围、包括公号里面的读者，大部分都不怎么使用Github。</p>
-<p>因为上次我的项目被点赞到Github Trending之后（全球开源项目的热门），我发现很多点赞的国内开发者都是不怎么使用Github的。因为几乎看不到他们的代码提交记录，然而里面很多国外开发者的点赞，我再进入他们的主页，大部分开发者都是持续提交代码中。</p>
-<p>之后我也收到好多消息，希望我写一篇关于Github的教程或者如何上Trending。</p>
-<p>其实，我接触Github时间挺早的了，大概在上大学开始写代码的时候，就已经使用上了 Github。当时我也是只下载，不用的那种。大概在接触 Github 一年左右之后，我就开始深入使用。</p>
-<p>到目前为止，自己 Github 中的项目已经有了130多个。</p>
-<p><a href="https://www.github.com/xiyouMc/" target="_blank" rel="external">https://www.github.com/xiyouMc/</a> </p>
-<p>Github是一个开源、开放、免费的平台，它更多的是提供给我们学习和贡献的。</p>
-<p>所以我决定写一个系列来讲解如何去更好的使用Github，为了让国内的开发者能合理的使用Github。</p>
-<h2 id="01、什么是-Github"><a href="#01、什么是-Github" class="headerlink" title="01、什么是 Github"></a>01、什么是 Github</h2><p>Github其实是一家公司，坐落在旧金山。是由三个知名的开发者在08年创办的，具体是谁就不用讲了，讲了也记不住。</p>
-<p>这是它的 Logo:</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-a9a0ffeb0f3deb93?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>大概也就在08年4月多，正式上线。</p>
-<p><a href="https://www.github.com/" target="_blank" rel="external">https://www.github.com/</a> </p>
-<p>简单的来讲，Github是一个基于 Git 的版本托管平台。</p>
-<p>大概在13年的时候，Github 用户数量已经破300万，到目前为止我想也应该上千万了吧。</p>
-<p>因此它有一个很洋气的名字就是全球最大同性交友平台。GayHub。</p>
-<h2 id="02、Github、Gitlab-和-Git-的区别"><a href="#02、Github、Gitlab-和-Git-的区别" class="headerlink" title="02、Github、Gitlab 和 Git 的区别"></a>02、Github、Gitlab 和 Git 的区别</h2><p>这个问题，我相信很多人都分不清。</p>
-<p>有的人会把Git理解成Github。你会经常听到有人跟你讲：“你可以去Git上找下，看看有没有你想要的代码”。 如果这句话，是别人跟我讲的，那我绝对是一脸懵逼的。</p>
-<p>至于为什么，那么我就来详细讲下这三个的区别。</p>
-<p><strong>先说下Git</strong></p>
-<p>Git是一款免费、开源的分布式版本控制系统，他是由著名的Linux发明者 Linus Torvalds 开发的。</p>
-<p>所以说Git是一个版本的控制系统，而非一个平台。</p>
-<p>提到这个版本控制系统，大家可能会想到SVN，毕竟这是很多大学都让学生使用的东西。只不过Git是新时代的产物。</p>
-<p>如果在15年的时候，你告诉我你们在使用SVN，那么还情有可原。毕竟那时候很多大公司还在用SVN，比如支付宝。但到现在了，你还在使用SVN那么真的是太落伍了。</p>
-<p>所以不管是学习Github，或者从事编程行业，Git绝对算是必备技能。</p>
-<p><strong>接下来说Github</strong></p>
-<p>上面已经说过，Github 是基于Git的版本托管服务。所以Git对于Github来讲就是一个版本管理的工具。</p>
-<p>其次Github，还有更多的功能，毕竟它是一个平台。后面的文章中，我也会列举出重要的几个。</p>
-<p><strong>最后来讲讲Gitlab</strong></p>
-<p>这个东西呢，其实是<strong>企业内部</strong>的Github。</p>
-<p>因为Github毕竟是一个开源的、全球性的代码托管平台。</p>
-<p>对于企业来讲，他们更希望内部有个这样类似的Git代码托管服务。所以他们会选择Gitlab，这个开源的代码托管平台。</p>
-<p>而且Gitlab一直在更新版本，目前已经到了9.1版本。</p>
-<p><a href="https://github.com/gitlabhq/gitlabhq/" target="_blank" rel="external">https://github.com/gitlabhq/gitlabhq/</a></p>
-<p>从地址来看，你也会发现Gitlab是Github平台上的一个开源项目，这样也就不难理解这两个的区别了。</p>
-<h2 id="03、Github-的影响力"><a href="#03、Github-的影响力" class="headerlink" title="03、Github 的影响力"></a>03、Github 的影响力</h2><p>我可以这么说吧，只要你能想到的大公司，他们都会在Github上有一个组织来贡献内部的优秀代码和框架。</p>
-<p>比如：<br>Google: <a href="https://www.gihutb.com/google" target="_blank" rel="external">https://www.gihutb.com/google</a><br>Apple: <a href="https://www.github.com/apple/" target="_blank" rel="external">https://www.github.com/apple/</a><br>Facebook: <a href="https://www.github.com/facebook/" target="_blank" rel="external">https://www.github.com/facebook/</a><br>Alibaba: <a href="https://www.github.com/alibaba" target="_blank" rel="external">https://www.github.com/alibaba</a><br>….<br>还有全球顶级的项目，也同样在Github。<br>Linux: <a href="https://www.github.com/torvalds/linux" target="_blank" rel="external">https://www.github.com/torvalds/linux</a><br>Nodejs: <a href="https://www.github.com/nodejs/node" target="_blank" rel="external">https://www.github.com/nodejs/node</a><br>Weex: <a href="https://github.com/alibaba/weex" target="_blank" rel="external">https://github.com/alibaba/weex</a><br>等等的….<br>同样还有全球顶尖级的开发者。<br>Linux之父 Linus:<br><img src="http://upload-images.jianshu.io/upload_images/4653472-b3a42f0dacbef2cd?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>Android 之神 Jake:<br><img src="http://upload-images.jianshu.io/upload_images/4653472-e0d5bf0e4644d3cc?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>等等的，我就不一一列举了。</p>
-<p>只要是在编程届厉害的人物，都会出现在Github。</p>
-<p>并且很多牛逼的项目做开源，比如你某天听说了某个公司的xx框架开源了。那么它们绝对在Github上开源的。</p>
-<p>因此，Github已经是开源的代名词。</p>
-<h2 id="04、Github能做什么"><a href="#04、Github能做什么" class="headerlink" title="04、Github能做什么"></a>04、Github能做什么</h2><ul>
-<li><strong>优秀的开源项目</strong></li>
-</ul>
-<p>学好使用优秀的开源项目，是一个可以避免你在软件开发中重复造轮子的事情。</p>
-<p>确切的来讲，正是因为有个Github上优秀的开源项目，才促使了我们在软件开发中变得越来越容易、越来越快速。</p>
-<p>比如说：网络请求库、图片加载库。如果让你去自己实现，那么时间和资源是一个很大的成本。对于大公司，可能在人力和资源上是充沛的。但是对于大部分互联网来讲时间就是一切。</p>
-<p>所以在使用开源项目的同时，学习他们优秀的设计思想和实现方式，无疑是提升自我编程能力的好时机。</p>
-<p>同样的，如果你能拥有一个优秀的开源项目，那么绝对是一个很好的体验。</p>
-<p>比如说我开源的WebHubBot，当你看到自己的项目每天每时都有人在点赞，那种感觉真心是比朋友圈被点赞爽很多倍的！！！</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-b63084401d16c5a5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><img src="http://upload-images.jianshu.io/upload_images/4653472-a4be03a4fa7183b0?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<ul>
-<li><strong>多人协作</strong><br>其实多人协作对于Github来讲无疑是一个转折点。</li>
-</ul>
-<p>因为一个好的项目，绝非几个人就能搞定的，因此Github提供了很好的协作平台。</p>
-<p>当你把代码提交上去之后，你可以让其他人和你一同开发，或者说如果你的项目很好，全球的开发者都会给你的项目做贡献。</p>
-<p>以我为例，前段时间提交了一个很有意思的项目，之后就收到了好几个全球开发者代码贡献，如下：</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-668e59895e243bdb?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>因此，多人协作真心是一个很爽、很棒的功能。</p>
-<ul>
-<li><strong>其次就是搭建个人网站</strong></li>
-</ul>
-<p>Github Pages是Github提供的一套完整的博客搭建环境。</p>
-<p>平时你会发现很多人的个人博客域名都是xxxx.github.io。这就是使用Github Pages来搭建的。使用方法很简单，也绝对是一个装逼利器。</p>
-<ul>
-<li><strong>个人简历</strong></li>
-</ul>
-<p>活跃的Github账号，是一个很好的个人简历。</p>
-<p>据我所知，目前很多猎头和公司的HR都很喜欢逛Github。</p>
-<p>并且很多国外的科技公司也都会通过Github来寻找优秀的人才。</p>
-<p>所以多用Github，会让你收到很多意外的惊喜。</p>
-<h2 id="05、加入Github"><a href="#05、加入Github" class="headerlink" title="05、加入Github"></a>05、加入Github</h2><p>相信大家读到这里，都迫不及待的想去使用Github了。</p>
-<p>那么事不宜迟，从现在开始，快去注册一个Github账号。 </p>
-<p>链接： <a href="https://www.github.com/" target="_blank" rel="external">https://www.github.com/</a> 。</p>
-<p>注册完成之后，先玩着，了解下整个平台的功能。</p>
-<p>同时也可以试着搜索下我的Github：<br>ID：xiyouMc<br><a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a> </p>
-<p>接下来，我还会继续连载Github一系列的文章。</p>
-<p>保证你们看完之后，会有不一样的收获。</p>
-<p>同时如果你目前在使用Git或者Github中，那么有问题的话，也同样可以给我留言，我会一一给你们解答。</p>
-<p>——<br>扫描二维码，关注公众号<br><img src="http://upload-images.jianshu.io/upload_images/4653472-1c1e06e2f58b0610?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>生活不止眼前的苟且，还有手下的代码、<br>和嘴上的扯淡<br>——<br>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a><br>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
 ]]></content>
     </entry>
     
@@ -1162,68 +1092,138 @@ limitations under the License.
     </entry>
     
     <entry>
-      <title><![CDATA[小程序之Github开源社区]]></title>
-      <url>https://xiyoumc.github.com/2017/07/03/GithubTrending/</url>
-      <content type="html"><![CDATA[<p><img src="http://upload-images.jianshu.io/upload_images/4653472-92c6e0096c11c841.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<h2 id="01、初衷"><a href="#01、初衷" class="headerlink" title="01、初衷"></a>01、初衷</h2><p>大概上上周我花了周末两天的时间编写了一款小程序并顺利提交审核。</p>
-<p>也就在前两天我的小程序 「Github开源社区」 历经了两周的审核，终于。。。。。。成功发布了，并且绑定到了公众号。 </p>
-<a id="more"></a>
-<p>以下是这两天时间的数据分析报表。</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-5db25e9b492954ec.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>（实时访问次数 pv）</p>
-<p>粗略的分析下：实时访问次数波动很明显，当然这也是正常的。高流量基本保持在早上十点到中午。晚上还会出现个别熬夜的程序员在看代码。总体呈下降趋势。</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-4bab8d746061c759.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>(访问来源、访问时长、访问深度)</p>
-<p>粗略的分析下：</p>
-<p>访问来源主要来自会话，其次来自扫小程序码。</p>
-<p>访问时长最高点在 11-20 秒，当然还有大量用户超过1分多钟在使用小程序。</p>
-<p>其次，访问深度（访问了多少个页面），大部分只访问了一个页面，最深页面在5个页面的深度。</p>
-<p>——————划重点———–</p>
-<p>那么，为什么我会选择去编写一个关于 <strong>程序员 </strong>的小程序呢？</p>
-<p>首先，我是程序员。其次，也是因为前段时间我一直在更新关于Github的教程。因此，为了方便自己，同时方便读者和开发者，我选择开发了一款关于Github的小程序。 </p>
-<h2 id="02、小程序的功能"><a href="#02、小程序的功能" class="headerlink" title="02、小程序的功能"></a>02、小程序的功能</h2><p>「Github开源社区」目前的功能很简单，包括每日开源趋势、模糊搜索想要的代码、查看具体的代码文档以及仓库的信息。</p>
-<p>用微信扫一扫下方，可体验小程序。</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-90ad79d09f150843.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>效果图<br><img src="http://upload-images.jianshu.io/upload_images/4653472-3ba1bce01266f9f2?imageMogr2/auto-orient/strip" alt=""><br>(启动小程序，默认展示当天最热开源项目,并支持查看文档)</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/4653472-e142717e120e467a?imageMogr2/auto-orient/strip" alt=""><br>(支持搜索代码)</p>
-<p><strong>后续将支持的功能</strong></p>
-<p>代码查看<br>登录Github账号，实现点赞等<br>社区<br>。。。</p>
-<h2 id="03、开发过程"><a href="#03、开发过程" class="headerlink" title="03、开发过程"></a>03、开发过程</h2><p>虽说这是一款工具性的小程序，但确切的说是一款C/S的软件。C端也就是集成进微信的小程序，S端的话就是我编写并部署在阿里云的服务端。</p>
-<p>C端包含了wxml、wxss、json、js还有其他配置属性。</p>
-<p>S端的话我就直接用Python + web.py构建的，同时基于Github Api开发。</p>
-<p>开发流程看似简单，但对于我这个前端半调子来讲，确实在开发C端遇到很多问题。当然，解决方法也就是Google + 大神。</p>
-<h2 id="04、如何开发一款自己的小程序"><a href="#04、如何开发一款自己的小程序" class="headerlink" title="04、如何开发一款自己的小程序"></a>04、如何开发一款自己的小程序</h2><p><strong>一个idea</strong></p>
-<p>这个idea很重要，因为自己的想法将会推动自己去实践并完成。如果没有一个自己的idea，那么与其说学技术，倒不如说你是在说服自己拥有多一点的技能。</p>
-<p>所以，idea很重要。</p>
-<p>如果一开始我并没有想好要去做什么小程序，然后就上手去学习如何开发，我猜可能在后面的学习过程中我将会很难坚持。因为那样是枯燥无味的，我并不知道自己用这个技术能做点什么。</p>
-<p>其次，Github开源社区的idea我在开发前一个礼拜都有了。外加晚上熬夜到一两点，加上周末，大概花了两三天时间就出来了。</p>
-<p>所以，在学习开发小程序之前，先想好自己要做什么。接下来，再动手去了解、学习这个技术，并运用起来。</p>
-<p><strong>需要了解的技术点</strong></p>
-<p>虽说小程序有一套自己的开发语言，但是，框架中主要的还是Page的生命周期和App的管理。其次，就是css的一些知识点。</p>
-<p>所以，一开始你可以去小程序的官网着重了解Page生命周期和App的管理。其次，熟悉下小程序的那几个重要的组件，其中包括View、button等等的。</p>
-<p>官网：<br><a href="https://mp.weixin.qq.com/debug/wxadoc/dev/component/" target="_blank" rel="external">https://mp.weixin.qq.com/debug/wxadoc/dev/component/</a></p>
-<p>接下来，你需要学习css的东西，这个其实不复杂，去w3c上面将css的关键知识点过一遍。了解前端的页面是如何布局的。</p>
-<p><strong>上手</strong></p>
-<ul>
-<li>IDE搭建<br>微信团队针对小程序专门出了一款开发工具。这里我直接上链接:<br><a href="https://mp.weixin.qq.com/debug/wxadoc/dev/devtools/download.html" target="_blank" rel="external">https://mp.weixin.qq.com/debug/wxadoc/dev/devtools/download.html</a></li>
-<li>项目结构</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">js ---------- JavaScript文件</div><div class="line"></div><div class="line">json -------- 项目配置文件，负责窗口颜色等等</div><div class="line"></div><div class="line">wxml ------- 类似HTML文件</div><div class="line"></div><div class="line">wxss ------- 类似CSS文件</div></pre></td></tr></table></figure>
-<p>在根目录通过App来命名这四种文件，也就是程序的入口。<br>App.js</p>
-<p>这个文件是必须要有的。其中主要写的内容也就是上面提到过管理App生命周期的。<br>App.json</p>
-<p>这个也是必须要有的。其中包含了整个小程序的全局配置。<br>App.wxss</p>
-<p>有点类似于css的，进行布局用的。当然，这也是全局的。<br>App.wxml</p>
-<p>这个可选，是用来布局小程序的界面的。有点类似于html。<br>关于具体的文档，链接在这。<br><a href="https://mp.weixin.qq.com/debug/wxadoc/dev/component/" target="_blank" rel="external">https://mp.weixin.qq.com/debug/wxadoc/dev/component/</a><br>如果有需要详细的讲解，那么可以留言，我考虑后续更新一系列的小程序开发教程。</p>
-<h2 id="05、个人开发经验"><a href="#05、个人开发经验" class="headerlink" title="05、个人开发经验"></a>05、个人开发经验</h2><p>虽说在不早之前，微信开放了个人小程序的开发资格。不过，你还是不能随心所欲的开发小程序。</p>
-<p>你能随心所欲开发的功能也大概只有工具类的。假设，你要是想开发一个社区类的小程序，那么你得要有诸多的证件。所以，在上手小程序之前，你需要看看小程序的开发规约，确保自己的idea是否需要各种证件。</p>
-<p>其次，小程序的兼容性，目前Github开源社区在 iOS 9.3.2 上出现 SDK Exception 。还没找到合理的解决方案。</p>
-<p>审核时间较长。你能做的就是等待。</p>
-<p>开发工具有时候响应很慢，同样的你只有等待，毕竟目前开发工具并没有到1.0版本。</p>
-<p>等等的坑。。。</p>
-<p>目前动态化的开发模式越来越火了，包括JSBridge、Weex、React等等的。所以，作为非前端的你是否也需要学习下前端的知识点呢？</p>
-<h4 id="来自公众号-DeveloperPython"><a href="#来自公众号-DeveloperPython" class="headerlink" title="来自公众号 : DeveloperPython"></a>来自公众号 : DeveloperPython</h4><p><img src="http://upload-images.jianshu.io/upload_images/4653472-b61ffc02ee6e4db5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+      <title><![CDATA[Github系列教程二 「加入Github」]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/Github%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%E4%BA%8C%20%E5%8A%A0%E5%85%A5Github/</url>
+      <content type="html"><![CDATA[<h3 id="本文同步在我的公众号-DeveloperPython"><a href="#本文同步在我的公众号-DeveloperPython" class="headerlink" title="本文同步在我的公众号: DeveloperPython"></a>本文同步在我的公众号: DeveloperPython</h3><p><img src="http://upload-images.jianshu.io/upload_images/4653472-1ff8d4743422cfaf?imageMogr2/auto-orient/strip" alt=""><br><a id="more"></a><br>相信昨天大家看过 <a href="http://mp.weixin.qq.com/s?__biz=MzU3ODAxNDcwNQ==&amp;mid=2247483866&amp;idx=1&amp;sn=9692ca0d4a25ee4675d073e9643b7e30&amp;chksm=fd7a9d44ca0d1452f0e7d55d412e5469a3d82fbb00153e7d9b99a33e0424d6eb47b54903b5ad&amp;scene=21#wechat_redirect" target="_blank" rel="external">Github系列教程一 「开门」</a>之后，已经对Github的简介和发展史有了一个详细的了解。</p>
+<p>那么多的不说，我继续更新。</p>
+<p>为了更好的使用Github，第一步去了解这个平台是重要的。</p>
+<p>因此这篇我将针对Github平台进行一个全面的讲解。</p>
+<h2 id="1、注册Github账号"><a href="#1、注册Github账号" class="headerlink" title="1、注册Github账号"></a>1、注册Github账号</h2><p>访问 <a href="https://github.com/官网。" target="_blank" rel="external">https://github.com/官网。</a></p>
+<p>首页就是一个注册Github的入口。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-5d3b14792b78caf5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>这里就很简单了，填写你的用户名、邮箱和密码。</p>
+<p>不过提醒下，这个用户名比较重要，这相当于是你在Github的ID。</p>
+<p>上一篇文章讲过Github可以搭建个人博客username.github.io。那么这个用户名就会在这里用到。</p>
+<p>所以建议填写一个代表自己的ID。</p>
+<p>比如我的xiyouMc，博客就是xiyouMc.github.io。</p>
+<h2 id="2、Github主面板"><a href="#2、Github主面板" class="headerlink" title="2、Github主面板"></a>2、Github主面板</h2><p>注册完成之后，就来到了Github的主面板。</p>
+<p>如果你是新注册的，那么不会像我这么丰富，不过玩上一段时间也就差不多类似了。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-f9ed3b8bfceb47f1?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>以下，我针对主要的两点进行讲解：</p>
+<p><strong>Github的工具栏</strong></p>
+<p>1、Logo<br>左上角这个Logo在Github每个页面都有，同时也是可以点击的。</p>
+<p>当你在Github里面打开了很多页面，然后想快速回到这个面板。直接点击左上角的Logo即可。</p>
+<p>2、搜索项目的入口<br>这里可以输入关键字，去搜索自己想要的项目。</p>
+<p>3、Pull requests(PR)<br>一个可查看自己贡献代码给其他人项目的面板。</p>
+<p>关于pr的含义，就是当自己针对别人的开源项目做了改动之后，就可以将这些改动pull requests 到对应开源者的项目中。</p>
+<p>4、Issues<br>这个你可以理解为Github上的聊天功能。</p>
+<p>用这个功能你可以很方便的给别人的项目提建议或者提Bug。同时你们也可以在里面进行沟通。</p>
+<p>5、Gist<br>如果你没有自己的开源项目，但是你有很不错的代码片段。就可以在Gist里面将自己优秀的代码片段进行提交。</p>
+<p>当然，你可以在Gist里面学习别人优秀的代码片段.<br><img src="http://upload-images.jianshu.io/upload_images/4653472-edf4803b2fbf547a?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><strong>动态栏</strong></p>
+<p>这里是你关注人的动态列表和你自己项目的状态记录。<br>所以在Github上多关注一些大牛，你会看到他们的动态，包括他们点赞的项目和创建的项目。这些项目也绝对是有水平的。</p>
+<h2 id="3、Github个人主页"><a href="#3、Github个人主页" class="headerlink" title="3、Github个人主页"></a>3、Github个人主页</h2><p>点击右上角的头像，会弹出下拉列表，在里面点击 Your profile。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-fd77f7f2c44fefef?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>进来之后，就进入了个人的主页。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-63d6baee40eaa391?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>你会看到我的简介里面养了条狗。<br>其中，几个重要的功能，我也都在上面标注出来了。</p>
+<h2 id="4、修改个人标签"><a href="#4、修改个人标签" class="headerlink" title="4、修改个人标签"></a>4、修改个人标签</h2><p>同样的，参考上面 Your profile。在那个下拉列表中，会有一个Settings，点击之后就会来到个人设置页面。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-c322da7781011eb4?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>这里面的内容，也都很清楚了。比如修改头像、修改用户名、简介等等的。</p>
+<p>不过到这里，我就讲个课外话。</p>
+<p>很多人都说Github是免费的，那他们怎么赢利的呢?</p>
+<p>我可以很明确的告诉你，Github有付费功能，而且有点贵。</p>
+<p>它的付费功能其实也很简单，就是一个创建私有仓库的权限。如果你买了的话，就可以创建私有的项目，当然私有的意思就是别人无法看到你的代码。</p>
+<p>具体价格，每个月大概7刀，折合人民币就是42块钱左右。所以如果不是非必须使用私有，还是建议别买这个。</p>
+<h2 id="5、创建项目"><a href="#5、创建项目" class="headerlink" title="5、创建项目"></a>5、创建项目</h2><p>点击 New repository，就进入了创建项目的页面。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-e6ecdc3e4b4c112d?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>填写你的项目名字、加上一句高大上的简介，选择Public，然后点击Create repository。就走出了开源的第一步。</p>
+<p>创建之后的项目面板大概是这样的：<br><img src="http://upload-images.jianshu.io/upload_images/4653472-38b3d9f4e6a939fc?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>因为这是一个已经成型的项目，所以说，如果你们是刚创建的一个项目，那么不会有这么丰富的内容。最多里面也就一个项目的说明文档Readme.md。当然这是需要使用 Markdown语法的，简称md,也同样是程序员必备的技能。</p>
+<h2 id="6、总结"><a href="#6、总结" class="headerlink" title="6、总结"></a>6、总结</h2><p>其实这篇文章写得相对简单点，如果你是一个已经使用Github一段时间的可能帮助不大。但是如果你刚接触或者没接触过Github，我相信这些基础知识对于你来讲还是有很大意义的。</p>
+<p>所以走出你的开源第一步，勇敢的将自己的项目提交到Github吧。</p>
 <hr>
-<p>行为艺术要持之以恒，iOS专用赞赏通道。<br><img src="http://upload-images.jianshu.io/upload_images/4653472-2fa6f51658dee088?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>扫描二维码，关注公众号</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-b61ffc02ee6e4db5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>生活不止眼前的苟且，还有手下的代码、<br>和嘴上的扯淡<br>——</p>
+<p>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a></p>
+<p>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Github系列教程一  开门]]></title>
+      <url>https://xiyoumc.github.com/2017/07/03/Github%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%E4%B8%80%20%E5%BC%80%E9%97%A8/</url>
+      <content type="html"><![CDATA[<p><img src="http://upload-images.jianshu.io/upload_images/4653472-2bd1a717e57c76f3?imageMogr2/auto-orient/strip" alt=""></p>
+<p>这是一套Github的小白教程<br><a id="more"></a></p>
+<h3 id="本文来自我的公众号：DeveloperPython"><a href="#本文来自我的公众号：DeveloperPython" class="headerlink" title="本文来自我的公众号：DeveloperPython"></a>本文来自我的公众号：DeveloperPython</h3><p><img src="http://upload-images.jianshu.io/upload_images/4653472-2bd1a717e57c76f3?imageMogr2/auto-orient/strip" alt=""><br>对于Github,我相信很多人都不陌生，并且我也一直认为Github是程序员的必备，当然还有一个 StackOverFlow。</p>
+<p>但是在我周围、包括公号里面的读者，大部分都不怎么使用Github。</p>
+<p>因为上次我的项目被点赞到Github Trending之后（全球开源项目的热门），我发现很多点赞的国内开发者都是不怎么使用Github的。因为几乎看不到他们的代码提交记录，然而里面很多国外开发者的点赞，我再进入他们的主页，大部分开发者都是持续提交代码中。</p>
+<p>之后我也收到好多消息，希望我写一篇关于Github的教程或者如何上Trending。</p>
+<p>其实，我接触Github时间挺早的了，大概在上大学开始写代码的时候，就已经使用上了 Github。当时我也是只下载，不用的那种。大概在接触 Github 一年左右之后，我就开始深入使用。</p>
+<p>到目前为止，自己 Github 中的项目已经有了130多个。</p>
+<p><a href="https://www.github.com/xiyouMc/" target="_blank" rel="external">https://www.github.com/xiyouMc/</a> </p>
+<p>Github是一个开源、开放、免费的平台，它更多的是提供给我们学习和贡献的。</p>
+<p>所以我决定写一个系列来讲解如何去更好的使用Github，为了让国内的开发者能合理的使用Github。</p>
+<h2 id="01、什么是-Github"><a href="#01、什么是-Github" class="headerlink" title="01、什么是 Github"></a>01、什么是 Github</h2><p>Github其实是一家公司，坐落在旧金山。是由三个知名的开发者在08年创办的，具体是谁就不用讲了，讲了也记不住。</p>
+<p>这是它的 Logo:</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-a9a0ffeb0f3deb93?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>大概也就在08年4月多，正式上线。</p>
+<p><a href="https://www.github.com/" target="_blank" rel="external">https://www.github.com/</a> </p>
+<p>简单的来讲，Github是一个基于 Git 的版本托管平台。</p>
+<p>大概在13年的时候，Github 用户数量已经破300万，到目前为止我想也应该上千万了吧。</p>
+<p>因此它有一个很洋气的名字就是全球最大同性交友平台。GayHub。</p>
+<h2 id="02、Github、Gitlab-和-Git-的区别"><a href="#02、Github、Gitlab-和-Git-的区别" class="headerlink" title="02、Github、Gitlab 和 Git 的区别"></a>02、Github、Gitlab 和 Git 的区别</h2><p>这个问题，我相信很多人都分不清。</p>
+<p>有的人会把Git理解成Github。你会经常听到有人跟你讲：“你可以去Git上找下，看看有没有你想要的代码”。 如果这句话，是别人跟我讲的，那我绝对是一脸懵逼的。</p>
+<p>至于为什么，那么我就来详细讲下这三个的区别。</p>
+<p><strong>先说下Git</strong></p>
+<p>Git是一款免费、开源的分布式版本控制系统，他是由著名的Linux发明者 Linus Torvalds 开发的。</p>
+<p>所以说Git是一个版本的控制系统，而非一个平台。</p>
+<p>提到这个版本控制系统，大家可能会想到SVN，毕竟这是很多大学都让学生使用的东西。只不过Git是新时代的产物。</p>
+<p>如果在15年的时候，你告诉我你们在使用SVN，那么还情有可原。毕竟那时候很多大公司还在用SVN，比如支付宝。但到现在了，你还在使用SVN那么真的是太落伍了。</p>
+<p>所以不管是学习Github，或者从事编程行业，Git绝对算是必备技能。</p>
+<p><strong>接下来说Github</strong></p>
+<p>上面已经说过，Github 是基于Git的版本托管服务。所以Git对于Github来讲就是一个版本管理的工具。</p>
+<p>其次Github，还有更多的功能，毕竟它是一个平台。后面的文章中，我也会列举出重要的几个。</p>
+<p><strong>最后来讲讲Gitlab</strong></p>
+<p>这个东西呢，其实是<strong>企业内部</strong>的Github。</p>
+<p>因为Github毕竟是一个开源的、全球性的代码托管平台。</p>
+<p>对于企业来讲，他们更希望内部有个这样类似的Git代码托管服务。所以他们会选择Gitlab，这个开源的代码托管平台。</p>
+<p>而且Gitlab一直在更新版本，目前已经到了9.1版本。</p>
+<p><a href="https://github.com/gitlabhq/gitlabhq/" target="_blank" rel="external">https://github.com/gitlabhq/gitlabhq/</a></p>
+<p>从地址来看，你也会发现Gitlab是Github平台上的一个开源项目，这样也就不难理解这两个的区别了。</p>
+<h2 id="03、Github-的影响力"><a href="#03、Github-的影响力" class="headerlink" title="03、Github 的影响力"></a>03、Github 的影响力</h2><p>我可以这么说吧，只要你能想到的大公司，他们都会在Github上有一个组织来贡献内部的优秀代码和框架。</p>
+<p>比如：<br>Google: <a href="https://www.gihutb.com/google" target="_blank" rel="external">https://www.gihutb.com/google</a><br>Apple: <a href="https://www.github.com/apple/" target="_blank" rel="external">https://www.github.com/apple/</a><br>Facebook: <a href="https://www.github.com/facebook/" target="_blank" rel="external">https://www.github.com/facebook/</a><br>Alibaba: <a href="https://www.github.com/alibaba" target="_blank" rel="external">https://www.github.com/alibaba</a><br>….<br>还有全球顶级的项目，也同样在Github。<br>Linux: <a href="https://www.github.com/torvalds/linux" target="_blank" rel="external">https://www.github.com/torvalds/linux</a><br>Nodejs: <a href="https://www.github.com/nodejs/node" target="_blank" rel="external">https://www.github.com/nodejs/node</a><br>Weex: <a href="https://github.com/alibaba/weex" target="_blank" rel="external">https://github.com/alibaba/weex</a><br>等等的….<br>同样还有全球顶尖级的开发者。<br>Linux之父 Linus:<br><img src="http://upload-images.jianshu.io/upload_images/4653472-b3a42f0dacbef2cd?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>Android 之神 Jake:<br><img src="http://upload-images.jianshu.io/upload_images/4653472-e0d5bf0e4644d3cc?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>等等的，我就不一一列举了。</p>
+<p>只要是在编程届厉害的人物，都会出现在Github。</p>
+<p>并且很多牛逼的项目做开源，比如你某天听说了某个公司的xx框架开源了。那么它们绝对在Github上开源的。</p>
+<p>因此，Github已经是开源的代名词。</p>
+<h2 id="04、Github能做什么"><a href="#04、Github能做什么" class="headerlink" title="04、Github能做什么"></a>04、Github能做什么</h2><ul>
+<li><strong>优秀的开源项目</strong></li>
+</ul>
+<p>学好使用优秀的开源项目，是一个可以避免你在软件开发中重复造轮子的事情。</p>
+<p>确切的来讲，正是因为有个Github上优秀的开源项目，才促使了我们在软件开发中变得越来越容易、越来越快速。</p>
+<p>比如说：网络请求库、图片加载库。如果让你去自己实现，那么时间和资源是一个很大的成本。对于大公司，可能在人力和资源上是充沛的。但是对于大部分互联网来讲时间就是一切。</p>
+<p>所以在使用开源项目的同时，学习他们优秀的设计思想和实现方式，无疑是提升自我编程能力的好时机。</p>
+<p>同样的，如果你能拥有一个优秀的开源项目，那么绝对是一个很好的体验。</p>
+<p>比如说我开源的WebHubBot，当你看到自己的项目每天每时都有人在点赞，那种感觉真心是比朋友圈被点赞爽很多倍的！！！</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-b63084401d16c5a5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><img src="http://upload-images.jianshu.io/upload_images/4653472-a4be03a4fa7183b0?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<ul>
+<li><strong>多人协作</strong><br>其实多人协作对于Github来讲无疑是一个转折点。</li>
+</ul>
+<p>因为一个好的项目，绝非几个人就能搞定的，因此Github提供了很好的协作平台。</p>
+<p>当你把代码提交上去之后，你可以让其他人和你一同开发，或者说如果你的项目很好，全球的开发者都会给你的项目做贡献。</p>
+<p>以我为例，前段时间提交了一个很有意思的项目，之后就收到了好几个全球开发者代码贡献，如下：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4653472-668e59895e243bdb?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>因此，多人协作真心是一个很爽、很棒的功能。</p>
+<ul>
+<li><strong>其次就是搭建个人网站</strong></li>
+</ul>
+<p>Github Pages是Github提供的一套完整的博客搭建环境。</p>
+<p>平时你会发现很多人的个人博客域名都是xxxx.github.io。这就是使用Github Pages来搭建的。使用方法很简单，也绝对是一个装逼利器。</p>
+<ul>
+<li><strong>个人简历</strong></li>
+</ul>
+<p>活跃的Github账号，是一个很好的个人简历。</p>
+<p>据我所知，目前很多猎头和公司的HR都很喜欢逛Github。</p>
+<p>并且很多国外的科技公司也都会通过Github来寻找优秀的人才。</p>
+<p>所以多用Github，会让你收到很多意外的惊喜。</p>
+<h2 id="05、加入Github"><a href="#05、加入Github" class="headerlink" title="05、加入Github"></a>05、加入Github</h2><p>相信大家读到这里，都迫不及待的想去使用Github了。</p>
+<p>那么事不宜迟，从现在开始，快去注册一个Github账号。 </p>
+<p>链接： <a href="https://www.github.com/" target="_blank" rel="external">https://www.github.com/</a> 。</p>
+<p>注册完成之后，先玩着，了解下整个平台的功能。</p>
+<p>同时也可以试着搜索下我的Github：<br>ID：xiyouMc<br><a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a> </p>
+<p>接下来，我还会继续连载Github一系列的文章。</p>
+<p>保证你们看完之后，会有不一样的收获。</p>
+<p>同时如果你目前在使用Git或者Github中，那么有问题的话，也同样可以给我留言，我会一一给你们解答。</p>
+<p>——<br>扫描二维码，关注公众号<br><img src="http://upload-images.jianshu.io/upload_images/4653472-1c1e06e2f58b0610?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>生活不止眼前的苟且，还有手下的代码、<br>和嘴上的扯淡<br>——<br>个人博客: <a href="http://xiyoumc.0x2048.com/" target="_blank" rel="external">http://xiyoumc.0x2048.com/</a><br>Github:<a href="https://www.github.com/xiyouMc" target="_blank" rel="external">https://www.github.com/xiyouMc</a></p>
 ]]></content>
     </entry>
     
