@@ -101,15 +101,15 @@
 <meta property="og:site_name" content="XiyouMc">
 <meta property="og:description" content="Python新手引导 第一篇
 阅读本文需要3.66分钟">
-<meta property="og:image" content="http://115.28.132.58:8080/docs/20160118203112196">
-<meta property="og:image" content="http://115.28.132.58:8080/docs/WX20170303-190604.png">
-<meta property="og:image" content="http://115.28.132.58:8080/docs/WX20170303-190922.png">
-<meta property="og:updated_time" content="2017-07-03T05:48:28.000Z">
+<meta property="og:image" content="http://blog.0x2048.com/docs/20160118203112196">
+<meta property="og:image" content="http://blog.0x2048.com/docs/WX20170303-190604.png">
+<meta property="og:image" content="http://blog.0x2048.com/docs/WX20170303-190922.png">
+<meta property="og:updated_time" content="2017-07-05T08:07:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python新手引导第一篇">
 <meta name="twitter:description" content="Python新手引导 第一篇
 阅读本文需要3.66分钟">
-<meta name="twitter:image" content="http://115.28.132.58:8080/docs/20160118203112196">
+<meta name="twitter:image" content="http://blog.0x2048.com/docs/20160118203112196">
 
 
 
@@ -404,7 +404,7 @@
 <h2 id="一、Python简介"><a href="#一、Python简介" class="headerlink" title="一、Python简介"></a>一、Python简介</h2><blockquote>
 <p>Python是由著名的“龟叔”Guido van Rossum在1989年，为了打发无聊的圣诞节而编写的一个编程语言</p>
 </blockquote>
-<p>以下数据是通过 TIOBE获取到的一组编程语言排行榜：<br> <img src="http://115.28.132.58:8080/docs/20160118203112196" alt=""></p>
+<p>以下数据是通过 TIOBE获取到的一组编程语言排行榜：<br> <img src="http://blog.0x2048.com/docs/20160118203112196" alt=""></p>
 <p> 总的来说，这几种Top编程语言各有千秋。C是可以用来编写操作系统、最贴近硬件的语言。而Python是用来编写应用程序的高级编程语言。</p>
 <p> 然而Python最大的好处就是有很多现成的组件让你来用，就类似让你去搭建发送邮件的自动化工具，如果从底层发送邮件开始，那么我觉得你可能需要一年半载来完成这个工作。那么这时候就体现出来Python的重要性，只需要十行左右的代码你就可以轻松的发送邮件。</p>
 <p> Python为我们提供了大量的基础代码库，覆盖了网络、文件、GUI、数据库、文件等等大量的内容。<br> 在<a href="https://pypi.python.org/pypi" target="_blank" rel="external">Pypi</a>你可以搜索到任何你想用到的库。</p>
@@ -416,8 +416,8 @@
 <h4 id="A-安装Pyenv"><a href="#A-安装Pyenv" class="headerlink" title="A)安装Pyenv"></a>A)安装Pyenv</h4><p>在终端执行如下命令以安装 pyenv 及其插件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash</div></pre></td></tr></table></figure></p>
 <p>安装完成后，根据提示将如下语句加入到~/.bashrc中：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">export PYENV_ROOT=&quot;$HOME/.pyenv&quot;</div><div class="line">export PATH=&quot;$PYENV_ROOT/bin:$PATH&quot;</div><div class="line">eval &quot;$(pyenv init -)&quot;</div><div class="line">eval &quot;$(pyenv virtualenv-init -)&quot;   # 这句可以不加</div></pre></td></tr></table></figure></p>
 <h4 id="B-使用"><a href="#B-使用" class="headerlink" title="B)使用"></a>B)使用</h4><p>pyenv 总共有11条不同的命令，具体可见：<a href="https://github.com/yyuu/pyenv/blob/master/COMMANDS.md#command-reference" target="_blank" rel="external">Comment Reference</a>.下面就最重要的几条进行说明：</p>
-<h2 id="1-pyenv-versions"><a href="#1-pyenv-versions" class="headerlink" title="1. pyenv versions"></a>1. pyenv versions</h2><p>查看当前pyenv可检测到的所有版本，处于激活状态的版本前以 * 标注.<br><img src="http://115.28.132.58:8080/docs/WX20170303-190604.png" alt=""></p>
-<h2 id="2-pyenv-version"><a href="#2-pyenv-version" class="headerlink" title="2. pyenv version"></a>2. pyenv version</h2><p>查看当前处于激活状态的版本，括号中内容表示这个版本是由哪条路径激活的<br><img src="http://115.28.132.58:8080/docs/WX20170303-190922.png" alt=""></p>
+<h2 id="1-pyenv-versions"><a href="#1-pyenv-versions" class="headerlink" title="1. pyenv versions"></a>1. pyenv versions</h2><p>查看当前pyenv可检测到的所有版本，处于激活状态的版本前以 * 标注.<br><img src="http://blog.0x2048.com/docs/WX20170303-190604.png" alt=""></p>
+<h2 id="2-pyenv-version"><a href="#2-pyenv-version" class="headerlink" title="2. pyenv version"></a>2. pyenv version</h2><p>查看当前处于激活状态的版本，括号中内容表示这个版本是由哪条路径激活的<br><img src="http://blog.0x2048.com/docs/WX20170303-190922.png" alt=""></p>
 <h2 id="3-pyenv-install"><a href="#3-pyenv-install" class="headerlink" title="3. pyenv install"></a>3. pyenv install</h2><p>使用python-build(插件)安装一个Python版本，到$PYENV_ROOT/versions路径下<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pyenv install -v <span class="number">3.4</span><span class="number">.7</span></div></pre></td></tr></table></figure></p>
 <h2 id="4-pyenv-uninstall"><a href="#4-pyenv-uninstall" class="headerlink" title="4. pyenv uninstall"></a>4. pyenv uninstall</h2><p>卸载一个版本</p>
 <h2 id="5-pyenv-rehash"><a href="#5-pyenv-rehash" class="headerlink" title="5. pyenv rehash"></a>5. pyenv rehash</h2><p>为所有已安装的可执行文件创建shims,因此，每当你增删了Python版本或者带有可执行文件的包(如pip)以后，都必须执行一次该命令</p>
@@ -465,8 +465,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/03/爬虫如何入门？/" rel="next" title="Python爬虫如何入门？">
-                <i class="fa fa-chevron-left"></i> Python爬虫如何入门？
+              <a href="/2017/07/03/当我玩哔哩哔哩的时候，一不小心。。。/" rel="next" title="当我玩哔哩哔哩的时候，一不小心。。。">
+                <i class="fa fa-chevron-left"></i> 当我玩哔哩哔哩的时候，一不小心。。。
               </a>
             
           </div>
@@ -475,8 +475,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/07/03/2017上半年总结/" rel="prev" title="2017上半年个人总结">
-                2017上半年个人总结 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/07/03/Python新手引导第二篇/" rel="prev" title="Python新手引导第二篇">
+                Python新手引导第二篇 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -602,7 +602,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">26</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -884,7 +884,7 @@
   
     <!-- custom analytics part create by xiamo -->
 <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
-<script>AV.initialize("0pk36yKP5OUYI9dqKuPbWwii-gzGzoHsz", "HHx7adxKEzQPo7wutBmFKXDC");</script>
+<script>AV.initialize("iXc5spSQGnzCgoMtBLz4NwGQ-gzGzoHsz", "3xUvpWVVhEBjkF2GATaot21m");</script>
 <script>
 function showTime(Counter) {
 	var query = new AV.Query(Counter);
