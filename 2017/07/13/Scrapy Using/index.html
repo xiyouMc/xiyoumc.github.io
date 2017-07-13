@@ -93,18 +93,12 @@
 
 
 
-<meta name="description" content="开头这两天后台收到了很多读者发消息说：“看了之前写的关于爬虫的文章之后，自己也想写一个爬虫但不知从何下手”。那么我今天就分享一个简单的案例，和大家一起从零写一个简单的爬虫。
-在开始分享之前，我想提一件事情。
-我知道，爬虫其实在部分外行人心目中一直是一个低劣或者低俗的人才做的事。那么，不管你是不是这么想，我只能说一句：要是没有爬虫我相信很多公司根本就没法起来。
-那么，今天我主要通过一个爬虫框架 S">
+<meta name="description" content="开头这两天后台收到了很多读者发消息说：“看了之前写的关于爬虫的文章之后，自己也想写一个爬虫但不知从何下手”。那么我今天就分享一个简单的案例，和大家一起从零写一个简单的爬虫。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="XiyouMc">
+<meta property="og:title" content="用 Scrapy 从零写一个爬虫">
 <meta property="og:url" content="https://xiyoumc.github.com/2017/07/13/Scrapy Using/index.html">
 <meta property="og:site_name" content="XiyouMc">
-<meta property="og:description" content="开头这两天后台收到了很多读者发消息说：“看了之前写的关于爬虫的文章之后，自己也想写一个爬虫但不知从何下手”。那么我今天就分享一个简单的案例，和大家一起从零写一个简单的爬虫。
-在开始分享之前，我想提一件事情。
-我知道，爬虫其实在部分外行人心目中一直是一个低劣或者低俗的人才做的事。那么，不管你是不是这么想，我只能说一句：要是没有爬虫我相信很多公司根本就没法起来。
-那么，今天我主要通过一个爬虫框架 S">
+<meta property="og:description" content="开头这两天后台收到了很多读者发消息说：“看了之前写的关于爬虫的文章之后，自己也想写一个爬虫但不知从何下手”。那么我今天就分享一个简单的案例，和大家一起从零写一个简单的爬虫。">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4653472-361eccdf958c2368?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4653472-6d48f6cc7e36a8fa?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4653472-322e7212457d6053?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
@@ -116,13 +110,10 @@
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4653472-5d4a410f85a0d01b?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4653472-c5b805eacf2780e6?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4653472-b61ffc02ee6e4db5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2017-07-13T02:19:48.000Z">
+<meta property="og:updated_time" content="2017-07-13T06:09:59.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="XiyouMc">
-<meta name="twitter:description" content="开头这两天后台收到了很多读者发消息说：“看了之前写的关于爬虫的文章之后，自己也想写一个爬虫但不知从何下手”。那么我今天就分享一个简单的案例，和大家一起从零写一个简单的爬虫。
-在开始分享之前，我想提一件事情。
-我知道，爬虫其实在部分外行人心目中一直是一个低劣或者低俗的人才做的事。那么，不管你是不是这么想，我只能说一句：要是没有爬虫我相信很多公司根本就没法起来。
-那么，今天我主要通过一个爬虫框架 S">
+<meta name="twitter:title" content="用 Scrapy 从零写一个爬虫">
+<meta name="twitter:description" content="开头这两天后台收到了很多读者发消息说：“看了之前写的关于爬虫的文章之后，自己也想写一个爬虫但不知从何下手”。那么我今天就分享一个简单的案例，和大家一起从零写一个简单的爬虫。">
 <meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/4653472-361eccdf958c2368?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
@@ -157,7 +148,7 @@
 
 
 
-  <title> | XiyouMc</title>
+  <title>用 Scrapy 从零写一个爬虫 | XiyouMc</title>
   
 
 
@@ -323,7 +314,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline"></h1>
+          <h1 class="post-title" itemprop="name headline">用 Scrapy 从零写一个爬虫</h1>
         
 
         <div class="post-meta">
@@ -346,6 +337,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -362,7 +375,7 @@
           
 
          
-            <span id="/2017/07/13/Scrapy Using/"class="leancloud_visitors" data-flag-title="">
+            <span id="/2017/07/13/Scrapy Using/"class="leancloud_visitors" data-flag-title="用 Scrapy 从零写一个爬虫">
               阅读次数
             </span>
           
@@ -385,6 +398,7 @@
       
         <p><img src="http://upload-images.jianshu.io/upload_images/4653472-361eccdf958c2368?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
 <h1 id="开头"><a href="#开头" class="headerlink" title="开头"></a><strong>开头</strong></h1><p>这两天后台收到了很多读者发消息说：“看了之前写的关于爬虫的文章之后，自己也想写一个爬虫但不知从何下手”。那么我今天就分享一个简单的案例，和大家一起从零写一个简单的爬虫。</p>
+<a id="more"></a>
 <p>在开始分享之前，我想提一件事情。</p>
 <p>我知道，爬虫其实在部分外行人心目中一直是一个低劣或者低俗的人才做的事。那么，不管你是不是这么想，我只能说一句：要是没有爬虫我相信很多公司根本就没法起来。</p>
 <p>那么，今天我主要通过一个爬虫框架 Scrapy 来一步步实现爬取 <strong>V2EX</strong> 首页所有的热门文章，旨在让你掌握这个框架来爬取对自己有用的数据。</p>
@@ -556,7 +570,7 @@
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2017/07/13/Scrapy Using/"
-           data-title="" data-url="https://xiyoumc.github.com/2017/07/13/Scrapy Using/">
+           data-title="用 Scrapy 从零写一个爬虫" data-url="https://xiyoumc.github.com/2017/07/13/Scrapy Using/">
       </div>
     
   </div>
